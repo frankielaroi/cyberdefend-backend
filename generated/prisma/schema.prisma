@@ -1,0 +1,671 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// User Management
+model User {
+  id            String   @id @default(uuid())
+  email         String   @unique
+  password      String
+  firstName     String
+  lastName      String
+  phone         String?
+  avatar        String?
+  emailVerified Boolean  @default(false)
+  isActive      Boolean  @default(true)
+  role          UserRole @default(END_USER)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  // Relationships
+  organization   Organization? @relation(fields: [organizationId], references: [id])
+  organizationId String?
+
+  // User activities
+  assessments     Assessment[]
+  phishingTargets PhishingTarget[]
+  telemetryEvents TelemetryEvent[]
+  auditLogs       AuditLog[]
+  refreshTokens   RefreshToken[]
+
+  @@map("users")
+}
+
+model RefreshToken {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  userId    String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("refresh_tokens")
+}
+
+enum UserRole {
+  SUPER_ADMIN
+  CSA_ADMIN
+  ORG_ADMIN
+  ORG_MANAGER
+  END_USER
+}
+
+// Organization Management
+model Organization {
+  id          String           @id @default(uuid())
+  name        String
+  email       String?          @unique
+  phone       String?
+  website     String?
+  description String?
+  logo        String?
+  address     String?
+  city        String?
+  region      String?
+  country     String           @default("Ghana")
+  gpsAddress  String? // Ghana Post GPS Address
+  size        OrganizationSize
+  sector      Sector
+  isPublic    Boolean          @default(false) // Show in CSI Directory
+  csiScore    Float? // Latest CSI Score
+  riskTier    RiskTier? // Latest Risk Tier
+  isActive    Boolean          @default(true)
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+
+  // Relationships
+  users             User[]
+  assessments       Assessment[]
+  subscriptions     Subscription[]
+  phishingCampaigns PhishingCampaign[]
+  agents            Agent[]
+  invoices          Invoice[]
+
+  @@map("organizations")
+}
+
+enum OrganizationSize {
+  MICRO // 1-5 employees
+  SMALL // 6-50 employees
+  MEDIUM // 51-250 employees
+  LARGE // 251-1000 employees
+  ENTERPRISE // 1000+ employees
+}
+
+enum Sector {
+  BANKING
+  TELECOMMUNICATIONS
+  INSURANCE
+  GOVERNMENT
+  HEALTHCARE
+  EDUCATION
+  ENERGY
+  MANUFACTURING
+  RETAIL
+  LOGISTICS
+  TECHNOLOGY
+  NGO
+  OTHER
+}
+
+enum RiskTier {
+  VERY_LOW // 81-100
+  LOW // 61-80
+  MEDIUM // 41-60
+  HIGH // 21-40
+  VERY_HIGH // 0-20
+}
+
+// DefendX Assessment System
+model Assessment {
+  id              String           @id @default(uuid())
+  title           String
+  description     String?
+  type            AssessmentType   @default(CSI_ASSESSMENT)
+  status          AssessmentStatus @default(DRAFT)
+  score           Float? // 0-100
+  maxScore        Float? // Maximum possible score
+  riskTier        RiskTier?
+  benchmarkRegion Float? // Regional average
+  benchmarkSector Float? // Sector average
+  benchmarkSize   Float? // Size-based average
+  startedAt       DateTime?
+  completedAt     DateTime?
+  reportUrl       String? // S3 URL for generated report
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+
+  // Relationships
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  organizationId String
+  user           User         @relation(fields: [userId], references: [id])
+  userId         String
+
+  responses AssessmentResponse[]
+
+  @@map("assessments")
+}
+
+enum AssessmentType {
+  CSI_ASSESSMENT
+  COMPLIANCE_CHECK
+  SECURITY_AUDIT
+  BASELINE_ASSESSMENT
+}
+
+enum AssessmentStatus {
+  DRAFT
+  IN_PROGRESS
+  COMPLETED
+  EXPIRED
+  CANCELLED
+}
+
+model QuestionCategory {
+  id          String   @id @default(uuid())
+  name        String   @unique
+  description String?
+  weight      Float    @default(1.0) // Weight in CSI calculation
+  order       Int      @default(0)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  questions Question[]
+
+  @@map("question_categories")
+}
+
+model Question {
+  id              String       @id @default(uuid())
+  text            String
+  description     String?
+  type            QuestionType
+  weight          Float        @default(1.0)
+  isRequired      Boolean      @default(true)
+  order           Int          @default(0)
+  isActive        Boolean      @default(true)
+  version         String       @default("1.0")
+  dependsOnAnswer String? // JSON: conditional logic
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+
+  // Relationships
+  category   QuestionCategory @relation(fields: [categoryId], references: [id])
+  categoryId String
+
+  options   QuestionOption[]
+  responses AssessmentResponse[]
+
+  @@map("questions")
+}
+
+enum QuestionType {
+  SINGLE_CHOICE
+  MULTIPLE_CHOICE
+  YES_NO
+  SCALE
+  TEXT
+  FILE_UPLOAD
+}
+
+model QuestionOption {
+  id        String  @id @default(uuid())
+  text      String
+  value     String // Used for scoring
+  score     Float // Points awarded for this option
+  order     Int     @default(0)
+  isCorrect Boolean @default(false)
+
+  // Relationships
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  questionId String
+
+  @@map("question_options")
+}
+
+model AssessmentResponse {
+  id        String   @id @default(uuid())
+  answer    String // JSON: stores answer(s)
+  score     Float? // Points earned for this response
+  timeSpent Int? // Seconds spent on question
+  createdAt DateTime @default(now())
+
+  // Relationships
+  assessment   Assessment @relation(fields: [assessmentId], references: [id], onDelete: Cascade)
+  assessmentId String
+  question     Question   @relation(fields: [questionId], references: [id])
+  questionId   String
+
+  @@unique([assessmentId, questionId])
+  @@map("assessment_responses")
+}
+
+// DefendX+ Phishing & Monitoring System
+model PhishingCampaign {
+  id             String         @id @default(uuid())
+  name           String
+  description    String?
+  template       String // HTML email template
+  subject        String
+  senderName     String
+  senderEmail    String
+  landingPageUrl String? // Phishing landing page
+  status         CampaignStatus @default(DRAFT)
+  scheduledAt    DateTime?
+  startedAt      DateTime?
+  completedAt    DateTime?
+  targetCount    Int            @default(0)
+  deliveredCount Int            @default(0)
+  openedCount    Int            @default(0)
+  clickedCount   Int            @default(0)
+  reportedCount  Int            @default(0)
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+
+  // Relationships
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  organizationId String
+
+  targets PhishingTarget[]
+  events  PhishingEvent[]
+
+  @@map("phishing_campaigns")
+}
+
+enum CampaignStatus {
+  DRAFT
+  SCHEDULED
+  ACTIVE
+  PAUSED
+  COMPLETED
+  CANCELLED
+}
+
+model PhishingTarget {
+  id          String       @id @default(uuid())
+  email       String
+  firstName   String?
+  lastName    String?
+  department  String?
+  trackingId  String       @unique @default(uuid())
+  status      TargetStatus @default(PENDING)
+  deliveredAt DateTime?
+  openedAt    DateTime?
+  clickedAt   DateTime?
+  reportedAt  DateTime?
+  createdAt   DateTime     @default(now())
+
+  // Relationships
+  campaign   PhishingCampaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  campaignId String
+  user       User?            @relation(fields: [userId], references: [id])
+  userId     String?
+
+  events PhishingEvent[]
+
+  @@map("phishing_targets")
+}
+
+enum TargetStatus {
+  PENDING
+  DELIVERED
+  OPENED
+  CLICKED
+  REPORTED
+  FAILED
+}
+
+model PhishingEvent {
+  id        String            @id @default(uuid())
+  type      PhishingEventType
+  metadata  String? // JSON: additional event data
+  ipAddress String?
+  userAgent String?
+  timestamp DateTime          @default(now())
+
+  // Relationships
+  campaign   PhishingCampaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  campaignId String
+  target     PhishingTarget   @relation(fields: [targetId], references: [id], onDelete: Cascade)
+  targetId   String
+
+  @@map("phishing_events")
+}
+
+enum PhishingEventType {
+  EMAIL_SENT
+  EMAIL_DELIVERED
+  EMAIL_BOUNCED
+  EMAIL_OPENED
+  LINK_CLICKED
+  DATA_SUBMITTED
+  EMAIL_REPORTED
+}
+
+// Telemetry & Monitoring System
+model Agent {
+  id         String   @id @default(uuid())
+  name       String
+  version    String
+  osType     String // Windows, Linux, macOS
+  osVersion  String
+  hostname   String
+  ipAddress  String?
+  macAddress String?
+  isActive   Boolean  @default(true)
+  lastSeen   DateTime @default(now())
+  apiKey     String   @unique
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  // Relationships
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  organizationId String
+
+  telemetryEvents TelemetryEvent[]
+  alerts          Alert[]
+  scanResults     ScanResult[]
+
+  @@map("agents")
+}
+
+model TelemetryEvent {
+  id        String        @id @default(uuid())
+  type      TelemetryType
+  source    String // Application/service name
+  data      String // JSON: event data
+  severity  SeverityLevel @default(INFO)
+  timestamp DateTime      @default(now())
+
+  // Relationships
+  agent   Agent   @relation(fields: [agentId], references: [id])
+  agentId String
+  user    User?   @relation(fields: [userId], references: [id])
+  userId  String?
+
+  @@map("telemetry_events")
+}
+
+enum TelemetryType {
+  LOGIN_ATTEMPT
+  LOGIN_SUCCESS
+  LOGIN_FAILURE
+  FILE_ACCESS
+  PROCESS_START
+  NETWORK_CONNECTION
+  ANTIVIRUS_EVENT
+  SYSTEM_CHANGE
+  SECURITY_ALERT
+  APPLICATION_EVENT
+}
+
+enum SeverityLevel {
+  LOW
+  INFO
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+model DetectionRule {
+  id          String        @id @default(uuid())
+  name        String
+  description String?
+  condition   String // YAML/JSON: rule conditions
+  action      RuleAction    @default(ALERT)
+  severity    SeverityLevel @default(MEDIUM)
+  isActive    Boolean       @default(true)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  alerts Alert[]
+
+  @@map("detection_rules")
+}
+
+enum RuleAction {
+  ALERT
+  BLOCK
+  LOG
+  EMAIL
+  SMS
+}
+
+model Alert {
+  id             String        @id @default(uuid())
+  title          String
+  description    String
+  severity       SeverityLevel
+  status         AlertStatus   @default(OPEN)
+  data           String? // JSON: alert context
+  acknowledgedAt DateTime?
+  acknowledgedBy String? // User ID
+  resolvedAt     DateTime?
+  resolvedBy     String? // User ID
+  createdAt      DateTime      @default(now())
+
+  // Relationships
+  rule    DetectionRule @relation(fields: [ruleId], references: [id])
+  ruleId  String
+  agent   Agent         @relation(fields: [agentId], references: [id])
+  agentId String
+
+  @@map("alerts")
+}
+
+enum AlertStatus {
+  OPEN
+  ACKNOWLEDGED
+  RESOLVED
+  FALSE_POSITIVE
+}
+
+model ScanResult {
+  id              String     @id @default(uuid())
+  type            ScanType
+  status          ScanStatus @default(PENDING)
+  score           String? // A, B, C, D, F grade
+  findings        String // JSON: detailed findings
+  recommendations String? // JSON: remediation steps
+  startedAt       DateTime   @default(now())
+  completedAt     DateTime?
+  reportUrl       String? // S3 URL for scan report
+
+  // Relationships
+  agent   Agent  @relation(fields: [agentId], references: [id])
+  agentId String
+
+  @@map("scan_results")
+}
+
+enum ScanType {
+  VULNERABILITY_SCAN
+  MALWARE_SCAN
+  COMPLIANCE_SCAN
+  CONFIGURATION_SCAN
+  NETWORK_SCAN
+}
+
+enum ScanStatus {
+  PENDING
+  RUNNING
+  COMPLETED
+  FAILED
+  CANCELLED
+}
+
+// Billing & Subscription System
+model SubscriptionPlan {
+  id             String           @id @default(uuid())
+  name           String           @unique
+  description    String?
+  features       String // JSON: feature list
+  price          Float // Monthly price
+  currency       String           @default("GHS")
+  type           SubscriptionType
+  isActive       Boolean          @default(true)
+  trialDays      Int              @default(0)
+  maxUsers       Int? // null = unlimited
+  maxAssessments Int? // null = unlimited
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+
+  subscriptions Subscription[]
+
+  @@map("subscription_plans")
+}
+
+enum SubscriptionType {
+  DEFEND_CORE // Basic CSI assessments
+  DEFEND_VAULT // Core + Phishing
+  DEFEND_CLICK // Full platform access
+}
+
+model Subscription {
+  id                 String             @id @default(uuid())
+  status             SubscriptionStatus @default(TRIAL)
+  startDate          DateTime           @default(now())
+  endDate            DateTime?
+  trialEndDate       DateTime?
+  autoRenew          Boolean            @default(true)
+  cancelledAt        DateTime?
+  cancellationReason String?
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
+
+  // Relationships
+  organization   Organization     @relation(fields: [organizationId], references: [id])
+  organizationId String
+  plan           SubscriptionPlan @relation(fields: [planId], references: [id])
+  planId         String
+
+  invoices Invoice[]
+
+  @@map("subscriptions")
+}
+
+enum SubscriptionStatus {
+  TRIAL
+  ACTIVE
+  PAST_DUE
+  CANCELLED
+  EXPIRED
+}
+
+model Invoice {
+  id            String        @id @default(uuid())
+  invoiceNumber String        @unique
+  amount        Float
+  currency      String        @default("GHS")
+  status        InvoiceStatus @default(PENDING)
+  dueDate       DateTime
+  paidAt        DateTime?
+  description   String?
+  metadata      String? // JSON: payment details
+  receiptUrl    String? // S3 URL for receipt
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  // Relationships
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  organizationId String
+  subscription   Subscription @relation(fields: [subscriptionId], references: [id])
+  subscriptionId String
+
+  payments Payment[]
+
+  @@map("invoices")
+}
+
+enum InvoiceStatus {
+  PENDING
+  PAID
+  OVERDUE
+  CANCELLED
+  REFUNDED
+}
+
+model Payment {
+  id          String          @id @default(uuid())
+  amount      Float
+  currency    String          @default("GHS")
+  method      PaymentMethod
+  provider    PaymentProvider
+  providerRef String // External payment reference
+  status      PaymentStatus   @default(PENDING)
+  metadata    String? // JSON: provider response
+  paidAt      DateTime?
+  createdAt   DateTime        @default(now())
+
+  // Relationships
+  invoice   Invoice @relation(fields: [invoiceId], references: [id])
+  invoiceId String
+
+  @@map("payments")
+}
+
+enum PaymentMethod {
+  CARD
+  MOBILE_MONEY
+  BANK_TRANSFER
+  PAYPAL
+}
+
+enum PaymentProvider {
+  PAYSTACK
+  FLUTTERWAVE
+  PAYPAL
+}
+
+enum PaymentStatus {
+  PENDING
+  SUCCESS
+  FAILED
+  CANCELLED
+  REFUNDED
+}
+
+// Audit & Compliance
+model AuditLog {
+  id        String   @id @default(uuid())
+  action    String // Action performed
+  entity    String // Entity affected
+  entityId  String? // ID of affected entity
+  oldValues String? // JSON: previous state
+  newValues String? // JSON: new state
+  ipAddress String?
+  userAgent String?
+  timestamp DateTime @default(now())
+
+  // Relationships
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+
+  @@map("audit_logs")
+}
+
+// CSI Directory & Benchmarking
+model BenchmarkData {
+  id        String           @id @default(uuid())
+  region    String
+  sector    Sector
+  size      OrganizationSize
+  avgScore  Float // Average CSI score
+  totalOrgs Int // Number of organizations
+  period    String // e.g., "2024-Q1"
+  createdAt DateTime         @default(now())
+
+  @@unique([region, sector, size, period])
+  @@map("benchmark_data")
+}
