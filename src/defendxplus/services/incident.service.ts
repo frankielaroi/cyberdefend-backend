@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../database/prisma.service';
+import { PhishingEventType } from './email-tracking.service';
 
 @Injectable()
 export class IncidentService {
@@ -11,7 +12,7 @@ export class IncidentService {
     // For now, we'll create a phishing event for incident reporting
     const incident = await this.prisma.phishingEvent.create({
       data: {
-        type: 'EMAIL_REPORTED',
+        type: PhishingEventType.PHISHING_REPORTED,
         metadata: JSON.stringify({
           reportedBy: userId,
           description: reportIncidentDto.description,

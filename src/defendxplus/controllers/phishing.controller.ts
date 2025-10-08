@@ -28,7 +28,7 @@ import { Roles } from '../../auth/decorators/roles.decorator';
 import { GetUser } from '../../auth/decorators/get-user.decorator';
 
 @ApiTags('defendxplus-phishing')
-@Controller('defendxplus/campaign')
+@Controller('defendx-plus/campaign')
 @UseGuards(JwtAuthGuard, RolesGuard)
 @ApiBearerAuth()
 export class PhishingController {

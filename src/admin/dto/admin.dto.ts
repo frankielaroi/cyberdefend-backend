@@ -1,7 +1,7 @@
 import { IsString, IsNotEmpty, IsOptional, IsEmail, IsEnum, IsArray, IsNumber, IsBoolean, ValidateNested, IsInt, Min, Max } from 'class-validator';
 import { Type } from 'class-transformer';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { UserRole } from '@prisma/client';
+import { UserRole } from 'generated/prisma';
 
 // Admin User Management DTOs
 export class CreateUserDto {

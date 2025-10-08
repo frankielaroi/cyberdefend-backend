@@ -24,10 +24,25 @@ export type User = $Result.DefaultSelection<Prisma.$UserPayload>
  */
 export type RefreshToken = $Result.DefaultSelection<Prisma.$RefreshTokenPayload>
 /**
+ * Model PasswordReset
+ * 
+ */
+export type PasswordReset = $Result.DefaultSelection<Prisma.$PasswordResetPayload>
+/**
  * Model Organization
  * 
  */
 export type Organization = $Result.DefaultSelection<Prisma.$OrganizationPayload>
+/**
+ * Model InviteCode
+ * 
+ */
+export type InviteCode = $Result.DefaultSelection<Prisma.$InviteCodePayload>
+/**
+ * Model OrganizationMember
+ * 
+ */
+export type OrganizationMember = $Result.DefaultSelection<Prisma.$OrganizationMemberPayload>
 /**
  * Model Assessment
  * 
@@ -54,6 +69,11 @@ export type QuestionOption = $Result.DefaultSelection<Prisma.$QuestionOptionPayl
  */
 export type AssessmentResponse = $Result.DefaultSelection<Prisma.$AssessmentResponsePayload>
 /**
+ * Model AssessmentResult
+ * 
+ */
+export type AssessmentResult = $Result.DefaultSelection<Prisma.$AssessmentResultPayload>
+/**
  * Model PhishingCampaign
  * 
  */
@@ -68,6 +88,16 @@ export type PhishingTarget = $Result.DefaultSelection<Prisma.$PhishingTargetPayl
  * 
  */
 export type PhishingEvent = $Result.DefaultSelection<Prisma.$PhishingEventPayload>
+/**
+ * Model PhishingTemplate
+ * 
+ */
+export type PhishingTemplate = $Result.DefaultSelection<Prisma.$PhishingTemplatePayload>
+/**
+ * Model EmailJob
+ * 
+ */
+export type EmailJob = $Result.DefaultSelection<Prisma.$EmailJobPayload>
 /**
  * Model Agent
  * 
@@ -180,6 +210,15 @@ export const RiskTier: {
 export type RiskTier = (typeof RiskTier)[keyof typeof RiskTier]
 
 
+export const MemberStatus: {
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE',
+  PENDING: 'PENDING'
+};
+
+export type MemberStatus = (typeof MemberStatus)[keyof typeof MemberStatus]
+
+
 export const AssessmentType: {
   CSI_ASSESSMENT: 'CSI_ASSESSMENT',
   COMPLIANCE_CHECK: 'COMPLIANCE_CHECK',
@@ -213,10 +252,22 @@ export const QuestionType: {
 export type QuestionType = (typeof QuestionType)[keyof typeof QuestionType]
 
 
+export const CSITier: {
+  BASIC: 'BASIC',
+  FOUNDATIONAL: 'FOUNDATIONAL',
+  ORGANIZATIONAL: 'ORGANIZATIONAL',
+  ADVANCED: 'ADVANCED',
+  PROGRESSIVE: 'PROGRESSIVE',
+  INNOVATIVE: 'INNOVATIVE'
+};
+
+export type CSITier = (typeof CSITier)[keyof typeof CSITier]
+
+
 export const CampaignStatus: {
   DRAFT: 'DRAFT',
   SCHEDULED: 'SCHEDULED',
-  ACTIVE: 'ACTIVE',
+  RUNNING: 'RUNNING',
   PAUSED: 'PAUSED',
   COMPLETED: 'COMPLETED',
   CANCELLED: 'CANCELLED'
@@ -225,29 +276,66 @@ export const CampaignStatus: {
 export type CampaignStatus = (typeof CampaignStatus)[keyof typeof CampaignStatus]
 
 
-export const TargetStatus: {
-  PENDING: 'PENDING',
-  DELIVERED: 'DELIVERED',
-  OPENED: 'OPENED',
-  CLICKED: 'CLICKED',
-  REPORTED: 'REPORTED',
-  FAILED: 'FAILED'
-};
-
-export type TargetStatus = (typeof TargetStatus)[keyof typeof TargetStatus]
-
-
 export const PhishingEventType: {
+  EMAIL_QUEUED: 'EMAIL_QUEUED',
   EMAIL_SENT: 'EMAIL_SENT',
   EMAIL_DELIVERED: 'EMAIL_DELIVERED',
   EMAIL_BOUNCED: 'EMAIL_BOUNCED',
   EMAIL_OPENED: 'EMAIL_OPENED',
   LINK_CLICKED: 'LINK_CLICKED',
-  DATA_SUBMITTED: 'DATA_SUBMITTED',
-  EMAIL_REPORTED: 'EMAIL_REPORTED'
+  CREDENTIALS_ENTERED: 'CREDENTIALS_ENTERED',
+  PHISHING_REPORTED: 'PHISHING_REPORTED',
+  CAMPAIGN_STARTED: 'CAMPAIGN_STARTED',
+  CAMPAIGN_PAUSED: 'CAMPAIGN_PAUSED',
+  CAMPAIGN_RESUMED: 'CAMPAIGN_RESUMED',
+  CAMPAIGN_COMPLETED: 'CAMPAIGN_COMPLETED',
+  CAMPAIGN_CANCELLED: 'CAMPAIGN_CANCELLED'
 };
 
 export type PhishingEventType = (typeof PhishingEventType)[keyof typeof PhishingEventType]
+
+
+export const TemplateCategory: {
+  SECURITY: 'SECURITY',
+  HR: 'HR',
+  FINANCE: 'FINANCE',
+  IT: 'IT',
+  EXECUTIVE: 'EXECUTIVE',
+  GENERAL: 'GENERAL'
+};
+
+export type TemplateCategory = (typeof TemplateCategory)[keyof typeof TemplateCategory]
+
+
+export const RiskLevel: {
+  LOW: 'LOW',
+  MEDIUM: 'MEDIUM',
+  HIGH: 'HIGH',
+  VERY_HIGH: 'VERY_HIGH'
+};
+
+export type RiskLevel = (typeof RiskLevel)[keyof typeof RiskLevel]
+
+
+export const JobPriority: {
+  LOW: 'LOW',
+  MEDIUM: 'MEDIUM',
+  HIGH: 'HIGH',
+  URGENT: 'URGENT'
+};
+
+export type JobPriority = (typeof JobPriority)[keyof typeof JobPriority]
+
+
+export const JobStatus: {
+  PENDING: 'PENDING',
+  PROCESSING: 'PROCESSING',
+  SENT: 'SENT',
+  FAILED: 'FAILED',
+  CANCELLED: 'CANCELLED'
+};
+
+export type JobStatus = (typeof JobStatus)[keyof typeof JobStatus]
 
 
 export const TelemetryType: {
@@ -398,6 +486,10 @@ export type RiskTier = $Enums.RiskTier
 
 export const RiskTier: typeof $Enums.RiskTier
 
+export type MemberStatus = $Enums.MemberStatus
+
+export const MemberStatus: typeof $Enums.MemberStatus
+
 export type AssessmentType = $Enums.AssessmentType
 
 export const AssessmentType: typeof $Enums.AssessmentType
@@ -410,17 +502,33 @@ export type QuestionType = $Enums.QuestionType
 
 export const QuestionType: typeof $Enums.QuestionType
 
+export type CSITier = $Enums.CSITier
+
+export const CSITier: typeof $Enums.CSITier
+
 export type CampaignStatus = $Enums.CampaignStatus
 
 export const CampaignStatus: typeof $Enums.CampaignStatus
 
-export type TargetStatus = $Enums.TargetStatus
-
-export const TargetStatus: typeof $Enums.TargetStatus
-
 export type PhishingEventType = $Enums.PhishingEventType
 
 export const PhishingEventType: typeof $Enums.PhishingEventType
+
+export type TemplateCategory = $Enums.TemplateCategory
+
+export const TemplateCategory: typeof $Enums.TemplateCategory
+
+export type RiskLevel = $Enums.RiskLevel
+
+export const RiskLevel: typeof $Enums.RiskLevel
+
+export type JobPriority = $Enums.JobPriority
+
+export const JobPriority: typeof $Enums.JobPriority
+
+export type JobStatus = $Enums.JobStatus
+
+export const JobStatus: typeof $Enums.JobStatus
 
 export type TelemetryType = $Enums.TelemetryType
 
@@ -614,6 +722,16 @@ export class PrismaClient<
   get refreshToken(): Prisma.RefreshTokenDelegate<ExtArgs>;
 
   /**
+   * `prisma.passwordReset`: Exposes CRUD operations for the **PasswordReset** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more PasswordResets
+    * const passwordResets = await prisma.passwordReset.findMany()
+    * ```
+    */
+  get passwordReset(): Prisma.PasswordResetDelegate<ExtArgs>;
+
+  /**
    * `prisma.organization`: Exposes CRUD operations for the **Organization** model.
     * Example usage:
     * ```ts
@@ -622,6 +740,26 @@ export class PrismaClient<
     * ```
     */
   get organization(): Prisma.OrganizationDelegate<ExtArgs>;
+
+  /**
+   * `prisma.inviteCode`: Exposes CRUD operations for the **InviteCode** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more InviteCodes
+    * const inviteCodes = await prisma.inviteCode.findMany()
+    * ```
+    */
+  get inviteCode(): Prisma.InviteCodeDelegate<ExtArgs>;
+
+  /**
+   * `prisma.organizationMember`: Exposes CRUD operations for the **OrganizationMember** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more OrganizationMembers
+    * const organizationMembers = await prisma.organizationMember.findMany()
+    * ```
+    */
+  get organizationMember(): Prisma.OrganizationMemberDelegate<ExtArgs>;
 
   /**
    * `prisma.assessment`: Exposes CRUD operations for the **Assessment** model.
@@ -674,6 +812,16 @@ export class PrismaClient<
   get assessmentResponse(): Prisma.AssessmentResponseDelegate<ExtArgs>;
 
   /**
+   * `prisma.assessmentResult`: Exposes CRUD operations for the **AssessmentResult** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more AssessmentResults
+    * const assessmentResults = await prisma.assessmentResult.findMany()
+    * ```
+    */
+  get assessmentResult(): Prisma.AssessmentResultDelegate<ExtArgs>;
+
+  /**
    * `prisma.phishingCampaign`: Exposes CRUD operations for the **PhishingCampaign** model.
     * Example usage:
     * ```ts
@@ -702,6 +850,26 @@ export class PrismaClient<
     * ```
     */
   get phishingEvent(): Prisma.PhishingEventDelegate<ExtArgs>;
+
+  /**
+   * `prisma.phishingTemplate`: Exposes CRUD operations for the **PhishingTemplate** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more PhishingTemplates
+    * const phishingTemplates = await prisma.phishingTemplate.findMany()
+    * ```
+    */
+  get phishingTemplate(): Prisma.PhishingTemplateDelegate<ExtArgs>;
+
+  /**
+   * `prisma.emailJob`: Exposes CRUD operations for the **EmailJob** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more EmailJobs
+    * const emailJobs = await prisma.emailJob.findMany()
+    * ```
+    */
+  get emailJob(): Prisma.EmailJobDelegate<ExtArgs>;
 
   /**
    * `prisma.agent`: Exposes CRUD operations for the **Agent** model.
@@ -1255,15 +1423,21 @@ export namespace Prisma {
   export const ModelName: {
     User: 'User',
     RefreshToken: 'RefreshToken',
+    PasswordReset: 'PasswordReset',
     Organization: 'Organization',
+    InviteCode: 'InviteCode',
+    OrganizationMember: 'OrganizationMember',
     Assessment: 'Assessment',
     QuestionCategory: 'QuestionCategory',
     Question: 'Question',
     QuestionOption: 'QuestionOption',
     AssessmentResponse: 'AssessmentResponse',
+    AssessmentResult: 'AssessmentResult',
     PhishingCampaign: 'PhishingCampaign',
     PhishingTarget: 'PhishingTarget',
     PhishingEvent: 'PhishingEvent',
+    PhishingTemplate: 'PhishingTemplate',
+    EmailJob: 'EmailJob',
     Agent: 'Agent',
     TelemetryEvent: 'TelemetryEvent',
     DetectionRule: 'DetectionRule',
@@ -1290,7 +1464,7 @@ export namespace Prisma {
 
   export type TypeMap<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, ClientOptions = {}> = {
     meta: {
-      modelProps: "user" | "refreshToken" | "organization" | "assessment" | "questionCategory" | "question" | "questionOption" | "assessmentResponse" | "phishingCampaign" | "phishingTarget" | "phishingEvent" | "agent" | "telemetryEvent" | "detectionRule" | "alert" | "scanResult" | "subscriptionPlan" | "subscription" | "invoice" | "payment" | "auditLog" | "benchmarkData"
+      modelProps: "user" | "refreshToken" | "passwordReset" | "organization" | "inviteCode" | "organizationMember" | "assessment" | "questionCategory" | "question" | "questionOption" | "assessmentResponse" | "assessmentResult" | "phishingCampaign" | "phishingTarget" | "phishingEvent" | "phishingTemplate" | "emailJob" | "agent" | "telemetryEvent" | "detectionRule" | "alert" | "scanResult" | "subscriptionPlan" | "subscription" | "invoice" | "payment" | "auditLog" | "benchmarkData"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1434,6 +1608,76 @@ export namespace Prisma {
           }
         }
       }
+      PasswordReset: {
+        payload: Prisma.$PasswordResetPayload<ExtArgs>
+        fields: Prisma.PasswordResetFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.PasswordResetFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PasswordResetPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.PasswordResetFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PasswordResetPayload>
+          }
+          findFirst: {
+            args: Prisma.PasswordResetFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PasswordResetPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.PasswordResetFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PasswordResetPayload>
+          }
+          findMany: {
+            args: Prisma.PasswordResetFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PasswordResetPayload>[]
+          }
+          create: {
+            args: Prisma.PasswordResetCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PasswordResetPayload>
+          }
+          createMany: {
+            args: Prisma.PasswordResetCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.PasswordResetCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PasswordResetPayload>[]
+          }
+          delete: {
+            args: Prisma.PasswordResetDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PasswordResetPayload>
+          }
+          update: {
+            args: Prisma.PasswordResetUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PasswordResetPayload>
+          }
+          deleteMany: {
+            args: Prisma.PasswordResetDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.PasswordResetUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.PasswordResetUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PasswordResetPayload>
+          }
+          aggregate: {
+            args: Prisma.PasswordResetAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregatePasswordReset>
+          }
+          groupBy: {
+            args: Prisma.PasswordResetGroupByArgs<ExtArgs>
+            result: $Utils.Optional<PasswordResetGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.PasswordResetCountArgs<ExtArgs>
+            result: $Utils.Optional<PasswordResetCountAggregateOutputType> | number
+          }
+        }
+      }
       Organization: {
         payload: Prisma.$OrganizationPayload<ExtArgs>
         fields: Prisma.OrganizationFieldRefs
@@ -1501,6 +1745,146 @@ export namespace Prisma {
           count: {
             args: Prisma.OrganizationCountArgs<ExtArgs>
             result: $Utils.Optional<OrganizationCountAggregateOutputType> | number
+          }
+        }
+      }
+      InviteCode: {
+        payload: Prisma.$InviteCodePayload<ExtArgs>
+        fields: Prisma.InviteCodeFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.InviteCodeFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InviteCodePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.InviteCodeFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InviteCodePayload>
+          }
+          findFirst: {
+            args: Prisma.InviteCodeFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InviteCodePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.InviteCodeFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InviteCodePayload>
+          }
+          findMany: {
+            args: Prisma.InviteCodeFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InviteCodePayload>[]
+          }
+          create: {
+            args: Prisma.InviteCodeCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InviteCodePayload>
+          }
+          createMany: {
+            args: Prisma.InviteCodeCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.InviteCodeCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InviteCodePayload>[]
+          }
+          delete: {
+            args: Prisma.InviteCodeDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InviteCodePayload>
+          }
+          update: {
+            args: Prisma.InviteCodeUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InviteCodePayload>
+          }
+          deleteMany: {
+            args: Prisma.InviteCodeDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.InviteCodeUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.InviteCodeUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InviteCodePayload>
+          }
+          aggregate: {
+            args: Prisma.InviteCodeAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateInviteCode>
+          }
+          groupBy: {
+            args: Prisma.InviteCodeGroupByArgs<ExtArgs>
+            result: $Utils.Optional<InviteCodeGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.InviteCodeCountArgs<ExtArgs>
+            result: $Utils.Optional<InviteCodeCountAggregateOutputType> | number
+          }
+        }
+      }
+      OrganizationMember: {
+        payload: Prisma.$OrganizationMemberPayload<ExtArgs>
+        fields: Prisma.OrganizationMemberFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.OrganizationMemberFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OrganizationMemberPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.OrganizationMemberFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OrganizationMemberPayload>
+          }
+          findFirst: {
+            args: Prisma.OrganizationMemberFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OrganizationMemberPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.OrganizationMemberFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OrganizationMemberPayload>
+          }
+          findMany: {
+            args: Prisma.OrganizationMemberFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OrganizationMemberPayload>[]
+          }
+          create: {
+            args: Prisma.OrganizationMemberCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OrganizationMemberPayload>
+          }
+          createMany: {
+            args: Prisma.OrganizationMemberCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.OrganizationMemberCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OrganizationMemberPayload>[]
+          }
+          delete: {
+            args: Prisma.OrganizationMemberDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OrganizationMemberPayload>
+          }
+          update: {
+            args: Prisma.OrganizationMemberUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OrganizationMemberPayload>
+          }
+          deleteMany: {
+            args: Prisma.OrganizationMemberDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.OrganizationMemberUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.OrganizationMemberUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OrganizationMemberPayload>
+          }
+          aggregate: {
+            args: Prisma.OrganizationMemberAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateOrganizationMember>
+          }
+          groupBy: {
+            args: Prisma.OrganizationMemberGroupByArgs<ExtArgs>
+            result: $Utils.Optional<OrganizationMemberGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.OrganizationMemberCountArgs<ExtArgs>
+            result: $Utils.Optional<OrganizationMemberCountAggregateOutputType> | number
           }
         }
       }
@@ -1854,6 +2238,76 @@ export namespace Prisma {
           }
         }
       }
+      AssessmentResult: {
+        payload: Prisma.$AssessmentResultPayload<ExtArgs>
+        fields: Prisma.AssessmentResultFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AssessmentResultFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AssessmentResultPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AssessmentResultFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AssessmentResultPayload>
+          }
+          findFirst: {
+            args: Prisma.AssessmentResultFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AssessmentResultPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AssessmentResultFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AssessmentResultPayload>
+          }
+          findMany: {
+            args: Prisma.AssessmentResultFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AssessmentResultPayload>[]
+          }
+          create: {
+            args: Prisma.AssessmentResultCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AssessmentResultPayload>
+          }
+          createMany: {
+            args: Prisma.AssessmentResultCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.AssessmentResultCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AssessmentResultPayload>[]
+          }
+          delete: {
+            args: Prisma.AssessmentResultDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AssessmentResultPayload>
+          }
+          update: {
+            args: Prisma.AssessmentResultUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AssessmentResultPayload>
+          }
+          deleteMany: {
+            args: Prisma.AssessmentResultDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AssessmentResultUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.AssessmentResultUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AssessmentResultPayload>
+          }
+          aggregate: {
+            args: Prisma.AssessmentResultAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAssessmentResult>
+          }
+          groupBy: {
+            args: Prisma.AssessmentResultGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AssessmentResultGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AssessmentResultCountArgs<ExtArgs>
+            result: $Utils.Optional<AssessmentResultCountAggregateOutputType> | number
+          }
+        }
+      }
       PhishingCampaign: {
         payload: Prisma.$PhishingCampaignPayload<ExtArgs>
         fields: Prisma.PhishingCampaignFieldRefs
@@ -2061,6 +2515,146 @@ export namespace Prisma {
           count: {
             args: Prisma.PhishingEventCountArgs<ExtArgs>
             result: $Utils.Optional<PhishingEventCountAggregateOutputType> | number
+          }
+        }
+      }
+      PhishingTemplate: {
+        payload: Prisma.$PhishingTemplatePayload<ExtArgs>
+        fields: Prisma.PhishingTemplateFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.PhishingTemplateFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PhishingTemplatePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.PhishingTemplateFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PhishingTemplatePayload>
+          }
+          findFirst: {
+            args: Prisma.PhishingTemplateFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PhishingTemplatePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.PhishingTemplateFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PhishingTemplatePayload>
+          }
+          findMany: {
+            args: Prisma.PhishingTemplateFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PhishingTemplatePayload>[]
+          }
+          create: {
+            args: Prisma.PhishingTemplateCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PhishingTemplatePayload>
+          }
+          createMany: {
+            args: Prisma.PhishingTemplateCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.PhishingTemplateCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PhishingTemplatePayload>[]
+          }
+          delete: {
+            args: Prisma.PhishingTemplateDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PhishingTemplatePayload>
+          }
+          update: {
+            args: Prisma.PhishingTemplateUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PhishingTemplatePayload>
+          }
+          deleteMany: {
+            args: Prisma.PhishingTemplateDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.PhishingTemplateUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.PhishingTemplateUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PhishingTemplatePayload>
+          }
+          aggregate: {
+            args: Prisma.PhishingTemplateAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregatePhishingTemplate>
+          }
+          groupBy: {
+            args: Prisma.PhishingTemplateGroupByArgs<ExtArgs>
+            result: $Utils.Optional<PhishingTemplateGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.PhishingTemplateCountArgs<ExtArgs>
+            result: $Utils.Optional<PhishingTemplateCountAggregateOutputType> | number
+          }
+        }
+      }
+      EmailJob: {
+        payload: Prisma.$EmailJobPayload<ExtArgs>
+        fields: Prisma.EmailJobFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.EmailJobFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailJobPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.EmailJobFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailJobPayload>
+          }
+          findFirst: {
+            args: Prisma.EmailJobFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailJobPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.EmailJobFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailJobPayload>
+          }
+          findMany: {
+            args: Prisma.EmailJobFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailJobPayload>[]
+          }
+          create: {
+            args: Prisma.EmailJobCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailJobPayload>
+          }
+          createMany: {
+            args: Prisma.EmailJobCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.EmailJobCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailJobPayload>[]
+          }
+          delete: {
+            args: Prisma.EmailJobDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailJobPayload>
+          }
+          update: {
+            args: Prisma.EmailJobUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailJobPayload>
+          }
+          deleteMany: {
+            args: Prisma.EmailJobDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.EmailJobUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.EmailJobUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailJobPayload>
+          }
+          aggregate: {
+            args: Prisma.EmailJobAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateEmailJob>
+          }
+          groupBy: {
+            args: Prisma.EmailJobGroupByArgs<ExtArgs>
+            result: $Utils.Optional<EmailJobGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.EmailJobCountArgs<ExtArgs>
+            result: $Utils.Optional<EmailJobCountAggregateOutputType> | number
           }
         }
       }
@@ -2997,17 +3591,29 @@ export namespace Prisma {
   export type UserCountOutputType = {
     assessments: number
     phishingTargets: number
+    phishingCampaigns: number
+    phishingTemplates: number
     telemetryEvents: number
     auditLogs: number
     refreshTokens: number
+    passwordResets: number
+    createdInviteCodes: number
+    organizationMemberships: number
+    sentInvites: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     assessments?: boolean | UserCountOutputTypeCountAssessmentsArgs
     phishingTargets?: boolean | UserCountOutputTypeCountPhishingTargetsArgs
+    phishingCampaigns?: boolean | UserCountOutputTypeCountPhishingCampaignsArgs
+    phishingTemplates?: boolean | UserCountOutputTypeCountPhishingTemplatesArgs
     telemetryEvents?: boolean | UserCountOutputTypeCountTelemetryEventsArgs
     auditLogs?: boolean | UserCountOutputTypeCountAuditLogsArgs
     refreshTokens?: boolean | UserCountOutputTypeCountRefreshTokensArgs
+    passwordResets?: boolean | UserCountOutputTypeCountPasswordResetsArgs
+    createdInviteCodes?: boolean | UserCountOutputTypeCountCreatedInviteCodesArgs
+    organizationMemberships?: boolean | UserCountOutputTypeCountOrganizationMembershipsArgs
+    sentInvites?: boolean | UserCountOutputTypeCountSentInvitesArgs
   }
 
   // Custom InputTypes
@@ -3038,6 +3644,20 @@ export namespace Prisma {
   /**
    * UserCountOutputType without action
    */
+  export type UserCountOutputTypeCountPhishingCampaignsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PhishingCampaignWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountPhishingTemplatesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PhishingTemplateWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
   export type UserCountOutputTypeCountTelemetryEventsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: TelemetryEventWhereInput
   }
@@ -3056,6 +3676,34 @@ export namespace Prisma {
     where?: RefreshTokenWhereInput
   }
 
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountPasswordResetsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PasswordResetWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountCreatedInviteCodesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: InviteCodeWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountOrganizationMembershipsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: OrganizationMemberWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountSentInvitesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: OrganizationMemberWhereInput
+  }
+
 
   /**
    * Count Type OrganizationCountOutputType
@@ -3066,8 +3714,11 @@ export namespace Prisma {
     assessments: number
     subscriptions: number
     phishingCampaigns: number
+    phishingTemplates: number
     agents: number
     invoices: number
+    inviteCodes: number
+    members: number
   }
 
   export type OrganizationCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3075,8 +3726,11 @@ export namespace Prisma {
     assessments?: boolean | OrganizationCountOutputTypeCountAssessmentsArgs
     subscriptions?: boolean | OrganizationCountOutputTypeCountSubscriptionsArgs
     phishingCampaigns?: boolean | OrganizationCountOutputTypeCountPhishingCampaignsArgs
+    phishingTemplates?: boolean | OrganizationCountOutputTypeCountPhishingTemplatesArgs
     agents?: boolean | OrganizationCountOutputTypeCountAgentsArgs
     invoices?: boolean | OrganizationCountOutputTypeCountInvoicesArgs
+    inviteCodes?: boolean | OrganizationCountOutputTypeCountInviteCodesArgs
+    members?: boolean | OrganizationCountOutputTypeCountMembersArgs
   }
 
   // Custom InputTypes
@@ -3121,6 +3775,13 @@ export namespace Prisma {
   /**
    * OrganizationCountOutputType without action
    */
+  export type OrganizationCountOutputTypeCountPhishingTemplatesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PhishingTemplateWhereInput
+  }
+
+  /**
+   * OrganizationCountOutputType without action
+   */
   export type OrganizationCountOutputTypeCountAgentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: AgentWhereInput
   }
@@ -3130,6 +3791,20 @@ export namespace Prisma {
    */
   export type OrganizationCountOutputTypeCountInvoicesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: InvoiceWhereInput
+  }
+
+  /**
+   * OrganizationCountOutputType without action
+   */
+  export type OrganizationCountOutputTypeCountInviteCodesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: InviteCodeWhereInput
+  }
+
+  /**
+   * OrganizationCountOutputType without action
+   */
+  export type OrganizationCountOutputTypeCountMembersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: OrganizationMemberWhereInput
   }
 
 
@@ -3714,9 +4389,15 @@ export namespace Prisma {
     organization?: boolean | User$organizationArgs<ExtArgs>
     assessments?: boolean | User$assessmentsArgs<ExtArgs>
     phishingTargets?: boolean | User$phishingTargetsArgs<ExtArgs>
+    phishingCampaigns?: boolean | User$phishingCampaignsArgs<ExtArgs>
+    phishingTemplates?: boolean | User$phishingTemplatesArgs<ExtArgs>
     telemetryEvents?: boolean | User$telemetryEventsArgs<ExtArgs>
     auditLogs?: boolean | User$auditLogsArgs<ExtArgs>
     refreshTokens?: boolean | User$refreshTokensArgs<ExtArgs>
+    passwordResets?: boolean | User$passwordResetsArgs<ExtArgs>
+    createdInviteCodes?: boolean | User$createdInviteCodesArgs<ExtArgs>
+    organizationMemberships?: boolean | User$organizationMembershipsArgs<ExtArgs>
+    sentInvites?: boolean | User$sentInvitesArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -3757,9 +4438,15 @@ export namespace Prisma {
     organization?: boolean | User$organizationArgs<ExtArgs>
     assessments?: boolean | User$assessmentsArgs<ExtArgs>
     phishingTargets?: boolean | User$phishingTargetsArgs<ExtArgs>
+    phishingCampaigns?: boolean | User$phishingCampaignsArgs<ExtArgs>
+    phishingTemplates?: boolean | User$phishingTemplatesArgs<ExtArgs>
     telemetryEvents?: boolean | User$telemetryEventsArgs<ExtArgs>
     auditLogs?: boolean | User$auditLogsArgs<ExtArgs>
     refreshTokens?: boolean | User$refreshTokensArgs<ExtArgs>
+    passwordResets?: boolean | User$passwordResetsArgs<ExtArgs>
+    createdInviteCodes?: boolean | User$createdInviteCodesArgs<ExtArgs>
+    organizationMemberships?: boolean | User$organizationMembershipsArgs<ExtArgs>
+    sentInvites?: boolean | User$sentInvitesArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3772,9 +4459,15 @@ export namespace Prisma {
       organization: Prisma.$OrganizationPayload<ExtArgs> | null
       assessments: Prisma.$AssessmentPayload<ExtArgs>[]
       phishingTargets: Prisma.$PhishingTargetPayload<ExtArgs>[]
+      phishingCampaigns: Prisma.$PhishingCampaignPayload<ExtArgs>[]
+      phishingTemplates: Prisma.$PhishingTemplatePayload<ExtArgs>[]
       telemetryEvents: Prisma.$TelemetryEventPayload<ExtArgs>[]
       auditLogs: Prisma.$AuditLogPayload<ExtArgs>[]
       refreshTokens: Prisma.$RefreshTokenPayload<ExtArgs>[]
+      passwordResets: Prisma.$PasswordResetPayload<ExtArgs>[]
+      createdInviteCodes: Prisma.$InviteCodePayload<ExtArgs>[]
+      organizationMemberships: Prisma.$OrganizationMemberPayload<ExtArgs>[]
+      sentInvites: Prisma.$OrganizationMemberPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -4157,9 +4850,15 @@ export namespace Prisma {
     organization<T extends User$organizationArgs<ExtArgs> = {}>(args?: Subset<T, User$organizationArgs<ExtArgs>>): Prisma__OrganizationClient<$Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findUniqueOrThrow"> | null, null, ExtArgs>
     assessments<T extends User$assessmentsArgs<ExtArgs> = {}>(args?: Subset<T, User$assessmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AssessmentPayload<ExtArgs>, T, "findMany"> | Null>
     phishingTargets<T extends User$phishingTargetsArgs<ExtArgs> = {}>(args?: Subset<T, User$phishingTargetsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PhishingTargetPayload<ExtArgs>, T, "findMany"> | Null>
+    phishingCampaigns<T extends User$phishingCampaignsArgs<ExtArgs> = {}>(args?: Subset<T, User$phishingCampaignsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PhishingCampaignPayload<ExtArgs>, T, "findMany"> | Null>
+    phishingTemplates<T extends User$phishingTemplatesArgs<ExtArgs> = {}>(args?: Subset<T, User$phishingTemplatesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PhishingTemplatePayload<ExtArgs>, T, "findMany"> | Null>
     telemetryEvents<T extends User$telemetryEventsArgs<ExtArgs> = {}>(args?: Subset<T, User$telemetryEventsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TelemetryEventPayload<ExtArgs>, T, "findMany"> | Null>
     auditLogs<T extends User$auditLogsArgs<ExtArgs> = {}>(args?: Subset<T, User$auditLogsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "findMany"> | Null>
     refreshTokens<T extends User$refreshTokensArgs<ExtArgs> = {}>(args?: Subset<T, User$refreshTokensArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RefreshTokenPayload<ExtArgs>, T, "findMany"> | Null>
+    passwordResets<T extends User$passwordResetsArgs<ExtArgs> = {}>(args?: Subset<T, User$passwordResetsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PasswordResetPayload<ExtArgs>, T, "findMany"> | Null>
+    createdInviteCodes<T extends User$createdInviteCodesArgs<ExtArgs> = {}>(args?: Subset<T, User$createdInviteCodesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InviteCodePayload<ExtArgs>, T, "findMany"> | Null>
+    organizationMemberships<T extends User$organizationMembershipsArgs<ExtArgs> = {}>(args?: Subset<T, User$organizationMembershipsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrganizationMemberPayload<ExtArgs>, T, "findMany"> | Null>
+    sentInvites<T extends User$sentInvitesArgs<ExtArgs> = {}>(args?: Subset<T, User$sentInvitesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrganizationMemberPayload<ExtArgs>, T, "findMany"> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4575,6 +5274,46 @@ export namespace Prisma {
   }
 
   /**
+   * User.phishingCampaigns
+   */
+  export type User$phishingCampaignsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PhishingCampaign
+     */
+    select?: PhishingCampaignSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PhishingCampaignInclude<ExtArgs> | null
+    where?: PhishingCampaignWhereInput
+    orderBy?: PhishingCampaignOrderByWithRelationInput | PhishingCampaignOrderByWithRelationInput[]
+    cursor?: PhishingCampaignWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PhishingCampaignScalarFieldEnum | PhishingCampaignScalarFieldEnum[]
+  }
+
+  /**
+   * User.phishingTemplates
+   */
+  export type User$phishingTemplatesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PhishingTemplate
+     */
+    select?: PhishingTemplateSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PhishingTemplateInclude<ExtArgs> | null
+    where?: PhishingTemplateWhereInput
+    orderBy?: PhishingTemplateOrderByWithRelationInput | PhishingTemplateOrderByWithRelationInput[]
+    cursor?: PhishingTemplateWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PhishingTemplateScalarFieldEnum | PhishingTemplateScalarFieldEnum[]
+  }
+
+  /**
    * User.telemetryEvents
    */
   export type User$telemetryEventsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4632,6 +5371,86 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: RefreshTokenScalarFieldEnum | RefreshTokenScalarFieldEnum[]
+  }
+
+  /**
+   * User.passwordResets
+   */
+  export type User$passwordResetsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PasswordReset
+     */
+    select?: PasswordResetSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PasswordResetInclude<ExtArgs> | null
+    where?: PasswordResetWhereInput
+    orderBy?: PasswordResetOrderByWithRelationInput | PasswordResetOrderByWithRelationInput[]
+    cursor?: PasswordResetWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PasswordResetScalarFieldEnum | PasswordResetScalarFieldEnum[]
+  }
+
+  /**
+   * User.createdInviteCodes
+   */
+  export type User$createdInviteCodesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InviteCode
+     */
+    select?: InviteCodeSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InviteCodeInclude<ExtArgs> | null
+    where?: InviteCodeWhereInput
+    orderBy?: InviteCodeOrderByWithRelationInput | InviteCodeOrderByWithRelationInput[]
+    cursor?: InviteCodeWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: InviteCodeScalarFieldEnum | InviteCodeScalarFieldEnum[]
+  }
+
+  /**
+   * User.organizationMemberships
+   */
+  export type User$organizationMembershipsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OrganizationMember
+     */
+    select?: OrganizationMemberSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrganizationMemberInclude<ExtArgs> | null
+    where?: OrganizationMemberWhereInput
+    orderBy?: OrganizationMemberOrderByWithRelationInput | OrganizationMemberOrderByWithRelationInput[]
+    cursor?: OrganizationMemberWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: OrganizationMemberScalarFieldEnum | OrganizationMemberScalarFieldEnum[]
+  }
+
+  /**
+   * User.sentInvites
+   */
+  export type User$sentInvitesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OrganizationMember
+     */
+    select?: OrganizationMemberSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrganizationMemberInclude<ExtArgs> | null
+    where?: OrganizationMemberWhereInput
+    orderBy?: OrganizationMemberOrderByWithRelationInput | OrganizationMemberOrderByWithRelationInput[]
+    cursor?: OrganizationMemberWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: OrganizationMemberScalarFieldEnum | OrganizationMemberScalarFieldEnum[]
   }
 
   /**
@@ -5583,6 +6402,951 @@ export namespace Prisma {
 
 
   /**
+   * Model PasswordReset
+   */
+
+  export type AggregatePasswordReset = {
+    _count: PasswordResetCountAggregateOutputType | null
+    _min: PasswordResetMinAggregateOutputType | null
+    _max: PasswordResetMaxAggregateOutputType | null
+  }
+
+  export type PasswordResetMinAggregateOutputType = {
+    id: string | null
+    token: string | null
+    userId: string | null
+    expiresAt: Date | null
+    used: boolean | null
+    createdAt: Date | null
+  }
+
+  export type PasswordResetMaxAggregateOutputType = {
+    id: string | null
+    token: string | null
+    userId: string | null
+    expiresAt: Date | null
+    used: boolean | null
+    createdAt: Date | null
+  }
+
+  export type PasswordResetCountAggregateOutputType = {
+    id: number
+    token: number
+    userId: number
+    expiresAt: number
+    used: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type PasswordResetMinAggregateInputType = {
+    id?: true
+    token?: true
+    userId?: true
+    expiresAt?: true
+    used?: true
+    createdAt?: true
+  }
+
+  export type PasswordResetMaxAggregateInputType = {
+    id?: true
+    token?: true
+    userId?: true
+    expiresAt?: true
+    used?: true
+    createdAt?: true
+  }
+
+  export type PasswordResetCountAggregateInputType = {
+    id?: true
+    token?: true
+    userId?: true
+    expiresAt?: true
+    used?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type PasswordResetAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PasswordReset to aggregate.
+     */
+    where?: PasswordResetWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PasswordResets to fetch.
+     */
+    orderBy?: PasswordResetOrderByWithRelationInput | PasswordResetOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: PasswordResetWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PasswordResets from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PasswordResets.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned PasswordResets
+    **/
+    _count?: true | PasswordResetCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: PasswordResetMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: PasswordResetMaxAggregateInputType
+  }
+
+  export type GetPasswordResetAggregateType<T extends PasswordResetAggregateArgs> = {
+        [P in keyof T & keyof AggregatePasswordReset]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregatePasswordReset[P]>
+      : GetScalarType<T[P], AggregatePasswordReset[P]>
+  }
+
+
+
+
+  export type PasswordResetGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PasswordResetWhereInput
+    orderBy?: PasswordResetOrderByWithAggregationInput | PasswordResetOrderByWithAggregationInput[]
+    by: PasswordResetScalarFieldEnum[] | PasswordResetScalarFieldEnum
+    having?: PasswordResetScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: PasswordResetCountAggregateInputType | true
+    _min?: PasswordResetMinAggregateInputType
+    _max?: PasswordResetMaxAggregateInputType
+  }
+
+  export type PasswordResetGroupByOutputType = {
+    id: string
+    token: string
+    userId: string
+    expiresAt: Date
+    used: boolean
+    createdAt: Date
+    _count: PasswordResetCountAggregateOutputType | null
+    _min: PasswordResetMinAggregateOutputType | null
+    _max: PasswordResetMaxAggregateOutputType | null
+  }
+
+  type GetPasswordResetGroupByPayload<T extends PasswordResetGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<PasswordResetGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof PasswordResetGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], PasswordResetGroupByOutputType[P]>
+            : GetScalarType<T[P], PasswordResetGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type PasswordResetSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    token?: boolean
+    userId?: boolean
+    expiresAt?: boolean
+    used?: boolean
+    createdAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["passwordReset"]>
+
+  export type PasswordResetSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    token?: boolean
+    userId?: boolean
+    expiresAt?: boolean
+    used?: boolean
+    createdAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["passwordReset"]>
+
+  export type PasswordResetSelectScalar = {
+    id?: boolean
+    token?: boolean
+    userId?: boolean
+    expiresAt?: boolean
+    used?: boolean
+    createdAt?: boolean
+  }
+
+  export type PasswordResetInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type PasswordResetIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $PasswordResetPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "PasswordReset"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      token: string
+      userId: string
+      expiresAt: Date
+      used: boolean
+      createdAt: Date
+    }, ExtArgs["result"]["passwordReset"]>
+    composites: {}
+  }
+
+  type PasswordResetGetPayload<S extends boolean | null | undefined | PasswordResetDefaultArgs> = $Result.GetResult<Prisma.$PasswordResetPayload, S>
+
+  type PasswordResetCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<PasswordResetFindManyArgs, 'select' | 'include' | 'distinct'> & {
+      select?: PasswordResetCountAggregateInputType | true
+    }
+
+  export interface PasswordResetDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['PasswordReset'], meta: { name: 'PasswordReset' } }
+    /**
+     * Find zero or one PasswordReset that matches the filter.
+     * @param {PasswordResetFindUniqueArgs} args - Arguments to find a PasswordReset
+     * @example
+     * // Get one PasswordReset
+     * const passwordReset = await prisma.passwordReset.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends PasswordResetFindUniqueArgs>(args: SelectSubset<T, PasswordResetFindUniqueArgs<ExtArgs>>): Prisma__PasswordResetClient<$Result.GetResult<Prisma.$PasswordResetPayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
+
+    /**
+     * Find one PasswordReset that matches the filter or throw an error with `error.code='P2025'` 
+     * if no matches were found.
+     * @param {PasswordResetFindUniqueOrThrowArgs} args - Arguments to find a PasswordReset
+     * @example
+     * // Get one PasswordReset
+     * const passwordReset = await prisma.passwordReset.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends PasswordResetFindUniqueOrThrowArgs>(args: SelectSubset<T, PasswordResetFindUniqueOrThrowArgs<ExtArgs>>): Prisma__PasswordResetClient<$Result.GetResult<Prisma.$PasswordResetPayload<ExtArgs>, T, "findUniqueOrThrow">, never, ExtArgs>
+
+    /**
+     * Find the first PasswordReset that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PasswordResetFindFirstArgs} args - Arguments to find a PasswordReset
+     * @example
+     * // Get one PasswordReset
+     * const passwordReset = await prisma.passwordReset.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends PasswordResetFindFirstArgs>(args?: SelectSubset<T, PasswordResetFindFirstArgs<ExtArgs>>): Prisma__PasswordResetClient<$Result.GetResult<Prisma.$PasswordResetPayload<ExtArgs>, T, "findFirst"> | null, null, ExtArgs>
+
+    /**
+     * Find the first PasswordReset that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PasswordResetFindFirstOrThrowArgs} args - Arguments to find a PasswordReset
+     * @example
+     * // Get one PasswordReset
+     * const passwordReset = await prisma.passwordReset.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends PasswordResetFindFirstOrThrowArgs>(args?: SelectSubset<T, PasswordResetFindFirstOrThrowArgs<ExtArgs>>): Prisma__PasswordResetClient<$Result.GetResult<Prisma.$PasswordResetPayload<ExtArgs>, T, "findFirstOrThrow">, never, ExtArgs>
+
+    /**
+     * Find zero or more PasswordResets that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PasswordResetFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all PasswordResets
+     * const passwordResets = await prisma.passwordReset.findMany()
+     * 
+     * // Get first 10 PasswordResets
+     * const passwordResets = await prisma.passwordReset.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const passwordResetWithIdOnly = await prisma.passwordReset.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends PasswordResetFindManyArgs>(args?: SelectSubset<T, PasswordResetFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PasswordResetPayload<ExtArgs>, T, "findMany">>
+
+    /**
+     * Create a PasswordReset.
+     * @param {PasswordResetCreateArgs} args - Arguments to create a PasswordReset.
+     * @example
+     * // Create one PasswordReset
+     * const PasswordReset = await prisma.passwordReset.create({
+     *   data: {
+     *     // ... data to create a PasswordReset
+     *   }
+     * })
+     * 
+     */
+    create<T extends PasswordResetCreateArgs>(args: SelectSubset<T, PasswordResetCreateArgs<ExtArgs>>): Prisma__PasswordResetClient<$Result.GetResult<Prisma.$PasswordResetPayload<ExtArgs>, T, "create">, never, ExtArgs>
+
+    /**
+     * Create many PasswordResets.
+     * @param {PasswordResetCreateManyArgs} args - Arguments to create many PasswordResets.
+     * @example
+     * // Create many PasswordResets
+     * const passwordReset = await prisma.passwordReset.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends PasswordResetCreateManyArgs>(args?: SelectSubset<T, PasswordResetCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many PasswordResets and returns the data saved in the database.
+     * @param {PasswordResetCreateManyAndReturnArgs} args - Arguments to create many PasswordResets.
+     * @example
+     * // Create many PasswordResets
+     * const passwordReset = await prisma.passwordReset.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many PasswordResets and only return the `id`
+     * const passwordResetWithIdOnly = await prisma.passwordReset.createManyAndReturn({ 
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends PasswordResetCreateManyAndReturnArgs>(args?: SelectSubset<T, PasswordResetCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PasswordResetPayload<ExtArgs>, T, "createManyAndReturn">>
+
+    /**
+     * Delete a PasswordReset.
+     * @param {PasswordResetDeleteArgs} args - Arguments to delete one PasswordReset.
+     * @example
+     * // Delete one PasswordReset
+     * const PasswordReset = await prisma.passwordReset.delete({
+     *   where: {
+     *     // ... filter to delete one PasswordReset
+     *   }
+     * })
+     * 
+     */
+    delete<T extends PasswordResetDeleteArgs>(args: SelectSubset<T, PasswordResetDeleteArgs<ExtArgs>>): Prisma__PasswordResetClient<$Result.GetResult<Prisma.$PasswordResetPayload<ExtArgs>, T, "delete">, never, ExtArgs>
+
+    /**
+     * Update one PasswordReset.
+     * @param {PasswordResetUpdateArgs} args - Arguments to update one PasswordReset.
+     * @example
+     * // Update one PasswordReset
+     * const passwordReset = await prisma.passwordReset.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends PasswordResetUpdateArgs>(args: SelectSubset<T, PasswordResetUpdateArgs<ExtArgs>>): Prisma__PasswordResetClient<$Result.GetResult<Prisma.$PasswordResetPayload<ExtArgs>, T, "update">, never, ExtArgs>
+
+    /**
+     * Delete zero or more PasswordResets.
+     * @param {PasswordResetDeleteManyArgs} args - Arguments to filter PasswordResets to delete.
+     * @example
+     * // Delete a few PasswordResets
+     * const { count } = await prisma.passwordReset.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends PasswordResetDeleteManyArgs>(args?: SelectSubset<T, PasswordResetDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PasswordResets.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PasswordResetUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many PasswordResets
+     * const passwordReset = await prisma.passwordReset.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends PasswordResetUpdateManyArgs>(args: SelectSubset<T, PasswordResetUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one PasswordReset.
+     * @param {PasswordResetUpsertArgs} args - Arguments to update or create a PasswordReset.
+     * @example
+     * // Update or create a PasswordReset
+     * const passwordReset = await prisma.passwordReset.upsert({
+     *   create: {
+     *     // ... data to create a PasswordReset
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the PasswordReset we want to update
+     *   }
+     * })
+     */
+    upsert<T extends PasswordResetUpsertArgs>(args: SelectSubset<T, PasswordResetUpsertArgs<ExtArgs>>): Prisma__PasswordResetClient<$Result.GetResult<Prisma.$PasswordResetPayload<ExtArgs>, T, "upsert">, never, ExtArgs>
+
+
+    /**
+     * Count the number of PasswordResets.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PasswordResetCountArgs} args - Arguments to filter PasswordResets to count.
+     * @example
+     * // Count the number of PasswordResets
+     * const count = await prisma.passwordReset.count({
+     *   where: {
+     *     // ... the filter for the PasswordResets we want to count
+     *   }
+     * })
+    **/
+    count<T extends PasswordResetCountArgs>(
+      args?: Subset<T, PasswordResetCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], PasswordResetCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a PasswordReset.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PasswordResetAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends PasswordResetAggregateArgs>(args: Subset<T, PasswordResetAggregateArgs>): Prisma.PrismaPromise<GetPasswordResetAggregateType<T>>
+
+    /**
+     * Group by PasswordReset.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PasswordResetGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends PasswordResetGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: PasswordResetGroupByArgs['orderBy'] }
+        : { orderBy?: PasswordResetGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, PasswordResetGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPasswordResetGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the PasswordReset model
+   */
+  readonly fields: PasswordResetFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for PasswordReset.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__PasswordResetClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the PasswordReset model
+   */ 
+  interface PasswordResetFieldRefs {
+    readonly id: FieldRef<"PasswordReset", 'String'>
+    readonly token: FieldRef<"PasswordReset", 'String'>
+    readonly userId: FieldRef<"PasswordReset", 'String'>
+    readonly expiresAt: FieldRef<"PasswordReset", 'DateTime'>
+    readonly used: FieldRef<"PasswordReset", 'Boolean'>
+    readonly createdAt: FieldRef<"PasswordReset", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * PasswordReset findUnique
+   */
+  export type PasswordResetFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PasswordReset
+     */
+    select?: PasswordResetSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PasswordResetInclude<ExtArgs> | null
+    /**
+     * Filter, which PasswordReset to fetch.
+     */
+    where: PasswordResetWhereUniqueInput
+  }
+
+  /**
+   * PasswordReset findUniqueOrThrow
+   */
+  export type PasswordResetFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PasswordReset
+     */
+    select?: PasswordResetSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PasswordResetInclude<ExtArgs> | null
+    /**
+     * Filter, which PasswordReset to fetch.
+     */
+    where: PasswordResetWhereUniqueInput
+  }
+
+  /**
+   * PasswordReset findFirst
+   */
+  export type PasswordResetFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PasswordReset
+     */
+    select?: PasswordResetSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PasswordResetInclude<ExtArgs> | null
+    /**
+     * Filter, which PasswordReset to fetch.
+     */
+    where?: PasswordResetWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PasswordResets to fetch.
+     */
+    orderBy?: PasswordResetOrderByWithRelationInput | PasswordResetOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PasswordResets.
+     */
+    cursor?: PasswordResetWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PasswordResets from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PasswordResets.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PasswordResets.
+     */
+    distinct?: PasswordResetScalarFieldEnum | PasswordResetScalarFieldEnum[]
+  }
+
+  /**
+   * PasswordReset findFirstOrThrow
+   */
+  export type PasswordResetFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PasswordReset
+     */
+    select?: PasswordResetSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PasswordResetInclude<ExtArgs> | null
+    /**
+     * Filter, which PasswordReset to fetch.
+     */
+    where?: PasswordResetWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PasswordResets to fetch.
+     */
+    orderBy?: PasswordResetOrderByWithRelationInput | PasswordResetOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PasswordResets.
+     */
+    cursor?: PasswordResetWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PasswordResets from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PasswordResets.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PasswordResets.
+     */
+    distinct?: PasswordResetScalarFieldEnum | PasswordResetScalarFieldEnum[]
+  }
+
+  /**
+   * PasswordReset findMany
+   */
+  export type PasswordResetFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PasswordReset
+     */
+    select?: PasswordResetSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PasswordResetInclude<ExtArgs> | null
+    /**
+     * Filter, which PasswordResets to fetch.
+     */
+    where?: PasswordResetWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PasswordResets to fetch.
+     */
+    orderBy?: PasswordResetOrderByWithRelationInput | PasswordResetOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing PasswordResets.
+     */
+    cursor?: PasswordResetWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PasswordResets from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PasswordResets.
+     */
+    skip?: number
+    distinct?: PasswordResetScalarFieldEnum | PasswordResetScalarFieldEnum[]
+  }
+
+  /**
+   * PasswordReset create
+   */
+  export type PasswordResetCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PasswordReset
+     */
+    select?: PasswordResetSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PasswordResetInclude<ExtArgs> | null
+    /**
+     * The data needed to create a PasswordReset.
+     */
+    data: XOR<PasswordResetCreateInput, PasswordResetUncheckedCreateInput>
+  }
+
+  /**
+   * PasswordReset createMany
+   */
+  export type PasswordResetCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many PasswordResets.
+     */
+    data: PasswordResetCreateManyInput | PasswordResetCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * PasswordReset createManyAndReturn
+   */
+  export type PasswordResetCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PasswordReset
+     */
+    select?: PasswordResetSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * The data used to create many PasswordResets.
+     */
+    data: PasswordResetCreateManyInput | PasswordResetCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PasswordResetIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * PasswordReset update
+   */
+  export type PasswordResetUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PasswordReset
+     */
+    select?: PasswordResetSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PasswordResetInclude<ExtArgs> | null
+    /**
+     * The data needed to update a PasswordReset.
+     */
+    data: XOR<PasswordResetUpdateInput, PasswordResetUncheckedUpdateInput>
+    /**
+     * Choose, which PasswordReset to update.
+     */
+    where: PasswordResetWhereUniqueInput
+  }
+
+  /**
+   * PasswordReset updateMany
+   */
+  export type PasswordResetUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update PasswordResets.
+     */
+    data: XOR<PasswordResetUpdateManyMutationInput, PasswordResetUncheckedUpdateManyInput>
+    /**
+     * Filter which PasswordResets to update
+     */
+    where?: PasswordResetWhereInput
+  }
+
+  /**
+   * PasswordReset upsert
+   */
+  export type PasswordResetUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PasswordReset
+     */
+    select?: PasswordResetSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PasswordResetInclude<ExtArgs> | null
+    /**
+     * The filter to search for the PasswordReset to update in case it exists.
+     */
+    where: PasswordResetWhereUniqueInput
+    /**
+     * In case the PasswordReset found by the `where` argument doesn't exist, create a new PasswordReset with this data.
+     */
+    create: XOR<PasswordResetCreateInput, PasswordResetUncheckedCreateInput>
+    /**
+     * In case the PasswordReset was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<PasswordResetUpdateInput, PasswordResetUncheckedUpdateInput>
+  }
+
+  /**
+   * PasswordReset delete
+   */
+  export type PasswordResetDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PasswordReset
+     */
+    select?: PasswordResetSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PasswordResetInclude<ExtArgs> | null
+    /**
+     * Filter which PasswordReset to delete.
+     */
+    where: PasswordResetWhereUniqueInput
+  }
+
+  /**
+   * PasswordReset deleteMany
+   */
+  export type PasswordResetDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PasswordResets to delete
+     */
+    where?: PasswordResetWhereInput
+  }
+
+  /**
+   * PasswordReset without action
+   */
+  export type PasswordResetDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PasswordReset
+     */
+    select?: PasswordResetSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PasswordResetInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Model Organization
    */
 
@@ -5904,8 +7668,11 @@ export namespace Prisma {
     assessments?: boolean | Organization$assessmentsArgs<ExtArgs>
     subscriptions?: boolean | Organization$subscriptionsArgs<ExtArgs>
     phishingCampaigns?: boolean | Organization$phishingCampaignsArgs<ExtArgs>
+    phishingTemplates?: boolean | Organization$phishingTemplatesArgs<ExtArgs>
     agents?: boolean | Organization$agentsArgs<ExtArgs>
     invoices?: boolean | Organization$invoicesArgs<ExtArgs>
+    inviteCodes?: boolean | Organization$inviteCodesArgs<ExtArgs>
+    members?: boolean | Organization$membersArgs<ExtArgs>
     _count?: boolean | OrganizationCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["organization"]>
 
@@ -5960,8 +7727,11 @@ export namespace Prisma {
     assessments?: boolean | Organization$assessmentsArgs<ExtArgs>
     subscriptions?: boolean | Organization$subscriptionsArgs<ExtArgs>
     phishingCampaigns?: boolean | Organization$phishingCampaignsArgs<ExtArgs>
+    phishingTemplates?: boolean | Organization$phishingTemplatesArgs<ExtArgs>
     agents?: boolean | Organization$agentsArgs<ExtArgs>
     invoices?: boolean | Organization$invoicesArgs<ExtArgs>
+    inviteCodes?: boolean | Organization$inviteCodesArgs<ExtArgs>
+    members?: boolean | Organization$membersArgs<ExtArgs>
     _count?: boolean | OrganizationCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type OrganizationIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -5973,8 +7743,11 @@ export namespace Prisma {
       assessments: Prisma.$AssessmentPayload<ExtArgs>[]
       subscriptions: Prisma.$SubscriptionPayload<ExtArgs>[]
       phishingCampaigns: Prisma.$PhishingCampaignPayload<ExtArgs>[]
+      phishingTemplates: Prisma.$PhishingTemplatePayload<ExtArgs>[]
       agents: Prisma.$AgentPayload<ExtArgs>[]
       invoices: Prisma.$InvoicePayload<ExtArgs>[]
+      inviteCodes: Prisma.$InviteCodePayload<ExtArgs>[]
+      members: Prisma.$OrganizationMemberPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -6365,8 +8138,11 @@ export namespace Prisma {
     assessments<T extends Organization$assessmentsArgs<ExtArgs> = {}>(args?: Subset<T, Organization$assessmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AssessmentPayload<ExtArgs>, T, "findMany"> | Null>
     subscriptions<T extends Organization$subscriptionsArgs<ExtArgs> = {}>(args?: Subset<T, Organization$subscriptionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SubscriptionPayload<ExtArgs>, T, "findMany"> | Null>
     phishingCampaigns<T extends Organization$phishingCampaignsArgs<ExtArgs> = {}>(args?: Subset<T, Organization$phishingCampaignsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PhishingCampaignPayload<ExtArgs>, T, "findMany"> | Null>
+    phishingTemplates<T extends Organization$phishingTemplatesArgs<ExtArgs> = {}>(args?: Subset<T, Organization$phishingTemplatesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PhishingTemplatePayload<ExtArgs>, T, "findMany"> | Null>
     agents<T extends Organization$agentsArgs<ExtArgs> = {}>(args?: Subset<T, Organization$agentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AgentPayload<ExtArgs>, T, "findMany"> | Null>
     invoices<T extends Organization$invoicesArgs<ExtArgs> = {}>(args?: Subset<T, Organization$invoicesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InvoicePayload<ExtArgs>, T, "findMany"> | Null>
+    inviteCodes<T extends Organization$inviteCodesArgs<ExtArgs> = {}>(args?: Subset<T, Organization$inviteCodesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InviteCodePayload<ExtArgs>, T, "findMany"> | Null>
+    members<T extends Organization$membersArgs<ExtArgs> = {}>(args?: Subset<T, Organization$membersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrganizationMemberPayload<ExtArgs>, T, "findMany"> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -6810,6 +8586,26 @@ export namespace Prisma {
   }
 
   /**
+   * Organization.phishingTemplates
+   */
+  export type Organization$phishingTemplatesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PhishingTemplate
+     */
+    select?: PhishingTemplateSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PhishingTemplateInclude<ExtArgs> | null
+    where?: PhishingTemplateWhereInput
+    orderBy?: PhishingTemplateOrderByWithRelationInput | PhishingTemplateOrderByWithRelationInput[]
+    cursor?: PhishingTemplateWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PhishingTemplateScalarFieldEnum | PhishingTemplateScalarFieldEnum[]
+  }
+
+  /**
    * Organization.agents
    */
   export type Organization$agentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -6850,6 +8646,46 @@ export namespace Prisma {
   }
 
   /**
+   * Organization.inviteCodes
+   */
+  export type Organization$inviteCodesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InviteCode
+     */
+    select?: InviteCodeSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InviteCodeInclude<ExtArgs> | null
+    where?: InviteCodeWhereInput
+    orderBy?: InviteCodeOrderByWithRelationInput | InviteCodeOrderByWithRelationInput[]
+    cursor?: InviteCodeWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: InviteCodeScalarFieldEnum | InviteCodeScalarFieldEnum[]
+  }
+
+  /**
+   * Organization.members
+   */
+  export type Organization$membersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OrganizationMember
+     */
+    select?: OrganizationMemberSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrganizationMemberInclude<ExtArgs> | null
+    where?: OrganizationMemberWhereInput
+    orderBy?: OrganizationMemberOrderByWithRelationInput | OrganizationMemberOrderByWithRelationInput[]
+    cursor?: OrganizationMemberWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: OrganizationMemberScalarFieldEnum | OrganizationMemberScalarFieldEnum[]
+  }
+
+  /**
    * Organization without action
    */
   export type OrganizationDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -6861,6 +8697,2027 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: OrganizationInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model InviteCode
+   */
+
+  export type AggregateInviteCode = {
+    _count: InviteCodeCountAggregateOutputType | null
+    _avg: InviteCodeAvgAggregateOutputType | null
+    _sum: InviteCodeSumAggregateOutputType | null
+    _min: InviteCodeMinAggregateOutputType | null
+    _max: InviteCodeMaxAggregateOutputType | null
+  }
+
+  export type InviteCodeAvgAggregateOutputType = {
+    usageLimit: number | null
+    usedCount: number | null
+  }
+
+  export type InviteCodeSumAggregateOutputType = {
+    usageLimit: number | null
+    usedCount: number | null
+  }
+
+  export type InviteCodeMinAggregateOutputType = {
+    id: string | null
+    code: string | null
+    organizationId: string | null
+    createdBy: string | null
+    expiresAt: Date | null
+    usageLimit: number | null
+    usedCount: number | null
+    isActive: boolean | null
+    createdAt: Date | null
+  }
+
+  export type InviteCodeMaxAggregateOutputType = {
+    id: string | null
+    code: string | null
+    organizationId: string | null
+    createdBy: string | null
+    expiresAt: Date | null
+    usageLimit: number | null
+    usedCount: number | null
+    isActive: boolean | null
+    createdAt: Date | null
+  }
+
+  export type InviteCodeCountAggregateOutputType = {
+    id: number
+    code: number
+    organizationId: number
+    createdBy: number
+    expiresAt: number
+    usageLimit: number
+    usedCount: number
+    isActive: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type InviteCodeAvgAggregateInputType = {
+    usageLimit?: true
+    usedCount?: true
+  }
+
+  export type InviteCodeSumAggregateInputType = {
+    usageLimit?: true
+    usedCount?: true
+  }
+
+  export type InviteCodeMinAggregateInputType = {
+    id?: true
+    code?: true
+    organizationId?: true
+    createdBy?: true
+    expiresAt?: true
+    usageLimit?: true
+    usedCount?: true
+    isActive?: true
+    createdAt?: true
+  }
+
+  export type InviteCodeMaxAggregateInputType = {
+    id?: true
+    code?: true
+    organizationId?: true
+    createdBy?: true
+    expiresAt?: true
+    usageLimit?: true
+    usedCount?: true
+    isActive?: true
+    createdAt?: true
+  }
+
+  export type InviteCodeCountAggregateInputType = {
+    id?: true
+    code?: true
+    organizationId?: true
+    createdBy?: true
+    expiresAt?: true
+    usageLimit?: true
+    usedCount?: true
+    isActive?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type InviteCodeAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which InviteCode to aggregate.
+     */
+    where?: InviteCodeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of InviteCodes to fetch.
+     */
+    orderBy?: InviteCodeOrderByWithRelationInput | InviteCodeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: InviteCodeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` InviteCodes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` InviteCodes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned InviteCodes
+    **/
+    _count?: true | InviteCodeCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: InviteCodeAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: InviteCodeSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: InviteCodeMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: InviteCodeMaxAggregateInputType
+  }
+
+  export type GetInviteCodeAggregateType<T extends InviteCodeAggregateArgs> = {
+        [P in keyof T & keyof AggregateInviteCode]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateInviteCode[P]>
+      : GetScalarType<T[P], AggregateInviteCode[P]>
+  }
+
+
+
+
+  export type InviteCodeGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: InviteCodeWhereInput
+    orderBy?: InviteCodeOrderByWithAggregationInput | InviteCodeOrderByWithAggregationInput[]
+    by: InviteCodeScalarFieldEnum[] | InviteCodeScalarFieldEnum
+    having?: InviteCodeScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: InviteCodeCountAggregateInputType | true
+    _avg?: InviteCodeAvgAggregateInputType
+    _sum?: InviteCodeSumAggregateInputType
+    _min?: InviteCodeMinAggregateInputType
+    _max?: InviteCodeMaxAggregateInputType
+  }
+
+  export type InviteCodeGroupByOutputType = {
+    id: string
+    code: string
+    organizationId: string
+    createdBy: string
+    expiresAt: Date
+    usageLimit: number
+    usedCount: number
+    isActive: boolean
+    createdAt: Date
+    _count: InviteCodeCountAggregateOutputType | null
+    _avg: InviteCodeAvgAggregateOutputType | null
+    _sum: InviteCodeSumAggregateOutputType | null
+    _min: InviteCodeMinAggregateOutputType | null
+    _max: InviteCodeMaxAggregateOutputType | null
+  }
+
+  type GetInviteCodeGroupByPayload<T extends InviteCodeGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<InviteCodeGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof InviteCodeGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], InviteCodeGroupByOutputType[P]>
+            : GetScalarType<T[P], InviteCodeGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type InviteCodeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    code?: boolean
+    organizationId?: boolean
+    createdBy?: boolean
+    expiresAt?: boolean
+    usageLimit?: boolean
+    usedCount?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    organization?: boolean | OrganizationDefaultArgs<ExtArgs>
+    creator?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["inviteCode"]>
+
+  export type InviteCodeSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    code?: boolean
+    organizationId?: boolean
+    createdBy?: boolean
+    expiresAt?: boolean
+    usageLimit?: boolean
+    usedCount?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    organization?: boolean | OrganizationDefaultArgs<ExtArgs>
+    creator?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["inviteCode"]>
+
+  export type InviteCodeSelectScalar = {
+    id?: boolean
+    code?: boolean
+    organizationId?: boolean
+    createdBy?: boolean
+    expiresAt?: boolean
+    usageLimit?: boolean
+    usedCount?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+  }
+
+  export type InviteCodeInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    organization?: boolean | OrganizationDefaultArgs<ExtArgs>
+    creator?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type InviteCodeIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    organization?: boolean | OrganizationDefaultArgs<ExtArgs>
+    creator?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $InviteCodePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "InviteCode"
+    objects: {
+      organization: Prisma.$OrganizationPayload<ExtArgs>
+      creator: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      code: string
+      organizationId: string
+      createdBy: string
+      expiresAt: Date
+      usageLimit: number
+      usedCount: number
+      isActive: boolean
+      createdAt: Date
+    }, ExtArgs["result"]["inviteCode"]>
+    composites: {}
+  }
+
+  type InviteCodeGetPayload<S extends boolean | null | undefined | InviteCodeDefaultArgs> = $Result.GetResult<Prisma.$InviteCodePayload, S>
+
+  type InviteCodeCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<InviteCodeFindManyArgs, 'select' | 'include' | 'distinct'> & {
+      select?: InviteCodeCountAggregateInputType | true
+    }
+
+  export interface InviteCodeDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['InviteCode'], meta: { name: 'InviteCode' } }
+    /**
+     * Find zero or one InviteCode that matches the filter.
+     * @param {InviteCodeFindUniqueArgs} args - Arguments to find a InviteCode
+     * @example
+     * // Get one InviteCode
+     * const inviteCode = await prisma.inviteCode.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends InviteCodeFindUniqueArgs>(args: SelectSubset<T, InviteCodeFindUniqueArgs<ExtArgs>>): Prisma__InviteCodeClient<$Result.GetResult<Prisma.$InviteCodePayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
+
+    /**
+     * Find one InviteCode that matches the filter or throw an error with `error.code='P2025'` 
+     * if no matches were found.
+     * @param {InviteCodeFindUniqueOrThrowArgs} args - Arguments to find a InviteCode
+     * @example
+     * // Get one InviteCode
+     * const inviteCode = await prisma.inviteCode.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends InviteCodeFindUniqueOrThrowArgs>(args: SelectSubset<T, InviteCodeFindUniqueOrThrowArgs<ExtArgs>>): Prisma__InviteCodeClient<$Result.GetResult<Prisma.$InviteCodePayload<ExtArgs>, T, "findUniqueOrThrow">, never, ExtArgs>
+
+    /**
+     * Find the first InviteCode that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InviteCodeFindFirstArgs} args - Arguments to find a InviteCode
+     * @example
+     * // Get one InviteCode
+     * const inviteCode = await prisma.inviteCode.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends InviteCodeFindFirstArgs>(args?: SelectSubset<T, InviteCodeFindFirstArgs<ExtArgs>>): Prisma__InviteCodeClient<$Result.GetResult<Prisma.$InviteCodePayload<ExtArgs>, T, "findFirst"> | null, null, ExtArgs>
+
+    /**
+     * Find the first InviteCode that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InviteCodeFindFirstOrThrowArgs} args - Arguments to find a InviteCode
+     * @example
+     * // Get one InviteCode
+     * const inviteCode = await prisma.inviteCode.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends InviteCodeFindFirstOrThrowArgs>(args?: SelectSubset<T, InviteCodeFindFirstOrThrowArgs<ExtArgs>>): Prisma__InviteCodeClient<$Result.GetResult<Prisma.$InviteCodePayload<ExtArgs>, T, "findFirstOrThrow">, never, ExtArgs>
+
+    /**
+     * Find zero or more InviteCodes that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InviteCodeFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all InviteCodes
+     * const inviteCodes = await prisma.inviteCode.findMany()
+     * 
+     * // Get first 10 InviteCodes
+     * const inviteCodes = await prisma.inviteCode.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const inviteCodeWithIdOnly = await prisma.inviteCode.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends InviteCodeFindManyArgs>(args?: SelectSubset<T, InviteCodeFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InviteCodePayload<ExtArgs>, T, "findMany">>
+
+    /**
+     * Create a InviteCode.
+     * @param {InviteCodeCreateArgs} args - Arguments to create a InviteCode.
+     * @example
+     * // Create one InviteCode
+     * const InviteCode = await prisma.inviteCode.create({
+     *   data: {
+     *     // ... data to create a InviteCode
+     *   }
+     * })
+     * 
+     */
+    create<T extends InviteCodeCreateArgs>(args: SelectSubset<T, InviteCodeCreateArgs<ExtArgs>>): Prisma__InviteCodeClient<$Result.GetResult<Prisma.$InviteCodePayload<ExtArgs>, T, "create">, never, ExtArgs>
+
+    /**
+     * Create many InviteCodes.
+     * @param {InviteCodeCreateManyArgs} args - Arguments to create many InviteCodes.
+     * @example
+     * // Create many InviteCodes
+     * const inviteCode = await prisma.inviteCode.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends InviteCodeCreateManyArgs>(args?: SelectSubset<T, InviteCodeCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many InviteCodes and returns the data saved in the database.
+     * @param {InviteCodeCreateManyAndReturnArgs} args - Arguments to create many InviteCodes.
+     * @example
+     * // Create many InviteCodes
+     * const inviteCode = await prisma.inviteCode.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many InviteCodes and only return the `id`
+     * const inviteCodeWithIdOnly = await prisma.inviteCode.createManyAndReturn({ 
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends InviteCodeCreateManyAndReturnArgs>(args?: SelectSubset<T, InviteCodeCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InviteCodePayload<ExtArgs>, T, "createManyAndReturn">>
+
+    /**
+     * Delete a InviteCode.
+     * @param {InviteCodeDeleteArgs} args - Arguments to delete one InviteCode.
+     * @example
+     * // Delete one InviteCode
+     * const InviteCode = await prisma.inviteCode.delete({
+     *   where: {
+     *     // ... filter to delete one InviteCode
+     *   }
+     * })
+     * 
+     */
+    delete<T extends InviteCodeDeleteArgs>(args: SelectSubset<T, InviteCodeDeleteArgs<ExtArgs>>): Prisma__InviteCodeClient<$Result.GetResult<Prisma.$InviteCodePayload<ExtArgs>, T, "delete">, never, ExtArgs>
+
+    /**
+     * Update one InviteCode.
+     * @param {InviteCodeUpdateArgs} args - Arguments to update one InviteCode.
+     * @example
+     * // Update one InviteCode
+     * const inviteCode = await prisma.inviteCode.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends InviteCodeUpdateArgs>(args: SelectSubset<T, InviteCodeUpdateArgs<ExtArgs>>): Prisma__InviteCodeClient<$Result.GetResult<Prisma.$InviteCodePayload<ExtArgs>, T, "update">, never, ExtArgs>
+
+    /**
+     * Delete zero or more InviteCodes.
+     * @param {InviteCodeDeleteManyArgs} args - Arguments to filter InviteCodes to delete.
+     * @example
+     * // Delete a few InviteCodes
+     * const { count } = await prisma.inviteCode.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends InviteCodeDeleteManyArgs>(args?: SelectSubset<T, InviteCodeDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more InviteCodes.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InviteCodeUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many InviteCodes
+     * const inviteCode = await prisma.inviteCode.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends InviteCodeUpdateManyArgs>(args: SelectSubset<T, InviteCodeUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one InviteCode.
+     * @param {InviteCodeUpsertArgs} args - Arguments to update or create a InviteCode.
+     * @example
+     * // Update or create a InviteCode
+     * const inviteCode = await prisma.inviteCode.upsert({
+     *   create: {
+     *     // ... data to create a InviteCode
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the InviteCode we want to update
+     *   }
+     * })
+     */
+    upsert<T extends InviteCodeUpsertArgs>(args: SelectSubset<T, InviteCodeUpsertArgs<ExtArgs>>): Prisma__InviteCodeClient<$Result.GetResult<Prisma.$InviteCodePayload<ExtArgs>, T, "upsert">, never, ExtArgs>
+
+
+    /**
+     * Count the number of InviteCodes.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InviteCodeCountArgs} args - Arguments to filter InviteCodes to count.
+     * @example
+     * // Count the number of InviteCodes
+     * const count = await prisma.inviteCode.count({
+     *   where: {
+     *     // ... the filter for the InviteCodes we want to count
+     *   }
+     * })
+    **/
+    count<T extends InviteCodeCountArgs>(
+      args?: Subset<T, InviteCodeCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], InviteCodeCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a InviteCode.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InviteCodeAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends InviteCodeAggregateArgs>(args: Subset<T, InviteCodeAggregateArgs>): Prisma.PrismaPromise<GetInviteCodeAggregateType<T>>
+
+    /**
+     * Group by InviteCode.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InviteCodeGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends InviteCodeGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: InviteCodeGroupByArgs['orderBy'] }
+        : { orderBy?: InviteCodeGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, InviteCodeGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetInviteCodeGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the InviteCode model
+   */
+  readonly fields: InviteCodeFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for InviteCode.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__InviteCodeClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    organization<T extends OrganizationDefaultArgs<ExtArgs> = {}>(args?: Subset<T, OrganizationDefaultArgs<ExtArgs>>): Prisma__OrganizationClient<$Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
+    creator<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the InviteCode model
+   */ 
+  interface InviteCodeFieldRefs {
+    readonly id: FieldRef<"InviteCode", 'String'>
+    readonly code: FieldRef<"InviteCode", 'String'>
+    readonly organizationId: FieldRef<"InviteCode", 'String'>
+    readonly createdBy: FieldRef<"InviteCode", 'String'>
+    readonly expiresAt: FieldRef<"InviteCode", 'DateTime'>
+    readonly usageLimit: FieldRef<"InviteCode", 'Int'>
+    readonly usedCount: FieldRef<"InviteCode", 'Int'>
+    readonly isActive: FieldRef<"InviteCode", 'Boolean'>
+    readonly createdAt: FieldRef<"InviteCode", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * InviteCode findUnique
+   */
+  export type InviteCodeFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InviteCode
+     */
+    select?: InviteCodeSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InviteCodeInclude<ExtArgs> | null
+    /**
+     * Filter, which InviteCode to fetch.
+     */
+    where: InviteCodeWhereUniqueInput
+  }
+
+  /**
+   * InviteCode findUniqueOrThrow
+   */
+  export type InviteCodeFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InviteCode
+     */
+    select?: InviteCodeSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InviteCodeInclude<ExtArgs> | null
+    /**
+     * Filter, which InviteCode to fetch.
+     */
+    where: InviteCodeWhereUniqueInput
+  }
+
+  /**
+   * InviteCode findFirst
+   */
+  export type InviteCodeFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InviteCode
+     */
+    select?: InviteCodeSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InviteCodeInclude<ExtArgs> | null
+    /**
+     * Filter, which InviteCode to fetch.
+     */
+    where?: InviteCodeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of InviteCodes to fetch.
+     */
+    orderBy?: InviteCodeOrderByWithRelationInput | InviteCodeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for InviteCodes.
+     */
+    cursor?: InviteCodeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` InviteCodes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` InviteCodes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of InviteCodes.
+     */
+    distinct?: InviteCodeScalarFieldEnum | InviteCodeScalarFieldEnum[]
+  }
+
+  /**
+   * InviteCode findFirstOrThrow
+   */
+  export type InviteCodeFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InviteCode
+     */
+    select?: InviteCodeSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InviteCodeInclude<ExtArgs> | null
+    /**
+     * Filter, which InviteCode to fetch.
+     */
+    where?: InviteCodeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of InviteCodes to fetch.
+     */
+    orderBy?: InviteCodeOrderByWithRelationInput | InviteCodeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for InviteCodes.
+     */
+    cursor?: InviteCodeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` InviteCodes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` InviteCodes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of InviteCodes.
+     */
+    distinct?: InviteCodeScalarFieldEnum | InviteCodeScalarFieldEnum[]
+  }
+
+  /**
+   * InviteCode findMany
+   */
+  export type InviteCodeFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InviteCode
+     */
+    select?: InviteCodeSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InviteCodeInclude<ExtArgs> | null
+    /**
+     * Filter, which InviteCodes to fetch.
+     */
+    where?: InviteCodeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of InviteCodes to fetch.
+     */
+    orderBy?: InviteCodeOrderByWithRelationInput | InviteCodeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing InviteCodes.
+     */
+    cursor?: InviteCodeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` InviteCodes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` InviteCodes.
+     */
+    skip?: number
+    distinct?: InviteCodeScalarFieldEnum | InviteCodeScalarFieldEnum[]
+  }
+
+  /**
+   * InviteCode create
+   */
+  export type InviteCodeCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InviteCode
+     */
+    select?: InviteCodeSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InviteCodeInclude<ExtArgs> | null
+    /**
+     * The data needed to create a InviteCode.
+     */
+    data: XOR<InviteCodeCreateInput, InviteCodeUncheckedCreateInput>
+  }
+
+  /**
+   * InviteCode createMany
+   */
+  export type InviteCodeCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many InviteCodes.
+     */
+    data: InviteCodeCreateManyInput | InviteCodeCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * InviteCode createManyAndReturn
+   */
+  export type InviteCodeCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InviteCode
+     */
+    select?: InviteCodeSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * The data used to create many InviteCodes.
+     */
+    data: InviteCodeCreateManyInput | InviteCodeCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InviteCodeIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * InviteCode update
+   */
+  export type InviteCodeUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InviteCode
+     */
+    select?: InviteCodeSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InviteCodeInclude<ExtArgs> | null
+    /**
+     * The data needed to update a InviteCode.
+     */
+    data: XOR<InviteCodeUpdateInput, InviteCodeUncheckedUpdateInput>
+    /**
+     * Choose, which InviteCode to update.
+     */
+    where: InviteCodeWhereUniqueInput
+  }
+
+  /**
+   * InviteCode updateMany
+   */
+  export type InviteCodeUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update InviteCodes.
+     */
+    data: XOR<InviteCodeUpdateManyMutationInput, InviteCodeUncheckedUpdateManyInput>
+    /**
+     * Filter which InviteCodes to update
+     */
+    where?: InviteCodeWhereInput
+  }
+
+  /**
+   * InviteCode upsert
+   */
+  export type InviteCodeUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InviteCode
+     */
+    select?: InviteCodeSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InviteCodeInclude<ExtArgs> | null
+    /**
+     * The filter to search for the InviteCode to update in case it exists.
+     */
+    where: InviteCodeWhereUniqueInput
+    /**
+     * In case the InviteCode found by the `where` argument doesn't exist, create a new InviteCode with this data.
+     */
+    create: XOR<InviteCodeCreateInput, InviteCodeUncheckedCreateInput>
+    /**
+     * In case the InviteCode was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<InviteCodeUpdateInput, InviteCodeUncheckedUpdateInput>
+  }
+
+  /**
+   * InviteCode delete
+   */
+  export type InviteCodeDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InviteCode
+     */
+    select?: InviteCodeSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InviteCodeInclude<ExtArgs> | null
+    /**
+     * Filter which InviteCode to delete.
+     */
+    where: InviteCodeWhereUniqueInput
+  }
+
+  /**
+   * InviteCode deleteMany
+   */
+  export type InviteCodeDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which InviteCodes to delete
+     */
+    where?: InviteCodeWhereInput
+  }
+
+  /**
+   * InviteCode without action
+   */
+  export type InviteCodeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InviteCode
+     */
+    select?: InviteCodeSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InviteCodeInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model OrganizationMember
+   */
+
+  export type AggregateOrganizationMember = {
+    _count: OrganizationMemberCountAggregateOutputType | null
+    _min: OrganizationMemberMinAggregateOutputType | null
+    _max: OrganizationMemberMaxAggregateOutputType | null
+  }
+
+  export type OrganizationMemberMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    organizationId: string | null
+    role: $Enums.UserRole | null
+    status: $Enums.MemberStatus | null
+    joinedAt: Date | null
+    invitedBy: string | null
+    inviteCode: string | null
+  }
+
+  export type OrganizationMemberMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    organizationId: string | null
+    role: $Enums.UserRole | null
+    status: $Enums.MemberStatus | null
+    joinedAt: Date | null
+    invitedBy: string | null
+    inviteCode: string | null
+  }
+
+  export type OrganizationMemberCountAggregateOutputType = {
+    id: number
+    userId: number
+    organizationId: number
+    role: number
+    status: number
+    joinedAt: number
+    invitedBy: number
+    inviteCode: number
+    _all: number
+  }
+
+
+  export type OrganizationMemberMinAggregateInputType = {
+    id?: true
+    userId?: true
+    organizationId?: true
+    role?: true
+    status?: true
+    joinedAt?: true
+    invitedBy?: true
+    inviteCode?: true
+  }
+
+  export type OrganizationMemberMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    organizationId?: true
+    role?: true
+    status?: true
+    joinedAt?: true
+    invitedBy?: true
+    inviteCode?: true
+  }
+
+  export type OrganizationMemberCountAggregateInputType = {
+    id?: true
+    userId?: true
+    organizationId?: true
+    role?: true
+    status?: true
+    joinedAt?: true
+    invitedBy?: true
+    inviteCode?: true
+    _all?: true
+  }
+
+  export type OrganizationMemberAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which OrganizationMember to aggregate.
+     */
+    where?: OrganizationMemberWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of OrganizationMembers to fetch.
+     */
+    orderBy?: OrganizationMemberOrderByWithRelationInput | OrganizationMemberOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: OrganizationMemberWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` OrganizationMembers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` OrganizationMembers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned OrganizationMembers
+    **/
+    _count?: true | OrganizationMemberCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: OrganizationMemberMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: OrganizationMemberMaxAggregateInputType
+  }
+
+  export type GetOrganizationMemberAggregateType<T extends OrganizationMemberAggregateArgs> = {
+        [P in keyof T & keyof AggregateOrganizationMember]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateOrganizationMember[P]>
+      : GetScalarType<T[P], AggregateOrganizationMember[P]>
+  }
+
+
+
+
+  export type OrganizationMemberGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: OrganizationMemberWhereInput
+    orderBy?: OrganizationMemberOrderByWithAggregationInput | OrganizationMemberOrderByWithAggregationInput[]
+    by: OrganizationMemberScalarFieldEnum[] | OrganizationMemberScalarFieldEnum
+    having?: OrganizationMemberScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: OrganizationMemberCountAggregateInputType | true
+    _min?: OrganizationMemberMinAggregateInputType
+    _max?: OrganizationMemberMaxAggregateInputType
+  }
+
+  export type OrganizationMemberGroupByOutputType = {
+    id: string
+    userId: string
+    organizationId: string
+    role: $Enums.UserRole
+    status: $Enums.MemberStatus
+    joinedAt: Date
+    invitedBy: string | null
+    inviteCode: string | null
+    _count: OrganizationMemberCountAggregateOutputType | null
+    _min: OrganizationMemberMinAggregateOutputType | null
+    _max: OrganizationMemberMaxAggregateOutputType | null
+  }
+
+  type GetOrganizationMemberGroupByPayload<T extends OrganizationMemberGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<OrganizationMemberGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof OrganizationMemberGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], OrganizationMemberGroupByOutputType[P]>
+            : GetScalarType<T[P], OrganizationMemberGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type OrganizationMemberSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    organizationId?: boolean
+    role?: boolean
+    status?: boolean
+    joinedAt?: boolean
+    invitedBy?: boolean
+    inviteCode?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    organization?: boolean | OrganizationDefaultArgs<ExtArgs>
+    inviter?: boolean | OrganizationMember$inviterArgs<ExtArgs>
+  }, ExtArgs["result"]["organizationMember"]>
+
+  export type OrganizationMemberSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    organizationId?: boolean
+    role?: boolean
+    status?: boolean
+    joinedAt?: boolean
+    invitedBy?: boolean
+    inviteCode?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    organization?: boolean | OrganizationDefaultArgs<ExtArgs>
+    inviter?: boolean | OrganizationMember$inviterArgs<ExtArgs>
+  }, ExtArgs["result"]["organizationMember"]>
+
+  export type OrganizationMemberSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    organizationId?: boolean
+    role?: boolean
+    status?: boolean
+    joinedAt?: boolean
+    invitedBy?: boolean
+    inviteCode?: boolean
+  }
+
+  export type OrganizationMemberInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    organization?: boolean | OrganizationDefaultArgs<ExtArgs>
+    inviter?: boolean | OrganizationMember$inviterArgs<ExtArgs>
+  }
+  export type OrganizationMemberIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    organization?: boolean | OrganizationDefaultArgs<ExtArgs>
+    inviter?: boolean | OrganizationMember$inviterArgs<ExtArgs>
+  }
+
+  export type $OrganizationMemberPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "OrganizationMember"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+      organization: Prisma.$OrganizationPayload<ExtArgs>
+      inviter: Prisma.$UserPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      organizationId: string
+      role: $Enums.UserRole
+      status: $Enums.MemberStatus
+      joinedAt: Date
+      invitedBy: string | null
+      inviteCode: string | null
+    }, ExtArgs["result"]["organizationMember"]>
+    composites: {}
+  }
+
+  type OrganizationMemberGetPayload<S extends boolean | null | undefined | OrganizationMemberDefaultArgs> = $Result.GetResult<Prisma.$OrganizationMemberPayload, S>
+
+  type OrganizationMemberCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<OrganizationMemberFindManyArgs, 'select' | 'include' | 'distinct'> & {
+      select?: OrganizationMemberCountAggregateInputType | true
+    }
+
+  export interface OrganizationMemberDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['OrganizationMember'], meta: { name: 'OrganizationMember' } }
+    /**
+     * Find zero or one OrganizationMember that matches the filter.
+     * @param {OrganizationMemberFindUniqueArgs} args - Arguments to find a OrganizationMember
+     * @example
+     * // Get one OrganizationMember
+     * const organizationMember = await prisma.organizationMember.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends OrganizationMemberFindUniqueArgs>(args: SelectSubset<T, OrganizationMemberFindUniqueArgs<ExtArgs>>): Prisma__OrganizationMemberClient<$Result.GetResult<Prisma.$OrganizationMemberPayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
+
+    /**
+     * Find one OrganizationMember that matches the filter or throw an error with `error.code='P2025'` 
+     * if no matches were found.
+     * @param {OrganizationMemberFindUniqueOrThrowArgs} args - Arguments to find a OrganizationMember
+     * @example
+     * // Get one OrganizationMember
+     * const organizationMember = await prisma.organizationMember.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends OrganizationMemberFindUniqueOrThrowArgs>(args: SelectSubset<T, OrganizationMemberFindUniqueOrThrowArgs<ExtArgs>>): Prisma__OrganizationMemberClient<$Result.GetResult<Prisma.$OrganizationMemberPayload<ExtArgs>, T, "findUniqueOrThrow">, never, ExtArgs>
+
+    /**
+     * Find the first OrganizationMember that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {OrganizationMemberFindFirstArgs} args - Arguments to find a OrganizationMember
+     * @example
+     * // Get one OrganizationMember
+     * const organizationMember = await prisma.organizationMember.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends OrganizationMemberFindFirstArgs>(args?: SelectSubset<T, OrganizationMemberFindFirstArgs<ExtArgs>>): Prisma__OrganizationMemberClient<$Result.GetResult<Prisma.$OrganizationMemberPayload<ExtArgs>, T, "findFirst"> | null, null, ExtArgs>
+
+    /**
+     * Find the first OrganizationMember that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {OrganizationMemberFindFirstOrThrowArgs} args - Arguments to find a OrganizationMember
+     * @example
+     * // Get one OrganizationMember
+     * const organizationMember = await prisma.organizationMember.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends OrganizationMemberFindFirstOrThrowArgs>(args?: SelectSubset<T, OrganizationMemberFindFirstOrThrowArgs<ExtArgs>>): Prisma__OrganizationMemberClient<$Result.GetResult<Prisma.$OrganizationMemberPayload<ExtArgs>, T, "findFirstOrThrow">, never, ExtArgs>
+
+    /**
+     * Find zero or more OrganizationMembers that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {OrganizationMemberFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all OrganizationMembers
+     * const organizationMembers = await prisma.organizationMember.findMany()
+     * 
+     * // Get first 10 OrganizationMembers
+     * const organizationMembers = await prisma.organizationMember.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const organizationMemberWithIdOnly = await prisma.organizationMember.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends OrganizationMemberFindManyArgs>(args?: SelectSubset<T, OrganizationMemberFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrganizationMemberPayload<ExtArgs>, T, "findMany">>
+
+    /**
+     * Create a OrganizationMember.
+     * @param {OrganizationMemberCreateArgs} args - Arguments to create a OrganizationMember.
+     * @example
+     * // Create one OrganizationMember
+     * const OrganizationMember = await prisma.organizationMember.create({
+     *   data: {
+     *     // ... data to create a OrganizationMember
+     *   }
+     * })
+     * 
+     */
+    create<T extends OrganizationMemberCreateArgs>(args: SelectSubset<T, OrganizationMemberCreateArgs<ExtArgs>>): Prisma__OrganizationMemberClient<$Result.GetResult<Prisma.$OrganizationMemberPayload<ExtArgs>, T, "create">, never, ExtArgs>
+
+    /**
+     * Create many OrganizationMembers.
+     * @param {OrganizationMemberCreateManyArgs} args - Arguments to create many OrganizationMembers.
+     * @example
+     * // Create many OrganizationMembers
+     * const organizationMember = await prisma.organizationMember.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends OrganizationMemberCreateManyArgs>(args?: SelectSubset<T, OrganizationMemberCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many OrganizationMembers and returns the data saved in the database.
+     * @param {OrganizationMemberCreateManyAndReturnArgs} args - Arguments to create many OrganizationMembers.
+     * @example
+     * // Create many OrganizationMembers
+     * const organizationMember = await prisma.organizationMember.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many OrganizationMembers and only return the `id`
+     * const organizationMemberWithIdOnly = await prisma.organizationMember.createManyAndReturn({ 
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends OrganizationMemberCreateManyAndReturnArgs>(args?: SelectSubset<T, OrganizationMemberCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrganizationMemberPayload<ExtArgs>, T, "createManyAndReturn">>
+
+    /**
+     * Delete a OrganizationMember.
+     * @param {OrganizationMemberDeleteArgs} args - Arguments to delete one OrganizationMember.
+     * @example
+     * // Delete one OrganizationMember
+     * const OrganizationMember = await prisma.organizationMember.delete({
+     *   where: {
+     *     // ... filter to delete one OrganizationMember
+     *   }
+     * })
+     * 
+     */
+    delete<T extends OrganizationMemberDeleteArgs>(args: SelectSubset<T, OrganizationMemberDeleteArgs<ExtArgs>>): Prisma__OrganizationMemberClient<$Result.GetResult<Prisma.$OrganizationMemberPayload<ExtArgs>, T, "delete">, never, ExtArgs>
+
+    /**
+     * Update one OrganizationMember.
+     * @param {OrganizationMemberUpdateArgs} args - Arguments to update one OrganizationMember.
+     * @example
+     * // Update one OrganizationMember
+     * const organizationMember = await prisma.organizationMember.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends OrganizationMemberUpdateArgs>(args: SelectSubset<T, OrganizationMemberUpdateArgs<ExtArgs>>): Prisma__OrganizationMemberClient<$Result.GetResult<Prisma.$OrganizationMemberPayload<ExtArgs>, T, "update">, never, ExtArgs>
+
+    /**
+     * Delete zero or more OrganizationMembers.
+     * @param {OrganizationMemberDeleteManyArgs} args - Arguments to filter OrganizationMembers to delete.
+     * @example
+     * // Delete a few OrganizationMembers
+     * const { count } = await prisma.organizationMember.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends OrganizationMemberDeleteManyArgs>(args?: SelectSubset<T, OrganizationMemberDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more OrganizationMembers.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {OrganizationMemberUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many OrganizationMembers
+     * const organizationMember = await prisma.organizationMember.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends OrganizationMemberUpdateManyArgs>(args: SelectSubset<T, OrganizationMemberUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one OrganizationMember.
+     * @param {OrganizationMemberUpsertArgs} args - Arguments to update or create a OrganizationMember.
+     * @example
+     * // Update or create a OrganizationMember
+     * const organizationMember = await prisma.organizationMember.upsert({
+     *   create: {
+     *     // ... data to create a OrganizationMember
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the OrganizationMember we want to update
+     *   }
+     * })
+     */
+    upsert<T extends OrganizationMemberUpsertArgs>(args: SelectSubset<T, OrganizationMemberUpsertArgs<ExtArgs>>): Prisma__OrganizationMemberClient<$Result.GetResult<Prisma.$OrganizationMemberPayload<ExtArgs>, T, "upsert">, never, ExtArgs>
+
+
+    /**
+     * Count the number of OrganizationMembers.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {OrganizationMemberCountArgs} args - Arguments to filter OrganizationMembers to count.
+     * @example
+     * // Count the number of OrganizationMembers
+     * const count = await prisma.organizationMember.count({
+     *   where: {
+     *     // ... the filter for the OrganizationMembers we want to count
+     *   }
+     * })
+    **/
+    count<T extends OrganizationMemberCountArgs>(
+      args?: Subset<T, OrganizationMemberCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], OrganizationMemberCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a OrganizationMember.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {OrganizationMemberAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends OrganizationMemberAggregateArgs>(args: Subset<T, OrganizationMemberAggregateArgs>): Prisma.PrismaPromise<GetOrganizationMemberAggregateType<T>>
+
+    /**
+     * Group by OrganizationMember.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {OrganizationMemberGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends OrganizationMemberGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: OrganizationMemberGroupByArgs['orderBy'] }
+        : { orderBy?: OrganizationMemberGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, OrganizationMemberGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetOrganizationMemberGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the OrganizationMember model
+   */
+  readonly fields: OrganizationMemberFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for OrganizationMember.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__OrganizationMemberClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
+    organization<T extends OrganizationDefaultArgs<ExtArgs> = {}>(args?: Subset<T, OrganizationDefaultArgs<ExtArgs>>): Prisma__OrganizationClient<$Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
+    inviter<T extends OrganizationMember$inviterArgs<ExtArgs> = {}>(args?: Subset<T, OrganizationMember$inviterArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow"> | null, null, ExtArgs>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the OrganizationMember model
+   */ 
+  interface OrganizationMemberFieldRefs {
+    readonly id: FieldRef<"OrganizationMember", 'String'>
+    readonly userId: FieldRef<"OrganizationMember", 'String'>
+    readonly organizationId: FieldRef<"OrganizationMember", 'String'>
+    readonly role: FieldRef<"OrganizationMember", 'UserRole'>
+    readonly status: FieldRef<"OrganizationMember", 'MemberStatus'>
+    readonly joinedAt: FieldRef<"OrganizationMember", 'DateTime'>
+    readonly invitedBy: FieldRef<"OrganizationMember", 'String'>
+    readonly inviteCode: FieldRef<"OrganizationMember", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * OrganizationMember findUnique
+   */
+  export type OrganizationMemberFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OrganizationMember
+     */
+    select?: OrganizationMemberSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrganizationMemberInclude<ExtArgs> | null
+    /**
+     * Filter, which OrganizationMember to fetch.
+     */
+    where: OrganizationMemberWhereUniqueInput
+  }
+
+  /**
+   * OrganizationMember findUniqueOrThrow
+   */
+  export type OrganizationMemberFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OrganizationMember
+     */
+    select?: OrganizationMemberSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrganizationMemberInclude<ExtArgs> | null
+    /**
+     * Filter, which OrganizationMember to fetch.
+     */
+    where: OrganizationMemberWhereUniqueInput
+  }
+
+  /**
+   * OrganizationMember findFirst
+   */
+  export type OrganizationMemberFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OrganizationMember
+     */
+    select?: OrganizationMemberSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrganizationMemberInclude<ExtArgs> | null
+    /**
+     * Filter, which OrganizationMember to fetch.
+     */
+    where?: OrganizationMemberWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of OrganizationMembers to fetch.
+     */
+    orderBy?: OrganizationMemberOrderByWithRelationInput | OrganizationMemberOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for OrganizationMembers.
+     */
+    cursor?: OrganizationMemberWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` OrganizationMembers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` OrganizationMembers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of OrganizationMembers.
+     */
+    distinct?: OrganizationMemberScalarFieldEnum | OrganizationMemberScalarFieldEnum[]
+  }
+
+  /**
+   * OrganizationMember findFirstOrThrow
+   */
+  export type OrganizationMemberFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OrganizationMember
+     */
+    select?: OrganizationMemberSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrganizationMemberInclude<ExtArgs> | null
+    /**
+     * Filter, which OrganizationMember to fetch.
+     */
+    where?: OrganizationMemberWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of OrganizationMembers to fetch.
+     */
+    orderBy?: OrganizationMemberOrderByWithRelationInput | OrganizationMemberOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for OrganizationMembers.
+     */
+    cursor?: OrganizationMemberWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` OrganizationMembers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` OrganizationMembers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of OrganizationMembers.
+     */
+    distinct?: OrganizationMemberScalarFieldEnum | OrganizationMemberScalarFieldEnum[]
+  }
+
+  /**
+   * OrganizationMember findMany
+   */
+  export type OrganizationMemberFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OrganizationMember
+     */
+    select?: OrganizationMemberSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrganizationMemberInclude<ExtArgs> | null
+    /**
+     * Filter, which OrganizationMembers to fetch.
+     */
+    where?: OrganizationMemberWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of OrganizationMembers to fetch.
+     */
+    orderBy?: OrganizationMemberOrderByWithRelationInput | OrganizationMemberOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing OrganizationMembers.
+     */
+    cursor?: OrganizationMemberWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` OrganizationMembers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` OrganizationMembers.
+     */
+    skip?: number
+    distinct?: OrganizationMemberScalarFieldEnum | OrganizationMemberScalarFieldEnum[]
+  }
+
+  /**
+   * OrganizationMember create
+   */
+  export type OrganizationMemberCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OrganizationMember
+     */
+    select?: OrganizationMemberSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrganizationMemberInclude<ExtArgs> | null
+    /**
+     * The data needed to create a OrganizationMember.
+     */
+    data: XOR<OrganizationMemberCreateInput, OrganizationMemberUncheckedCreateInput>
+  }
+
+  /**
+   * OrganizationMember createMany
+   */
+  export type OrganizationMemberCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many OrganizationMembers.
+     */
+    data: OrganizationMemberCreateManyInput | OrganizationMemberCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * OrganizationMember createManyAndReturn
+   */
+  export type OrganizationMemberCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OrganizationMember
+     */
+    select?: OrganizationMemberSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * The data used to create many OrganizationMembers.
+     */
+    data: OrganizationMemberCreateManyInput | OrganizationMemberCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrganizationMemberIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * OrganizationMember update
+   */
+  export type OrganizationMemberUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OrganizationMember
+     */
+    select?: OrganizationMemberSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrganizationMemberInclude<ExtArgs> | null
+    /**
+     * The data needed to update a OrganizationMember.
+     */
+    data: XOR<OrganizationMemberUpdateInput, OrganizationMemberUncheckedUpdateInput>
+    /**
+     * Choose, which OrganizationMember to update.
+     */
+    where: OrganizationMemberWhereUniqueInput
+  }
+
+  /**
+   * OrganizationMember updateMany
+   */
+  export type OrganizationMemberUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update OrganizationMembers.
+     */
+    data: XOR<OrganizationMemberUpdateManyMutationInput, OrganizationMemberUncheckedUpdateManyInput>
+    /**
+     * Filter which OrganizationMembers to update
+     */
+    where?: OrganizationMemberWhereInput
+  }
+
+  /**
+   * OrganizationMember upsert
+   */
+  export type OrganizationMemberUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OrganizationMember
+     */
+    select?: OrganizationMemberSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrganizationMemberInclude<ExtArgs> | null
+    /**
+     * The filter to search for the OrganizationMember to update in case it exists.
+     */
+    where: OrganizationMemberWhereUniqueInput
+    /**
+     * In case the OrganizationMember found by the `where` argument doesn't exist, create a new OrganizationMember with this data.
+     */
+    create: XOR<OrganizationMemberCreateInput, OrganizationMemberUncheckedCreateInput>
+    /**
+     * In case the OrganizationMember was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<OrganizationMemberUpdateInput, OrganizationMemberUncheckedUpdateInput>
+  }
+
+  /**
+   * OrganizationMember delete
+   */
+  export type OrganizationMemberDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OrganizationMember
+     */
+    select?: OrganizationMemberSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrganizationMemberInclude<ExtArgs> | null
+    /**
+     * Filter which OrganizationMember to delete.
+     */
+    where: OrganizationMemberWhereUniqueInput
+  }
+
+  /**
+   * OrganizationMember deleteMany
+   */
+  export type OrganizationMemberDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which OrganizationMembers to delete
+     */
+    where?: OrganizationMemberWhereInput
+  }
+
+  /**
+   * OrganizationMember.inviter
+   */
+  export type OrganizationMember$inviterArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
+   * OrganizationMember without action
+   */
+  export type OrganizationMemberDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OrganizationMember
+     */
+    select?: OrganizationMemberSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrganizationMemberInclude<ExtArgs> | null
   }
 
 
@@ -7185,6 +11042,7 @@ export namespace Prisma {
     organization?: boolean | OrganizationDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
     responses?: boolean | Assessment$responsesArgs<ExtArgs>
+    result?: boolean | Assessment$resultArgs<ExtArgs>
     _count?: boolean | AssessmentCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["assessment"]>
 
@@ -7236,6 +11094,7 @@ export namespace Prisma {
     organization?: boolean | OrganizationDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
     responses?: boolean | Assessment$responsesArgs<ExtArgs>
+    result?: boolean | Assessment$resultArgs<ExtArgs>
     _count?: boolean | AssessmentCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type AssessmentIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -7249,6 +11108,7 @@ export namespace Prisma {
       organization: Prisma.$OrganizationPayload<ExtArgs>
       user: Prisma.$UserPayload<ExtArgs>
       responses: Prisma.$AssessmentResponsePayload<ExtArgs>[]
+      result: Prisma.$AssessmentResultPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -7636,6 +11496,7 @@ export namespace Prisma {
     organization<T extends OrganizationDefaultArgs<ExtArgs> = {}>(args?: Subset<T, OrganizationDefaultArgs<ExtArgs>>): Prisma__OrganizationClient<$Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
     user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
     responses<T extends Assessment$responsesArgs<ExtArgs> = {}>(args?: Subset<T, Assessment$responsesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AssessmentResponsePayload<ExtArgs>, T, "findMany"> | Null>
+    result<T extends Assessment$resultArgs<ExtArgs> = {}>(args?: Subset<T, Assessment$resultArgs<ExtArgs>>): Prisma__AssessmentResultClient<$Result.GetResult<Prisma.$AssessmentResultPayload<ExtArgs>, T, "findUniqueOrThrow"> | null, null, ExtArgs>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -8018,6 +11879,21 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: AssessmentResponseScalarFieldEnum | AssessmentResponseScalarFieldEnum[]
+  }
+
+  /**
+   * Assessment.result
+   */
+  export type Assessment$resultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AssessmentResult
+     */
+    select?: AssessmentResultSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AssessmentResultInclude<ExtArgs> | null
+    where?: AssessmentResultWhereInput
   }
 
   /**
@@ -12171,6 +16047,1125 @@ export namespace Prisma {
 
 
   /**
+   * Model AssessmentResult
+   */
+
+  export type AggregateAssessmentResult = {
+    _count: AssessmentResultCountAggregateOutputType | null
+    _avg: AssessmentResultAvgAggregateOutputType | null
+    _sum: AssessmentResultSumAggregateOutputType | null
+    _min: AssessmentResultMinAggregateOutputType | null
+    _max: AssessmentResultMaxAggregateOutputType | null
+  }
+
+  export type AssessmentResultAvgAggregateOutputType = {
+    overallScore: number | null
+    overallPercentage: number | null
+    industryPercentile: number | null
+    sizePercentile: number | null
+    regionPercentile: number | null
+    questionsAnswered: number | null
+    totalQuestions: number | null
+    completionRate: number | null
+    totalTimeMinutes: number | null
+  }
+
+  export type AssessmentResultSumAggregateOutputType = {
+    overallScore: number | null
+    overallPercentage: number | null
+    industryPercentile: number | null
+    sizePercentile: number | null
+    regionPercentile: number | null
+    questionsAnswered: number | null
+    totalQuestions: number | null
+    completionRate: number | null
+    totalTimeMinutes: number | null
+  }
+
+  export type AssessmentResultMinAggregateOutputType = {
+    id: string | null
+    overallScore: number | null
+    overallPercentage: number | null
+    tier: $Enums.CSITier | null
+    categoryScores: string | null
+    sectionScores: string | null
+    industryPercentile: number | null
+    sizePercentile: number | null
+    regionPercentile: number | null
+    questionsAnswered: number | null
+    totalQuestions: number | null
+    completionRate: number | null
+    totalTimeMinutes: number | null
+    generatedAt: Date | null
+    assessmentId: string | null
+  }
+
+  export type AssessmentResultMaxAggregateOutputType = {
+    id: string | null
+    overallScore: number | null
+    overallPercentage: number | null
+    tier: $Enums.CSITier | null
+    categoryScores: string | null
+    sectionScores: string | null
+    industryPercentile: number | null
+    sizePercentile: number | null
+    regionPercentile: number | null
+    questionsAnswered: number | null
+    totalQuestions: number | null
+    completionRate: number | null
+    totalTimeMinutes: number | null
+    generatedAt: Date | null
+    assessmentId: string | null
+  }
+
+  export type AssessmentResultCountAggregateOutputType = {
+    id: number
+    overallScore: number
+    overallPercentage: number
+    tier: number
+    categoryScores: number
+    sectionScores: number
+    industryPercentile: number
+    sizePercentile: number
+    regionPercentile: number
+    questionsAnswered: number
+    totalQuestions: number
+    completionRate: number
+    totalTimeMinutes: number
+    generatedAt: number
+    assessmentId: number
+    _all: number
+  }
+
+
+  export type AssessmentResultAvgAggregateInputType = {
+    overallScore?: true
+    overallPercentage?: true
+    industryPercentile?: true
+    sizePercentile?: true
+    regionPercentile?: true
+    questionsAnswered?: true
+    totalQuestions?: true
+    completionRate?: true
+    totalTimeMinutes?: true
+  }
+
+  export type AssessmentResultSumAggregateInputType = {
+    overallScore?: true
+    overallPercentage?: true
+    industryPercentile?: true
+    sizePercentile?: true
+    regionPercentile?: true
+    questionsAnswered?: true
+    totalQuestions?: true
+    completionRate?: true
+    totalTimeMinutes?: true
+  }
+
+  export type AssessmentResultMinAggregateInputType = {
+    id?: true
+    overallScore?: true
+    overallPercentage?: true
+    tier?: true
+    categoryScores?: true
+    sectionScores?: true
+    industryPercentile?: true
+    sizePercentile?: true
+    regionPercentile?: true
+    questionsAnswered?: true
+    totalQuestions?: true
+    completionRate?: true
+    totalTimeMinutes?: true
+    generatedAt?: true
+    assessmentId?: true
+  }
+
+  export type AssessmentResultMaxAggregateInputType = {
+    id?: true
+    overallScore?: true
+    overallPercentage?: true
+    tier?: true
+    categoryScores?: true
+    sectionScores?: true
+    industryPercentile?: true
+    sizePercentile?: true
+    regionPercentile?: true
+    questionsAnswered?: true
+    totalQuestions?: true
+    completionRate?: true
+    totalTimeMinutes?: true
+    generatedAt?: true
+    assessmentId?: true
+  }
+
+  export type AssessmentResultCountAggregateInputType = {
+    id?: true
+    overallScore?: true
+    overallPercentage?: true
+    tier?: true
+    categoryScores?: true
+    sectionScores?: true
+    industryPercentile?: true
+    sizePercentile?: true
+    regionPercentile?: true
+    questionsAnswered?: true
+    totalQuestions?: true
+    completionRate?: true
+    totalTimeMinutes?: true
+    generatedAt?: true
+    assessmentId?: true
+    _all?: true
+  }
+
+  export type AssessmentResultAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AssessmentResult to aggregate.
+     */
+    where?: AssessmentResultWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AssessmentResults to fetch.
+     */
+    orderBy?: AssessmentResultOrderByWithRelationInput | AssessmentResultOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: AssessmentResultWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AssessmentResults from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AssessmentResults.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned AssessmentResults
+    **/
+    _count?: true | AssessmentResultCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: AssessmentResultAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: AssessmentResultSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: AssessmentResultMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: AssessmentResultMaxAggregateInputType
+  }
+
+  export type GetAssessmentResultAggregateType<T extends AssessmentResultAggregateArgs> = {
+        [P in keyof T & keyof AggregateAssessmentResult]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAssessmentResult[P]>
+      : GetScalarType<T[P], AggregateAssessmentResult[P]>
+  }
+
+
+
+
+  export type AssessmentResultGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AssessmentResultWhereInput
+    orderBy?: AssessmentResultOrderByWithAggregationInput | AssessmentResultOrderByWithAggregationInput[]
+    by: AssessmentResultScalarFieldEnum[] | AssessmentResultScalarFieldEnum
+    having?: AssessmentResultScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AssessmentResultCountAggregateInputType | true
+    _avg?: AssessmentResultAvgAggregateInputType
+    _sum?: AssessmentResultSumAggregateInputType
+    _min?: AssessmentResultMinAggregateInputType
+    _max?: AssessmentResultMaxAggregateInputType
+  }
+
+  export type AssessmentResultGroupByOutputType = {
+    id: string
+    overallScore: number
+    overallPercentage: number
+    tier: $Enums.CSITier
+    categoryScores: string
+    sectionScores: string
+    industryPercentile: number | null
+    sizePercentile: number | null
+    regionPercentile: number | null
+    questionsAnswered: number
+    totalQuestions: number
+    completionRate: number
+    totalTimeMinutes: number | null
+    generatedAt: Date
+    assessmentId: string
+    _count: AssessmentResultCountAggregateOutputType | null
+    _avg: AssessmentResultAvgAggregateOutputType | null
+    _sum: AssessmentResultSumAggregateOutputType | null
+    _min: AssessmentResultMinAggregateOutputType | null
+    _max: AssessmentResultMaxAggregateOutputType | null
+  }
+
+  type GetAssessmentResultGroupByPayload<T extends AssessmentResultGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AssessmentResultGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AssessmentResultGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AssessmentResultGroupByOutputType[P]>
+            : GetScalarType<T[P], AssessmentResultGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type AssessmentResultSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    overallScore?: boolean
+    overallPercentage?: boolean
+    tier?: boolean
+    categoryScores?: boolean
+    sectionScores?: boolean
+    industryPercentile?: boolean
+    sizePercentile?: boolean
+    regionPercentile?: boolean
+    questionsAnswered?: boolean
+    totalQuestions?: boolean
+    completionRate?: boolean
+    totalTimeMinutes?: boolean
+    generatedAt?: boolean
+    assessmentId?: boolean
+    assessment?: boolean | AssessmentDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["assessmentResult"]>
+
+  export type AssessmentResultSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    overallScore?: boolean
+    overallPercentage?: boolean
+    tier?: boolean
+    categoryScores?: boolean
+    sectionScores?: boolean
+    industryPercentile?: boolean
+    sizePercentile?: boolean
+    regionPercentile?: boolean
+    questionsAnswered?: boolean
+    totalQuestions?: boolean
+    completionRate?: boolean
+    totalTimeMinutes?: boolean
+    generatedAt?: boolean
+    assessmentId?: boolean
+    assessment?: boolean | AssessmentDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["assessmentResult"]>
+
+  export type AssessmentResultSelectScalar = {
+    id?: boolean
+    overallScore?: boolean
+    overallPercentage?: boolean
+    tier?: boolean
+    categoryScores?: boolean
+    sectionScores?: boolean
+    industryPercentile?: boolean
+    sizePercentile?: boolean
+    regionPercentile?: boolean
+    questionsAnswered?: boolean
+    totalQuestions?: boolean
+    completionRate?: boolean
+    totalTimeMinutes?: boolean
+    generatedAt?: boolean
+    assessmentId?: boolean
+  }
+
+  export type AssessmentResultInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    assessment?: boolean | AssessmentDefaultArgs<ExtArgs>
+  }
+  export type AssessmentResultIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    assessment?: boolean | AssessmentDefaultArgs<ExtArgs>
+  }
+
+  export type $AssessmentResultPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "AssessmentResult"
+    objects: {
+      assessment: Prisma.$AssessmentPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      overallScore: number
+      overallPercentage: number
+      tier: $Enums.CSITier
+      categoryScores: string
+      sectionScores: string
+      industryPercentile: number | null
+      sizePercentile: number | null
+      regionPercentile: number | null
+      questionsAnswered: number
+      totalQuestions: number
+      completionRate: number
+      totalTimeMinutes: number | null
+      generatedAt: Date
+      assessmentId: string
+    }, ExtArgs["result"]["assessmentResult"]>
+    composites: {}
+  }
+
+  type AssessmentResultGetPayload<S extends boolean | null | undefined | AssessmentResultDefaultArgs> = $Result.GetResult<Prisma.$AssessmentResultPayload, S>
+
+  type AssessmentResultCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<AssessmentResultFindManyArgs, 'select' | 'include' | 'distinct'> & {
+      select?: AssessmentResultCountAggregateInputType | true
+    }
+
+  export interface AssessmentResultDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['AssessmentResult'], meta: { name: 'AssessmentResult' } }
+    /**
+     * Find zero or one AssessmentResult that matches the filter.
+     * @param {AssessmentResultFindUniqueArgs} args - Arguments to find a AssessmentResult
+     * @example
+     * // Get one AssessmentResult
+     * const assessmentResult = await prisma.assessmentResult.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends AssessmentResultFindUniqueArgs>(args: SelectSubset<T, AssessmentResultFindUniqueArgs<ExtArgs>>): Prisma__AssessmentResultClient<$Result.GetResult<Prisma.$AssessmentResultPayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
+
+    /**
+     * Find one AssessmentResult that matches the filter or throw an error with `error.code='P2025'` 
+     * if no matches were found.
+     * @param {AssessmentResultFindUniqueOrThrowArgs} args - Arguments to find a AssessmentResult
+     * @example
+     * // Get one AssessmentResult
+     * const assessmentResult = await prisma.assessmentResult.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends AssessmentResultFindUniqueOrThrowArgs>(args: SelectSubset<T, AssessmentResultFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AssessmentResultClient<$Result.GetResult<Prisma.$AssessmentResultPayload<ExtArgs>, T, "findUniqueOrThrow">, never, ExtArgs>
+
+    /**
+     * Find the first AssessmentResult that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AssessmentResultFindFirstArgs} args - Arguments to find a AssessmentResult
+     * @example
+     * // Get one AssessmentResult
+     * const assessmentResult = await prisma.assessmentResult.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends AssessmentResultFindFirstArgs>(args?: SelectSubset<T, AssessmentResultFindFirstArgs<ExtArgs>>): Prisma__AssessmentResultClient<$Result.GetResult<Prisma.$AssessmentResultPayload<ExtArgs>, T, "findFirst"> | null, null, ExtArgs>
+
+    /**
+     * Find the first AssessmentResult that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AssessmentResultFindFirstOrThrowArgs} args - Arguments to find a AssessmentResult
+     * @example
+     * // Get one AssessmentResult
+     * const assessmentResult = await prisma.assessmentResult.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends AssessmentResultFindFirstOrThrowArgs>(args?: SelectSubset<T, AssessmentResultFindFirstOrThrowArgs<ExtArgs>>): Prisma__AssessmentResultClient<$Result.GetResult<Prisma.$AssessmentResultPayload<ExtArgs>, T, "findFirstOrThrow">, never, ExtArgs>
+
+    /**
+     * Find zero or more AssessmentResults that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AssessmentResultFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all AssessmentResults
+     * const assessmentResults = await prisma.assessmentResult.findMany()
+     * 
+     * // Get first 10 AssessmentResults
+     * const assessmentResults = await prisma.assessmentResult.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const assessmentResultWithIdOnly = await prisma.assessmentResult.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends AssessmentResultFindManyArgs>(args?: SelectSubset<T, AssessmentResultFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AssessmentResultPayload<ExtArgs>, T, "findMany">>
+
+    /**
+     * Create a AssessmentResult.
+     * @param {AssessmentResultCreateArgs} args - Arguments to create a AssessmentResult.
+     * @example
+     * // Create one AssessmentResult
+     * const AssessmentResult = await prisma.assessmentResult.create({
+     *   data: {
+     *     // ... data to create a AssessmentResult
+     *   }
+     * })
+     * 
+     */
+    create<T extends AssessmentResultCreateArgs>(args: SelectSubset<T, AssessmentResultCreateArgs<ExtArgs>>): Prisma__AssessmentResultClient<$Result.GetResult<Prisma.$AssessmentResultPayload<ExtArgs>, T, "create">, never, ExtArgs>
+
+    /**
+     * Create many AssessmentResults.
+     * @param {AssessmentResultCreateManyArgs} args - Arguments to create many AssessmentResults.
+     * @example
+     * // Create many AssessmentResults
+     * const assessmentResult = await prisma.assessmentResult.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends AssessmentResultCreateManyArgs>(args?: SelectSubset<T, AssessmentResultCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many AssessmentResults and returns the data saved in the database.
+     * @param {AssessmentResultCreateManyAndReturnArgs} args - Arguments to create many AssessmentResults.
+     * @example
+     * // Create many AssessmentResults
+     * const assessmentResult = await prisma.assessmentResult.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many AssessmentResults and only return the `id`
+     * const assessmentResultWithIdOnly = await prisma.assessmentResult.createManyAndReturn({ 
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends AssessmentResultCreateManyAndReturnArgs>(args?: SelectSubset<T, AssessmentResultCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AssessmentResultPayload<ExtArgs>, T, "createManyAndReturn">>
+
+    /**
+     * Delete a AssessmentResult.
+     * @param {AssessmentResultDeleteArgs} args - Arguments to delete one AssessmentResult.
+     * @example
+     * // Delete one AssessmentResult
+     * const AssessmentResult = await prisma.assessmentResult.delete({
+     *   where: {
+     *     // ... filter to delete one AssessmentResult
+     *   }
+     * })
+     * 
+     */
+    delete<T extends AssessmentResultDeleteArgs>(args: SelectSubset<T, AssessmentResultDeleteArgs<ExtArgs>>): Prisma__AssessmentResultClient<$Result.GetResult<Prisma.$AssessmentResultPayload<ExtArgs>, T, "delete">, never, ExtArgs>
+
+    /**
+     * Update one AssessmentResult.
+     * @param {AssessmentResultUpdateArgs} args - Arguments to update one AssessmentResult.
+     * @example
+     * // Update one AssessmentResult
+     * const assessmentResult = await prisma.assessmentResult.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends AssessmentResultUpdateArgs>(args: SelectSubset<T, AssessmentResultUpdateArgs<ExtArgs>>): Prisma__AssessmentResultClient<$Result.GetResult<Prisma.$AssessmentResultPayload<ExtArgs>, T, "update">, never, ExtArgs>
+
+    /**
+     * Delete zero or more AssessmentResults.
+     * @param {AssessmentResultDeleteManyArgs} args - Arguments to filter AssessmentResults to delete.
+     * @example
+     * // Delete a few AssessmentResults
+     * const { count } = await prisma.assessmentResult.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends AssessmentResultDeleteManyArgs>(args?: SelectSubset<T, AssessmentResultDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AssessmentResults.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AssessmentResultUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many AssessmentResults
+     * const assessmentResult = await prisma.assessmentResult.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends AssessmentResultUpdateManyArgs>(args: SelectSubset<T, AssessmentResultUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one AssessmentResult.
+     * @param {AssessmentResultUpsertArgs} args - Arguments to update or create a AssessmentResult.
+     * @example
+     * // Update or create a AssessmentResult
+     * const assessmentResult = await prisma.assessmentResult.upsert({
+     *   create: {
+     *     // ... data to create a AssessmentResult
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the AssessmentResult we want to update
+     *   }
+     * })
+     */
+    upsert<T extends AssessmentResultUpsertArgs>(args: SelectSubset<T, AssessmentResultUpsertArgs<ExtArgs>>): Prisma__AssessmentResultClient<$Result.GetResult<Prisma.$AssessmentResultPayload<ExtArgs>, T, "upsert">, never, ExtArgs>
+
+
+    /**
+     * Count the number of AssessmentResults.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AssessmentResultCountArgs} args - Arguments to filter AssessmentResults to count.
+     * @example
+     * // Count the number of AssessmentResults
+     * const count = await prisma.assessmentResult.count({
+     *   where: {
+     *     // ... the filter for the AssessmentResults we want to count
+     *   }
+     * })
+    **/
+    count<T extends AssessmentResultCountArgs>(
+      args?: Subset<T, AssessmentResultCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AssessmentResultCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a AssessmentResult.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AssessmentResultAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AssessmentResultAggregateArgs>(args: Subset<T, AssessmentResultAggregateArgs>): Prisma.PrismaPromise<GetAssessmentResultAggregateType<T>>
+
+    /**
+     * Group by AssessmentResult.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AssessmentResultGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends AssessmentResultGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: AssessmentResultGroupByArgs['orderBy'] }
+        : { orderBy?: AssessmentResultGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, AssessmentResultGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAssessmentResultGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the AssessmentResult model
+   */
+  readonly fields: AssessmentResultFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for AssessmentResult.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__AssessmentResultClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    assessment<T extends AssessmentDefaultArgs<ExtArgs> = {}>(args?: Subset<T, AssessmentDefaultArgs<ExtArgs>>): Prisma__AssessmentClient<$Result.GetResult<Prisma.$AssessmentPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the AssessmentResult model
+   */ 
+  interface AssessmentResultFieldRefs {
+    readonly id: FieldRef<"AssessmentResult", 'String'>
+    readonly overallScore: FieldRef<"AssessmentResult", 'Float'>
+    readonly overallPercentage: FieldRef<"AssessmentResult", 'Float'>
+    readonly tier: FieldRef<"AssessmentResult", 'CSITier'>
+    readonly categoryScores: FieldRef<"AssessmentResult", 'String'>
+    readonly sectionScores: FieldRef<"AssessmentResult", 'String'>
+    readonly industryPercentile: FieldRef<"AssessmentResult", 'Float'>
+    readonly sizePercentile: FieldRef<"AssessmentResult", 'Float'>
+    readonly regionPercentile: FieldRef<"AssessmentResult", 'Float'>
+    readonly questionsAnswered: FieldRef<"AssessmentResult", 'Int'>
+    readonly totalQuestions: FieldRef<"AssessmentResult", 'Int'>
+    readonly completionRate: FieldRef<"AssessmentResult", 'Float'>
+    readonly totalTimeMinutes: FieldRef<"AssessmentResult", 'Int'>
+    readonly generatedAt: FieldRef<"AssessmentResult", 'DateTime'>
+    readonly assessmentId: FieldRef<"AssessmentResult", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * AssessmentResult findUnique
+   */
+  export type AssessmentResultFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AssessmentResult
+     */
+    select?: AssessmentResultSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AssessmentResultInclude<ExtArgs> | null
+    /**
+     * Filter, which AssessmentResult to fetch.
+     */
+    where: AssessmentResultWhereUniqueInput
+  }
+
+  /**
+   * AssessmentResult findUniqueOrThrow
+   */
+  export type AssessmentResultFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AssessmentResult
+     */
+    select?: AssessmentResultSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AssessmentResultInclude<ExtArgs> | null
+    /**
+     * Filter, which AssessmentResult to fetch.
+     */
+    where: AssessmentResultWhereUniqueInput
+  }
+
+  /**
+   * AssessmentResult findFirst
+   */
+  export type AssessmentResultFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AssessmentResult
+     */
+    select?: AssessmentResultSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AssessmentResultInclude<ExtArgs> | null
+    /**
+     * Filter, which AssessmentResult to fetch.
+     */
+    where?: AssessmentResultWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AssessmentResults to fetch.
+     */
+    orderBy?: AssessmentResultOrderByWithRelationInput | AssessmentResultOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AssessmentResults.
+     */
+    cursor?: AssessmentResultWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AssessmentResults from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AssessmentResults.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AssessmentResults.
+     */
+    distinct?: AssessmentResultScalarFieldEnum | AssessmentResultScalarFieldEnum[]
+  }
+
+  /**
+   * AssessmentResult findFirstOrThrow
+   */
+  export type AssessmentResultFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AssessmentResult
+     */
+    select?: AssessmentResultSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AssessmentResultInclude<ExtArgs> | null
+    /**
+     * Filter, which AssessmentResult to fetch.
+     */
+    where?: AssessmentResultWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AssessmentResults to fetch.
+     */
+    orderBy?: AssessmentResultOrderByWithRelationInput | AssessmentResultOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AssessmentResults.
+     */
+    cursor?: AssessmentResultWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AssessmentResults from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AssessmentResults.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AssessmentResults.
+     */
+    distinct?: AssessmentResultScalarFieldEnum | AssessmentResultScalarFieldEnum[]
+  }
+
+  /**
+   * AssessmentResult findMany
+   */
+  export type AssessmentResultFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AssessmentResult
+     */
+    select?: AssessmentResultSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AssessmentResultInclude<ExtArgs> | null
+    /**
+     * Filter, which AssessmentResults to fetch.
+     */
+    where?: AssessmentResultWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AssessmentResults to fetch.
+     */
+    orderBy?: AssessmentResultOrderByWithRelationInput | AssessmentResultOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing AssessmentResults.
+     */
+    cursor?: AssessmentResultWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AssessmentResults from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AssessmentResults.
+     */
+    skip?: number
+    distinct?: AssessmentResultScalarFieldEnum | AssessmentResultScalarFieldEnum[]
+  }
+
+  /**
+   * AssessmentResult create
+   */
+  export type AssessmentResultCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AssessmentResult
+     */
+    select?: AssessmentResultSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AssessmentResultInclude<ExtArgs> | null
+    /**
+     * The data needed to create a AssessmentResult.
+     */
+    data: XOR<AssessmentResultCreateInput, AssessmentResultUncheckedCreateInput>
+  }
+
+  /**
+   * AssessmentResult createMany
+   */
+  export type AssessmentResultCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many AssessmentResults.
+     */
+    data: AssessmentResultCreateManyInput | AssessmentResultCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * AssessmentResult createManyAndReturn
+   */
+  export type AssessmentResultCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AssessmentResult
+     */
+    select?: AssessmentResultSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * The data used to create many AssessmentResults.
+     */
+    data: AssessmentResultCreateManyInput | AssessmentResultCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AssessmentResultIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * AssessmentResult update
+   */
+  export type AssessmentResultUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AssessmentResult
+     */
+    select?: AssessmentResultSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AssessmentResultInclude<ExtArgs> | null
+    /**
+     * The data needed to update a AssessmentResult.
+     */
+    data: XOR<AssessmentResultUpdateInput, AssessmentResultUncheckedUpdateInput>
+    /**
+     * Choose, which AssessmentResult to update.
+     */
+    where: AssessmentResultWhereUniqueInput
+  }
+
+  /**
+   * AssessmentResult updateMany
+   */
+  export type AssessmentResultUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update AssessmentResults.
+     */
+    data: XOR<AssessmentResultUpdateManyMutationInput, AssessmentResultUncheckedUpdateManyInput>
+    /**
+     * Filter which AssessmentResults to update
+     */
+    where?: AssessmentResultWhereInput
+  }
+
+  /**
+   * AssessmentResult upsert
+   */
+  export type AssessmentResultUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AssessmentResult
+     */
+    select?: AssessmentResultSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AssessmentResultInclude<ExtArgs> | null
+    /**
+     * The filter to search for the AssessmentResult to update in case it exists.
+     */
+    where: AssessmentResultWhereUniqueInput
+    /**
+     * In case the AssessmentResult found by the `where` argument doesn't exist, create a new AssessmentResult with this data.
+     */
+    create: XOR<AssessmentResultCreateInput, AssessmentResultUncheckedCreateInput>
+    /**
+     * In case the AssessmentResult was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<AssessmentResultUpdateInput, AssessmentResultUncheckedUpdateInput>
+  }
+
+  /**
+   * AssessmentResult delete
+   */
+  export type AssessmentResultDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AssessmentResult
+     */
+    select?: AssessmentResultSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AssessmentResultInclude<ExtArgs> | null
+    /**
+     * Filter which AssessmentResult to delete.
+     */
+    where: AssessmentResultWhereUniqueInput
+  }
+
+  /**
+   * AssessmentResult deleteMany
+   */
+  export type AssessmentResultDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AssessmentResults to delete
+     */
+    where?: AssessmentResultWhereInput
+  }
+
+  /**
+   * AssessmentResult without action
+   */
+  export type AssessmentResultDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AssessmentResult
+     */
+    select?: AssessmentResultSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AssessmentResultInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Model PhishingCampaign
    */
 
@@ -12184,24 +17179,31 @@ export namespace Prisma {
 
   export type PhishingCampaignAvgAggregateOutputType = {
     targetCount: number | null
-    deliveredCount: number | null
-    openedCount: number | null
-    clickedCount: number | null
-    reportedCount: number | null
+    emailsSent: number | null
+    emailsDelivered: number | null
+    emailsOpened: number | null
+    linksClicked: number | null
+    credentialsEntered: number | null
+    phishingReported: number | null
+    emailsBounced: number | null
   }
 
   export type PhishingCampaignSumAggregateOutputType = {
     targetCount: number | null
-    deliveredCount: number | null
-    openedCount: number | null
-    clickedCount: number | null
-    reportedCount: number | null
+    emailsSent: number | null
+    emailsDelivered: number | null
+    emailsOpened: number | null
+    linksClicked: number | null
+    credentialsEntered: number | null
+    phishingReported: number | null
+    emailsBounced: number | null
   }
 
   export type PhishingCampaignMinAggregateOutputType = {
     id: string | null
     name: string | null
     description: string | null
+    templateId: string | null
     template: string | null
     subject: string | null
     senderName: string | null
@@ -12209,22 +17211,28 @@ export namespace Prisma {
     landingPageUrl: string | null
     status: $Enums.CampaignStatus | null
     scheduledAt: Date | null
-    startedAt: Date | null
+    launchedAt: Date | null
     completedAt: Date | null
+    pausedAt: Date | null
     targetCount: number | null
-    deliveredCount: number | null
-    openedCount: number | null
-    clickedCount: number | null
-    reportedCount: number | null
+    emailsSent: number | null
+    emailsDelivered: number | null
+    emailsOpened: number | null
+    linksClicked: number | null
+    credentialsEntered: number | null
+    phishingReported: number | null
+    emailsBounced: number | null
+    createdBy: string | null
+    organizationId: string | null
     createdAt: Date | null
     updatedAt: Date | null
-    organizationId: string | null
   }
 
   export type PhishingCampaignMaxAggregateOutputType = {
     id: string | null
     name: string | null
     description: string | null
+    templateId: string | null
     template: string | null
     subject: string | null
     senderName: string | null
@@ -12232,22 +17240,28 @@ export namespace Prisma {
     landingPageUrl: string | null
     status: $Enums.CampaignStatus | null
     scheduledAt: Date | null
-    startedAt: Date | null
+    launchedAt: Date | null
     completedAt: Date | null
+    pausedAt: Date | null
     targetCount: number | null
-    deliveredCount: number | null
-    openedCount: number | null
-    clickedCount: number | null
-    reportedCount: number | null
+    emailsSent: number | null
+    emailsDelivered: number | null
+    emailsOpened: number | null
+    linksClicked: number | null
+    credentialsEntered: number | null
+    phishingReported: number | null
+    emailsBounced: number | null
+    createdBy: string | null
+    organizationId: string | null
     createdAt: Date | null
     updatedAt: Date | null
-    organizationId: string | null
   }
 
   export type PhishingCampaignCountAggregateOutputType = {
     id: number
     name: number
     description: number
+    templateId: number
     template: number
     subject: number
     senderName: number
@@ -12255,40 +17269,52 @@ export namespace Prisma {
     landingPageUrl: number
     status: number
     scheduledAt: number
-    startedAt: number
+    launchedAt: number
     completedAt: number
+    pausedAt: number
     targetCount: number
-    deliveredCount: number
-    openedCount: number
-    clickedCount: number
-    reportedCount: number
+    emailsSent: number
+    emailsDelivered: number
+    emailsOpened: number
+    linksClicked: number
+    credentialsEntered: number
+    phishingReported: number
+    emailsBounced: number
+    createdBy: number
+    organizationId: number
     createdAt: number
     updatedAt: number
-    organizationId: number
     _all: number
   }
 
 
   export type PhishingCampaignAvgAggregateInputType = {
     targetCount?: true
-    deliveredCount?: true
-    openedCount?: true
-    clickedCount?: true
-    reportedCount?: true
+    emailsSent?: true
+    emailsDelivered?: true
+    emailsOpened?: true
+    linksClicked?: true
+    credentialsEntered?: true
+    phishingReported?: true
+    emailsBounced?: true
   }
 
   export type PhishingCampaignSumAggregateInputType = {
     targetCount?: true
-    deliveredCount?: true
-    openedCount?: true
-    clickedCount?: true
-    reportedCount?: true
+    emailsSent?: true
+    emailsDelivered?: true
+    emailsOpened?: true
+    linksClicked?: true
+    credentialsEntered?: true
+    phishingReported?: true
+    emailsBounced?: true
   }
 
   export type PhishingCampaignMinAggregateInputType = {
     id?: true
     name?: true
     description?: true
+    templateId?: true
     template?: true
     subject?: true
     senderName?: true
@@ -12296,22 +17322,28 @@ export namespace Prisma {
     landingPageUrl?: true
     status?: true
     scheduledAt?: true
-    startedAt?: true
+    launchedAt?: true
     completedAt?: true
+    pausedAt?: true
     targetCount?: true
-    deliveredCount?: true
-    openedCount?: true
-    clickedCount?: true
-    reportedCount?: true
+    emailsSent?: true
+    emailsDelivered?: true
+    emailsOpened?: true
+    linksClicked?: true
+    credentialsEntered?: true
+    phishingReported?: true
+    emailsBounced?: true
+    createdBy?: true
+    organizationId?: true
     createdAt?: true
     updatedAt?: true
-    organizationId?: true
   }
 
   export type PhishingCampaignMaxAggregateInputType = {
     id?: true
     name?: true
     description?: true
+    templateId?: true
     template?: true
     subject?: true
     senderName?: true
@@ -12319,22 +17351,28 @@ export namespace Prisma {
     landingPageUrl?: true
     status?: true
     scheduledAt?: true
-    startedAt?: true
+    launchedAt?: true
     completedAt?: true
+    pausedAt?: true
     targetCount?: true
-    deliveredCount?: true
-    openedCount?: true
-    clickedCount?: true
-    reportedCount?: true
+    emailsSent?: true
+    emailsDelivered?: true
+    emailsOpened?: true
+    linksClicked?: true
+    credentialsEntered?: true
+    phishingReported?: true
+    emailsBounced?: true
+    createdBy?: true
+    organizationId?: true
     createdAt?: true
     updatedAt?: true
-    organizationId?: true
   }
 
   export type PhishingCampaignCountAggregateInputType = {
     id?: true
     name?: true
     description?: true
+    templateId?: true
     template?: true
     subject?: true
     senderName?: true
@@ -12342,16 +17380,21 @@ export namespace Prisma {
     landingPageUrl?: true
     status?: true
     scheduledAt?: true
-    startedAt?: true
+    launchedAt?: true
     completedAt?: true
+    pausedAt?: true
     targetCount?: true
-    deliveredCount?: true
-    openedCount?: true
-    clickedCount?: true
-    reportedCount?: true
+    emailsSent?: true
+    emailsDelivered?: true
+    emailsOpened?: true
+    linksClicked?: true
+    credentialsEntered?: true
+    phishingReported?: true
+    emailsBounced?: true
+    createdBy?: true
+    organizationId?: true
     createdAt?: true
     updatedAt?: true
-    organizationId?: true
     _all?: true
   }
 
@@ -12445,6 +17488,7 @@ export namespace Prisma {
     id: string
     name: string
     description: string | null
+    templateId: string
     template: string
     subject: string
     senderName: string
@@ -12452,16 +17496,21 @@ export namespace Prisma {
     landingPageUrl: string | null
     status: $Enums.CampaignStatus
     scheduledAt: Date | null
-    startedAt: Date | null
+    launchedAt: Date | null
     completedAt: Date | null
+    pausedAt: Date | null
     targetCount: number
-    deliveredCount: number
-    openedCount: number
-    clickedCount: number
-    reportedCount: number
+    emailsSent: number
+    emailsDelivered: number
+    emailsOpened: number
+    linksClicked: number
+    credentialsEntered: number
+    phishingReported: number
+    emailsBounced: number
+    createdBy: string
+    organizationId: string
     createdAt: Date
     updatedAt: Date
-    organizationId: string
     _count: PhishingCampaignCountAggregateOutputType | null
     _avg: PhishingCampaignAvgAggregateOutputType | null
     _sum: PhishingCampaignSumAggregateOutputType | null
@@ -12487,6 +17536,7 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     description?: boolean
+    templateId?: boolean
     template?: boolean
     subject?: boolean
     senderName?: boolean
@@ -12494,17 +17544,23 @@ export namespace Prisma {
     landingPageUrl?: boolean
     status?: boolean
     scheduledAt?: boolean
-    startedAt?: boolean
+    launchedAt?: boolean
     completedAt?: boolean
+    pausedAt?: boolean
     targetCount?: boolean
-    deliveredCount?: boolean
-    openedCount?: boolean
-    clickedCount?: boolean
-    reportedCount?: boolean
+    emailsSent?: boolean
+    emailsDelivered?: boolean
+    emailsOpened?: boolean
+    linksClicked?: boolean
+    credentialsEntered?: boolean
+    phishingReported?: boolean
+    emailsBounced?: boolean
+    createdBy?: boolean
+    organizationId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    organizationId?: boolean
     organization?: boolean | OrganizationDefaultArgs<ExtArgs>
+    creator?: boolean | UserDefaultArgs<ExtArgs>
     targets?: boolean | PhishingCampaign$targetsArgs<ExtArgs>
     events?: boolean | PhishingCampaign$eventsArgs<ExtArgs>
     _count?: boolean | PhishingCampaignCountOutputTypeDefaultArgs<ExtArgs>
@@ -12514,6 +17570,7 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     description?: boolean
+    templateId?: boolean
     template?: boolean
     subject?: boolean
     senderName?: boolean
@@ -12521,23 +17578,30 @@ export namespace Prisma {
     landingPageUrl?: boolean
     status?: boolean
     scheduledAt?: boolean
-    startedAt?: boolean
+    launchedAt?: boolean
     completedAt?: boolean
+    pausedAt?: boolean
     targetCount?: boolean
-    deliveredCount?: boolean
-    openedCount?: boolean
-    clickedCount?: boolean
-    reportedCount?: boolean
+    emailsSent?: boolean
+    emailsDelivered?: boolean
+    emailsOpened?: boolean
+    linksClicked?: boolean
+    credentialsEntered?: boolean
+    phishingReported?: boolean
+    emailsBounced?: boolean
+    createdBy?: boolean
+    organizationId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    organizationId?: boolean
     organization?: boolean | OrganizationDefaultArgs<ExtArgs>
+    creator?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["phishingCampaign"]>
 
   export type PhishingCampaignSelectScalar = {
     id?: boolean
     name?: boolean
     description?: boolean
+    templateId?: boolean
     template?: boolean
     subject?: boolean
     senderName?: boolean
@@ -12545,32 +17609,40 @@ export namespace Prisma {
     landingPageUrl?: boolean
     status?: boolean
     scheduledAt?: boolean
-    startedAt?: boolean
+    launchedAt?: boolean
     completedAt?: boolean
+    pausedAt?: boolean
     targetCount?: boolean
-    deliveredCount?: boolean
-    openedCount?: boolean
-    clickedCount?: boolean
-    reportedCount?: boolean
+    emailsSent?: boolean
+    emailsDelivered?: boolean
+    emailsOpened?: boolean
+    linksClicked?: boolean
+    credentialsEntered?: boolean
+    phishingReported?: boolean
+    emailsBounced?: boolean
+    createdBy?: boolean
+    organizationId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    organizationId?: boolean
   }
 
   export type PhishingCampaignInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     organization?: boolean | OrganizationDefaultArgs<ExtArgs>
+    creator?: boolean | UserDefaultArgs<ExtArgs>
     targets?: boolean | PhishingCampaign$targetsArgs<ExtArgs>
     events?: boolean | PhishingCampaign$eventsArgs<ExtArgs>
     _count?: boolean | PhishingCampaignCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type PhishingCampaignIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     organization?: boolean | OrganizationDefaultArgs<ExtArgs>
+    creator?: boolean | UserDefaultArgs<ExtArgs>
   }
 
   export type $PhishingCampaignPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "PhishingCampaign"
     objects: {
       organization: Prisma.$OrganizationPayload<ExtArgs>
+      creator: Prisma.$UserPayload<ExtArgs>
       targets: Prisma.$PhishingTargetPayload<ExtArgs>[]
       events: Prisma.$PhishingEventPayload<ExtArgs>[]
     }
@@ -12578,6 +17650,7 @@ export namespace Prisma {
       id: string
       name: string
       description: string | null
+      templateId: string
       template: string
       subject: string
       senderName: string
@@ -12585,16 +17658,21 @@ export namespace Prisma {
       landingPageUrl: string | null
       status: $Enums.CampaignStatus
       scheduledAt: Date | null
-      startedAt: Date | null
+      launchedAt: Date | null
       completedAt: Date | null
+      pausedAt: Date | null
       targetCount: number
-      deliveredCount: number
-      openedCount: number
-      clickedCount: number
-      reportedCount: number
+      emailsSent: number
+      emailsDelivered: number
+      emailsOpened: number
+      linksClicked: number
+      credentialsEntered: number
+      phishingReported: number
+      emailsBounced: number
+      createdBy: string
+      organizationId: string
       createdAt: Date
       updatedAt: Date
-      organizationId: string
     }, ExtArgs["result"]["phishingCampaign"]>
     composites: {}
   }
@@ -12960,6 +18038,7 @@ export namespace Prisma {
   export interface Prisma__PhishingCampaignClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     organization<T extends OrganizationDefaultArgs<ExtArgs> = {}>(args?: Subset<T, OrganizationDefaultArgs<ExtArgs>>): Prisma__OrganizationClient<$Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
+    creator<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
     targets<T extends PhishingCampaign$targetsArgs<ExtArgs> = {}>(args?: Subset<T, PhishingCampaign$targetsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PhishingTargetPayload<ExtArgs>, T, "findMany"> | Null>
     events<T extends PhishingCampaign$eventsArgs<ExtArgs> = {}>(args?: Subset<T, PhishingCampaign$eventsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PhishingEventPayload<ExtArgs>, T, "findMany"> | Null>
     /**
@@ -12994,6 +18073,7 @@ export namespace Prisma {
     readonly id: FieldRef<"PhishingCampaign", 'String'>
     readonly name: FieldRef<"PhishingCampaign", 'String'>
     readonly description: FieldRef<"PhishingCampaign", 'String'>
+    readonly templateId: FieldRef<"PhishingCampaign", 'String'>
     readonly template: FieldRef<"PhishingCampaign", 'String'>
     readonly subject: FieldRef<"PhishingCampaign", 'String'>
     readonly senderName: FieldRef<"PhishingCampaign", 'String'>
@@ -13001,16 +18081,21 @@ export namespace Prisma {
     readonly landingPageUrl: FieldRef<"PhishingCampaign", 'String'>
     readonly status: FieldRef<"PhishingCampaign", 'CampaignStatus'>
     readonly scheduledAt: FieldRef<"PhishingCampaign", 'DateTime'>
-    readonly startedAt: FieldRef<"PhishingCampaign", 'DateTime'>
+    readonly launchedAt: FieldRef<"PhishingCampaign", 'DateTime'>
     readonly completedAt: FieldRef<"PhishingCampaign", 'DateTime'>
+    readonly pausedAt: FieldRef<"PhishingCampaign", 'DateTime'>
     readonly targetCount: FieldRef<"PhishingCampaign", 'Int'>
-    readonly deliveredCount: FieldRef<"PhishingCampaign", 'Int'>
-    readonly openedCount: FieldRef<"PhishingCampaign", 'Int'>
-    readonly clickedCount: FieldRef<"PhishingCampaign", 'Int'>
-    readonly reportedCount: FieldRef<"PhishingCampaign", 'Int'>
+    readonly emailsSent: FieldRef<"PhishingCampaign", 'Int'>
+    readonly emailsDelivered: FieldRef<"PhishingCampaign", 'Int'>
+    readonly emailsOpened: FieldRef<"PhishingCampaign", 'Int'>
+    readonly linksClicked: FieldRef<"PhishingCampaign", 'Int'>
+    readonly credentialsEntered: FieldRef<"PhishingCampaign", 'Int'>
+    readonly phishingReported: FieldRef<"PhishingCampaign", 'Int'>
+    readonly emailsBounced: FieldRef<"PhishingCampaign", 'Int'>
+    readonly createdBy: FieldRef<"PhishingCampaign", 'String'>
+    readonly organizationId: FieldRef<"PhishingCampaign", 'String'>
     readonly createdAt: FieldRef<"PhishingCampaign", 'DateTime'>
     readonly updatedAt: FieldRef<"PhishingCampaign", 'DateTime'>
-    readonly organizationId: FieldRef<"PhishingCampaign", 'String'>
   }
     
 
@@ -13389,8 +18474,20 @@ export namespace Prisma {
 
   export type AggregatePhishingTarget = {
     _count: PhishingTargetCountAggregateOutputType | null
+    _avg: PhishingTargetAvgAggregateOutputType | null
+    _sum: PhishingTargetSumAggregateOutputType | null
     _min: PhishingTargetMinAggregateOutputType | null
     _max: PhishingTargetMaxAggregateOutputType | null
+  }
+
+  export type PhishingTargetAvgAggregateOutputType = {
+    clickCount: number | null
+    riskScore: number | null
+  }
+
+  export type PhishingTargetSumAggregateOutputType = {
+    clickCount: number | null
+    riskScore: number | null
   }
 
   export type PhishingTargetMinAggregateOutputType = {
@@ -13399,13 +18496,27 @@ export namespace Prisma {
     firstName: string | null
     lastName: string | null
     department: string | null
-    trackingId: string | null
-    status: $Enums.TargetStatus | null
+    jobTitle: string | null
+    emailSent: boolean | null
+    emailDelivered: boolean | null
+    emailOpened: boolean | null
+    linkClicked: boolean | null
+    credentialsEntered: boolean | null
+    reportedPhishing: boolean | null
+    emailBounced: boolean | null
+    sentAt: Date | null
     deliveredAt: Date | null
     openedAt: Date | null
     clickedAt: Date | null
+    credentialsAt: Date | null
     reportedAt: Date | null
+    bouncedAt: Date | null
+    userAgent: string | null
+    ipAddress: string | null
+    clickCount: number | null
+    riskScore: number | null
     createdAt: Date | null
+    updatedAt: Date | null
     campaignId: string | null
     userId: string | null
   }
@@ -13416,13 +18527,27 @@ export namespace Prisma {
     firstName: string | null
     lastName: string | null
     department: string | null
-    trackingId: string | null
-    status: $Enums.TargetStatus | null
+    jobTitle: string | null
+    emailSent: boolean | null
+    emailDelivered: boolean | null
+    emailOpened: boolean | null
+    linkClicked: boolean | null
+    credentialsEntered: boolean | null
+    reportedPhishing: boolean | null
+    emailBounced: boolean | null
+    sentAt: Date | null
     deliveredAt: Date | null
     openedAt: Date | null
     clickedAt: Date | null
+    credentialsAt: Date | null
     reportedAt: Date | null
+    bouncedAt: Date | null
+    userAgent: string | null
+    ipAddress: string | null
+    clickCount: number | null
+    riskScore: number | null
     createdAt: Date | null
+    updatedAt: Date | null
     campaignId: string | null
     userId: string | null
   }
@@ -13433,18 +18558,42 @@ export namespace Prisma {
     firstName: number
     lastName: number
     department: number
-    trackingId: number
-    status: number
+    jobTitle: number
+    emailSent: number
+    emailDelivered: number
+    emailOpened: number
+    linkClicked: number
+    credentialsEntered: number
+    reportedPhishing: number
+    emailBounced: number
+    sentAt: number
     deliveredAt: number
     openedAt: number
     clickedAt: number
+    credentialsAt: number
     reportedAt: number
+    bouncedAt: number
+    userAgent: number
+    ipAddress: number
+    clickCount: number
+    riskScore: number
     createdAt: number
+    updatedAt: number
     campaignId: number
     userId: number
     _all: number
   }
 
+
+  export type PhishingTargetAvgAggregateInputType = {
+    clickCount?: true
+    riskScore?: true
+  }
+
+  export type PhishingTargetSumAggregateInputType = {
+    clickCount?: true
+    riskScore?: true
+  }
 
   export type PhishingTargetMinAggregateInputType = {
     id?: true
@@ -13452,13 +18601,27 @@ export namespace Prisma {
     firstName?: true
     lastName?: true
     department?: true
-    trackingId?: true
-    status?: true
+    jobTitle?: true
+    emailSent?: true
+    emailDelivered?: true
+    emailOpened?: true
+    linkClicked?: true
+    credentialsEntered?: true
+    reportedPhishing?: true
+    emailBounced?: true
+    sentAt?: true
     deliveredAt?: true
     openedAt?: true
     clickedAt?: true
+    credentialsAt?: true
     reportedAt?: true
+    bouncedAt?: true
+    userAgent?: true
+    ipAddress?: true
+    clickCount?: true
+    riskScore?: true
     createdAt?: true
+    updatedAt?: true
     campaignId?: true
     userId?: true
   }
@@ -13469,13 +18632,27 @@ export namespace Prisma {
     firstName?: true
     lastName?: true
     department?: true
-    trackingId?: true
-    status?: true
+    jobTitle?: true
+    emailSent?: true
+    emailDelivered?: true
+    emailOpened?: true
+    linkClicked?: true
+    credentialsEntered?: true
+    reportedPhishing?: true
+    emailBounced?: true
+    sentAt?: true
     deliveredAt?: true
     openedAt?: true
     clickedAt?: true
+    credentialsAt?: true
     reportedAt?: true
+    bouncedAt?: true
+    userAgent?: true
+    ipAddress?: true
+    clickCount?: true
+    riskScore?: true
     createdAt?: true
+    updatedAt?: true
     campaignId?: true
     userId?: true
   }
@@ -13486,13 +18663,27 @@ export namespace Prisma {
     firstName?: true
     lastName?: true
     department?: true
-    trackingId?: true
-    status?: true
+    jobTitle?: true
+    emailSent?: true
+    emailDelivered?: true
+    emailOpened?: true
+    linkClicked?: true
+    credentialsEntered?: true
+    reportedPhishing?: true
+    emailBounced?: true
+    sentAt?: true
     deliveredAt?: true
     openedAt?: true
     clickedAt?: true
+    credentialsAt?: true
     reportedAt?: true
+    bouncedAt?: true
+    userAgent?: true
+    ipAddress?: true
+    clickCount?: true
+    riskScore?: true
     createdAt?: true
+    updatedAt?: true
     campaignId?: true
     userId?: true
     _all?: true
@@ -13536,6 +18727,18 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
+     * Select which fields to average
+    **/
+    _avg?: PhishingTargetAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: PhishingTargetSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: PhishingTargetMinAggregateInputType
@@ -13566,6 +18769,8 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: PhishingTargetCountAggregateInputType | true
+    _avg?: PhishingTargetAvgAggregateInputType
+    _sum?: PhishingTargetSumAggregateInputType
     _min?: PhishingTargetMinAggregateInputType
     _max?: PhishingTargetMaxAggregateInputType
   }
@@ -13576,16 +18781,32 @@ export namespace Prisma {
     firstName: string | null
     lastName: string | null
     department: string | null
-    trackingId: string
-    status: $Enums.TargetStatus
+    jobTitle: string | null
+    emailSent: boolean
+    emailDelivered: boolean
+    emailOpened: boolean
+    linkClicked: boolean
+    credentialsEntered: boolean
+    reportedPhishing: boolean
+    emailBounced: boolean
+    sentAt: Date | null
     deliveredAt: Date | null
     openedAt: Date | null
     clickedAt: Date | null
+    credentialsAt: Date | null
     reportedAt: Date | null
+    bouncedAt: Date | null
+    userAgent: string | null
+    ipAddress: string | null
+    clickCount: number
+    riskScore: number | null
     createdAt: Date
+    updatedAt: Date
     campaignId: string
     userId: string | null
     _count: PhishingTargetCountAggregateOutputType | null
+    _avg: PhishingTargetAvgAggregateOutputType | null
+    _sum: PhishingTargetSumAggregateOutputType | null
     _min: PhishingTargetMinAggregateOutputType | null
     _max: PhishingTargetMaxAggregateOutputType | null
   }
@@ -13610,13 +18831,27 @@ export namespace Prisma {
     firstName?: boolean
     lastName?: boolean
     department?: boolean
-    trackingId?: boolean
-    status?: boolean
+    jobTitle?: boolean
+    emailSent?: boolean
+    emailDelivered?: boolean
+    emailOpened?: boolean
+    linkClicked?: boolean
+    credentialsEntered?: boolean
+    reportedPhishing?: boolean
+    emailBounced?: boolean
+    sentAt?: boolean
     deliveredAt?: boolean
     openedAt?: boolean
     clickedAt?: boolean
+    credentialsAt?: boolean
     reportedAt?: boolean
+    bouncedAt?: boolean
+    userAgent?: boolean
+    ipAddress?: boolean
+    clickCount?: boolean
+    riskScore?: boolean
     createdAt?: boolean
+    updatedAt?: boolean
     campaignId?: boolean
     userId?: boolean
     campaign?: boolean | PhishingCampaignDefaultArgs<ExtArgs>
@@ -13631,13 +18866,27 @@ export namespace Prisma {
     firstName?: boolean
     lastName?: boolean
     department?: boolean
-    trackingId?: boolean
-    status?: boolean
+    jobTitle?: boolean
+    emailSent?: boolean
+    emailDelivered?: boolean
+    emailOpened?: boolean
+    linkClicked?: boolean
+    credentialsEntered?: boolean
+    reportedPhishing?: boolean
+    emailBounced?: boolean
+    sentAt?: boolean
     deliveredAt?: boolean
     openedAt?: boolean
     clickedAt?: boolean
+    credentialsAt?: boolean
     reportedAt?: boolean
+    bouncedAt?: boolean
+    userAgent?: boolean
+    ipAddress?: boolean
+    clickCount?: boolean
+    riskScore?: boolean
     createdAt?: boolean
+    updatedAt?: boolean
     campaignId?: boolean
     userId?: boolean
     campaign?: boolean | PhishingCampaignDefaultArgs<ExtArgs>
@@ -13650,13 +18899,27 @@ export namespace Prisma {
     firstName?: boolean
     lastName?: boolean
     department?: boolean
-    trackingId?: boolean
-    status?: boolean
+    jobTitle?: boolean
+    emailSent?: boolean
+    emailDelivered?: boolean
+    emailOpened?: boolean
+    linkClicked?: boolean
+    credentialsEntered?: boolean
+    reportedPhishing?: boolean
+    emailBounced?: boolean
+    sentAt?: boolean
     deliveredAt?: boolean
     openedAt?: boolean
     clickedAt?: boolean
+    credentialsAt?: boolean
     reportedAt?: boolean
+    bouncedAt?: boolean
+    userAgent?: boolean
+    ipAddress?: boolean
+    clickCount?: boolean
+    riskScore?: boolean
     createdAt?: boolean
+    updatedAt?: boolean
     campaignId?: boolean
     userId?: boolean
   }
@@ -13685,13 +18948,27 @@ export namespace Prisma {
       firstName: string | null
       lastName: string | null
       department: string | null
-      trackingId: string
-      status: $Enums.TargetStatus
+      jobTitle: string | null
+      emailSent: boolean
+      emailDelivered: boolean
+      emailOpened: boolean
+      linkClicked: boolean
+      credentialsEntered: boolean
+      reportedPhishing: boolean
+      emailBounced: boolean
+      sentAt: Date | null
       deliveredAt: Date | null
       openedAt: Date | null
       clickedAt: Date | null
+      credentialsAt: Date | null
       reportedAt: Date | null
+      bouncedAt: Date | null
+      userAgent: string | null
+      ipAddress: string | null
+      clickCount: number
+      riskScore: number | null
       createdAt: Date
+      updatedAt: Date
       campaignId: string
       userId: string | null
     }, ExtArgs["result"]["phishingTarget"]>
@@ -14095,13 +19372,27 @@ export namespace Prisma {
     readonly firstName: FieldRef<"PhishingTarget", 'String'>
     readonly lastName: FieldRef<"PhishingTarget", 'String'>
     readonly department: FieldRef<"PhishingTarget", 'String'>
-    readonly trackingId: FieldRef<"PhishingTarget", 'String'>
-    readonly status: FieldRef<"PhishingTarget", 'TargetStatus'>
+    readonly jobTitle: FieldRef<"PhishingTarget", 'String'>
+    readonly emailSent: FieldRef<"PhishingTarget", 'Boolean'>
+    readonly emailDelivered: FieldRef<"PhishingTarget", 'Boolean'>
+    readonly emailOpened: FieldRef<"PhishingTarget", 'Boolean'>
+    readonly linkClicked: FieldRef<"PhishingTarget", 'Boolean'>
+    readonly credentialsEntered: FieldRef<"PhishingTarget", 'Boolean'>
+    readonly reportedPhishing: FieldRef<"PhishingTarget", 'Boolean'>
+    readonly emailBounced: FieldRef<"PhishingTarget", 'Boolean'>
+    readonly sentAt: FieldRef<"PhishingTarget", 'DateTime'>
     readonly deliveredAt: FieldRef<"PhishingTarget", 'DateTime'>
     readonly openedAt: FieldRef<"PhishingTarget", 'DateTime'>
     readonly clickedAt: FieldRef<"PhishingTarget", 'DateTime'>
+    readonly credentialsAt: FieldRef<"PhishingTarget", 'DateTime'>
     readonly reportedAt: FieldRef<"PhishingTarget", 'DateTime'>
+    readonly bouncedAt: FieldRef<"PhishingTarget", 'DateTime'>
+    readonly userAgent: FieldRef<"PhishingTarget", 'String'>
+    readonly ipAddress: FieldRef<"PhishingTarget", 'String'>
+    readonly clickCount: FieldRef<"PhishingTarget", 'Int'>
+    readonly riskScore: FieldRef<"PhishingTarget", 'Float'>
     readonly createdAt: FieldRef<"PhishingTarget", 'DateTime'>
+    readonly updatedAt: FieldRef<"PhishingTarget", 'DateTime'>
     readonly campaignId: FieldRef<"PhishingTarget", 'String'>
     readonly userId: FieldRef<"PhishingTarget", 'String'>
   }
@@ -14484,10 +19775,11 @@ export namespace Prisma {
   export type PhishingEventMinAggregateOutputType = {
     id: string | null
     type: $Enums.PhishingEventType | null
-    metadata: string | null
-    ipAddress: string | null
-    userAgent: string | null
     timestamp: Date | null
+    metadata: string | null
+    userAgent: string | null
+    ipAddress: string | null
+    location: string | null
     campaignId: string | null
     targetId: string | null
   }
@@ -14495,10 +19787,11 @@ export namespace Prisma {
   export type PhishingEventMaxAggregateOutputType = {
     id: string | null
     type: $Enums.PhishingEventType | null
-    metadata: string | null
-    ipAddress: string | null
-    userAgent: string | null
     timestamp: Date | null
+    metadata: string | null
+    userAgent: string | null
+    ipAddress: string | null
+    location: string | null
     campaignId: string | null
     targetId: string | null
   }
@@ -14506,10 +19799,11 @@ export namespace Prisma {
   export type PhishingEventCountAggregateOutputType = {
     id: number
     type: number
-    metadata: number
-    ipAddress: number
-    userAgent: number
     timestamp: number
+    metadata: number
+    userAgent: number
+    ipAddress: number
+    location: number
     campaignId: number
     targetId: number
     _all: number
@@ -14519,10 +19813,11 @@ export namespace Prisma {
   export type PhishingEventMinAggregateInputType = {
     id?: true
     type?: true
-    metadata?: true
-    ipAddress?: true
-    userAgent?: true
     timestamp?: true
+    metadata?: true
+    userAgent?: true
+    ipAddress?: true
+    location?: true
     campaignId?: true
     targetId?: true
   }
@@ -14530,10 +19825,11 @@ export namespace Prisma {
   export type PhishingEventMaxAggregateInputType = {
     id?: true
     type?: true
-    metadata?: true
-    ipAddress?: true
-    userAgent?: true
     timestamp?: true
+    metadata?: true
+    userAgent?: true
+    ipAddress?: true
+    location?: true
     campaignId?: true
     targetId?: true
   }
@@ -14541,10 +19837,11 @@ export namespace Prisma {
   export type PhishingEventCountAggregateInputType = {
     id?: true
     type?: true
-    metadata?: true
-    ipAddress?: true
-    userAgent?: true
     timestamp?: true
+    metadata?: true
+    userAgent?: true
+    ipAddress?: true
+    location?: true
     campaignId?: true
     targetId?: true
     _all?: true
@@ -14625,12 +19922,13 @@ export namespace Prisma {
   export type PhishingEventGroupByOutputType = {
     id: string
     type: $Enums.PhishingEventType
-    metadata: string | null
-    ipAddress: string | null
-    userAgent: string | null
     timestamp: Date
+    metadata: string | null
+    userAgent: string | null
+    ipAddress: string | null
+    location: string | null
     campaignId: string
-    targetId: string
+    targetId: string | null
     _count: PhishingEventCountAggregateOutputType | null
     _min: PhishingEventMinAggregateOutputType | null
     _max: PhishingEventMaxAggregateOutputType | null
@@ -14653,64 +19951,68 @@ export namespace Prisma {
   export type PhishingEventSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     type?: boolean
-    metadata?: boolean
-    ipAddress?: boolean
-    userAgent?: boolean
     timestamp?: boolean
+    metadata?: boolean
+    userAgent?: boolean
+    ipAddress?: boolean
+    location?: boolean
     campaignId?: boolean
     targetId?: boolean
     campaign?: boolean | PhishingCampaignDefaultArgs<ExtArgs>
-    target?: boolean | PhishingTargetDefaultArgs<ExtArgs>
+    target?: boolean | PhishingEvent$targetArgs<ExtArgs>
   }, ExtArgs["result"]["phishingEvent"]>
 
   export type PhishingEventSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     type?: boolean
-    metadata?: boolean
-    ipAddress?: boolean
-    userAgent?: boolean
     timestamp?: boolean
+    metadata?: boolean
+    userAgent?: boolean
+    ipAddress?: boolean
+    location?: boolean
     campaignId?: boolean
     targetId?: boolean
     campaign?: boolean | PhishingCampaignDefaultArgs<ExtArgs>
-    target?: boolean | PhishingTargetDefaultArgs<ExtArgs>
+    target?: boolean | PhishingEvent$targetArgs<ExtArgs>
   }, ExtArgs["result"]["phishingEvent"]>
 
   export type PhishingEventSelectScalar = {
     id?: boolean
     type?: boolean
-    metadata?: boolean
-    ipAddress?: boolean
-    userAgent?: boolean
     timestamp?: boolean
+    metadata?: boolean
+    userAgent?: boolean
+    ipAddress?: boolean
+    location?: boolean
     campaignId?: boolean
     targetId?: boolean
   }
 
   export type PhishingEventInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     campaign?: boolean | PhishingCampaignDefaultArgs<ExtArgs>
-    target?: boolean | PhishingTargetDefaultArgs<ExtArgs>
+    target?: boolean | PhishingEvent$targetArgs<ExtArgs>
   }
   export type PhishingEventIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     campaign?: boolean | PhishingCampaignDefaultArgs<ExtArgs>
-    target?: boolean | PhishingTargetDefaultArgs<ExtArgs>
+    target?: boolean | PhishingEvent$targetArgs<ExtArgs>
   }
 
   export type $PhishingEventPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "PhishingEvent"
     objects: {
       campaign: Prisma.$PhishingCampaignPayload<ExtArgs>
-      target: Prisma.$PhishingTargetPayload<ExtArgs>
+      target: Prisma.$PhishingTargetPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       type: $Enums.PhishingEventType
-      metadata: string | null
-      ipAddress: string | null
-      userAgent: string | null
       timestamp: Date
+      metadata: string | null
+      userAgent: string | null
+      ipAddress: string | null
+      location: string | null
       campaignId: string
-      targetId: string
+      targetId: string | null
     }, ExtArgs["result"]["phishingEvent"]>
     composites: {}
   }
@@ -15076,7 +20378,7 @@ export namespace Prisma {
   export interface Prisma__PhishingEventClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     campaign<T extends PhishingCampaignDefaultArgs<ExtArgs> = {}>(args?: Subset<T, PhishingCampaignDefaultArgs<ExtArgs>>): Prisma__PhishingCampaignClient<$Result.GetResult<Prisma.$PhishingCampaignPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
-    target<T extends PhishingTargetDefaultArgs<ExtArgs> = {}>(args?: Subset<T, PhishingTargetDefaultArgs<ExtArgs>>): Prisma__PhishingTargetClient<$Result.GetResult<Prisma.$PhishingTargetPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
+    target<T extends PhishingEvent$targetArgs<ExtArgs> = {}>(args?: Subset<T, PhishingEvent$targetArgs<ExtArgs>>): Prisma__PhishingTargetClient<$Result.GetResult<Prisma.$PhishingTargetPayload<ExtArgs>, T, "findUniqueOrThrow"> | null, null, ExtArgs>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -15108,10 +20410,11 @@ export namespace Prisma {
   interface PhishingEventFieldRefs {
     readonly id: FieldRef<"PhishingEvent", 'String'>
     readonly type: FieldRef<"PhishingEvent", 'PhishingEventType'>
-    readonly metadata: FieldRef<"PhishingEvent", 'String'>
-    readonly ipAddress: FieldRef<"PhishingEvent", 'String'>
-    readonly userAgent: FieldRef<"PhishingEvent", 'String'>
     readonly timestamp: FieldRef<"PhishingEvent", 'DateTime'>
+    readonly metadata: FieldRef<"PhishingEvent", 'String'>
+    readonly userAgent: FieldRef<"PhishingEvent", 'String'>
+    readonly ipAddress: FieldRef<"PhishingEvent", 'String'>
+    readonly location: FieldRef<"PhishingEvent", 'String'>
     readonly campaignId: FieldRef<"PhishingEvent", 'String'>
     readonly targetId: FieldRef<"PhishingEvent", 'String'>
   }
@@ -15432,6 +20735,21 @@ export namespace Prisma {
   }
 
   /**
+   * PhishingEvent.target
+   */
+  export type PhishingEvent$targetArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PhishingTarget
+     */
+    select?: PhishingTargetSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PhishingTargetInclude<ExtArgs> | null
+    where?: PhishingTargetWhereInput
+  }
+
+  /**
    * PhishingEvent without action
    */
   export type PhishingEventDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -15443,6 +20761,2201 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: PhishingEventInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model PhishingTemplate
+   */
+
+  export type AggregatePhishingTemplate = {
+    _count: PhishingTemplateCountAggregateOutputType | null
+    _avg: PhishingTemplateAvgAggregateOutputType | null
+    _sum: PhishingTemplateSumAggregateOutputType | null
+    _min: PhishingTemplateMinAggregateOutputType | null
+    _max: PhishingTemplateMaxAggregateOutputType | null
+  }
+
+  export type PhishingTemplateAvgAggregateOutputType = {
+    usageCount: number | null
+    successRate: number | null
+  }
+
+  export type PhishingTemplateSumAggregateOutputType = {
+    usageCount: number | null
+    successRate: number | null
+  }
+
+  export type PhishingTemplateMinAggregateOutputType = {
+    id: string | null
+    name: string | null
+    description: string | null
+    category: $Enums.TemplateCategory | null
+    riskLevel: $Enums.RiskLevel | null
+    defaultSubject: string | null
+    defaultSenderName: string | null
+    emailBodyHtml: string | null
+    emailBodyText: string | null
+    landingPageHtml: string | null
+    captureCredentials: boolean | null
+    isActive: boolean | null
+    previewContent: string | null
+    usageCount: number | null
+    successRate: number | null
+    createdBy: string | null
+    organizationId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type PhishingTemplateMaxAggregateOutputType = {
+    id: string | null
+    name: string | null
+    description: string | null
+    category: $Enums.TemplateCategory | null
+    riskLevel: $Enums.RiskLevel | null
+    defaultSubject: string | null
+    defaultSenderName: string | null
+    emailBodyHtml: string | null
+    emailBodyText: string | null
+    landingPageHtml: string | null
+    captureCredentials: boolean | null
+    isActive: boolean | null
+    previewContent: string | null
+    usageCount: number | null
+    successRate: number | null
+    createdBy: string | null
+    organizationId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type PhishingTemplateCountAggregateOutputType = {
+    id: number
+    name: number
+    description: number
+    category: number
+    riskLevel: number
+    defaultSubject: number
+    defaultSenderName: number
+    emailBodyHtml: number
+    emailBodyText: number
+    landingPageHtml: number
+    captureCredentials: number
+    isActive: number
+    previewContent: number
+    tags: number
+    usageCount: number
+    successRate: number
+    createdBy: number
+    organizationId: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type PhishingTemplateAvgAggregateInputType = {
+    usageCount?: true
+    successRate?: true
+  }
+
+  export type PhishingTemplateSumAggregateInputType = {
+    usageCount?: true
+    successRate?: true
+  }
+
+  export type PhishingTemplateMinAggregateInputType = {
+    id?: true
+    name?: true
+    description?: true
+    category?: true
+    riskLevel?: true
+    defaultSubject?: true
+    defaultSenderName?: true
+    emailBodyHtml?: true
+    emailBodyText?: true
+    landingPageHtml?: true
+    captureCredentials?: true
+    isActive?: true
+    previewContent?: true
+    usageCount?: true
+    successRate?: true
+    createdBy?: true
+    organizationId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type PhishingTemplateMaxAggregateInputType = {
+    id?: true
+    name?: true
+    description?: true
+    category?: true
+    riskLevel?: true
+    defaultSubject?: true
+    defaultSenderName?: true
+    emailBodyHtml?: true
+    emailBodyText?: true
+    landingPageHtml?: true
+    captureCredentials?: true
+    isActive?: true
+    previewContent?: true
+    usageCount?: true
+    successRate?: true
+    createdBy?: true
+    organizationId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type PhishingTemplateCountAggregateInputType = {
+    id?: true
+    name?: true
+    description?: true
+    category?: true
+    riskLevel?: true
+    defaultSubject?: true
+    defaultSenderName?: true
+    emailBodyHtml?: true
+    emailBodyText?: true
+    landingPageHtml?: true
+    captureCredentials?: true
+    isActive?: true
+    previewContent?: true
+    tags?: true
+    usageCount?: true
+    successRate?: true
+    createdBy?: true
+    organizationId?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type PhishingTemplateAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PhishingTemplate to aggregate.
+     */
+    where?: PhishingTemplateWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PhishingTemplates to fetch.
+     */
+    orderBy?: PhishingTemplateOrderByWithRelationInput | PhishingTemplateOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: PhishingTemplateWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PhishingTemplates from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PhishingTemplates.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned PhishingTemplates
+    **/
+    _count?: true | PhishingTemplateCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: PhishingTemplateAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: PhishingTemplateSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: PhishingTemplateMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: PhishingTemplateMaxAggregateInputType
+  }
+
+  export type GetPhishingTemplateAggregateType<T extends PhishingTemplateAggregateArgs> = {
+        [P in keyof T & keyof AggregatePhishingTemplate]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregatePhishingTemplate[P]>
+      : GetScalarType<T[P], AggregatePhishingTemplate[P]>
+  }
+
+
+
+
+  export type PhishingTemplateGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PhishingTemplateWhereInput
+    orderBy?: PhishingTemplateOrderByWithAggregationInput | PhishingTemplateOrderByWithAggregationInput[]
+    by: PhishingTemplateScalarFieldEnum[] | PhishingTemplateScalarFieldEnum
+    having?: PhishingTemplateScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: PhishingTemplateCountAggregateInputType | true
+    _avg?: PhishingTemplateAvgAggregateInputType
+    _sum?: PhishingTemplateSumAggregateInputType
+    _min?: PhishingTemplateMinAggregateInputType
+    _max?: PhishingTemplateMaxAggregateInputType
+  }
+
+  export type PhishingTemplateGroupByOutputType = {
+    id: string
+    name: string
+    description: string
+    category: $Enums.TemplateCategory
+    riskLevel: $Enums.RiskLevel
+    defaultSubject: string
+    defaultSenderName: string
+    emailBodyHtml: string
+    emailBodyText: string
+    landingPageHtml: string | null
+    captureCredentials: boolean
+    isActive: boolean
+    previewContent: string
+    tags: string[]
+    usageCount: number
+    successRate: number | null
+    createdBy: string | null
+    organizationId: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: PhishingTemplateCountAggregateOutputType | null
+    _avg: PhishingTemplateAvgAggregateOutputType | null
+    _sum: PhishingTemplateSumAggregateOutputType | null
+    _min: PhishingTemplateMinAggregateOutputType | null
+    _max: PhishingTemplateMaxAggregateOutputType | null
+  }
+
+  type GetPhishingTemplateGroupByPayload<T extends PhishingTemplateGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<PhishingTemplateGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof PhishingTemplateGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], PhishingTemplateGroupByOutputType[P]>
+            : GetScalarType<T[P], PhishingTemplateGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type PhishingTemplateSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    description?: boolean
+    category?: boolean
+    riskLevel?: boolean
+    defaultSubject?: boolean
+    defaultSenderName?: boolean
+    emailBodyHtml?: boolean
+    emailBodyText?: boolean
+    landingPageHtml?: boolean
+    captureCredentials?: boolean
+    isActive?: boolean
+    previewContent?: boolean
+    tags?: boolean
+    usageCount?: boolean
+    successRate?: boolean
+    createdBy?: boolean
+    organizationId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    organization?: boolean | PhishingTemplate$organizationArgs<ExtArgs>
+    creator?: boolean | PhishingTemplate$creatorArgs<ExtArgs>
+  }, ExtArgs["result"]["phishingTemplate"]>
+
+  export type PhishingTemplateSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    description?: boolean
+    category?: boolean
+    riskLevel?: boolean
+    defaultSubject?: boolean
+    defaultSenderName?: boolean
+    emailBodyHtml?: boolean
+    emailBodyText?: boolean
+    landingPageHtml?: boolean
+    captureCredentials?: boolean
+    isActive?: boolean
+    previewContent?: boolean
+    tags?: boolean
+    usageCount?: boolean
+    successRate?: boolean
+    createdBy?: boolean
+    organizationId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    organization?: boolean | PhishingTemplate$organizationArgs<ExtArgs>
+    creator?: boolean | PhishingTemplate$creatorArgs<ExtArgs>
+  }, ExtArgs["result"]["phishingTemplate"]>
+
+  export type PhishingTemplateSelectScalar = {
+    id?: boolean
+    name?: boolean
+    description?: boolean
+    category?: boolean
+    riskLevel?: boolean
+    defaultSubject?: boolean
+    defaultSenderName?: boolean
+    emailBodyHtml?: boolean
+    emailBodyText?: boolean
+    landingPageHtml?: boolean
+    captureCredentials?: boolean
+    isActive?: boolean
+    previewContent?: boolean
+    tags?: boolean
+    usageCount?: boolean
+    successRate?: boolean
+    createdBy?: boolean
+    organizationId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type PhishingTemplateInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    organization?: boolean | PhishingTemplate$organizationArgs<ExtArgs>
+    creator?: boolean | PhishingTemplate$creatorArgs<ExtArgs>
+  }
+  export type PhishingTemplateIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    organization?: boolean | PhishingTemplate$organizationArgs<ExtArgs>
+    creator?: boolean | PhishingTemplate$creatorArgs<ExtArgs>
+  }
+
+  export type $PhishingTemplatePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "PhishingTemplate"
+    objects: {
+      organization: Prisma.$OrganizationPayload<ExtArgs> | null
+      creator: Prisma.$UserPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      name: string
+      description: string
+      category: $Enums.TemplateCategory
+      riskLevel: $Enums.RiskLevel
+      defaultSubject: string
+      defaultSenderName: string
+      emailBodyHtml: string
+      emailBodyText: string
+      landingPageHtml: string | null
+      captureCredentials: boolean
+      isActive: boolean
+      previewContent: string
+      tags: string[]
+      usageCount: number
+      successRate: number | null
+      createdBy: string | null
+      organizationId: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["phishingTemplate"]>
+    composites: {}
+  }
+
+  type PhishingTemplateGetPayload<S extends boolean | null | undefined | PhishingTemplateDefaultArgs> = $Result.GetResult<Prisma.$PhishingTemplatePayload, S>
+
+  type PhishingTemplateCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<PhishingTemplateFindManyArgs, 'select' | 'include' | 'distinct'> & {
+      select?: PhishingTemplateCountAggregateInputType | true
+    }
+
+  export interface PhishingTemplateDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['PhishingTemplate'], meta: { name: 'PhishingTemplate' } }
+    /**
+     * Find zero or one PhishingTemplate that matches the filter.
+     * @param {PhishingTemplateFindUniqueArgs} args - Arguments to find a PhishingTemplate
+     * @example
+     * // Get one PhishingTemplate
+     * const phishingTemplate = await prisma.phishingTemplate.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends PhishingTemplateFindUniqueArgs>(args: SelectSubset<T, PhishingTemplateFindUniqueArgs<ExtArgs>>): Prisma__PhishingTemplateClient<$Result.GetResult<Prisma.$PhishingTemplatePayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
+
+    /**
+     * Find one PhishingTemplate that matches the filter or throw an error with `error.code='P2025'` 
+     * if no matches were found.
+     * @param {PhishingTemplateFindUniqueOrThrowArgs} args - Arguments to find a PhishingTemplate
+     * @example
+     * // Get one PhishingTemplate
+     * const phishingTemplate = await prisma.phishingTemplate.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends PhishingTemplateFindUniqueOrThrowArgs>(args: SelectSubset<T, PhishingTemplateFindUniqueOrThrowArgs<ExtArgs>>): Prisma__PhishingTemplateClient<$Result.GetResult<Prisma.$PhishingTemplatePayload<ExtArgs>, T, "findUniqueOrThrow">, never, ExtArgs>
+
+    /**
+     * Find the first PhishingTemplate that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PhishingTemplateFindFirstArgs} args - Arguments to find a PhishingTemplate
+     * @example
+     * // Get one PhishingTemplate
+     * const phishingTemplate = await prisma.phishingTemplate.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends PhishingTemplateFindFirstArgs>(args?: SelectSubset<T, PhishingTemplateFindFirstArgs<ExtArgs>>): Prisma__PhishingTemplateClient<$Result.GetResult<Prisma.$PhishingTemplatePayload<ExtArgs>, T, "findFirst"> | null, null, ExtArgs>
+
+    /**
+     * Find the first PhishingTemplate that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PhishingTemplateFindFirstOrThrowArgs} args - Arguments to find a PhishingTemplate
+     * @example
+     * // Get one PhishingTemplate
+     * const phishingTemplate = await prisma.phishingTemplate.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends PhishingTemplateFindFirstOrThrowArgs>(args?: SelectSubset<T, PhishingTemplateFindFirstOrThrowArgs<ExtArgs>>): Prisma__PhishingTemplateClient<$Result.GetResult<Prisma.$PhishingTemplatePayload<ExtArgs>, T, "findFirstOrThrow">, never, ExtArgs>
+
+    /**
+     * Find zero or more PhishingTemplates that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PhishingTemplateFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all PhishingTemplates
+     * const phishingTemplates = await prisma.phishingTemplate.findMany()
+     * 
+     * // Get first 10 PhishingTemplates
+     * const phishingTemplates = await prisma.phishingTemplate.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const phishingTemplateWithIdOnly = await prisma.phishingTemplate.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends PhishingTemplateFindManyArgs>(args?: SelectSubset<T, PhishingTemplateFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PhishingTemplatePayload<ExtArgs>, T, "findMany">>
+
+    /**
+     * Create a PhishingTemplate.
+     * @param {PhishingTemplateCreateArgs} args - Arguments to create a PhishingTemplate.
+     * @example
+     * // Create one PhishingTemplate
+     * const PhishingTemplate = await prisma.phishingTemplate.create({
+     *   data: {
+     *     // ... data to create a PhishingTemplate
+     *   }
+     * })
+     * 
+     */
+    create<T extends PhishingTemplateCreateArgs>(args: SelectSubset<T, PhishingTemplateCreateArgs<ExtArgs>>): Prisma__PhishingTemplateClient<$Result.GetResult<Prisma.$PhishingTemplatePayload<ExtArgs>, T, "create">, never, ExtArgs>
+
+    /**
+     * Create many PhishingTemplates.
+     * @param {PhishingTemplateCreateManyArgs} args - Arguments to create many PhishingTemplates.
+     * @example
+     * // Create many PhishingTemplates
+     * const phishingTemplate = await prisma.phishingTemplate.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends PhishingTemplateCreateManyArgs>(args?: SelectSubset<T, PhishingTemplateCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many PhishingTemplates and returns the data saved in the database.
+     * @param {PhishingTemplateCreateManyAndReturnArgs} args - Arguments to create many PhishingTemplates.
+     * @example
+     * // Create many PhishingTemplates
+     * const phishingTemplate = await prisma.phishingTemplate.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many PhishingTemplates and only return the `id`
+     * const phishingTemplateWithIdOnly = await prisma.phishingTemplate.createManyAndReturn({ 
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends PhishingTemplateCreateManyAndReturnArgs>(args?: SelectSubset<T, PhishingTemplateCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PhishingTemplatePayload<ExtArgs>, T, "createManyAndReturn">>
+
+    /**
+     * Delete a PhishingTemplate.
+     * @param {PhishingTemplateDeleteArgs} args - Arguments to delete one PhishingTemplate.
+     * @example
+     * // Delete one PhishingTemplate
+     * const PhishingTemplate = await prisma.phishingTemplate.delete({
+     *   where: {
+     *     // ... filter to delete one PhishingTemplate
+     *   }
+     * })
+     * 
+     */
+    delete<T extends PhishingTemplateDeleteArgs>(args: SelectSubset<T, PhishingTemplateDeleteArgs<ExtArgs>>): Prisma__PhishingTemplateClient<$Result.GetResult<Prisma.$PhishingTemplatePayload<ExtArgs>, T, "delete">, never, ExtArgs>
+
+    /**
+     * Update one PhishingTemplate.
+     * @param {PhishingTemplateUpdateArgs} args - Arguments to update one PhishingTemplate.
+     * @example
+     * // Update one PhishingTemplate
+     * const phishingTemplate = await prisma.phishingTemplate.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends PhishingTemplateUpdateArgs>(args: SelectSubset<T, PhishingTemplateUpdateArgs<ExtArgs>>): Prisma__PhishingTemplateClient<$Result.GetResult<Prisma.$PhishingTemplatePayload<ExtArgs>, T, "update">, never, ExtArgs>
+
+    /**
+     * Delete zero or more PhishingTemplates.
+     * @param {PhishingTemplateDeleteManyArgs} args - Arguments to filter PhishingTemplates to delete.
+     * @example
+     * // Delete a few PhishingTemplates
+     * const { count } = await prisma.phishingTemplate.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends PhishingTemplateDeleteManyArgs>(args?: SelectSubset<T, PhishingTemplateDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PhishingTemplates.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PhishingTemplateUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many PhishingTemplates
+     * const phishingTemplate = await prisma.phishingTemplate.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends PhishingTemplateUpdateManyArgs>(args: SelectSubset<T, PhishingTemplateUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one PhishingTemplate.
+     * @param {PhishingTemplateUpsertArgs} args - Arguments to update or create a PhishingTemplate.
+     * @example
+     * // Update or create a PhishingTemplate
+     * const phishingTemplate = await prisma.phishingTemplate.upsert({
+     *   create: {
+     *     // ... data to create a PhishingTemplate
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the PhishingTemplate we want to update
+     *   }
+     * })
+     */
+    upsert<T extends PhishingTemplateUpsertArgs>(args: SelectSubset<T, PhishingTemplateUpsertArgs<ExtArgs>>): Prisma__PhishingTemplateClient<$Result.GetResult<Prisma.$PhishingTemplatePayload<ExtArgs>, T, "upsert">, never, ExtArgs>
+
+
+    /**
+     * Count the number of PhishingTemplates.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PhishingTemplateCountArgs} args - Arguments to filter PhishingTemplates to count.
+     * @example
+     * // Count the number of PhishingTemplates
+     * const count = await prisma.phishingTemplate.count({
+     *   where: {
+     *     // ... the filter for the PhishingTemplates we want to count
+     *   }
+     * })
+    **/
+    count<T extends PhishingTemplateCountArgs>(
+      args?: Subset<T, PhishingTemplateCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], PhishingTemplateCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a PhishingTemplate.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PhishingTemplateAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends PhishingTemplateAggregateArgs>(args: Subset<T, PhishingTemplateAggregateArgs>): Prisma.PrismaPromise<GetPhishingTemplateAggregateType<T>>
+
+    /**
+     * Group by PhishingTemplate.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PhishingTemplateGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends PhishingTemplateGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: PhishingTemplateGroupByArgs['orderBy'] }
+        : { orderBy?: PhishingTemplateGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, PhishingTemplateGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPhishingTemplateGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the PhishingTemplate model
+   */
+  readonly fields: PhishingTemplateFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for PhishingTemplate.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__PhishingTemplateClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    organization<T extends PhishingTemplate$organizationArgs<ExtArgs> = {}>(args?: Subset<T, PhishingTemplate$organizationArgs<ExtArgs>>): Prisma__OrganizationClient<$Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findUniqueOrThrow"> | null, null, ExtArgs>
+    creator<T extends PhishingTemplate$creatorArgs<ExtArgs> = {}>(args?: Subset<T, PhishingTemplate$creatorArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow"> | null, null, ExtArgs>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the PhishingTemplate model
+   */ 
+  interface PhishingTemplateFieldRefs {
+    readonly id: FieldRef<"PhishingTemplate", 'String'>
+    readonly name: FieldRef<"PhishingTemplate", 'String'>
+    readonly description: FieldRef<"PhishingTemplate", 'String'>
+    readonly category: FieldRef<"PhishingTemplate", 'TemplateCategory'>
+    readonly riskLevel: FieldRef<"PhishingTemplate", 'RiskLevel'>
+    readonly defaultSubject: FieldRef<"PhishingTemplate", 'String'>
+    readonly defaultSenderName: FieldRef<"PhishingTemplate", 'String'>
+    readonly emailBodyHtml: FieldRef<"PhishingTemplate", 'String'>
+    readonly emailBodyText: FieldRef<"PhishingTemplate", 'String'>
+    readonly landingPageHtml: FieldRef<"PhishingTemplate", 'String'>
+    readonly captureCredentials: FieldRef<"PhishingTemplate", 'Boolean'>
+    readonly isActive: FieldRef<"PhishingTemplate", 'Boolean'>
+    readonly previewContent: FieldRef<"PhishingTemplate", 'String'>
+    readonly tags: FieldRef<"PhishingTemplate", 'String[]'>
+    readonly usageCount: FieldRef<"PhishingTemplate", 'Int'>
+    readonly successRate: FieldRef<"PhishingTemplate", 'Float'>
+    readonly createdBy: FieldRef<"PhishingTemplate", 'String'>
+    readonly organizationId: FieldRef<"PhishingTemplate", 'String'>
+    readonly createdAt: FieldRef<"PhishingTemplate", 'DateTime'>
+    readonly updatedAt: FieldRef<"PhishingTemplate", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * PhishingTemplate findUnique
+   */
+  export type PhishingTemplateFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PhishingTemplate
+     */
+    select?: PhishingTemplateSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PhishingTemplateInclude<ExtArgs> | null
+    /**
+     * Filter, which PhishingTemplate to fetch.
+     */
+    where: PhishingTemplateWhereUniqueInput
+  }
+
+  /**
+   * PhishingTemplate findUniqueOrThrow
+   */
+  export type PhishingTemplateFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PhishingTemplate
+     */
+    select?: PhishingTemplateSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PhishingTemplateInclude<ExtArgs> | null
+    /**
+     * Filter, which PhishingTemplate to fetch.
+     */
+    where: PhishingTemplateWhereUniqueInput
+  }
+
+  /**
+   * PhishingTemplate findFirst
+   */
+  export type PhishingTemplateFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PhishingTemplate
+     */
+    select?: PhishingTemplateSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PhishingTemplateInclude<ExtArgs> | null
+    /**
+     * Filter, which PhishingTemplate to fetch.
+     */
+    where?: PhishingTemplateWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PhishingTemplates to fetch.
+     */
+    orderBy?: PhishingTemplateOrderByWithRelationInput | PhishingTemplateOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PhishingTemplates.
+     */
+    cursor?: PhishingTemplateWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PhishingTemplates from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PhishingTemplates.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PhishingTemplates.
+     */
+    distinct?: PhishingTemplateScalarFieldEnum | PhishingTemplateScalarFieldEnum[]
+  }
+
+  /**
+   * PhishingTemplate findFirstOrThrow
+   */
+  export type PhishingTemplateFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PhishingTemplate
+     */
+    select?: PhishingTemplateSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PhishingTemplateInclude<ExtArgs> | null
+    /**
+     * Filter, which PhishingTemplate to fetch.
+     */
+    where?: PhishingTemplateWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PhishingTemplates to fetch.
+     */
+    orderBy?: PhishingTemplateOrderByWithRelationInput | PhishingTemplateOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PhishingTemplates.
+     */
+    cursor?: PhishingTemplateWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PhishingTemplates from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PhishingTemplates.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PhishingTemplates.
+     */
+    distinct?: PhishingTemplateScalarFieldEnum | PhishingTemplateScalarFieldEnum[]
+  }
+
+  /**
+   * PhishingTemplate findMany
+   */
+  export type PhishingTemplateFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PhishingTemplate
+     */
+    select?: PhishingTemplateSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PhishingTemplateInclude<ExtArgs> | null
+    /**
+     * Filter, which PhishingTemplates to fetch.
+     */
+    where?: PhishingTemplateWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PhishingTemplates to fetch.
+     */
+    orderBy?: PhishingTemplateOrderByWithRelationInput | PhishingTemplateOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing PhishingTemplates.
+     */
+    cursor?: PhishingTemplateWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PhishingTemplates from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PhishingTemplates.
+     */
+    skip?: number
+    distinct?: PhishingTemplateScalarFieldEnum | PhishingTemplateScalarFieldEnum[]
+  }
+
+  /**
+   * PhishingTemplate create
+   */
+  export type PhishingTemplateCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PhishingTemplate
+     */
+    select?: PhishingTemplateSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PhishingTemplateInclude<ExtArgs> | null
+    /**
+     * The data needed to create a PhishingTemplate.
+     */
+    data: XOR<PhishingTemplateCreateInput, PhishingTemplateUncheckedCreateInput>
+  }
+
+  /**
+   * PhishingTemplate createMany
+   */
+  export type PhishingTemplateCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many PhishingTemplates.
+     */
+    data: PhishingTemplateCreateManyInput | PhishingTemplateCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * PhishingTemplate createManyAndReturn
+   */
+  export type PhishingTemplateCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PhishingTemplate
+     */
+    select?: PhishingTemplateSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * The data used to create many PhishingTemplates.
+     */
+    data: PhishingTemplateCreateManyInput | PhishingTemplateCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PhishingTemplateIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * PhishingTemplate update
+   */
+  export type PhishingTemplateUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PhishingTemplate
+     */
+    select?: PhishingTemplateSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PhishingTemplateInclude<ExtArgs> | null
+    /**
+     * The data needed to update a PhishingTemplate.
+     */
+    data: XOR<PhishingTemplateUpdateInput, PhishingTemplateUncheckedUpdateInput>
+    /**
+     * Choose, which PhishingTemplate to update.
+     */
+    where: PhishingTemplateWhereUniqueInput
+  }
+
+  /**
+   * PhishingTemplate updateMany
+   */
+  export type PhishingTemplateUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update PhishingTemplates.
+     */
+    data: XOR<PhishingTemplateUpdateManyMutationInput, PhishingTemplateUncheckedUpdateManyInput>
+    /**
+     * Filter which PhishingTemplates to update
+     */
+    where?: PhishingTemplateWhereInput
+  }
+
+  /**
+   * PhishingTemplate upsert
+   */
+  export type PhishingTemplateUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PhishingTemplate
+     */
+    select?: PhishingTemplateSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PhishingTemplateInclude<ExtArgs> | null
+    /**
+     * The filter to search for the PhishingTemplate to update in case it exists.
+     */
+    where: PhishingTemplateWhereUniqueInput
+    /**
+     * In case the PhishingTemplate found by the `where` argument doesn't exist, create a new PhishingTemplate with this data.
+     */
+    create: XOR<PhishingTemplateCreateInput, PhishingTemplateUncheckedCreateInput>
+    /**
+     * In case the PhishingTemplate was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<PhishingTemplateUpdateInput, PhishingTemplateUncheckedUpdateInput>
+  }
+
+  /**
+   * PhishingTemplate delete
+   */
+  export type PhishingTemplateDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PhishingTemplate
+     */
+    select?: PhishingTemplateSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PhishingTemplateInclude<ExtArgs> | null
+    /**
+     * Filter which PhishingTemplate to delete.
+     */
+    where: PhishingTemplateWhereUniqueInput
+  }
+
+  /**
+   * PhishingTemplate deleteMany
+   */
+  export type PhishingTemplateDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PhishingTemplates to delete
+     */
+    where?: PhishingTemplateWhereInput
+  }
+
+  /**
+   * PhishingTemplate.organization
+   */
+  export type PhishingTemplate$organizationArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Organization
+     */
+    select?: OrganizationSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrganizationInclude<ExtArgs> | null
+    where?: OrganizationWhereInput
+  }
+
+  /**
+   * PhishingTemplate.creator
+   */
+  export type PhishingTemplate$creatorArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
+   * PhishingTemplate without action
+   */
+  export type PhishingTemplateDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PhishingTemplate
+     */
+    select?: PhishingTemplateSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PhishingTemplateInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model EmailJob
+   */
+
+  export type AggregateEmailJob = {
+    _count: EmailJobCountAggregateOutputType | null
+    _avg: EmailJobAvgAggregateOutputType | null
+    _sum: EmailJobSumAggregateOutputType | null
+    _min: EmailJobMinAggregateOutputType | null
+    _max: EmailJobMaxAggregateOutputType | null
+  }
+
+  export type EmailJobAvgAggregateOutputType = {
+    attempts: number | null
+    maxAttempts: number | null
+  }
+
+  export type EmailJobSumAggregateOutputType = {
+    attempts: number | null
+    maxAttempts: number | null
+  }
+
+  export type EmailJobMinAggregateOutputType = {
+    id: string | null
+    campaignId: string | null
+    targetId: string | null
+    priority: $Enums.JobPriority | null
+    scheduledFor: Date | null
+    attempts: number | null
+    maxAttempts: number | null
+    status: $Enums.JobStatus | null
+    processingData: string | null
+    errorMessage: string | null
+    lastAttemptAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type EmailJobMaxAggregateOutputType = {
+    id: string | null
+    campaignId: string | null
+    targetId: string | null
+    priority: $Enums.JobPriority | null
+    scheduledFor: Date | null
+    attempts: number | null
+    maxAttempts: number | null
+    status: $Enums.JobStatus | null
+    processingData: string | null
+    errorMessage: string | null
+    lastAttemptAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type EmailJobCountAggregateOutputType = {
+    id: number
+    campaignId: number
+    targetId: number
+    priority: number
+    scheduledFor: number
+    attempts: number
+    maxAttempts: number
+    status: number
+    processingData: number
+    errorMessage: number
+    lastAttemptAt: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type EmailJobAvgAggregateInputType = {
+    attempts?: true
+    maxAttempts?: true
+  }
+
+  export type EmailJobSumAggregateInputType = {
+    attempts?: true
+    maxAttempts?: true
+  }
+
+  export type EmailJobMinAggregateInputType = {
+    id?: true
+    campaignId?: true
+    targetId?: true
+    priority?: true
+    scheduledFor?: true
+    attempts?: true
+    maxAttempts?: true
+    status?: true
+    processingData?: true
+    errorMessage?: true
+    lastAttemptAt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type EmailJobMaxAggregateInputType = {
+    id?: true
+    campaignId?: true
+    targetId?: true
+    priority?: true
+    scheduledFor?: true
+    attempts?: true
+    maxAttempts?: true
+    status?: true
+    processingData?: true
+    errorMessage?: true
+    lastAttemptAt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type EmailJobCountAggregateInputType = {
+    id?: true
+    campaignId?: true
+    targetId?: true
+    priority?: true
+    scheduledFor?: true
+    attempts?: true
+    maxAttempts?: true
+    status?: true
+    processingData?: true
+    errorMessage?: true
+    lastAttemptAt?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type EmailJobAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which EmailJob to aggregate.
+     */
+    where?: EmailJobWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EmailJobs to fetch.
+     */
+    orderBy?: EmailJobOrderByWithRelationInput | EmailJobOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: EmailJobWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EmailJobs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EmailJobs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned EmailJobs
+    **/
+    _count?: true | EmailJobCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: EmailJobAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: EmailJobSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: EmailJobMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: EmailJobMaxAggregateInputType
+  }
+
+  export type GetEmailJobAggregateType<T extends EmailJobAggregateArgs> = {
+        [P in keyof T & keyof AggregateEmailJob]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateEmailJob[P]>
+      : GetScalarType<T[P], AggregateEmailJob[P]>
+  }
+
+
+
+
+  export type EmailJobGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EmailJobWhereInput
+    orderBy?: EmailJobOrderByWithAggregationInput | EmailJobOrderByWithAggregationInput[]
+    by: EmailJobScalarFieldEnum[] | EmailJobScalarFieldEnum
+    having?: EmailJobScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: EmailJobCountAggregateInputType | true
+    _avg?: EmailJobAvgAggregateInputType
+    _sum?: EmailJobSumAggregateInputType
+    _min?: EmailJobMinAggregateInputType
+    _max?: EmailJobMaxAggregateInputType
+  }
+
+  export type EmailJobGroupByOutputType = {
+    id: string
+    campaignId: string
+    targetId: string
+    priority: $Enums.JobPriority
+    scheduledFor: Date
+    attempts: number
+    maxAttempts: number
+    status: $Enums.JobStatus
+    processingData: string | null
+    errorMessage: string | null
+    lastAttemptAt: Date | null
+    createdAt: Date
+    updatedAt: Date
+    _count: EmailJobCountAggregateOutputType | null
+    _avg: EmailJobAvgAggregateOutputType | null
+    _sum: EmailJobSumAggregateOutputType | null
+    _min: EmailJobMinAggregateOutputType | null
+    _max: EmailJobMaxAggregateOutputType | null
+  }
+
+  type GetEmailJobGroupByPayload<T extends EmailJobGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<EmailJobGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof EmailJobGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], EmailJobGroupByOutputType[P]>
+            : GetScalarType<T[P], EmailJobGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type EmailJobSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    campaignId?: boolean
+    targetId?: boolean
+    priority?: boolean
+    scheduledFor?: boolean
+    attempts?: boolean
+    maxAttempts?: boolean
+    status?: boolean
+    processingData?: boolean
+    errorMessage?: boolean
+    lastAttemptAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["emailJob"]>
+
+  export type EmailJobSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    campaignId?: boolean
+    targetId?: boolean
+    priority?: boolean
+    scheduledFor?: boolean
+    attempts?: boolean
+    maxAttempts?: boolean
+    status?: boolean
+    processingData?: boolean
+    errorMessage?: boolean
+    lastAttemptAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["emailJob"]>
+
+  export type EmailJobSelectScalar = {
+    id?: boolean
+    campaignId?: boolean
+    targetId?: boolean
+    priority?: boolean
+    scheduledFor?: boolean
+    attempts?: boolean
+    maxAttempts?: boolean
+    status?: boolean
+    processingData?: boolean
+    errorMessage?: boolean
+    lastAttemptAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+
+  export type $EmailJobPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "EmailJob"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      campaignId: string
+      targetId: string
+      priority: $Enums.JobPriority
+      scheduledFor: Date
+      attempts: number
+      maxAttempts: number
+      status: $Enums.JobStatus
+      processingData: string | null
+      errorMessage: string | null
+      lastAttemptAt: Date | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["emailJob"]>
+    composites: {}
+  }
+
+  type EmailJobGetPayload<S extends boolean | null | undefined | EmailJobDefaultArgs> = $Result.GetResult<Prisma.$EmailJobPayload, S>
+
+  type EmailJobCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<EmailJobFindManyArgs, 'select' | 'include' | 'distinct'> & {
+      select?: EmailJobCountAggregateInputType | true
+    }
+
+  export interface EmailJobDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['EmailJob'], meta: { name: 'EmailJob' } }
+    /**
+     * Find zero or one EmailJob that matches the filter.
+     * @param {EmailJobFindUniqueArgs} args - Arguments to find a EmailJob
+     * @example
+     * // Get one EmailJob
+     * const emailJob = await prisma.emailJob.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends EmailJobFindUniqueArgs>(args: SelectSubset<T, EmailJobFindUniqueArgs<ExtArgs>>): Prisma__EmailJobClient<$Result.GetResult<Prisma.$EmailJobPayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
+
+    /**
+     * Find one EmailJob that matches the filter or throw an error with `error.code='P2025'` 
+     * if no matches were found.
+     * @param {EmailJobFindUniqueOrThrowArgs} args - Arguments to find a EmailJob
+     * @example
+     * // Get one EmailJob
+     * const emailJob = await prisma.emailJob.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends EmailJobFindUniqueOrThrowArgs>(args: SelectSubset<T, EmailJobFindUniqueOrThrowArgs<ExtArgs>>): Prisma__EmailJobClient<$Result.GetResult<Prisma.$EmailJobPayload<ExtArgs>, T, "findUniqueOrThrow">, never, ExtArgs>
+
+    /**
+     * Find the first EmailJob that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmailJobFindFirstArgs} args - Arguments to find a EmailJob
+     * @example
+     * // Get one EmailJob
+     * const emailJob = await prisma.emailJob.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends EmailJobFindFirstArgs>(args?: SelectSubset<T, EmailJobFindFirstArgs<ExtArgs>>): Prisma__EmailJobClient<$Result.GetResult<Prisma.$EmailJobPayload<ExtArgs>, T, "findFirst"> | null, null, ExtArgs>
+
+    /**
+     * Find the first EmailJob that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmailJobFindFirstOrThrowArgs} args - Arguments to find a EmailJob
+     * @example
+     * // Get one EmailJob
+     * const emailJob = await prisma.emailJob.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends EmailJobFindFirstOrThrowArgs>(args?: SelectSubset<T, EmailJobFindFirstOrThrowArgs<ExtArgs>>): Prisma__EmailJobClient<$Result.GetResult<Prisma.$EmailJobPayload<ExtArgs>, T, "findFirstOrThrow">, never, ExtArgs>
+
+    /**
+     * Find zero or more EmailJobs that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmailJobFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all EmailJobs
+     * const emailJobs = await prisma.emailJob.findMany()
+     * 
+     * // Get first 10 EmailJobs
+     * const emailJobs = await prisma.emailJob.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const emailJobWithIdOnly = await prisma.emailJob.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends EmailJobFindManyArgs>(args?: SelectSubset<T, EmailJobFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmailJobPayload<ExtArgs>, T, "findMany">>
+
+    /**
+     * Create a EmailJob.
+     * @param {EmailJobCreateArgs} args - Arguments to create a EmailJob.
+     * @example
+     * // Create one EmailJob
+     * const EmailJob = await prisma.emailJob.create({
+     *   data: {
+     *     // ... data to create a EmailJob
+     *   }
+     * })
+     * 
+     */
+    create<T extends EmailJobCreateArgs>(args: SelectSubset<T, EmailJobCreateArgs<ExtArgs>>): Prisma__EmailJobClient<$Result.GetResult<Prisma.$EmailJobPayload<ExtArgs>, T, "create">, never, ExtArgs>
+
+    /**
+     * Create many EmailJobs.
+     * @param {EmailJobCreateManyArgs} args - Arguments to create many EmailJobs.
+     * @example
+     * // Create many EmailJobs
+     * const emailJob = await prisma.emailJob.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends EmailJobCreateManyArgs>(args?: SelectSubset<T, EmailJobCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many EmailJobs and returns the data saved in the database.
+     * @param {EmailJobCreateManyAndReturnArgs} args - Arguments to create many EmailJobs.
+     * @example
+     * // Create many EmailJobs
+     * const emailJob = await prisma.emailJob.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many EmailJobs and only return the `id`
+     * const emailJobWithIdOnly = await prisma.emailJob.createManyAndReturn({ 
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends EmailJobCreateManyAndReturnArgs>(args?: SelectSubset<T, EmailJobCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmailJobPayload<ExtArgs>, T, "createManyAndReturn">>
+
+    /**
+     * Delete a EmailJob.
+     * @param {EmailJobDeleteArgs} args - Arguments to delete one EmailJob.
+     * @example
+     * // Delete one EmailJob
+     * const EmailJob = await prisma.emailJob.delete({
+     *   where: {
+     *     // ... filter to delete one EmailJob
+     *   }
+     * })
+     * 
+     */
+    delete<T extends EmailJobDeleteArgs>(args: SelectSubset<T, EmailJobDeleteArgs<ExtArgs>>): Prisma__EmailJobClient<$Result.GetResult<Prisma.$EmailJobPayload<ExtArgs>, T, "delete">, never, ExtArgs>
+
+    /**
+     * Update one EmailJob.
+     * @param {EmailJobUpdateArgs} args - Arguments to update one EmailJob.
+     * @example
+     * // Update one EmailJob
+     * const emailJob = await prisma.emailJob.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends EmailJobUpdateArgs>(args: SelectSubset<T, EmailJobUpdateArgs<ExtArgs>>): Prisma__EmailJobClient<$Result.GetResult<Prisma.$EmailJobPayload<ExtArgs>, T, "update">, never, ExtArgs>
+
+    /**
+     * Delete zero or more EmailJobs.
+     * @param {EmailJobDeleteManyArgs} args - Arguments to filter EmailJobs to delete.
+     * @example
+     * // Delete a few EmailJobs
+     * const { count } = await prisma.emailJob.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends EmailJobDeleteManyArgs>(args?: SelectSubset<T, EmailJobDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more EmailJobs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmailJobUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many EmailJobs
+     * const emailJob = await prisma.emailJob.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends EmailJobUpdateManyArgs>(args: SelectSubset<T, EmailJobUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one EmailJob.
+     * @param {EmailJobUpsertArgs} args - Arguments to update or create a EmailJob.
+     * @example
+     * // Update or create a EmailJob
+     * const emailJob = await prisma.emailJob.upsert({
+     *   create: {
+     *     // ... data to create a EmailJob
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the EmailJob we want to update
+     *   }
+     * })
+     */
+    upsert<T extends EmailJobUpsertArgs>(args: SelectSubset<T, EmailJobUpsertArgs<ExtArgs>>): Prisma__EmailJobClient<$Result.GetResult<Prisma.$EmailJobPayload<ExtArgs>, T, "upsert">, never, ExtArgs>
+
+
+    /**
+     * Count the number of EmailJobs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmailJobCountArgs} args - Arguments to filter EmailJobs to count.
+     * @example
+     * // Count the number of EmailJobs
+     * const count = await prisma.emailJob.count({
+     *   where: {
+     *     // ... the filter for the EmailJobs we want to count
+     *   }
+     * })
+    **/
+    count<T extends EmailJobCountArgs>(
+      args?: Subset<T, EmailJobCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], EmailJobCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a EmailJob.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmailJobAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends EmailJobAggregateArgs>(args: Subset<T, EmailJobAggregateArgs>): Prisma.PrismaPromise<GetEmailJobAggregateType<T>>
+
+    /**
+     * Group by EmailJob.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmailJobGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends EmailJobGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: EmailJobGroupByArgs['orderBy'] }
+        : { orderBy?: EmailJobGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, EmailJobGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetEmailJobGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the EmailJob model
+   */
+  readonly fields: EmailJobFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for EmailJob.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__EmailJobClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the EmailJob model
+   */ 
+  interface EmailJobFieldRefs {
+    readonly id: FieldRef<"EmailJob", 'String'>
+    readonly campaignId: FieldRef<"EmailJob", 'String'>
+    readonly targetId: FieldRef<"EmailJob", 'String'>
+    readonly priority: FieldRef<"EmailJob", 'JobPriority'>
+    readonly scheduledFor: FieldRef<"EmailJob", 'DateTime'>
+    readonly attempts: FieldRef<"EmailJob", 'Int'>
+    readonly maxAttempts: FieldRef<"EmailJob", 'Int'>
+    readonly status: FieldRef<"EmailJob", 'JobStatus'>
+    readonly processingData: FieldRef<"EmailJob", 'String'>
+    readonly errorMessage: FieldRef<"EmailJob", 'String'>
+    readonly lastAttemptAt: FieldRef<"EmailJob", 'DateTime'>
+    readonly createdAt: FieldRef<"EmailJob", 'DateTime'>
+    readonly updatedAt: FieldRef<"EmailJob", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * EmailJob findUnique
+   */
+  export type EmailJobFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailJob
+     */
+    select?: EmailJobSelect<ExtArgs> | null
+    /**
+     * Filter, which EmailJob to fetch.
+     */
+    where: EmailJobWhereUniqueInput
+  }
+
+  /**
+   * EmailJob findUniqueOrThrow
+   */
+  export type EmailJobFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailJob
+     */
+    select?: EmailJobSelect<ExtArgs> | null
+    /**
+     * Filter, which EmailJob to fetch.
+     */
+    where: EmailJobWhereUniqueInput
+  }
+
+  /**
+   * EmailJob findFirst
+   */
+  export type EmailJobFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailJob
+     */
+    select?: EmailJobSelect<ExtArgs> | null
+    /**
+     * Filter, which EmailJob to fetch.
+     */
+    where?: EmailJobWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EmailJobs to fetch.
+     */
+    orderBy?: EmailJobOrderByWithRelationInput | EmailJobOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for EmailJobs.
+     */
+    cursor?: EmailJobWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EmailJobs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EmailJobs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of EmailJobs.
+     */
+    distinct?: EmailJobScalarFieldEnum | EmailJobScalarFieldEnum[]
+  }
+
+  /**
+   * EmailJob findFirstOrThrow
+   */
+  export type EmailJobFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailJob
+     */
+    select?: EmailJobSelect<ExtArgs> | null
+    /**
+     * Filter, which EmailJob to fetch.
+     */
+    where?: EmailJobWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EmailJobs to fetch.
+     */
+    orderBy?: EmailJobOrderByWithRelationInput | EmailJobOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for EmailJobs.
+     */
+    cursor?: EmailJobWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EmailJobs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EmailJobs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of EmailJobs.
+     */
+    distinct?: EmailJobScalarFieldEnum | EmailJobScalarFieldEnum[]
+  }
+
+  /**
+   * EmailJob findMany
+   */
+  export type EmailJobFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailJob
+     */
+    select?: EmailJobSelect<ExtArgs> | null
+    /**
+     * Filter, which EmailJobs to fetch.
+     */
+    where?: EmailJobWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EmailJobs to fetch.
+     */
+    orderBy?: EmailJobOrderByWithRelationInput | EmailJobOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing EmailJobs.
+     */
+    cursor?: EmailJobWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EmailJobs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EmailJobs.
+     */
+    skip?: number
+    distinct?: EmailJobScalarFieldEnum | EmailJobScalarFieldEnum[]
+  }
+
+  /**
+   * EmailJob create
+   */
+  export type EmailJobCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailJob
+     */
+    select?: EmailJobSelect<ExtArgs> | null
+    /**
+     * The data needed to create a EmailJob.
+     */
+    data: XOR<EmailJobCreateInput, EmailJobUncheckedCreateInput>
+  }
+
+  /**
+   * EmailJob createMany
+   */
+  export type EmailJobCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many EmailJobs.
+     */
+    data: EmailJobCreateManyInput | EmailJobCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * EmailJob createManyAndReturn
+   */
+  export type EmailJobCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailJob
+     */
+    select?: EmailJobSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * The data used to create many EmailJobs.
+     */
+    data: EmailJobCreateManyInput | EmailJobCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * EmailJob update
+   */
+  export type EmailJobUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailJob
+     */
+    select?: EmailJobSelect<ExtArgs> | null
+    /**
+     * The data needed to update a EmailJob.
+     */
+    data: XOR<EmailJobUpdateInput, EmailJobUncheckedUpdateInput>
+    /**
+     * Choose, which EmailJob to update.
+     */
+    where: EmailJobWhereUniqueInput
+  }
+
+  /**
+   * EmailJob updateMany
+   */
+  export type EmailJobUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update EmailJobs.
+     */
+    data: XOR<EmailJobUpdateManyMutationInput, EmailJobUncheckedUpdateManyInput>
+    /**
+     * Filter which EmailJobs to update
+     */
+    where?: EmailJobWhereInput
+  }
+
+  /**
+   * EmailJob upsert
+   */
+  export type EmailJobUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailJob
+     */
+    select?: EmailJobSelect<ExtArgs> | null
+    /**
+     * The filter to search for the EmailJob to update in case it exists.
+     */
+    where: EmailJobWhereUniqueInput
+    /**
+     * In case the EmailJob found by the `where` argument doesn't exist, create a new EmailJob with this data.
+     */
+    create: XOR<EmailJobCreateInput, EmailJobUncheckedCreateInput>
+    /**
+     * In case the EmailJob was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<EmailJobUpdateInput, EmailJobUncheckedUpdateInput>
+  }
+
+  /**
+   * EmailJob delete
+   */
+  export type EmailJobDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailJob
+     */
+    select?: EmailJobSelect<ExtArgs> | null
+    /**
+     * Filter which EmailJob to delete.
+     */
+    where: EmailJobWhereUniqueInput
+  }
+
+  /**
+   * EmailJob deleteMany
+   */
+  export type EmailJobDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which EmailJobs to delete
+     */
+    where?: EmailJobWhereInput
+  }
+
+  /**
+   * EmailJob without action
+   */
+  export type EmailJobDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailJob
+     */
+    select?: EmailJobSelect<ExtArgs> | null
   }
 
 
@@ -26849,6 +34362,18 @@ export namespace Prisma {
   export type RefreshTokenScalarFieldEnum = (typeof RefreshTokenScalarFieldEnum)[keyof typeof RefreshTokenScalarFieldEnum]
 
 
+  export const PasswordResetScalarFieldEnum: {
+    id: 'id',
+    token: 'token',
+    userId: 'userId',
+    expiresAt: 'expiresAt',
+    used: 'used',
+    createdAt: 'createdAt'
+  };
+
+  export type PasswordResetScalarFieldEnum = (typeof PasswordResetScalarFieldEnum)[keyof typeof PasswordResetScalarFieldEnum]
+
+
   export const OrganizationScalarFieldEnum: {
     id: 'id',
     name: 'name',
@@ -26873,6 +34398,35 @@ export namespace Prisma {
   };
 
   export type OrganizationScalarFieldEnum = (typeof OrganizationScalarFieldEnum)[keyof typeof OrganizationScalarFieldEnum]
+
+
+  export const InviteCodeScalarFieldEnum: {
+    id: 'id',
+    code: 'code',
+    organizationId: 'organizationId',
+    createdBy: 'createdBy',
+    expiresAt: 'expiresAt',
+    usageLimit: 'usageLimit',
+    usedCount: 'usedCount',
+    isActive: 'isActive',
+    createdAt: 'createdAt'
+  };
+
+  export type InviteCodeScalarFieldEnum = (typeof InviteCodeScalarFieldEnum)[keyof typeof InviteCodeScalarFieldEnum]
+
+
+  export const OrganizationMemberScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    organizationId: 'organizationId',
+    role: 'role',
+    status: 'status',
+    joinedAt: 'joinedAt',
+    invitedBy: 'invitedBy',
+    inviteCode: 'inviteCode'
+  };
+
+  export type OrganizationMemberScalarFieldEnum = (typeof OrganizationMemberScalarFieldEnum)[keyof typeof OrganizationMemberScalarFieldEnum]
 
 
   export const AssessmentScalarFieldEnum: {
@@ -26958,10 +34512,32 @@ export namespace Prisma {
   export type AssessmentResponseScalarFieldEnum = (typeof AssessmentResponseScalarFieldEnum)[keyof typeof AssessmentResponseScalarFieldEnum]
 
 
+  export const AssessmentResultScalarFieldEnum: {
+    id: 'id',
+    overallScore: 'overallScore',
+    overallPercentage: 'overallPercentage',
+    tier: 'tier',
+    categoryScores: 'categoryScores',
+    sectionScores: 'sectionScores',
+    industryPercentile: 'industryPercentile',
+    sizePercentile: 'sizePercentile',
+    regionPercentile: 'regionPercentile',
+    questionsAnswered: 'questionsAnswered',
+    totalQuestions: 'totalQuestions',
+    completionRate: 'completionRate',
+    totalTimeMinutes: 'totalTimeMinutes',
+    generatedAt: 'generatedAt',
+    assessmentId: 'assessmentId'
+  };
+
+  export type AssessmentResultScalarFieldEnum = (typeof AssessmentResultScalarFieldEnum)[keyof typeof AssessmentResultScalarFieldEnum]
+
+
   export const PhishingCampaignScalarFieldEnum: {
     id: 'id',
     name: 'name',
     description: 'description',
+    templateId: 'templateId',
     template: 'template',
     subject: 'subject',
     senderName: 'senderName',
@@ -26969,16 +34545,21 @@ export namespace Prisma {
     landingPageUrl: 'landingPageUrl',
     status: 'status',
     scheduledAt: 'scheduledAt',
-    startedAt: 'startedAt',
+    launchedAt: 'launchedAt',
     completedAt: 'completedAt',
+    pausedAt: 'pausedAt',
     targetCount: 'targetCount',
-    deliveredCount: 'deliveredCount',
-    openedCount: 'openedCount',
-    clickedCount: 'clickedCount',
-    reportedCount: 'reportedCount',
+    emailsSent: 'emailsSent',
+    emailsDelivered: 'emailsDelivered',
+    emailsOpened: 'emailsOpened',
+    linksClicked: 'linksClicked',
+    credentialsEntered: 'credentialsEntered',
+    phishingReported: 'phishingReported',
+    emailsBounced: 'emailsBounced',
+    createdBy: 'createdBy',
+    organizationId: 'organizationId',
     createdAt: 'createdAt',
-    updatedAt: 'updatedAt',
-    organizationId: 'organizationId'
+    updatedAt: 'updatedAt'
   };
 
   export type PhishingCampaignScalarFieldEnum = (typeof PhishingCampaignScalarFieldEnum)[keyof typeof PhishingCampaignScalarFieldEnum]
@@ -26990,13 +34571,27 @@ export namespace Prisma {
     firstName: 'firstName',
     lastName: 'lastName',
     department: 'department',
-    trackingId: 'trackingId',
-    status: 'status',
+    jobTitle: 'jobTitle',
+    emailSent: 'emailSent',
+    emailDelivered: 'emailDelivered',
+    emailOpened: 'emailOpened',
+    linkClicked: 'linkClicked',
+    credentialsEntered: 'credentialsEntered',
+    reportedPhishing: 'reportedPhishing',
+    emailBounced: 'emailBounced',
+    sentAt: 'sentAt',
     deliveredAt: 'deliveredAt',
     openedAt: 'openedAt',
     clickedAt: 'clickedAt',
+    credentialsAt: 'credentialsAt',
     reportedAt: 'reportedAt',
+    bouncedAt: 'bouncedAt',
+    userAgent: 'userAgent',
+    ipAddress: 'ipAddress',
+    clickCount: 'clickCount',
+    riskScore: 'riskScore',
     createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
     campaignId: 'campaignId',
     userId: 'userId'
   };
@@ -27007,15 +34602,61 @@ export namespace Prisma {
   export const PhishingEventScalarFieldEnum: {
     id: 'id',
     type: 'type',
-    metadata: 'metadata',
-    ipAddress: 'ipAddress',
-    userAgent: 'userAgent',
     timestamp: 'timestamp',
+    metadata: 'metadata',
+    userAgent: 'userAgent',
+    ipAddress: 'ipAddress',
+    location: 'location',
     campaignId: 'campaignId',
     targetId: 'targetId'
   };
 
   export type PhishingEventScalarFieldEnum = (typeof PhishingEventScalarFieldEnum)[keyof typeof PhishingEventScalarFieldEnum]
+
+
+  export const PhishingTemplateScalarFieldEnum: {
+    id: 'id',
+    name: 'name',
+    description: 'description',
+    category: 'category',
+    riskLevel: 'riskLevel',
+    defaultSubject: 'defaultSubject',
+    defaultSenderName: 'defaultSenderName',
+    emailBodyHtml: 'emailBodyHtml',
+    emailBodyText: 'emailBodyText',
+    landingPageHtml: 'landingPageHtml',
+    captureCredentials: 'captureCredentials',
+    isActive: 'isActive',
+    previewContent: 'previewContent',
+    tags: 'tags',
+    usageCount: 'usageCount',
+    successRate: 'successRate',
+    createdBy: 'createdBy',
+    organizationId: 'organizationId',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type PhishingTemplateScalarFieldEnum = (typeof PhishingTemplateScalarFieldEnum)[keyof typeof PhishingTemplateScalarFieldEnum]
+
+
+  export const EmailJobScalarFieldEnum: {
+    id: 'id',
+    campaignId: 'campaignId',
+    targetId: 'targetId',
+    priority: 'priority',
+    scheduledFor: 'scheduledFor',
+    attempts: 'attempts',
+    maxAttempts: 'maxAttempts',
+    status: 'status',
+    processingData: 'processingData',
+    errorMessage: 'errorMessage',
+    lastAttemptAt: 'lastAttemptAt',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type EmailJobScalarFieldEnum = (typeof EmailJobScalarFieldEnum)[keyof typeof EmailJobScalarFieldEnum]
 
 
   export const AgentScalarFieldEnum: {
@@ -27341,6 +34982,34 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'Int'
+   */
+  export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
+    
+
+
+  /**
+   * Reference to a field of type 'Int[]'
+   */
+  export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'MemberStatus'
+   */
+  export type EnumMemberStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MemberStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'MemberStatus[]'
+   */
+  export type ListEnumMemberStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MemberStatus[]'>
+    
+
+
+  /**
    * Reference to a field of type 'AssessmentType'
    */
   export type EnumAssessmentTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AssessmentType'>
@@ -27369,20 +35038,6 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'Int'
-   */
-  export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
-    
-
-
-  /**
-   * Reference to a field of type 'Int[]'
-   */
-  export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
-    
-
-
-  /**
    * Reference to a field of type 'QuestionType'
    */
   export type EnumQuestionTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QuestionType'>
@@ -27393,6 +35048,20 @@ export namespace Prisma {
    * Reference to a field of type 'QuestionType[]'
    */
   export type ListEnumQuestionTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QuestionType[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'CSITier'
+   */
+  export type EnumCSITierFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CSITier'>
+    
+
+
+  /**
+   * Reference to a field of type 'CSITier[]'
+   */
+  export type ListEnumCSITierFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CSITier[]'>
     
 
 
@@ -27411,20 +35080,6 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'TargetStatus'
-   */
-  export type EnumTargetStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TargetStatus'>
-    
-
-
-  /**
-   * Reference to a field of type 'TargetStatus[]'
-   */
-  export type ListEnumTargetStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TargetStatus[]'>
-    
-
-
-  /**
    * Reference to a field of type 'PhishingEventType'
    */
   export type EnumPhishingEventTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PhishingEventType'>
@@ -27435,6 +35090,62 @@ export namespace Prisma {
    * Reference to a field of type 'PhishingEventType[]'
    */
   export type ListEnumPhishingEventTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PhishingEventType[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'TemplateCategory'
+   */
+  export type EnumTemplateCategoryFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TemplateCategory'>
+    
+
+
+  /**
+   * Reference to a field of type 'TemplateCategory[]'
+   */
+  export type ListEnumTemplateCategoryFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TemplateCategory[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'RiskLevel'
+   */
+  export type EnumRiskLevelFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RiskLevel'>
+    
+
+
+  /**
+   * Reference to a field of type 'RiskLevel[]'
+   */
+  export type ListEnumRiskLevelFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RiskLevel[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'JobPriority'
+   */
+  export type EnumJobPriorityFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'JobPriority'>
+    
+
+
+  /**
+   * Reference to a field of type 'JobPriority[]'
+   */
+  export type ListEnumJobPriorityFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'JobPriority[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'JobStatus'
+   */
+  export type EnumJobStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'JobStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'JobStatus[]'
+   */
+  export type ListEnumJobStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'JobStatus[]'>
     
 
 
@@ -27629,9 +35340,15 @@ export namespace Prisma {
     organization?: XOR<OrganizationNullableRelationFilter, OrganizationWhereInput> | null
     assessments?: AssessmentListRelationFilter
     phishingTargets?: PhishingTargetListRelationFilter
+    phishingCampaigns?: PhishingCampaignListRelationFilter
+    phishingTemplates?: PhishingTemplateListRelationFilter
     telemetryEvents?: TelemetryEventListRelationFilter
     auditLogs?: AuditLogListRelationFilter
     refreshTokens?: RefreshTokenListRelationFilter
+    passwordResets?: PasswordResetListRelationFilter
+    createdInviteCodes?: InviteCodeListRelationFilter
+    organizationMemberships?: OrganizationMemberListRelationFilter
+    sentInvites?: OrganizationMemberListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -27651,9 +35368,15 @@ export namespace Prisma {
     organization?: OrganizationOrderByWithRelationInput
     assessments?: AssessmentOrderByRelationAggregateInput
     phishingTargets?: PhishingTargetOrderByRelationAggregateInput
+    phishingCampaigns?: PhishingCampaignOrderByRelationAggregateInput
+    phishingTemplates?: PhishingTemplateOrderByRelationAggregateInput
     telemetryEvents?: TelemetryEventOrderByRelationAggregateInput
     auditLogs?: AuditLogOrderByRelationAggregateInput
     refreshTokens?: RefreshTokenOrderByRelationAggregateInput
+    passwordResets?: PasswordResetOrderByRelationAggregateInput
+    createdInviteCodes?: InviteCodeOrderByRelationAggregateInput
+    organizationMemberships?: OrganizationMemberOrderByRelationAggregateInput
+    sentInvites?: OrganizationMemberOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -27676,9 +35399,15 @@ export namespace Prisma {
     organization?: XOR<OrganizationNullableRelationFilter, OrganizationWhereInput> | null
     assessments?: AssessmentListRelationFilter
     phishingTargets?: PhishingTargetListRelationFilter
+    phishingCampaigns?: PhishingCampaignListRelationFilter
+    phishingTemplates?: PhishingTemplateListRelationFilter
     telemetryEvents?: TelemetryEventListRelationFilter
     auditLogs?: AuditLogListRelationFilter
     refreshTokens?: RefreshTokenListRelationFilter
+    passwordResets?: PasswordResetListRelationFilter
+    createdInviteCodes?: InviteCodeListRelationFilter
+    organizationMemberships?: OrganizationMemberListRelationFilter
+    sentInvites?: OrganizationMemberListRelationFilter
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -27774,6 +35503,66 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"RefreshToken"> | Date | string
   }
 
+  export type PasswordResetWhereInput = {
+    AND?: PasswordResetWhereInput | PasswordResetWhereInput[]
+    OR?: PasswordResetWhereInput[]
+    NOT?: PasswordResetWhereInput | PasswordResetWhereInput[]
+    id?: StringFilter<"PasswordReset"> | string
+    token?: StringFilter<"PasswordReset"> | string
+    userId?: StringFilter<"PasswordReset"> | string
+    expiresAt?: DateTimeFilter<"PasswordReset"> | Date | string
+    used?: BoolFilter<"PasswordReset"> | boolean
+    createdAt?: DateTimeFilter<"PasswordReset"> | Date | string
+    user?: XOR<UserRelationFilter, UserWhereInput>
+  }
+
+  export type PasswordResetOrderByWithRelationInput = {
+    id?: SortOrder
+    token?: SortOrder
+    userId?: SortOrder
+    expiresAt?: SortOrder
+    used?: SortOrder
+    createdAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type PasswordResetWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    token?: string
+    AND?: PasswordResetWhereInput | PasswordResetWhereInput[]
+    OR?: PasswordResetWhereInput[]
+    NOT?: PasswordResetWhereInput | PasswordResetWhereInput[]
+    userId?: StringFilter<"PasswordReset"> | string
+    expiresAt?: DateTimeFilter<"PasswordReset"> | Date | string
+    used?: BoolFilter<"PasswordReset"> | boolean
+    createdAt?: DateTimeFilter<"PasswordReset"> | Date | string
+    user?: XOR<UserRelationFilter, UserWhereInput>
+  }, "id" | "token">
+
+  export type PasswordResetOrderByWithAggregationInput = {
+    id?: SortOrder
+    token?: SortOrder
+    userId?: SortOrder
+    expiresAt?: SortOrder
+    used?: SortOrder
+    createdAt?: SortOrder
+    _count?: PasswordResetCountOrderByAggregateInput
+    _max?: PasswordResetMaxOrderByAggregateInput
+    _min?: PasswordResetMinOrderByAggregateInput
+  }
+
+  export type PasswordResetScalarWhereWithAggregatesInput = {
+    AND?: PasswordResetScalarWhereWithAggregatesInput | PasswordResetScalarWhereWithAggregatesInput[]
+    OR?: PasswordResetScalarWhereWithAggregatesInput[]
+    NOT?: PasswordResetScalarWhereWithAggregatesInput | PasswordResetScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"PasswordReset"> | string
+    token?: StringWithAggregatesFilter<"PasswordReset"> | string
+    userId?: StringWithAggregatesFilter<"PasswordReset"> | string
+    expiresAt?: DateTimeWithAggregatesFilter<"PasswordReset"> | Date | string
+    used?: BoolWithAggregatesFilter<"PasswordReset"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"PasswordReset"> | Date | string
+  }
+
   export type OrganizationWhereInput = {
     AND?: OrganizationWhereInput | OrganizationWhereInput[]
     OR?: OrganizationWhereInput[]
@@ -27802,8 +35591,11 @@ export namespace Prisma {
     assessments?: AssessmentListRelationFilter
     subscriptions?: SubscriptionListRelationFilter
     phishingCampaigns?: PhishingCampaignListRelationFilter
+    phishingTemplates?: PhishingTemplateListRelationFilter
     agents?: AgentListRelationFilter
     invoices?: InvoiceListRelationFilter
+    inviteCodes?: InviteCodeListRelationFilter
+    members?: OrganizationMemberListRelationFilter
   }
 
   export type OrganizationOrderByWithRelationInput = {
@@ -27831,8 +35623,11 @@ export namespace Prisma {
     assessments?: AssessmentOrderByRelationAggregateInput
     subscriptions?: SubscriptionOrderByRelationAggregateInput
     phishingCampaigns?: PhishingCampaignOrderByRelationAggregateInput
+    phishingTemplates?: PhishingTemplateOrderByRelationAggregateInput
     agents?: AgentOrderByRelationAggregateInput
     invoices?: InvoiceOrderByRelationAggregateInput
+    inviteCodes?: InviteCodeOrderByRelationAggregateInput
+    members?: OrganizationMemberOrderByRelationAggregateInput
   }
 
   export type OrganizationWhereUniqueInput = Prisma.AtLeast<{
@@ -27863,8 +35658,11 @@ export namespace Prisma {
     assessments?: AssessmentListRelationFilter
     subscriptions?: SubscriptionListRelationFilter
     phishingCampaigns?: PhishingCampaignListRelationFilter
+    phishingTemplates?: PhishingTemplateListRelationFilter
     agents?: AgentListRelationFilter
     invoices?: InvoiceListRelationFilter
+    inviteCodes?: InviteCodeListRelationFilter
+    members?: OrganizationMemberListRelationFilter
   }, "id" | "email">
 
   export type OrganizationOrderByWithAggregationInput = {
@@ -27921,6 +35719,163 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"Organization"> | Date | string
   }
 
+  export type InviteCodeWhereInput = {
+    AND?: InviteCodeWhereInput | InviteCodeWhereInput[]
+    OR?: InviteCodeWhereInput[]
+    NOT?: InviteCodeWhereInput | InviteCodeWhereInput[]
+    id?: StringFilter<"InviteCode"> | string
+    code?: StringFilter<"InviteCode"> | string
+    organizationId?: StringFilter<"InviteCode"> | string
+    createdBy?: StringFilter<"InviteCode"> | string
+    expiresAt?: DateTimeFilter<"InviteCode"> | Date | string
+    usageLimit?: IntFilter<"InviteCode"> | number
+    usedCount?: IntFilter<"InviteCode"> | number
+    isActive?: BoolFilter<"InviteCode"> | boolean
+    createdAt?: DateTimeFilter<"InviteCode"> | Date | string
+    organization?: XOR<OrganizationRelationFilter, OrganizationWhereInput>
+    creator?: XOR<UserRelationFilter, UserWhereInput>
+  }
+
+  export type InviteCodeOrderByWithRelationInput = {
+    id?: SortOrder
+    code?: SortOrder
+    organizationId?: SortOrder
+    createdBy?: SortOrder
+    expiresAt?: SortOrder
+    usageLimit?: SortOrder
+    usedCount?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    organization?: OrganizationOrderByWithRelationInput
+    creator?: UserOrderByWithRelationInput
+  }
+
+  export type InviteCodeWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    code?: string
+    AND?: InviteCodeWhereInput | InviteCodeWhereInput[]
+    OR?: InviteCodeWhereInput[]
+    NOT?: InviteCodeWhereInput | InviteCodeWhereInput[]
+    organizationId?: StringFilter<"InviteCode"> | string
+    createdBy?: StringFilter<"InviteCode"> | string
+    expiresAt?: DateTimeFilter<"InviteCode"> | Date | string
+    usageLimit?: IntFilter<"InviteCode"> | number
+    usedCount?: IntFilter<"InviteCode"> | number
+    isActive?: BoolFilter<"InviteCode"> | boolean
+    createdAt?: DateTimeFilter<"InviteCode"> | Date | string
+    organization?: XOR<OrganizationRelationFilter, OrganizationWhereInput>
+    creator?: XOR<UserRelationFilter, UserWhereInput>
+  }, "id" | "code">
+
+  export type InviteCodeOrderByWithAggregationInput = {
+    id?: SortOrder
+    code?: SortOrder
+    organizationId?: SortOrder
+    createdBy?: SortOrder
+    expiresAt?: SortOrder
+    usageLimit?: SortOrder
+    usedCount?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    _count?: InviteCodeCountOrderByAggregateInput
+    _avg?: InviteCodeAvgOrderByAggregateInput
+    _max?: InviteCodeMaxOrderByAggregateInput
+    _min?: InviteCodeMinOrderByAggregateInput
+    _sum?: InviteCodeSumOrderByAggregateInput
+  }
+
+  export type InviteCodeScalarWhereWithAggregatesInput = {
+    AND?: InviteCodeScalarWhereWithAggregatesInput | InviteCodeScalarWhereWithAggregatesInput[]
+    OR?: InviteCodeScalarWhereWithAggregatesInput[]
+    NOT?: InviteCodeScalarWhereWithAggregatesInput | InviteCodeScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"InviteCode"> | string
+    code?: StringWithAggregatesFilter<"InviteCode"> | string
+    organizationId?: StringWithAggregatesFilter<"InviteCode"> | string
+    createdBy?: StringWithAggregatesFilter<"InviteCode"> | string
+    expiresAt?: DateTimeWithAggregatesFilter<"InviteCode"> | Date | string
+    usageLimit?: IntWithAggregatesFilter<"InviteCode"> | number
+    usedCount?: IntWithAggregatesFilter<"InviteCode"> | number
+    isActive?: BoolWithAggregatesFilter<"InviteCode"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"InviteCode"> | Date | string
+  }
+
+  export type OrganizationMemberWhereInput = {
+    AND?: OrganizationMemberWhereInput | OrganizationMemberWhereInput[]
+    OR?: OrganizationMemberWhereInput[]
+    NOT?: OrganizationMemberWhereInput | OrganizationMemberWhereInput[]
+    id?: StringFilter<"OrganizationMember"> | string
+    userId?: StringFilter<"OrganizationMember"> | string
+    organizationId?: StringFilter<"OrganizationMember"> | string
+    role?: EnumUserRoleFilter<"OrganizationMember"> | $Enums.UserRole
+    status?: EnumMemberStatusFilter<"OrganizationMember"> | $Enums.MemberStatus
+    joinedAt?: DateTimeFilter<"OrganizationMember"> | Date | string
+    invitedBy?: StringNullableFilter<"OrganizationMember"> | string | null
+    inviteCode?: StringNullableFilter<"OrganizationMember"> | string | null
+    user?: XOR<UserRelationFilter, UserWhereInput>
+    organization?: XOR<OrganizationRelationFilter, OrganizationWhereInput>
+    inviter?: XOR<UserNullableRelationFilter, UserWhereInput> | null
+  }
+
+  export type OrganizationMemberOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    organizationId?: SortOrder
+    role?: SortOrder
+    status?: SortOrder
+    joinedAt?: SortOrder
+    invitedBy?: SortOrderInput | SortOrder
+    inviteCode?: SortOrderInput | SortOrder
+    user?: UserOrderByWithRelationInput
+    organization?: OrganizationOrderByWithRelationInput
+    inviter?: UserOrderByWithRelationInput
+  }
+
+  export type OrganizationMemberWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    userId_organizationId?: OrganizationMemberUserIdOrganizationIdCompoundUniqueInput
+    AND?: OrganizationMemberWhereInput | OrganizationMemberWhereInput[]
+    OR?: OrganizationMemberWhereInput[]
+    NOT?: OrganizationMemberWhereInput | OrganizationMemberWhereInput[]
+    userId?: StringFilter<"OrganizationMember"> | string
+    organizationId?: StringFilter<"OrganizationMember"> | string
+    role?: EnumUserRoleFilter<"OrganizationMember"> | $Enums.UserRole
+    status?: EnumMemberStatusFilter<"OrganizationMember"> | $Enums.MemberStatus
+    joinedAt?: DateTimeFilter<"OrganizationMember"> | Date | string
+    invitedBy?: StringNullableFilter<"OrganizationMember"> | string | null
+    inviteCode?: StringNullableFilter<"OrganizationMember"> | string | null
+    user?: XOR<UserRelationFilter, UserWhereInput>
+    organization?: XOR<OrganizationRelationFilter, OrganizationWhereInput>
+    inviter?: XOR<UserNullableRelationFilter, UserWhereInput> | null
+  }, "id" | "userId_organizationId">
+
+  export type OrganizationMemberOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    organizationId?: SortOrder
+    role?: SortOrder
+    status?: SortOrder
+    joinedAt?: SortOrder
+    invitedBy?: SortOrderInput | SortOrder
+    inviteCode?: SortOrderInput | SortOrder
+    _count?: OrganizationMemberCountOrderByAggregateInput
+    _max?: OrganizationMemberMaxOrderByAggregateInput
+    _min?: OrganizationMemberMinOrderByAggregateInput
+  }
+
+  export type OrganizationMemberScalarWhereWithAggregatesInput = {
+    AND?: OrganizationMemberScalarWhereWithAggregatesInput | OrganizationMemberScalarWhereWithAggregatesInput[]
+    OR?: OrganizationMemberScalarWhereWithAggregatesInput[]
+    NOT?: OrganizationMemberScalarWhereWithAggregatesInput | OrganizationMemberScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"OrganizationMember"> | string
+    userId?: StringWithAggregatesFilter<"OrganizationMember"> | string
+    organizationId?: StringWithAggregatesFilter<"OrganizationMember"> | string
+    role?: EnumUserRoleWithAggregatesFilter<"OrganizationMember"> | $Enums.UserRole
+    status?: EnumMemberStatusWithAggregatesFilter<"OrganizationMember"> | $Enums.MemberStatus
+    joinedAt?: DateTimeWithAggregatesFilter<"OrganizationMember"> | Date | string
+    invitedBy?: StringNullableWithAggregatesFilter<"OrganizationMember"> | string | null
+    inviteCode?: StringNullableWithAggregatesFilter<"OrganizationMember"> | string | null
+  }
+
   export type AssessmentWhereInput = {
     AND?: AssessmentWhereInput | AssessmentWhereInput[]
     OR?: AssessmentWhereInput[]
@@ -27946,6 +35901,7 @@ export namespace Prisma {
     organization?: XOR<OrganizationRelationFilter, OrganizationWhereInput>
     user?: XOR<UserRelationFilter, UserWhereInput>
     responses?: AssessmentResponseListRelationFilter
+    result?: XOR<AssessmentResultNullableRelationFilter, AssessmentResultWhereInput> | null
   }
 
   export type AssessmentOrderByWithRelationInput = {
@@ -27970,6 +35926,7 @@ export namespace Prisma {
     organization?: OrganizationOrderByWithRelationInput
     user?: UserOrderByWithRelationInput
     responses?: AssessmentResponseOrderByRelationAggregateInput
+    result?: AssessmentResultOrderByWithRelationInput
   }
 
   export type AssessmentWhereUniqueInput = Prisma.AtLeast<{
@@ -27997,6 +35954,7 @@ export namespace Prisma {
     organization?: XOR<OrganizationRelationFilter, OrganizationWhereInput>
     user?: XOR<UserRelationFilter, UserWhereInput>
     responses?: AssessmentResponseListRelationFilter
+    result?: XOR<AssessmentResultNullableRelationFilter, AssessmentResultWhereInput> | null
   }, "id">
 
   export type AssessmentOrderByWithAggregationInput = {
@@ -28362,6 +36320,113 @@ export namespace Prisma {
     questionId?: StringWithAggregatesFilter<"AssessmentResponse"> | string
   }
 
+  export type AssessmentResultWhereInput = {
+    AND?: AssessmentResultWhereInput | AssessmentResultWhereInput[]
+    OR?: AssessmentResultWhereInput[]
+    NOT?: AssessmentResultWhereInput | AssessmentResultWhereInput[]
+    id?: StringFilter<"AssessmentResult"> | string
+    overallScore?: FloatFilter<"AssessmentResult"> | number
+    overallPercentage?: FloatFilter<"AssessmentResult"> | number
+    tier?: EnumCSITierFilter<"AssessmentResult"> | $Enums.CSITier
+    categoryScores?: StringFilter<"AssessmentResult"> | string
+    sectionScores?: StringFilter<"AssessmentResult"> | string
+    industryPercentile?: FloatNullableFilter<"AssessmentResult"> | number | null
+    sizePercentile?: FloatNullableFilter<"AssessmentResult"> | number | null
+    regionPercentile?: FloatNullableFilter<"AssessmentResult"> | number | null
+    questionsAnswered?: IntFilter<"AssessmentResult"> | number
+    totalQuestions?: IntFilter<"AssessmentResult"> | number
+    completionRate?: FloatFilter<"AssessmentResult"> | number
+    totalTimeMinutes?: IntNullableFilter<"AssessmentResult"> | number | null
+    generatedAt?: DateTimeFilter<"AssessmentResult"> | Date | string
+    assessmentId?: StringFilter<"AssessmentResult"> | string
+    assessment?: XOR<AssessmentRelationFilter, AssessmentWhereInput>
+  }
+
+  export type AssessmentResultOrderByWithRelationInput = {
+    id?: SortOrder
+    overallScore?: SortOrder
+    overallPercentage?: SortOrder
+    tier?: SortOrder
+    categoryScores?: SortOrder
+    sectionScores?: SortOrder
+    industryPercentile?: SortOrderInput | SortOrder
+    sizePercentile?: SortOrderInput | SortOrder
+    regionPercentile?: SortOrderInput | SortOrder
+    questionsAnswered?: SortOrder
+    totalQuestions?: SortOrder
+    completionRate?: SortOrder
+    totalTimeMinutes?: SortOrderInput | SortOrder
+    generatedAt?: SortOrder
+    assessmentId?: SortOrder
+    assessment?: AssessmentOrderByWithRelationInput
+  }
+
+  export type AssessmentResultWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    assessmentId?: string
+    AND?: AssessmentResultWhereInput | AssessmentResultWhereInput[]
+    OR?: AssessmentResultWhereInput[]
+    NOT?: AssessmentResultWhereInput | AssessmentResultWhereInput[]
+    overallScore?: FloatFilter<"AssessmentResult"> | number
+    overallPercentage?: FloatFilter<"AssessmentResult"> | number
+    tier?: EnumCSITierFilter<"AssessmentResult"> | $Enums.CSITier
+    categoryScores?: StringFilter<"AssessmentResult"> | string
+    sectionScores?: StringFilter<"AssessmentResult"> | string
+    industryPercentile?: FloatNullableFilter<"AssessmentResult"> | number | null
+    sizePercentile?: FloatNullableFilter<"AssessmentResult"> | number | null
+    regionPercentile?: FloatNullableFilter<"AssessmentResult"> | number | null
+    questionsAnswered?: IntFilter<"AssessmentResult"> | number
+    totalQuestions?: IntFilter<"AssessmentResult"> | number
+    completionRate?: FloatFilter<"AssessmentResult"> | number
+    totalTimeMinutes?: IntNullableFilter<"AssessmentResult"> | number | null
+    generatedAt?: DateTimeFilter<"AssessmentResult"> | Date | string
+    assessment?: XOR<AssessmentRelationFilter, AssessmentWhereInput>
+  }, "id" | "assessmentId">
+
+  export type AssessmentResultOrderByWithAggregationInput = {
+    id?: SortOrder
+    overallScore?: SortOrder
+    overallPercentage?: SortOrder
+    tier?: SortOrder
+    categoryScores?: SortOrder
+    sectionScores?: SortOrder
+    industryPercentile?: SortOrderInput | SortOrder
+    sizePercentile?: SortOrderInput | SortOrder
+    regionPercentile?: SortOrderInput | SortOrder
+    questionsAnswered?: SortOrder
+    totalQuestions?: SortOrder
+    completionRate?: SortOrder
+    totalTimeMinutes?: SortOrderInput | SortOrder
+    generatedAt?: SortOrder
+    assessmentId?: SortOrder
+    _count?: AssessmentResultCountOrderByAggregateInput
+    _avg?: AssessmentResultAvgOrderByAggregateInput
+    _max?: AssessmentResultMaxOrderByAggregateInput
+    _min?: AssessmentResultMinOrderByAggregateInput
+    _sum?: AssessmentResultSumOrderByAggregateInput
+  }
+
+  export type AssessmentResultScalarWhereWithAggregatesInput = {
+    AND?: AssessmentResultScalarWhereWithAggregatesInput | AssessmentResultScalarWhereWithAggregatesInput[]
+    OR?: AssessmentResultScalarWhereWithAggregatesInput[]
+    NOT?: AssessmentResultScalarWhereWithAggregatesInput | AssessmentResultScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"AssessmentResult"> | string
+    overallScore?: FloatWithAggregatesFilter<"AssessmentResult"> | number
+    overallPercentage?: FloatWithAggregatesFilter<"AssessmentResult"> | number
+    tier?: EnumCSITierWithAggregatesFilter<"AssessmentResult"> | $Enums.CSITier
+    categoryScores?: StringWithAggregatesFilter<"AssessmentResult"> | string
+    sectionScores?: StringWithAggregatesFilter<"AssessmentResult"> | string
+    industryPercentile?: FloatNullableWithAggregatesFilter<"AssessmentResult"> | number | null
+    sizePercentile?: FloatNullableWithAggregatesFilter<"AssessmentResult"> | number | null
+    regionPercentile?: FloatNullableWithAggregatesFilter<"AssessmentResult"> | number | null
+    questionsAnswered?: IntWithAggregatesFilter<"AssessmentResult"> | number
+    totalQuestions?: IntWithAggregatesFilter<"AssessmentResult"> | number
+    completionRate?: FloatWithAggregatesFilter<"AssessmentResult"> | number
+    totalTimeMinutes?: IntNullableWithAggregatesFilter<"AssessmentResult"> | number | null
+    generatedAt?: DateTimeWithAggregatesFilter<"AssessmentResult"> | Date | string
+    assessmentId?: StringWithAggregatesFilter<"AssessmentResult"> | string
+  }
+
   export type PhishingCampaignWhereInput = {
     AND?: PhishingCampaignWhereInput | PhishingCampaignWhereInput[]
     OR?: PhishingCampaignWhereInput[]
@@ -28369,6 +36434,7 @@ export namespace Prisma {
     id?: StringFilter<"PhishingCampaign"> | string
     name?: StringFilter<"PhishingCampaign"> | string
     description?: StringNullableFilter<"PhishingCampaign"> | string | null
+    templateId?: StringFilter<"PhishingCampaign"> | string
     template?: StringFilter<"PhishingCampaign"> | string
     subject?: StringFilter<"PhishingCampaign"> | string
     senderName?: StringFilter<"PhishingCampaign"> | string
@@ -28376,17 +36442,23 @@ export namespace Prisma {
     landingPageUrl?: StringNullableFilter<"PhishingCampaign"> | string | null
     status?: EnumCampaignStatusFilter<"PhishingCampaign"> | $Enums.CampaignStatus
     scheduledAt?: DateTimeNullableFilter<"PhishingCampaign"> | Date | string | null
-    startedAt?: DateTimeNullableFilter<"PhishingCampaign"> | Date | string | null
+    launchedAt?: DateTimeNullableFilter<"PhishingCampaign"> | Date | string | null
     completedAt?: DateTimeNullableFilter<"PhishingCampaign"> | Date | string | null
+    pausedAt?: DateTimeNullableFilter<"PhishingCampaign"> | Date | string | null
     targetCount?: IntFilter<"PhishingCampaign"> | number
-    deliveredCount?: IntFilter<"PhishingCampaign"> | number
-    openedCount?: IntFilter<"PhishingCampaign"> | number
-    clickedCount?: IntFilter<"PhishingCampaign"> | number
-    reportedCount?: IntFilter<"PhishingCampaign"> | number
+    emailsSent?: IntFilter<"PhishingCampaign"> | number
+    emailsDelivered?: IntFilter<"PhishingCampaign"> | number
+    emailsOpened?: IntFilter<"PhishingCampaign"> | number
+    linksClicked?: IntFilter<"PhishingCampaign"> | number
+    credentialsEntered?: IntFilter<"PhishingCampaign"> | number
+    phishingReported?: IntFilter<"PhishingCampaign"> | number
+    emailsBounced?: IntFilter<"PhishingCampaign"> | number
+    createdBy?: StringFilter<"PhishingCampaign"> | string
+    organizationId?: StringFilter<"PhishingCampaign"> | string
     createdAt?: DateTimeFilter<"PhishingCampaign"> | Date | string
     updatedAt?: DateTimeFilter<"PhishingCampaign"> | Date | string
-    organizationId?: StringFilter<"PhishingCampaign"> | string
     organization?: XOR<OrganizationRelationFilter, OrganizationWhereInput>
+    creator?: XOR<UserRelationFilter, UserWhereInput>
     targets?: PhishingTargetListRelationFilter
     events?: PhishingEventListRelationFilter
   }
@@ -28395,6 +36467,7 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     description?: SortOrderInput | SortOrder
+    templateId?: SortOrder
     template?: SortOrder
     subject?: SortOrder
     senderName?: SortOrder
@@ -28402,17 +36475,23 @@ export namespace Prisma {
     landingPageUrl?: SortOrderInput | SortOrder
     status?: SortOrder
     scheduledAt?: SortOrderInput | SortOrder
-    startedAt?: SortOrderInput | SortOrder
+    launchedAt?: SortOrderInput | SortOrder
     completedAt?: SortOrderInput | SortOrder
+    pausedAt?: SortOrderInput | SortOrder
     targetCount?: SortOrder
-    deliveredCount?: SortOrder
-    openedCount?: SortOrder
-    clickedCount?: SortOrder
-    reportedCount?: SortOrder
+    emailsSent?: SortOrder
+    emailsDelivered?: SortOrder
+    emailsOpened?: SortOrder
+    linksClicked?: SortOrder
+    credentialsEntered?: SortOrder
+    phishingReported?: SortOrder
+    emailsBounced?: SortOrder
+    createdBy?: SortOrder
+    organizationId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    organizationId?: SortOrder
     organization?: OrganizationOrderByWithRelationInput
+    creator?: UserOrderByWithRelationInput
     targets?: PhishingTargetOrderByRelationAggregateInput
     events?: PhishingEventOrderByRelationAggregateInput
   }
@@ -28424,6 +36503,7 @@ export namespace Prisma {
     NOT?: PhishingCampaignWhereInput | PhishingCampaignWhereInput[]
     name?: StringFilter<"PhishingCampaign"> | string
     description?: StringNullableFilter<"PhishingCampaign"> | string | null
+    templateId?: StringFilter<"PhishingCampaign"> | string
     template?: StringFilter<"PhishingCampaign"> | string
     subject?: StringFilter<"PhishingCampaign"> | string
     senderName?: StringFilter<"PhishingCampaign"> | string
@@ -28431,17 +36511,23 @@ export namespace Prisma {
     landingPageUrl?: StringNullableFilter<"PhishingCampaign"> | string | null
     status?: EnumCampaignStatusFilter<"PhishingCampaign"> | $Enums.CampaignStatus
     scheduledAt?: DateTimeNullableFilter<"PhishingCampaign"> | Date | string | null
-    startedAt?: DateTimeNullableFilter<"PhishingCampaign"> | Date | string | null
+    launchedAt?: DateTimeNullableFilter<"PhishingCampaign"> | Date | string | null
     completedAt?: DateTimeNullableFilter<"PhishingCampaign"> | Date | string | null
+    pausedAt?: DateTimeNullableFilter<"PhishingCampaign"> | Date | string | null
     targetCount?: IntFilter<"PhishingCampaign"> | number
-    deliveredCount?: IntFilter<"PhishingCampaign"> | number
-    openedCount?: IntFilter<"PhishingCampaign"> | number
-    clickedCount?: IntFilter<"PhishingCampaign"> | number
-    reportedCount?: IntFilter<"PhishingCampaign"> | number
+    emailsSent?: IntFilter<"PhishingCampaign"> | number
+    emailsDelivered?: IntFilter<"PhishingCampaign"> | number
+    emailsOpened?: IntFilter<"PhishingCampaign"> | number
+    linksClicked?: IntFilter<"PhishingCampaign"> | number
+    credentialsEntered?: IntFilter<"PhishingCampaign"> | number
+    phishingReported?: IntFilter<"PhishingCampaign"> | number
+    emailsBounced?: IntFilter<"PhishingCampaign"> | number
+    createdBy?: StringFilter<"PhishingCampaign"> | string
+    organizationId?: StringFilter<"PhishingCampaign"> | string
     createdAt?: DateTimeFilter<"PhishingCampaign"> | Date | string
     updatedAt?: DateTimeFilter<"PhishingCampaign"> | Date | string
-    organizationId?: StringFilter<"PhishingCampaign"> | string
     organization?: XOR<OrganizationRelationFilter, OrganizationWhereInput>
+    creator?: XOR<UserRelationFilter, UserWhereInput>
     targets?: PhishingTargetListRelationFilter
     events?: PhishingEventListRelationFilter
   }, "id">
@@ -28450,6 +36536,7 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     description?: SortOrderInput | SortOrder
+    templateId?: SortOrder
     template?: SortOrder
     subject?: SortOrder
     senderName?: SortOrder
@@ -28457,16 +36544,21 @@ export namespace Prisma {
     landingPageUrl?: SortOrderInput | SortOrder
     status?: SortOrder
     scheduledAt?: SortOrderInput | SortOrder
-    startedAt?: SortOrderInput | SortOrder
+    launchedAt?: SortOrderInput | SortOrder
     completedAt?: SortOrderInput | SortOrder
+    pausedAt?: SortOrderInput | SortOrder
     targetCount?: SortOrder
-    deliveredCount?: SortOrder
-    openedCount?: SortOrder
-    clickedCount?: SortOrder
-    reportedCount?: SortOrder
+    emailsSent?: SortOrder
+    emailsDelivered?: SortOrder
+    emailsOpened?: SortOrder
+    linksClicked?: SortOrder
+    credentialsEntered?: SortOrder
+    phishingReported?: SortOrder
+    emailsBounced?: SortOrder
+    createdBy?: SortOrder
+    organizationId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    organizationId?: SortOrder
     _count?: PhishingCampaignCountOrderByAggregateInput
     _avg?: PhishingCampaignAvgOrderByAggregateInput
     _max?: PhishingCampaignMaxOrderByAggregateInput
@@ -28481,6 +36573,7 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"PhishingCampaign"> | string
     name?: StringWithAggregatesFilter<"PhishingCampaign"> | string
     description?: StringNullableWithAggregatesFilter<"PhishingCampaign"> | string | null
+    templateId?: StringWithAggregatesFilter<"PhishingCampaign"> | string
     template?: StringWithAggregatesFilter<"PhishingCampaign"> | string
     subject?: StringWithAggregatesFilter<"PhishingCampaign"> | string
     senderName?: StringWithAggregatesFilter<"PhishingCampaign"> | string
@@ -28488,16 +36581,21 @@ export namespace Prisma {
     landingPageUrl?: StringNullableWithAggregatesFilter<"PhishingCampaign"> | string | null
     status?: EnumCampaignStatusWithAggregatesFilter<"PhishingCampaign"> | $Enums.CampaignStatus
     scheduledAt?: DateTimeNullableWithAggregatesFilter<"PhishingCampaign"> | Date | string | null
-    startedAt?: DateTimeNullableWithAggregatesFilter<"PhishingCampaign"> | Date | string | null
+    launchedAt?: DateTimeNullableWithAggregatesFilter<"PhishingCampaign"> | Date | string | null
     completedAt?: DateTimeNullableWithAggregatesFilter<"PhishingCampaign"> | Date | string | null
+    pausedAt?: DateTimeNullableWithAggregatesFilter<"PhishingCampaign"> | Date | string | null
     targetCount?: IntWithAggregatesFilter<"PhishingCampaign"> | number
-    deliveredCount?: IntWithAggregatesFilter<"PhishingCampaign"> | number
-    openedCount?: IntWithAggregatesFilter<"PhishingCampaign"> | number
-    clickedCount?: IntWithAggregatesFilter<"PhishingCampaign"> | number
-    reportedCount?: IntWithAggregatesFilter<"PhishingCampaign"> | number
+    emailsSent?: IntWithAggregatesFilter<"PhishingCampaign"> | number
+    emailsDelivered?: IntWithAggregatesFilter<"PhishingCampaign"> | number
+    emailsOpened?: IntWithAggregatesFilter<"PhishingCampaign"> | number
+    linksClicked?: IntWithAggregatesFilter<"PhishingCampaign"> | number
+    credentialsEntered?: IntWithAggregatesFilter<"PhishingCampaign"> | number
+    phishingReported?: IntWithAggregatesFilter<"PhishingCampaign"> | number
+    emailsBounced?: IntWithAggregatesFilter<"PhishingCampaign"> | number
+    createdBy?: StringWithAggregatesFilter<"PhishingCampaign"> | string
+    organizationId?: StringWithAggregatesFilter<"PhishingCampaign"> | string
     createdAt?: DateTimeWithAggregatesFilter<"PhishingCampaign"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"PhishingCampaign"> | Date | string
-    organizationId?: StringWithAggregatesFilter<"PhishingCampaign"> | string
   }
 
   export type PhishingTargetWhereInput = {
@@ -28509,13 +36607,27 @@ export namespace Prisma {
     firstName?: StringNullableFilter<"PhishingTarget"> | string | null
     lastName?: StringNullableFilter<"PhishingTarget"> | string | null
     department?: StringNullableFilter<"PhishingTarget"> | string | null
-    trackingId?: StringFilter<"PhishingTarget"> | string
-    status?: EnumTargetStatusFilter<"PhishingTarget"> | $Enums.TargetStatus
+    jobTitle?: StringNullableFilter<"PhishingTarget"> | string | null
+    emailSent?: BoolFilter<"PhishingTarget"> | boolean
+    emailDelivered?: BoolFilter<"PhishingTarget"> | boolean
+    emailOpened?: BoolFilter<"PhishingTarget"> | boolean
+    linkClicked?: BoolFilter<"PhishingTarget"> | boolean
+    credentialsEntered?: BoolFilter<"PhishingTarget"> | boolean
+    reportedPhishing?: BoolFilter<"PhishingTarget"> | boolean
+    emailBounced?: BoolFilter<"PhishingTarget"> | boolean
+    sentAt?: DateTimeNullableFilter<"PhishingTarget"> | Date | string | null
     deliveredAt?: DateTimeNullableFilter<"PhishingTarget"> | Date | string | null
     openedAt?: DateTimeNullableFilter<"PhishingTarget"> | Date | string | null
     clickedAt?: DateTimeNullableFilter<"PhishingTarget"> | Date | string | null
+    credentialsAt?: DateTimeNullableFilter<"PhishingTarget"> | Date | string | null
     reportedAt?: DateTimeNullableFilter<"PhishingTarget"> | Date | string | null
+    bouncedAt?: DateTimeNullableFilter<"PhishingTarget"> | Date | string | null
+    userAgent?: StringNullableFilter<"PhishingTarget"> | string | null
+    ipAddress?: StringNullableFilter<"PhishingTarget"> | string | null
+    clickCount?: IntFilter<"PhishingTarget"> | number
+    riskScore?: FloatNullableFilter<"PhishingTarget"> | number | null
     createdAt?: DateTimeFilter<"PhishingTarget"> | Date | string
+    updatedAt?: DateTimeFilter<"PhishingTarget"> | Date | string
     campaignId?: StringFilter<"PhishingTarget"> | string
     userId?: StringNullableFilter<"PhishingTarget"> | string | null
     campaign?: XOR<PhishingCampaignRelationFilter, PhishingCampaignWhereInput>
@@ -28529,13 +36641,27 @@ export namespace Prisma {
     firstName?: SortOrderInput | SortOrder
     lastName?: SortOrderInput | SortOrder
     department?: SortOrderInput | SortOrder
-    trackingId?: SortOrder
-    status?: SortOrder
+    jobTitle?: SortOrderInput | SortOrder
+    emailSent?: SortOrder
+    emailDelivered?: SortOrder
+    emailOpened?: SortOrder
+    linkClicked?: SortOrder
+    credentialsEntered?: SortOrder
+    reportedPhishing?: SortOrder
+    emailBounced?: SortOrder
+    sentAt?: SortOrderInput | SortOrder
     deliveredAt?: SortOrderInput | SortOrder
     openedAt?: SortOrderInput | SortOrder
     clickedAt?: SortOrderInput | SortOrder
+    credentialsAt?: SortOrderInput | SortOrder
     reportedAt?: SortOrderInput | SortOrder
+    bouncedAt?: SortOrderInput | SortOrder
+    userAgent?: SortOrderInput | SortOrder
+    ipAddress?: SortOrderInput | SortOrder
+    clickCount?: SortOrder
+    riskScore?: SortOrderInput | SortOrder
     createdAt?: SortOrder
+    updatedAt?: SortOrder
     campaignId?: SortOrder
     userId?: SortOrderInput | SortOrder
     campaign?: PhishingCampaignOrderByWithRelationInput
@@ -28545,7 +36671,7 @@ export namespace Prisma {
 
   export type PhishingTargetWhereUniqueInput = Prisma.AtLeast<{
     id?: string
-    trackingId?: string
+    campaignId_email?: PhishingTargetCampaignIdEmailCompoundUniqueInput
     AND?: PhishingTargetWhereInput | PhishingTargetWhereInput[]
     OR?: PhishingTargetWhereInput[]
     NOT?: PhishingTargetWhereInput | PhishingTargetWhereInput[]
@@ -28553,18 +36679,33 @@ export namespace Prisma {
     firstName?: StringNullableFilter<"PhishingTarget"> | string | null
     lastName?: StringNullableFilter<"PhishingTarget"> | string | null
     department?: StringNullableFilter<"PhishingTarget"> | string | null
-    status?: EnumTargetStatusFilter<"PhishingTarget"> | $Enums.TargetStatus
+    jobTitle?: StringNullableFilter<"PhishingTarget"> | string | null
+    emailSent?: BoolFilter<"PhishingTarget"> | boolean
+    emailDelivered?: BoolFilter<"PhishingTarget"> | boolean
+    emailOpened?: BoolFilter<"PhishingTarget"> | boolean
+    linkClicked?: BoolFilter<"PhishingTarget"> | boolean
+    credentialsEntered?: BoolFilter<"PhishingTarget"> | boolean
+    reportedPhishing?: BoolFilter<"PhishingTarget"> | boolean
+    emailBounced?: BoolFilter<"PhishingTarget"> | boolean
+    sentAt?: DateTimeNullableFilter<"PhishingTarget"> | Date | string | null
     deliveredAt?: DateTimeNullableFilter<"PhishingTarget"> | Date | string | null
     openedAt?: DateTimeNullableFilter<"PhishingTarget"> | Date | string | null
     clickedAt?: DateTimeNullableFilter<"PhishingTarget"> | Date | string | null
+    credentialsAt?: DateTimeNullableFilter<"PhishingTarget"> | Date | string | null
     reportedAt?: DateTimeNullableFilter<"PhishingTarget"> | Date | string | null
+    bouncedAt?: DateTimeNullableFilter<"PhishingTarget"> | Date | string | null
+    userAgent?: StringNullableFilter<"PhishingTarget"> | string | null
+    ipAddress?: StringNullableFilter<"PhishingTarget"> | string | null
+    clickCount?: IntFilter<"PhishingTarget"> | number
+    riskScore?: FloatNullableFilter<"PhishingTarget"> | number | null
     createdAt?: DateTimeFilter<"PhishingTarget"> | Date | string
+    updatedAt?: DateTimeFilter<"PhishingTarget"> | Date | string
     campaignId?: StringFilter<"PhishingTarget"> | string
     userId?: StringNullableFilter<"PhishingTarget"> | string | null
     campaign?: XOR<PhishingCampaignRelationFilter, PhishingCampaignWhereInput>
     user?: XOR<UserNullableRelationFilter, UserWhereInput> | null
     events?: PhishingEventListRelationFilter
-  }, "id" | "trackingId">
+  }, "id" | "campaignId_email">
 
   export type PhishingTargetOrderByWithAggregationInput = {
     id?: SortOrder
@@ -28572,18 +36713,34 @@ export namespace Prisma {
     firstName?: SortOrderInput | SortOrder
     lastName?: SortOrderInput | SortOrder
     department?: SortOrderInput | SortOrder
-    trackingId?: SortOrder
-    status?: SortOrder
+    jobTitle?: SortOrderInput | SortOrder
+    emailSent?: SortOrder
+    emailDelivered?: SortOrder
+    emailOpened?: SortOrder
+    linkClicked?: SortOrder
+    credentialsEntered?: SortOrder
+    reportedPhishing?: SortOrder
+    emailBounced?: SortOrder
+    sentAt?: SortOrderInput | SortOrder
     deliveredAt?: SortOrderInput | SortOrder
     openedAt?: SortOrderInput | SortOrder
     clickedAt?: SortOrderInput | SortOrder
+    credentialsAt?: SortOrderInput | SortOrder
     reportedAt?: SortOrderInput | SortOrder
+    bouncedAt?: SortOrderInput | SortOrder
+    userAgent?: SortOrderInput | SortOrder
+    ipAddress?: SortOrderInput | SortOrder
+    clickCount?: SortOrder
+    riskScore?: SortOrderInput | SortOrder
     createdAt?: SortOrder
+    updatedAt?: SortOrder
     campaignId?: SortOrder
     userId?: SortOrderInput | SortOrder
     _count?: PhishingTargetCountOrderByAggregateInput
+    _avg?: PhishingTargetAvgOrderByAggregateInput
     _max?: PhishingTargetMaxOrderByAggregateInput
     _min?: PhishingTargetMinOrderByAggregateInput
+    _sum?: PhishingTargetSumOrderByAggregateInput
   }
 
   export type PhishingTargetScalarWhereWithAggregatesInput = {
@@ -28595,13 +36752,27 @@ export namespace Prisma {
     firstName?: StringNullableWithAggregatesFilter<"PhishingTarget"> | string | null
     lastName?: StringNullableWithAggregatesFilter<"PhishingTarget"> | string | null
     department?: StringNullableWithAggregatesFilter<"PhishingTarget"> | string | null
-    trackingId?: StringWithAggregatesFilter<"PhishingTarget"> | string
-    status?: EnumTargetStatusWithAggregatesFilter<"PhishingTarget"> | $Enums.TargetStatus
+    jobTitle?: StringNullableWithAggregatesFilter<"PhishingTarget"> | string | null
+    emailSent?: BoolWithAggregatesFilter<"PhishingTarget"> | boolean
+    emailDelivered?: BoolWithAggregatesFilter<"PhishingTarget"> | boolean
+    emailOpened?: BoolWithAggregatesFilter<"PhishingTarget"> | boolean
+    linkClicked?: BoolWithAggregatesFilter<"PhishingTarget"> | boolean
+    credentialsEntered?: BoolWithAggregatesFilter<"PhishingTarget"> | boolean
+    reportedPhishing?: BoolWithAggregatesFilter<"PhishingTarget"> | boolean
+    emailBounced?: BoolWithAggregatesFilter<"PhishingTarget"> | boolean
+    sentAt?: DateTimeNullableWithAggregatesFilter<"PhishingTarget"> | Date | string | null
     deliveredAt?: DateTimeNullableWithAggregatesFilter<"PhishingTarget"> | Date | string | null
     openedAt?: DateTimeNullableWithAggregatesFilter<"PhishingTarget"> | Date | string | null
     clickedAt?: DateTimeNullableWithAggregatesFilter<"PhishingTarget"> | Date | string | null
+    credentialsAt?: DateTimeNullableWithAggregatesFilter<"PhishingTarget"> | Date | string | null
     reportedAt?: DateTimeNullableWithAggregatesFilter<"PhishingTarget"> | Date | string | null
+    bouncedAt?: DateTimeNullableWithAggregatesFilter<"PhishingTarget"> | Date | string | null
+    userAgent?: StringNullableWithAggregatesFilter<"PhishingTarget"> | string | null
+    ipAddress?: StringNullableWithAggregatesFilter<"PhishingTarget"> | string | null
+    clickCount?: IntWithAggregatesFilter<"PhishingTarget"> | number
+    riskScore?: FloatNullableWithAggregatesFilter<"PhishingTarget"> | number | null
     createdAt?: DateTimeWithAggregatesFilter<"PhishingTarget"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"PhishingTarget"> | Date | string
     campaignId?: StringWithAggregatesFilter<"PhishingTarget"> | string
     userId?: StringNullableWithAggregatesFilter<"PhishingTarget"> | string | null
   }
@@ -28612,25 +36783,27 @@ export namespace Prisma {
     NOT?: PhishingEventWhereInput | PhishingEventWhereInput[]
     id?: StringFilter<"PhishingEvent"> | string
     type?: EnumPhishingEventTypeFilter<"PhishingEvent"> | $Enums.PhishingEventType
-    metadata?: StringNullableFilter<"PhishingEvent"> | string | null
-    ipAddress?: StringNullableFilter<"PhishingEvent"> | string | null
-    userAgent?: StringNullableFilter<"PhishingEvent"> | string | null
     timestamp?: DateTimeFilter<"PhishingEvent"> | Date | string
+    metadata?: StringNullableFilter<"PhishingEvent"> | string | null
+    userAgent?: StringNullableFilter<"PhishingEvent"> | string | null
+    ipAddress?: StringNullableFilter<"PhishingEvent"> | string | null
+    location?: StringNullableFilter<"PhishingEvent"> | string | null
     campaignId?: StringFilter<"PhishingEvent"> | string
-    targetId?: StringFilter<"PhishingEvent"> | string
+    targetId?: StringNullableFilter<"PhishingEvent"> | string | null
     campaign?: XOR<PhishingCampaignRelationFilter, PhishingCampaignWhereInput>
-    target?: XOR<PhishingTargetRelationFilter, PhishingTargetWhereInput>
+    target?: XOR<PhishingTargetNullableRelationFilter, PhishingTargetWhereInput> | null
   }
 
   export type PhishingEventOrderByWithRelationInput = {
     id?: SortOrder
     type?: SortOrder
-    metadata?: SortOrderInput | SortOrder
-    ipAddress?: SortOrderInput | SortOrder
-    userAgent?: SortOrderInput | SortOrder
     timestamp?: SortOrder
+    metadata?: SortOrderInput | SortOrder
+    userAgent?: SortOrderInput | SortOrder
+    ipAddress?: SortOrderInput | SortOrder
+    location?: SortOrderInput | SortOrder
     campaignId?: SortOrder
-    targetId?: SortOrder
+    targetId?: SortOrderInput | SortOrder
     campaign?: PhishingCampaignOrderByWithRelationInput
     target?: PhishingTargetOrderByWithRelationInput
   }
@@ -28641,25 +36814,27 @@ export namespace Prisma {
     OR?: PhishingEventWhereInput[]
     NOT?: PhishingEventWhereInput | PhishingEventWhereInput[]
     type?: EnumPhishingEventTypeFilter<"PhishingEvent"> | $Enums.PhishingEventType
-    metadata?: StringNullableFilter<"PhishingEvent"> | string | null
-    ipAddress?: StringNullableFilter<"PhishingEvent"> | string | null
-    userAgent?: StringNullableFilter<"PhishingEvent"> | string | null
     timestamp?: DateTimeFilter<"PhishingEvent"> | Date | string
+    metadata?: StringNullableFilter<"PhishingEvent"> | string | null
+    userAgent?: StringNullableFilter<"PhishingEvent"> | string | null
+    ipAddress?: StringNullableFilter<"PhishingEvent"> | string | null
+    location?: StringNullableFilter<"PhishingEvent"> | string | null
     campaignId?: StringFilter<"PhishingEvent"> | string
-    targetId?: StringFilter<"PhishingEvent"> | string
+    targetId?: StringNullableFilter<"PhishingEvent"> | string | null
     campaign?: XOR<PhishingCampaignRelationFilter, PhishingCampaignWhereInput>
-    target?: XOR<PhishingTargetRelationFilter, PhishingTargetWhereInput>
+    target?: XOR<PhishingTargetNullableRelationFilter, PhishingTargetWhereInput> | null
   }, "id">
 
   export type PhishingEventOrderByWithAggregationInput = {
     id?: SortOrder
     type?: SortOrder
-    metadata?: SortOrderInput | SortOrder
-    ipAddress?: SortOrderInput | SortOrder
-    userAgent?: SortOrderInput | SortOrder
     timestamp?: SortOrder
+    metadata?: SortOrderInput | SortOrder
+    userAgent?: SortOrderInput | SortOrder
+    ipAddress?: SortOrderInput | SortOrder
+    location?: SortOrderInput | SortOrder
     campaignId?: SortOrder
-    targetId?: SortOrder
+    targetId?: SortOrderInput | SortOrder
     _count?: PhishingEventCountOrderByAggregateInput
     _max?: PhishingEventMaxOrderByAggregateInput
     _min?: PhishingEventMinOrderByAggregateInput
@@ -28671,12 +36846,242 @@ export namespace Prisma {
     NOT?: PhishingEventScalarWhereWithAggregatesInput | PhishingEventScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"PhishingEvent"> | string
     type?: EnumPhishingEventTypeWithAggregatesFilter<"PhishingEvent"> | $Enums.PhishingEventType
-    metadata?: StringNullableWithAggregatesFilter<"PhishingEvent"> | string | null
-    ipAddress?: StringNullableWithAggregatesFilter<"PhishingEvent"> | string | null
-    userAgent?: StringNullableWithAggregatesFilter<"PhishingEvent"> | string | null
     timestamp?: DateTimeWithAggregatesFilter<"PhishingEvent"> | Date | string
+    metadata?: StringNullableWithAggregatesFilter<"PhishingEvent"> | string | null
+    userAgent?: StringNullableWithAggregatesFilter<"PhishingEvent"> | string | null
+    ipAddress?: StringNullableWithAggregatesFilter<"PhishingEvent"> | string | null
+    location?: StringNullableWithAggregatesFilter<"PhishingEvent"> | string | null
     campaignId?: StringWithAggregatesFilter<"PhishingEvent"> | string
-    targetId?: StringWithAggregatesFilter<"PhishingEvent"> | string
+    targetId?: StringNullableWithAggregatesFilter<"PhishingEvent"> | string | null
+  }
+
+  export type PhishingTemplateWhereInput = {
+    AND?: PhishingTemplateWhereInput | PhishingTemplateWhereInput[]
+    OR?: PhishingTemplateWhereInput[]
+    NOT?: PhishingTemplateWhereInput | PhishingTemplateWhereInput[]
+    id?: StringFilter<"PhishingTemplate"> | string
+    name?: StringFilter<"PhishingTemplate"> | string
+    description?: StringFilter<"PhishingTemplate"> | string
+    category?: EnumTemplateCategoryFilter<"PhishingTemplate"> | $Enums.TemplateCategory
+    riskLevel?: EnumRiskLevelFilter<"PhishingTemplate"> | $Enums.RiskLevel
+    defaultSubject?: StringFilter<"PhishingTemplate"> | string
+    defaultSenderName?: StringFilter<"PhishingTemplate"> | string
+    emailBodyHtml?: StringFilter<"PhishingTemplate"> | string
+    emailBodyText?: StringFilter<"PhishingTemplate"> | string
+    landingPageHtml?: StringNullableFilter<"PhishingTemplate"> | string | null
+    captureCredentials?: BoolFilter<"PhishingTemplate"> | boolean
+    isActive?: BoolFilter<"PhishingTemplate"> | boolean
+    previewContent?: StringFilter<"PhishingTemplate"> | string
+    tags?: StringNullableListFilter<"PhishingTemplate">
+    usageCount?: IntFilter<"PhishingTemplate"> | number
+    successRate?: FloatNullableFilter<"PhishingTemplate"> | number | null
+    createdBy?: StringNullableFilter<"PhishingTemplate"> | string | null
+    organizationId?: StringNullableFilter<"PhishingTemplate"> | string | null
+    createdAt?: DateTimeFilter<"PhishingTemplate"> | Date | string
+    updatedAt?: DateTimeFilter<"PhishingTemplate"> | Date | string
+    organization?: XOR<OrganizationNullableRelationFilter, OrganizationWhereInput> | null
+    creator?: XOR<UserNullableRelationFilter, UserWhereInput> | null
+  }
+
+  export type PhishingTemplateOrderByWithRelationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    category?: SortOrder
+    riskLevel?: SortOrder
+    defaultSubject?: SortOrder
+    defaultSenderName?: SortOrder
+    emailBodyHtml?: SortOrder
+    emailBodyText?: SortOrder
+    landingPageHtml?: SortOrderInput | SortOrder
+    captureCredentials?: SortOrder
+    isActive?: SortOrder
+    previewContent?: SortOrder
+    tags?: SortOrder
+    usageCount?: SortOrder
+    successRate?: SortOrderInput | SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    organizationId?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    organization?: OrganizationOrderByWithRelationInput
+    creator?: UserOrderByWithRelationInput
+  }
+
+  export type PhishingTemplateWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    name?: string
+    AND?: PhishingTemplateWhereInput | PhishingTemplateWhereInput[]
+    OR?: PhishingTemplateWhereInput[]
+    NOT?: PhishingTemplateWhereInput | PhishingTemplateWhereInput[]
+    description?: StringFilter<"PhishingTemplate"> | string
+    category?: EnumTemplateCategoryFilter<"PhishingTemplate"> | $Enums.TemplateCategory
+    riskLevel?: EnumRiskLevelFilter<"PhishingTemplate"> | $Enums.RiskLevel
+    defaultSubject?: StringFilter<"PhishingTemplate"> | string
+    defaultSenderName?: StringFilter<"PhishingTemplate"> | string
+    emailBodyHtml?: StringFilter<"PhishingTemplate"> | string
+    emailBodyText?: StringFilter<"PhishingTemplate"> | string
+    landingPageHtml?: StringNullableFilter<"PhishingTemplate"> | string | null
+    captureCredentials?: BoolFilter<"PhishingTemplate"> | boolean
+    isActive?: BoolFilter<"PhishingTemplate"> | boolean
+    previewContent?: StringFilter<"PhishingTemplate"> | string
+    tags?: StringNullableListFilter<"PhishingTemplate">
+    usageCount?: IntFilter<"PhishingTemplate"> | number
+    successRate?: FloatNullableFilter<"PhishingTemplate"> | number | null
+    createdBy?: StringNullableFilter<"PhishingTemplate"> | string | null
+    organizationId?: StringNullableFilter<"PhishingTemplate"> | string | null
+    createdAt?: DateTimeFilter<"PhishingTemplate"> | Date | string
+    updatedAt?: DateTimeFilter<"PhishingTemplate"> | Date | string
+    organization?: XOR<OrganizationNullableRelationFilter, OrganizationWhereInput> | null
+    creator?: XOR<UserNullableRelationFilter, UserWhereInput> | null
+  }, "id" | "name">
+
+  export type PhishingTemplateOrderByWithAggregationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    category?: SortOrder
+    riskLevel?: SortOrder
+    defaultSubject?: SortOrder
+    defaultSenderName?: SortOrder
+    emailBodyHtml?: SortOrder
+    emailBodyText?: SortOrder
+    landingPageHtml?: SortOrderInput | SortOrder
+    captureCredentials?: SortOrder
+    isActive?: SortOrder
+    previewContent?: SortOrder
+    tags?: SortOrder
+    usageCount?: SortOrder
+    successRate?: SortOrderInput | SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    organizationId?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: PhishingTemplateCountOrderByAggregateInput
+    _avg?: PhishingTemplateAvgOrderByAggregateInput
+    _max?: PhishingTemplateMaxOrderByAggregateInput
+    _min?: PhishingTemplateMinOrderByAggregateInput
+    _sum?: PhishingTemplateSumOrderByAggregateInput
+  }
+
+  export type PhishingTemplateScalarWhereWithAggregatesInput = {
+    AND?: PhishingTemplateScalarWhereWithAggregatesInput | PhishingTemplateScalarWhereWithAggregatesInput[]
+    OR?: PhishingTemplateScalarWhereWithAggregatesInput[]
+    NOT?: PhishingTemplateScalarWhereWithAggregatesInput | PhishingTemplateScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"PhishingTemplate"> | string
+    name?: StringWithAggregatesFilter<"PhishingTemplate"> | string
+    description?: StringWithAggregatesFilter<"PhishingTemplate"> | string
+    category?: EnumTemplateCategoryWithAggregatesFilter<"PhishingTemplate"> | $Enums.TemplateCategory
+    riskLevel?: EnumRiskLevelWithAggregatesFilter<"PhishingTemplate"> | $Enums.RiskLevel
+    defaultSubject?: StringWithAggregatesFilter<"PhishingTemplate"> | string
+    defaultSenderName?: StringWithAggregatesFilter<"PhishingTemplate"> | string
+    emailBodyHtml?: StringWithAggregatesFilter<"PhishingTemplate"> | string
+    emailBodyText?: StringWithAggregatesFilter<"PhishingTemplate"> | string
+    landingPageHtml?: StringNullableWithAggregatesFilter<"PhishingTemplate"> | string | null
+    captureCredentials?: BoolWithAggregatesFilter<"PhishingTemplate"> | boolean
+    isActive?: BoolWithAggregatesFilter<"PhishingTemplate"> | boolean
+    previewContent?: StringWithAggregatesFilter<"PhishingTemplate"> | string
+    tags?: StringNullableListFilter<"PhishingTemplate">
+    usageCount?: IntWithAggregatesFilter<"PhishingTemplate"> | number
+    successRate?: FloatNullableWithAggregatesFilter<"PhishingTemplate"> | number | null
+    createdBy?: StringNullableWithAggregatesFilter<"PhishingTemplate"> | string | null
+    organizationId?: StringNullableWithAggregatesFilter<"PhishingTemplate"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"PhishingTemplate"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"PhishingTemplate"> | Date | string
+  }
+
+  export type EmailJobWhereInput = {
+    AND?: EmailJobWhereInput | EmailJobWhereInput[]
+    OR?: EmailJobWhereInput[]
+    NOT?: EmailJobWhereInput | EmailJobWhereInput[]
+    id?: StringFilter<"EmailJob"> | string
+    campaignId?: StringFilter<"EmailJob"> | string
+    targetId?: StringFilter<"EmailJob"> | string
+    priority?: EnumJobPriorityFilter<"EmailJob"> | $Enums.JobPriority
+    scheduledFor?: DateTimeFilter<"EmailJob"> | Date | string
+    attempts?: IntFilter<"EmailJob"> | number
+    maxAttempts?: IntFilter<"EmailJob"> | number
+    status?: EnumJobStatusFilter<"EmailJob"> | $Enums.JobStatus
+    processingData?: StringNullableFilter<"EmailJob"> | string | null
+    errorMessage?: StringNullableFilter<"EmailJob"> | string | null
+    lastAttemptAt?: DateTimeNullableFilter<"EmailJob"> | Date | string | null
+    createdAt?: DateTimeFilter<"EmailJob"> | Date | string
+    updatedAt?: DateTimeFilter<"EmailJob"> | Date | string
+  }
+
+  export type EmailJobOrderByWithRelationInput = {
+    id?: SortOrder
+    campaignId?: SortOrder
+    targetId?: SortOrder
+    priority?: SortOrder
+    scheduledFor?: SortOrder
+    attempts?: SortOrder
+    maxAttempts?: SortOrder
+    status?: SortOrder
+    processingData?: SortOrderInput | SortOrder
+    errorMessage?: SortOrderInput | SortOrder
+    lastAttemptAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EmailJobWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: EmailJobWhereInput | EmailJobWhereInput[]
+    OR?: EmailJobWhereInput[]
+    NOT?: EmailJobWhereInput | EmailJobWhereInput[]
+    campaignId?: StringFilter<"EmailJob"> | string
+    targetId?: StringFilter<"EmailJob"> | string
+    priority?: EnumJobPriorityFilter<"EmailJob"> | $Enums.JobPriority
+    scheduledFor?: DateTimeFilter<"EmailJob"> | Date | string
+    attempts?: IntFilter<"EmailJob"> | number
+    maxAttempts?: IntFilter<"EmailJob"> | number
+    status?: EnumJobStatusFilter<"EmailJob"> | $Enums.JobStatus
+    processingData?: StringNullableFilter<"EmailJob"> | string | null
+    errorMessage?: StringNullableFilter<"EmailJob"> | string | null
+    lastAttemptAt?: DateTimeNullableFilter<"EmailJob"> | Date | string | null
+    createdAt?: DateTimeFilter<"EmailJob"> | Date | string
+    updatedAt?: DateTimeFilter<"EmailJob"> | Date | string
+  }, "id">
+
+  export type EmailJobOrderByWithAggregationInput = {
+    id?: SortOrder
+    campaignId?: SortOrder
+    targetId?: SortOrder
+    priority?: SortOrder
+    scheduledFor?: SortOrder
+    attempts?: SortOrder
+    maxAttempts?: SortOrder
+    status?: SortOrder
+    processingData?: SortOrderInput | SortOrder
+    errorMessage?: SortOrderInput | SortOrder
+    lastAttemptAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: EmailJobCountOrderByAggregateInput
+    _avg?: EmailJobAvgOrderByAggregateInput
+    _max?: EmailJobMaxOrderByAggregateInput
+    _min?: EmailJobMinOrderByAggregateInput
+    _sum?: EmailJobSumOrderByAggregateInput
+  }
+
+  export type EmailJobScalarWhereWithAggregatesInput = {
+    AND?: EmailJobScalarWhereWithAggregatesInput | EmailJobScalarWhereWithAggregatesInput[]
+    OR?: EmailJobScalarWhereWithAggregatesInput[]
+    NOT?: EmailJobScalarWhereWithAggregatesInput | EmailJobScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"EmailJob"> | string
+    campaignId?: StringWithAggregatesFilter<"EmailJob"> | string
+    targetId?: StringWithAggregatesFilter<"EmailJob"> | string
+    priority?: EnumJobPriorityWithAggregatesFilter<"EmailJob"> | $Enums.JobPriority
+    scheduledFor?: DateTimeWithAggregatesFilter<"EmailJob"> | Date | string
+    attempts?: IntWithAggregatesFilter<"EmailJob"> | number
+    maxAttempts?: IntWithAggregatesFilter<"EmailJob"> | number
+    status?: EnumJobStatusWithAggregatesFilter<"EmailJob"> | $Enums.JobStatus
+    processingData?: StringNullableWithAggregatesFilter<"EmailJob"> | string | null
+    errorMessage?: StringNullableWithAggregatesFilter<"EmailJob"> | string | null
+    lastAttemptAt?: DateTimeNullableWithAggregatesFilter<"EmailJob"> | Date | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"EmailJob"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"EmailJob"> | Date | string
   }
 
   export type AgentWhereInput = {
@@ -29668,9 +38073,15 @@ export namespace Prisma {
     organization?: OrganizationCreateNestedOneWithoutUsersInput
     assessments?: AssessmentCreateNestedManyWithoutUserInput
     phishingTargets?: PhishingTargetCreateNestedManyWithoutUserInput
+    phishingCampaigns?: PhishingCampaignCreateNestedManyWithoutCreatorInput
+    phishingTemplates?: PhishingTemplateCreateNestedManyWithoutCreatorInput
     telemetryEvents?: TelemetryEventCreateNestedManyWithoutUserInput
     auditLogs?: AuditLogCreateNestedManyWithoutUserInput
     refreshTokens?: RefreshTokenCreateNestedManyWithoutUserInput
+    passwordResets?: PasswordResetCreateNestedManyWithoutUserInput
+    createdInviteCodes?: InviteCodeCreateNestedManyWithoutCreatorInput
+    organizationMemberships?: OrganizationMemberCreateNestedManyWithoutUserInput
+    sentInvites?: OrganizationMemberCreateNestedManyWithoutInviterInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -29689,9 +38100,15 @@ export namespace Prisma {
     organizationId?: string | null
     assessments?: AssessmentUncheckedCreateNestedManyWithoutUserInput
     phishingTargets?: PhishingTargetUncheckedCreateNestedManyWithoutUserInput
+    phishingCampaigns?: PhishingCampaignUncheckedCreateNestedManyWithoutCreatorInput
+    phishingTemplates?: PhishingTemplateUncheckedCreateNestedManyWithoutCreatorInput
     telemetryEvents?: TelemetryEventUncheckedCreateNestedManyWithoutUserInput
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
     refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+    passwordResets?: PasswordResetUncheckedCreateNestedManyWithoutUserInput
+    createdInviteCodes?: InviteCodeUncheckedCreateNestedManyWithoutCreatorInput
+    organizationMemberships?: OrganizationMemberUncheckedCreateNestedManyWithoutUserInput
+    sentInvites?: OrganizationMemberUncheckedCreateNestedManyWithoutInviterInput
   }
 
   export type UserUpdateInput = {
@@ -29710,9 +38127,15 @@ export namespace Prisma {
     organization?: OrganizationUpdateOneWithoutUsersNestedInput
     assessments?: AssessmentUpdateManyWithoutUserNestedInput
     phishingTargets?: PhishingTargetUpdateManyWithoutUserNestedInput
+    phishingCampaigns?: PhishingCampaignUpdateManyWithoutCreatorNestedInput
+    phishingTemplates?: PhishingTemplateUpdateManyWithoutCreatorNestedInput
     telemetryEvents?: TelemetryEventUpdateManyWithoutUserNestedInput
     auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
     refreshTokens?: RefreshTokenUpdateManyWithoutUserNestedInput
+    passwordResets?: PasswordResetUpdateManyWithoutUserNestedInput
+    createdInviteCodes?: InviteCodeUpdateManyWithoutCreatorNestedInput
+    organizationMemberships?: OrganizationMemberUpdateManyWithoutUserNestedInput
+    sentInvites?: OrganizationMemberUpdateManyWithoutInviterNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -29731,9 +38154,15 @@ export namespace Prisma {
     organizationId?: NullableStringFieldUpdateOperationsInput | string | null
     assessments?: AssessmentUncheckedUpdateManyWithoutUserNestedInput
     phishingTargets?: PhishingTargetUncheckedUpdateManyWithoutUserNestedInput
+    phishingCampaigns?: PhishingCampaignUncheckedUpdateManyWithoutCreatorNestedInput
+    phishingTemplates?: PhishingTemplateUncheckedUpdateManyWithoutCreatorNestedInput
     telemetryEvents?: TelemetryEventUncheckedUpdateManyWithoutUserNestedInput
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
     refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+    passwordResets?: PasswordResetUncheckedUpdateManyWithoutUserNestedInput
+    createdInviteCodes?: InviteCodeUncheckedUpdateManyWithoutCreatorNestedInput
+    organizationMemberships?: OrganizationMemberUncheckedUpdateManyWithoutUserNestedInput
+    sentInvites?: OrganizationMemberUncheckedUpdateManyWithoutInviterNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -29838,6 +38267,68 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type PasswordResetCreateInput = {
+    id?: string
+    token: string
+    expiresAt: Date | string
+    used?: boolean
+    createdAt?: Date | string
+    user: UserCreateNestedOneWithoutPasswordResetsInput
+  }
+
+  export type PasswordResetUncheckedCreateInput = {
+    id?: string
+    token: string
+    userId: string
+    expiresAt: Date | string
+    used?: boolean
+    createdAt?: Date | string
+  }
+
+  export type PasswordResetUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    token?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    used?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutPasswordResetsNestedInput
+  }
+
+  export type PasswordResetUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    token?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    used?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PasswordResetCreateManyInput = {
+    id?: string
+    token: string
+    userId: string
+    expiresAt: Date | string
+    used?: boolean
+    createdAt?: Date | string
+  }
+
+  export type PasswordResetUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    token?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    used?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PasswordResetUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    token?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    used?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type OrganizationCreateInput = {
     id?: string
     name: string
@@ -29863,8 +38354,11 @@ export namespace Prisma {
     assessments?: AssessmentCreateNestedManyWithoutOrganizationInput
     subscriptions?: SubscriptionCreateNestedManyWithoutOrganizationInput
     phishingCampaigns?: PhishingCampaignCreateNestedManyWithoutOrganizationInput
+    phishingTemplates?: PhishingTemplateCreateNestedManyWithoutOrganizationInput
     agents?: AgentCreateNestedManyWithoutOrganizationInput
     invoices?: InvoiceCreateNestedManyWithoutOrganizationInput
+    inviteCodes?: InviteCodeCreateNestedManyWithoutOrganizationInput
+    members?: OrganizationMemberCreateNestedManyWithoutOrganizationInput
   }
 
   export type OrganizationUncheckedCreateInput = {
@@ -29892,8 +38386,11 @@ export namespace Prisma {
     assessments?: AssessmentUncheckedCreateNestedManyWithoutOrganizationInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutOrganizationInput
     phishingCampaigns?: PhishingCampaignUncheckedCreateNestedManyWithoutOrganizationInput
+    phishingTemplates?: PhishingTemplateUncheckedCreateNestedManyWithoutOrganizationInput
     agents?: AgentUncheckedCreateNestedManyWithoutOrganizationInput
     invoices?: InvoiceUncheckedCreateNestedManyWithoutOrganizationInput
+    inviteCodes?: InviteCodeUncheckedCreateNestedManyWithoutOrganizationInput
+    members?: OrganizationMemberUncheckedCreateNestedManyWithoutOrganizationInput
   }
 
   export type OrganizationUpdateInput = {
@@ -29921,8 +38418,11 @@ export namespace Prisma {
     assessments?: AssessmentUpdateManyWithoutOrganizationNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutOrganizationNestedInput
     phishingCampaigns?: PhishingCampaignUpdateManyWithoutOrganizationNestedInput
+    phishingTemplates?: PhishingTemplateUpdateManyWithoutOrganizationNestedInput
     agents?: AgentUpdateManyWithoutOrganizationNestedInput
     invoices?: InvoiceUpdateManyWithoutOrganizationNestedInput
+    inviteCodes?: InviteCodeUpdateManyWithoutOrganizationNestedInput
+    members?: OrganizationMemberUpdateManyWithoutOrganizationNestedInput
   }
 
   export type OrganizationUncheckedUpdateInput = {
@@ -29950,8 +38450,11 @@ export namespace Prisma {
     assessments?: AssessmentUncheckedUpdateManyWithoutOrganizationNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutOrganizationNestedInput
     phishingCampaigns?: PhishingCampaignUncheckedUpdateManyWithoutOrganizationNestedInput
+    phishingTemplates?: PhishingTemplateUncheckedUpdateManyWithoutOrganizationNestedInput
     agents?: AgentUncheckedUpdateManyWithoutOrganizationNestedInput
     invoices?: InvoiceUncheckedUpdateManyWithoutOrganizationNestedInput
+    inviteCodes?: InviteCodeUncheckedUpdateManyWithoutOrganizationNestedInput
+    members?: OrganizationMemberUncheckedUpdateManyWithoutOrganizationNestedInput
   }
 
   export type OrganizationCreateManyInput = {
@@ -30023,6 +38526,162 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type InviteCodeCreateInput = {
+    id?: string
+    code: string
+    expiresAt: Date | string
+    usageLimit?: number
+    usedCount?: number
+    isActive?: boolean
+    createdAt?: Date | string
+    organization: OrganizationCreateNestedOneWithoutInviteCodesInput
+    creator: UserCreateNestedOneWithoutCreatedInviteCodesInput
+  }
+
+  export type InviteCodeUncheckedCreateInput = {
+    id?: string
+    code: string
+    organizationId: string
+    createdBy: string
+    expiresAt: Date | string
+    usageLimit?: number
+    usedCount?: number
+    isActive?: boolean
+    createdAt?: Date | string
+  }
+
+  export type InviteCodeUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    usageLimit?: IntFieldUpdateOperationsInput | number
+    usedCount?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organization?: OrganizationUpdateOneRequiredWithoutInviteCodesNestedInput
+    creator?: UserUpdateOneRequiredWithoutCreatedInviteCodesNestedInput
+  }
+
+  export type InviteCodeUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    organizationId?: StringFieldUpdateOperationsInput | string
+    createdBy?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    usageLimit?: IntFieldUpdateOperationsInput | number
+    usedCount?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type InviteCodeCreateManyInput = {
+    id?: string
+    code: string
+    organizationId: string
+    createdBy: string
+    expiresAt: Date | string
+    usageLimit?: number
+    usedCount?: number
+    isActive?: boolean
+    createdAt?: Date | string
+  }
+
+  export type InviteCodeUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    usageLimit?: IntFieldUpdateOperationsInput | number
+    usedCount?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type InviteCodeUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    organizationId?: StringFieldUpdateOperationsInput | string
+    createdBy?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    usageLimit?: IntFieldUpdateOperationsInput | number
+    usedCount?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type OrganizationMemberCreateInput = {
+    id?: string
+    role?: $Enums.UserRole
+    status?: $Enums.MemberStatus
+    joinedAt?: Date | string
+    inviteCode?: string | null
+    user: UserCreateNestedOneWithoutOrganizationMembershipsInput
+    organization: OrganizationCreateNestedOneWithoutMembersInput
+    inviter?: UserCreateNestedOneWithoutSentInvitesInput
+  }
+
+  export type OrganizationMemberUncheckedCreateInput = {
+    id?: string
+    userId: string
+    organizationId: string
+    role?: $Enums.UserRole
+    status?: $Enums.MemberStatus
+    joinedAt?: Date | string
+    invitedBy?: string | null
+    inviteCode?: string | null
+  }
+
+  export type OrganizationMemberUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    status?: EnumMemberStatusFieldUpdateOperationsInput | $Enums.MemberStatus
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    inviteCode?: NullableStringFieldUpdateOperationsInput | string | null
+    user?: UserUpdateOneRequiredWithoutOrganizationMembershipsNestedInput
+    organization?: OrganizationUpdateOneRequiredWithoutMembersNestedInput
+    inviter?: UserUpdateOneWithoutSentInvitesNestedInput
+  }
+
+  export type OrganizationMemberUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    organizationId?: StringFieldUpdateOperationsInput | string
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    status?: EnumMemberStatusFieldUpdateOperationsInput | $Enums.MemberStatus
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    invitedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    inviteCode?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type OrganizationMemberCreateManyInput = {
+    id?: string
+    userId: string
+    organizationId: string
+    role?: $Enums.UserRole
+    status?: $Enums.MemberStatus
+    joinedAt?: Date | string
+    invitedBy?: string | null
+    inviteCode?: string | null
+  }
+
+  export type OrganizationMemberUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    status?: EnumMemberStatusFieldUpdateOperationsInput | $Enums.MemberStatus
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    inviteCode?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type OrganizationMemberUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    organizationId?: StringFieldUpdateOperationsInput | string
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    status?: EnumMemberStatusFieldUpdateOperationsInput | $Enums.MemberStatus
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    invitedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    inviteCode?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
   export type AssessmentCreateInput = {
     id?: string
     title: string
@@ -30043,6 +38702,7 @@ export namespace Prisma {
     organization: OrganizationCreateNestedOneWithoutAssessmentsInput
     user: UserCreateNestedOneWithoutAssessmentsInput
     responses?: AssessmentResponseCreateNestedManyWithoutAssessmentInput
+    result?: AssessmentResultCreateNestedOneWithoutAssessmentInput
   }
 
   export type AssessmentUncheckedCreateInput = {
@@ -30065,6 +38725,7 @@ export namespace Prisma {
     organizationId: string
     userId: string
     responses?: AssessmentResponseUncheckedCreateNestedManyWithoutAssessmentInput
+    result?: AssessmentResultUncheckedCreateNestedOneWithoutAssessmentInput
   }
 
   export type AssessmentUpdateInput = {
@@ -30087,6 +38748,7 @@ export namespace Prisma {
     organization?: OrganizationUpdateOneRequiredWithoutAssessmentsNestedInput
     user?: UserUpdateOneRequiredWithoutAssessmentsNestedInput
     responses?: AssessmentResponseUpdateManyWithoutAssessmentNestedInput
+    result?: AssessmentResultUpdateOneWithoutAssessmentNestedInput
   }
 
   export type AssessmentUncheckedUpdateInput = {
@@ -30109,6 +38771,7 @@ export namespace Prisma {
     organizationId?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     responses?: AssessmentResponseUncheckedUpdateManyWithoutAssessmentNestedInput
+    result?: AssessmentResultUncheckedUpdateOneWithoutAssessmentNestedInput
   }
 
   export type AssessmentCreateManyInput = {
@@ -30509,10 +39172,136 @@ export namespace Prisma {
     questionId?: StringFieldUpdateOperationsInput | string
   }
 
+  export type AssessmentResultCreateInput = {
+    id?: string
+    overallScore: number
+    overallPercentage: number
+    tier: $Enums.CSITier
+    categoryScores: string
+    sectionScores: string
+    industryPercentile?: number | null
+    sizePercentile?: number | null
+    regionPercentile?: number | null
+    questionsAnswered: number
+    totalQuestions: number
+    completionRate: number
+    totalTimeMinutes?: number | null
+    generatedAt?: Date | string
+    assessment: AssessmentCreateNestedOneWithoutResultInput
+  }
+
+  export type AssessmentResultUncheckedCreateInput = {
+    id?: string
+    overallScore: number
+    overallPercentage: number
+    tier: $Enums.CSITier
+    categoryScores: string
+    sectionScores: string
+    industryPercentile?: number | null
+    sizePercentile?: number | null
+    regionPercentile?: number | null
+    questionsAnswered: number
+    totalQuestions: number
+    completionRate: number
+    totalTimeMinutes?: number | null
+    generatedAt?: Date | string
+    assessmentId: string
+  }
+
+  export type AssessmentResultUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    overallScore?: FloatFieldUpdateOperationsInput | number
+    overallPercentage?: FloatFieldUpdateOperationsInput | number
+    tier?: EnumCSITierFieldUpdateOperationsInput | $Enums.CSITier
+    categoryScores?: StringFieldUpdateOperationsInput | string
+    sectionScores?: StringFieldUpdateOperationsInput | string
+    industryPercentile?: NullableFloatFieldUpdateOperationsInput | number | null
+    sizePercentile?: NullableFloatFieldUpdateOperationsInput | number | null
+    regionPercentile?: NullableFloatFieldUpdateOperationsInput | number | null
+    questionsAnswered?: IntFieldUpdateOperationsInput | number
+    totalQuestions?: IntFieldUpdateOperationsInput | number
+    completionRate?: FloatFieldUpdateOperationsInput | number
+    totalTimeMinutes?: NullableIntFieldUpdateOperationsInput | number | null
+    generatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    assessment?: AssessmentUpdateOneRequiredWithoutResultNestedInput
+  }
+
+  export type AssessmentResultUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    overallScore?: FloatFieldUpdateOperationsInput | number
+    overallPercentage?: FloatFieldUpdateOperationsInput | number
+    tier?: EnumCSITierFieldUpdateOperationsInput | $Enums.CSITier
+    categoryScores?: StringFieldUpdateOperationsInput | string
+    sectionScores?: StringFieldUpdateOperationsInput | string
+    industryPercentile?: NullableFloatFieldUpdateOperationsInput | number | null
+    sizePercentile?: NullableFloatFieldUpdateOperationsInput | number | null
+    regionPercentile?: NullableFloatFieldUpdateOperationsInput | number | null
+    questionsAnswered?: IntFieldUpdateOperationsInput | number
+    totalQuestions?: IntFieldUpdateOperationsInput | number
+    completionRate?: FloatFieldUpdateOperationsInput | number
+    totalTimeMinutes?: NullableIntFieldUpdateOperationsInput | number | null
+    generatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    assessmentId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type AssessmentResultCreateManyInput = {
+    id?: string
+    overallScore: number
+    overallPercentage: number
+    tier: $Enums.CSITier
+    categoryScores: string
+    sectionScores: string
+    industryPercentile?: number | null
+    sizePercentile?: number | null
+    regionPercentile?: number | null
+    questionsAnswered: number
+    totalQuestions: number
+    completionRate: number
+    totalTimeMinutes?: number | null
+    generatedAt?: Date | string
+    assessmentId: string
+  }
+
+  export type AssessmentResultUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    overallScore?: FloatFieldUpdateOperationsInput | number
+    overallPercentage?: FloatFieldUpdateOperationsInput | number
+    tier?: EnumCSITierFieldUpdateOperationsInput | $Enums.CSITier
+    categoryScores?: StringFieldUpdateOperationsInput | string
+    sectionScores?: StringFieldUpdateOperationsInput | string
+    industryPercentile?: NullableFloatFieldUpdateOperationsInput | number | null
+    sizePercentile?: NullableFloatFieldUpdateOperationsInput | number | null
+    regionPercentile?: NullableFloatFieldUpdateOperationsInput | number | null
+    questionsAnswered?: IntFieldUpdateOperationsInput | number
+    totalQuestions?: IntFieldUpdateOperationsInput | number
+    completionRate?: FloatFieldUpdateOperationsInput | number
+    totalTimeMinutes?: NullableIntFieldUpdateOperationsInput | number | null
+    generatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AssessmentResultUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    overallScore?: FloatFieldUpdateOperationsInput | number
+    overallPercentage?: FloatFieldUpdateOperationsInput | number
+    tier?: EnumCSITierFieldUpdateOperationsInput | $Enums.CSITier
+    categoryScores?: StringFieldUpdateOperationsInput | string
+    sectionScores?: StringFieldUpdateOperationsInput | string
+    industryPercentile?: NullableFloatFieldUpdateOperationsInput | number | null
+    sizePercentile?: NullableFloatFieldUpdateOperationsInput | number | null
+    regionPercentile?: NullableFloatFieldUpdateOperationsInput | number | null
+    questionsAnswered?: IntFieldUpdateOperationsInput | number
+    totalQuestions?: IntFieldUpdateOperationsInput | number
+    completionRate?: FloatFieldUpdateOperationsInput | number
+    totalTimeMinutes?: NullableIntFieldUpdateOperationsInput | number | null
+    generatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    assessmentId?: StringFieldUpdateOperationsInput | string
+  }
+
   export type PhishingCampaignCreateInput = {
     id?: string
     name: string
     description?: string | null
+    templateId: string
     template: string
     subject: string
     senderName: string
@@ -30520,16 +39309,21 @@ export namespace Prisma {
     landingPageUrl?: string | null
     status?: $Enums.CampaignStatus
     scheduledAt?: Date | string | null
-    startedAt?: Date | string | null
+    launchedAt?: Date | string | null
     completedAt?: Date | string | null
+    pausedAt?: Date | string | null
     targetCount?: number
-    deliveredCount?: number
-    openedCount?: number
-    clickedCount?: number
-    reportedCount?: number
+    emailsSent?: number
+    emailsDelivered?: number
+    emailsOpened?: number
+    linksClicked?: number
+    credentialsEntered?: number
+    phishingReported?: number
+    emailsBounced?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     organization: OrganizationCreateNestedOneWithoutPhishingCampaignsInput
+    creator: UserCreateNestedOneWithoutPhishingCampaignsInput
     targets?: PhishingTargetCreateNestedManyWithoutCampaignInput
     events?: PhishingEventCreateNestedManyWithoutCampaignInput
   }
@@ -30538,6 +39332,7 @@ export namespace Prisma {
     id?: string
     name: string
     description?: string | null
+    templateId: string
     template: string
     subject: string
     senderName: string
@@ -30545,16 +39340,21 @@ export namespace Prisma {
     landingPageUrl?: string | null
     status?: $Enums.CampaignStatus
     scheduledAt?: Date | string | null
-    startedAt?: Date | string | null
+    launchedAt?: Date | string | null
     completedAt?: Date | string | null
+    pausedAt?: Date | string | null
     targetCount?: number
-    deliveredCount?: number
-    openedCount?: number
-    clickedCount?: number
-    reportedCount?: number
+    emailsSent?: number
+    emailsDelivered?: number
+    emailsOpened?: number
+    linksClicked?: number
+    credentialsEntered?: number
+    phishingReported?: number
+    emailsBounced?: number
+    createdBy: string
+    organizationId: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    organizationId: string
     targets?: PhishingTargetUncheckedCreateNestedManyWithoutCampaignInput
     events?: PhishingEventUncheckedCreateNestedManyWithoutCampaignInput
   }
@@ -30563,6 +39363,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    templateId?: StringFieldUpdateOperationsInput | string
     template?: StringFieldUpdateOperationsInput | string
     subject?: StringFieldUpdateOperationsInput | string
     senderName?: StringFieldUpdateOperationsInput | string
@@ -30570,16 +39371,21 @@ export namespace Prisma {
     landingPageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumCampaignStatusFieldUpdateOperationsInput | $Enums.CampaignStatus
     scheduledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    launchedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    pausedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     targetCount?: IntFieldUpdateOperationsInput | number
-    deliveredCount?: IntFieldUpdateOperationsInput | number
-    openedCount?: IntFieldUpdateOperationsInput | number
-    clickedCount?: IntFieldUpdateOperationsInput | number
-    reportedCount?: IntFieldUpdateOperationsInput | number
+    emailsSent?: IntFieldUpdateOperationsInput | number
+    emailsDelivered?: IntFieldUpdateOperationsInput | number
+    emailsOpened?: IntFieldUpdateOperationsInput | number
+    linksClicked?: IntFieldUpdateOperationsInput | number
+    credentialsEntered?: IntFieldUpdateOperationsInput | number
+    phishingReported?: IntFieldUpdateOperationsInput | number
+    emailsBounced?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     organization?: OrganizationUpdateOneRequiredWithoutPhishingCampaignsNestedInput
+    creator?: UserUpdateOneRequiredWithoutPhishingCampaignsNestedInput
     targets?: PhishingTargetUpdateManyWithoutCampaignNestedInput
     events?: PhishingEventUpdateManyWithoutCampaignNestedInput
   }
@@ -30588,6 +39394,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    templateId?: StringFieldUpdateOperationsInput | string
     template?: StringFieldUpdateOperationsInput | string
     subject?: StringFieldUpdateOperationsInput | string
     senderName?: StringFieldUpdateOperationsInput | string
@@ -30595,16 +39402,21 @@ export namespace Prisma {
     landingPageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumCampaignStatusFieldUpdateOperationsInput | $Enums.CampaignStatus
     scheduledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    launchedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    pausedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     targetCount?: IntFieldUpdateOperationsInput | number
-    deliveredCount?: IntFieldUpdateOperationsInput | number
-    openedCount?: IntFieldUpdateOperationsInput | number
-    clickedCount?: IntFieldUpdateOperationsInput | number
-    reportedCount?: IntFieldUpdateOperationsInput | number
+    emailsSent?: IntFieldUpdateOperationsInput | number
+    emailsDelivered?: IntFieldUpdateOperationsInput | number
+    emailsOpened?: IntFieldUpdateOperationsInput | number
+    linksClicked?: IntFieldUpdateOperationsInput | number
+    credentialsEntered?: IntFieldUpdateOperationsInput | number
+    phishingReported?: IntFieldUpdateOperationsInput | number
+    emailsBounced?: IntFieldUpdateOperationsInput | number
+    createdBy?: StringFieldUpdateOperationsInput | string
+    organizationId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    organizationId?: StringFieldUpdateOperationsInput | string
     targets?: PhishingTargetUncheckedUpdateManyWithoutCampaignNestedInput
     events?: PhishingEventUncheckedUpdateManyWithoutCampaignNestedInput
   }
@@ -30613,6 +39425,7 @@ export namespace Prisma {
     id?: string
     name: string
     description?: string | null
+    templateId: string
     template: string
     subject: string
     senderName: string
@@ -30620,22 +39433,28 @@ export namespace Prisma {
     landingPageUrl?: string | null
     status?: $Enums.CampaignStatus
     scheduledAt?: Date | string | null
-    startedAt?: Date | string | null
+    launchedAt?: Date | string | null
     completedAt?: Date | string | null
+    pausedAt?: Date | string | null
     targetCount?: number
-    deliveredCount?: number
-    openedCount?: number
-    clickedCount?: number
-    reportedCount?: number
+    emailsSent?: number
+    emailsDelivered?: number
+    emailsOpened?: number
+    linksClicked?: number
+    credentialsEntered?: number
+    phishingReported?: number
+    emailsBounced?: number
+    createdBy: string
+    organizationId: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    organizationId: string
   }
 
   export type PhishingCampaignUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    templateId?: StringFieldUpdateOperationsInput | string
     template?: StringFieldUpdateOperationsInput | string
     subject?: StringFieldUpdateOperationsInput | string
     senderName?: StringFieldUpdateOperationsInput | string
@@ -30643,13 +39462,17 @@ export namespace Prisma {
     landingPageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumCampaignStatusFieldUpdateOperationsInput | $Enums.CampaignStatus
     scheduledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    launchedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    pausedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     targetCount?: IntFieldUpdateOperationsInput | number
-    deliveredCount?: IntFieldUpdateOperationsInput | number
-    openedCount?: IntFieldUpdateOperationsInput | number
-    clickedCount?: IntFieldUpdateOperationsInput | number
-    reportedCount?: IntFieldUpdateOperationsInput | number
+    emailsSent?: IntFieldUpdateOperationsInput | number
+    emailsDelivered?: IntFieldUpdateOperationsInput | number
+    emailsOpened?: IntFieldUpdateOperationsInput | number
+    linksClicked?: IntFieldUpdateOperationsInput | number
+    credentialsEntered?: IntFieldUpdateOperationsInput | number
+    phishingReported?: IntFieldUpdateOperationsInput | number
+    emailsBounced?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -30658,6 +39481,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    templateId?: StringFieldUpdateOperationsInput | string
     template?: StringFieldUpdateOperationsInput | string
     subject?: StringFieldUpdateOperationsInput | string
     senderName?: StringFieldUpdateOperationsInput | string
@@ -30665,16 +39489,21 @@ export namespace Prisma {
     landingPageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumCampaignStatusFieldUpdateOperationsInput | $Enums.CampaignStatus
     scheduledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    launchedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    pausedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     targetCount?: IntFieldUpdateOperationsInput | number
-    deliveredCount?: IntFieldUpdateOperationsInput | number
-    openedCount?: IntFieldUpdateOperationsInput | number
-    clickedCount?: IntFieldUpdateOperationsInput | number
-    reportedCount?: IntFieldUpdateOperationsInput | number
+    emailsSent?: IntFieldUpdateOperationsInput | number
+    emailsDelivered?: IntFieldUpdateOperationsInput | number
+    emailsOpened?: IntFieldUpdateOperationsInput | number
+    linksClicked?: IntFieldUpdateOperationsInput | number
+    credentialsEntered?: IntFieldUpdateOperationsInput | number
+    phishingReported?: IntFieldUpdateOperationsInput | number
+    emailsBounced?: IntFieldUpdateOperationsInput | number
+    createdBy?: StringFieldUpdateOperationsInput | string
+    organizationId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    organizationId?: StringFieldUpdateOperationsInput | string
   }
 
   export type PhishingTargetCreateInput = {
@@ -30683,13 +39512,27 @@ export namespace Prisma {
     firstName?: string | null
     lastName?: string | null
     department?: string | null
-    trackingId?: string
-    status?: $Enums.TargetStatus
+    jobTitle?: string | null
+    emailSent?: boolean
+    emailDelivered?: boolean
+    emailOpened?: boolean
+    linkClicked?: boolean
+    credentialsEntered?: boolean
+    reportedPhishing?: boolean
+    emailBounced?: boolean
+    sentAt?: Date | string | null
     deliveredAt?: Date | string | null
     openedAt?: Date | string | null
     clickedAt?: Date | string | null
+    credentialsAt?: Date | string | null
     reportedAt?: Date | string | null
+    bouncedAt?: Date | string | null
+    userAgent?: string | null
+    ipAddress?: string | null
+    clickCount?: number
+    riskScore?: number | null
     createdAt?: Date | string
+    updatedAt?: Date | string
     campaign: PhishingCampaignCreateNestedOneWithoutTargetsInput
     user?: UserCreateNestedOneWithoutPhishingTargetsInput
     events?: PhishingEventCreateNestedManyWithoutTargetInput
@@ -30701,13 +39544,27 @@ export namespace Prisma {
     firstName?: string | null
     lastName?: string | null
     department?: string | null
-    trackingId?: string
-    status?: $Enums.TargetStatus
+    jobTitle?: string | null
+    emailSent?: boolean
+    emailDelivered?: boolean
+    emailOpened?: boolean
+    linkClicked?: boolean
+    credentialsEntered?: boolean
+    reportedPhishing?: boolean
+    emailBounced?: boolean
+    sentAt?: Date | string | null
     deliveredAt?: Date | string | null
     openedAt?: Date | string | null
     clickedAt?: Date | string | null
+    credentialsAt?: Date | string | null
     reportedAt?: Date | string | null
+    bouncedAt?: Date | string | null
+    userAgent?: string | null
+    ipAddress?: string | null
+    clickCount?: number
+    riskScore?: number | null
     createdAt?: Date | string
+    updatedAt?: Date | string
     campaignId: string
     userId?: string | null
     events?: PhishingEventUncheckedCreateNestedManyWithoutTargetInput
@@ -30719,13 +39576,27 @@ export namespace Prisma {
     firstName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: NullableStringFieldUpdateOperationsInput | string | null
     department?: NullableStringFieldUpdateOperationsInput | string | null
-    trackingId?: StringFieldUpdateOperationsInput | string
-    status?: EnumTargetStatusFieldUpdateOperationsInput | $Enums.TargetStatus
+    jobTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    emailSent?: BoolFieldUpdateOperationsInput | boolean
+    emailDelivered?: BoolFieldUpdateOperationsInput | boolean
+    emailOpened?: BoolFieldUpdateOperationsInput | boolean
+    linkClicked?: BoolFieldUpdateOperationsInput | boolean
+    credentialsEntered?: BoolFieldUpdateOperationsInput | boolean
+    reportedPhishing?: BoolFieldUpdateOperationsInput | boolean
+    emailBounced?: BoolFieldUpdateOperationsInput | boolean
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     openedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     clickedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    credentialsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     reportedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bouncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    clickCount?: IntFieldUpdateOperationsInput | number
+    riskScore?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     campaign?: PhishingCampaignUpdateOneRequiredWithoutTargetsNestedInput
     user?: UserUpdateOneWithoutPhishingTargetsNestedInput
     events?: PhishingEventUpdateManyWithoutTargetNestedInput
@@ -30737,13 +39608,27 @@ export namespace Prisma {
     firstName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: NullableStringFieldUpdateOperationsInput | string | null
     department?: NullableStringFieldUpdateOperationsInput | string | null
-    trackingId?: StringFieldUpdateOperationsInput | string
-    status?: EnumTargetStatusFieldUpdateOperationsInput | $Enums.TargetStatus
+    jobTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    emailSent?: BoolFieldUpdateOperationsInput | boolean
+    emailDelivered?: BoolFieldUpdateOperationsInput | boolean
+    emailOpened?: BoolFieldUpdateOperationsInput | boolean
+    linkClicked?: BoolFieldUpdateOperationsInput | boolean
+    credentialsEntered?: BoolFieldUpdateOperationsInput | boolean
+    reportedPhishing?: BoolFieldUpdateOperationsInput | boolean
+    emailBounced?: BoolFieldUpdateOperationsInput | boolean
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     openedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     clickedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    credentialsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     reportedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bouncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    clickCount?: IntFieldUpdateOperationsInput | number
+    riskScore?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     campaignId?: StringFieldUpdateOperationsInput | string
     userId?: NullableStringFieldUpdateOperationsInput | string | null
     events?: PhishingEventUncheckedUpdateManyWithoutTargetNestedInput
@@ -30755,13 +39640,27 @@ export namespace Prisma {
     firstName?: string | null
     lastName?: string | null
     department?: string | null
-    trackingId?: string
-    status?: $Enums.TargetStatus
+    jobTitle?: string | null
+    emailSent?: boolean
+    emailDelivered?: boolean
+    emailOpened?: boolean
+    linkClicked?: boolean
+    credentialsEntered?: boolean
+    reportedPhishing?: boolean
+    emailBounced?: boolean
+    sentAt?: Date | string | null
     deliveredAt?: Date | string | null
     openedAt?: Date | string | null
     clickedAt?: Date | string | null
+    credentialsAt?: Date | string | null
     reportedAt?: Date | string | null
+    bouncedAt?: Date | string | null
+    userAgent?: string | null
+    ipAddress?: string | null
+    clickCount?: number
+    riskScore?: number | null
     createdAt?: Date | string
+    updatedAt?: Date | string
     campaignId: string
     userId?: string | null
   }
@@ -30772,13 +39671,27 @@ export namespace Prisma {
     firstName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: NullableStringFieldUpdateOperationsInput | string | null
     department?: NullableStringFieldUpdateOperationsInput | string | null
-    trackingId?: StringFieldUpdateOperationsInput | string
-    status?: EnumTargetStatusFieldUpdateOperationsInput | $Enums.TargetStatus
+    jobTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    emailSent?: BoolFieldUpdateOperationsInput | boolean
+    emailDelivered?: BoolFieldUpdateOperationsInput | boolean
+    emailOpened?: BoolFieldUpdateOperationsInput | boolean
+    linkClicked?: BoolFieldUpdateOperationsInput | boolean
+    credentialsEntered?: BoolFieldUpdateOperationsInput | boolean
+    reportedPhishing?: BoolFieldUpdateOperationsInput | boolean
+    emailBounced?: BoolFieldUpdateOperationsInput | boolean
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     openedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     clickedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    credentialsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     reportedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bouncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    clickCount?: IntFieldUpdateOperationsInput | number
+    riskScore?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type PhishingTargetUncheckedUpdateManyInput = {
@@ -30787,13 +39700,27 @@ export namespace Prisma {
     firstName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: NullableStringFieldUpdateOperationsInput | string | null
     department?: NullableStringFieldUpdateOperationsInput | string | null
-    trackingId?: StringFieldUpdateOperationsInput | string
-    status?: EnumTargetStatusFieldUpdateOperationsInput | $Enums.TargetStatus
+    jobTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    emailSent?: BoolFieldUpdateOperationsInput | boolean
+    emailDelivered?: BoolFieldUpdateOperationsInput | boolean
+    emailOpened?: BoolFieldUpdateOperationsInput | boolean
+    linkClicked?: BoolFieldUpdateOperationsInput | boolean
+    credentialsEntered?: BoolFieldUpdateOperationsInput | boolean
+    reportedPhishing?: BoolFieldUpdateOperationsInput | boolean
+    emailBounced?: BoolFieldUpdateOperationsInput | boolean
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     openedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     clickedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    credentialsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     reportedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bouncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    clickCount?: IntFieldUpdateOperationsInput | number
+    riskScore?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     campaignId?: StringFieldUpdateOperationsInput | string
     userId?: NullableStringFieldUpdateOperationsInput | string | null
   }
@@ -30801,76 +39728,354 @@ export namespace Prisma {
   export type PhishingEventCreateInput = {
     id?: string
     type: $Enums.PhishingEventType
-    metadata?: string | null
-    ipAddress?: string | null
-    userAgent?: string | null
     timestamp?: Date | string
+    metadata?: string | null
+    userAgent?: string | null
+    ipAddress?: string | null
+    location?: string | null
     campaign: PhishingCampaignCreateNestedOneWithoutEventsInput
-    target: PhishingTargetCreateNestedOneWithoutEventsInput
+    target?: PhishingTargetCreateNestedOneWithoutEventsInput
   }
 
   export type PhishingEventUncheckedCreateInput = {
     id?: string
     type: $Enums.PhishingEventType
-    metadata?: string | null
-    ipAddress?: string | null
-    userAgent?: string | null
     timestamp?: Date | string
+    metadata?: string | null
+    userAgent?: string | null
+    ipAddress?: string | null
+    location?: string | null
     campaignId: string
-    targetId: string
+    targetId?: string | null
   }
 
   export type PhishingEventUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     type?: EnumPhishingEventTypeFieldUpdateOperationsInput | $Enums.PhishingEventType
-    metadata?: NullableStringFieldUpdateOperationsInput | string | null
-    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
-    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
     timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    metadata?: NullableStringFieldUpdateOperationsInput | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
     campaign?: PhishingCampaignUpdateOneRequiredWithoutEventsNestedInput
-    target?: PhishingTargetUpdateOneRequiredWithoutEventsNestedInput
+    target?: PhishingTargetUpdateOneWithoutEventsNestedInput
   }
 
   export type PhishingEventUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     type?: EnumPhishingEventTypeFieldUpdateOperationsInput | $Enums.PhishingEventType
-    metadata?: NullableStringFieldUpdateOperationsInput | string | null
-    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
-    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
     timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    metadata?: NullableStringFieldUpdateOperationsInput | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
     campaignId?: StringFieldUpdateOperationsInput | string
-    targetId?: StringFieldUpdateOperationsInput | string
+    targetId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type PhishingEventCreateManyInput = {
     id?: string
     type: $Enums.PhishingEventType
-    metadata?: string | null
-    ipAddress?: string | null
-    userAgent?: string | null
     timestamp?: Date | string
+    metadata?: string | null
+    userAgent?: string | null
+    ipAddress?: string | null
+    location?: string | null
     campaignId: string
-    targetId: string
+    targetId?: string | null
   }
 
   export type PhishingEventUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     type?: EnumPhishingEventTypeFieldUpdateOperationsInput | $Enums.PhishingEventType
-    metadata?: NullableStringFieldUpdateOperationsInput | string | null
-    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
-    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
     timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    metadata?: NullableStringFieldUpdateOperationsInput | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type PhishingEventUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     type?: EnumPhishingEventTypeFieldUpdateOperationsInput | $Enums.PhishingEventType
-    metadata?: NullableStringFieldUpdateOperationsInput | string | null
-    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
-    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
     timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    metadata?: NullableStringFieldUpdateOperationsInput | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    campaignId?: StringFieldUpdateOperationsInput | string
+    targetId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type PhishingTemplateCreateInput = {
+    id?: string
+    name: string
+    description: string
+    category: $Enums.TemplateCategory
+    riskLevel: $Enums.RiskLevel
+    defaultSubject: string
+    defaultSenderName: string
+    emailBodyHtml: string
+    emailBodyText: string
+    landingPageHtml?: string | null
+    captureCredentials?: boolean
+    isActive?: boolean
+    previewContent: string
+    tags?: PhishingTemplateCreatetagsInput | string[]
+    usageCount?: number
+    successRate?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    organization?: OrganizationCreateNestedOneWithoutPhishingTemplatesInput
+    creator?: UserCreateNestedOneWithoutPhishingTemplatesInput
+  }
+
+  export type PhishingTemplateUncheckedCreateInput = {
+    id?: string
+    name: string
+    description: string
+    category: $Enums.TemplateCategory
+    riskLevel: $Enums.RiskLevel
+    defaultSubject: string
+    defaultSenderName: string
+    emailBodyHtml: string
+    emailBodyText: string
+    landingPageHtml?: string | null
+    captureCredentials?: boolean
+    isActive?: boolean
+    previewContent: string
+    tags?: PhishingTemplateCreatetagsInput | string[]
+    usageCount?: number
+    successRate?: number | null
+    createdBy?: string | null
+    organizationId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PhishingTemplateUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    category?: EnumTemplateCategoryFieldUpdateOperationsInput | $Enums.TemplateCategory
+    riskLevel?: EnumRiskLevelFieldUpdateOperationsInput | $Enums.RiskLevel
+    defaultSubject?: StringFieldUpdateOperationsInput | string
+    defaultSenderName?: StringFieldUpdateOperationsInput | string
+    emailBodyHtml?: StringFieldUpdateOperationsInput | string
+    emailBodyText?: StringFieldUpdateOperationsInput | string
+    landingPageHtml?: NullableStringFieldUpdateOperationsInput | string | null
+    captureCredentials?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    previewContent?: StringFieldUpdateOperationsInput | string
+    tags?: PhishingTemplateUpdatetagsInput | string[]
+    usageCount?: IntFieldUpdateOperationsInput | number
+    successRate?: NullableFloatFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organization?: OrganizationUpdateOneWithoutPhishingTemplatesNestedInput
+    creator?: UserUpdateOneWithoutPhishingTemplatesNestedInput
+  }
+
+  export type PhishingTemplateUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    category?: EnumTemplateCategoryFieldUpdateOperationsInput | $Enums.TemplateCategory
+    riskLevel?: EnumRiskLevelFieldUpdateOperationsInput | $Enums.RiskLevel
+    defaultSubject?: StringFieldUpdateOperationsInput | string
+    defaultSenderName?: StringFieldUpdateOperationsInput | string
+    emailBodyHtml?: StringFieldUpdateOperationsInput | string
+    emailBodyText?: StringFieldUpdateOperationsInput | string
+    landingPageHtml?: NullableStringFieldUpdateOperationsInput | string | null
+    captureCredentials?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    previewContent?: StringFieldUpdateOperationsInput | string
+    tags?: PhishingTemplateUpdatetagsInput | string[]
+    usageCount?: IntFieldUpdateOperationsInput | number
+    successRate?: NullableFloatFieldUpdateOperationsInput | number | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    organizationId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PhishingTemplateCreateManyInput = {
+    id?: string
+    name: string
+    description: string
+    category: $Enums.TemplateCategory
+    riskLevel: $Enums.RiskLevel
+    defaultSubject: string
+    defaultSenderName: string
+    emailBodyHtml: string
+    emailBodyText: string
+    landingPageHtml?: string | null
+    captureCredentials?: boolean
+    isActive?: boolean
+    previewContent: string
+    tags?: PhishingTemplateCreatetagsInput | string[]
+    usageCount?: number
+    successRate?: number | null
+    createdBy?: string | null
+    organizationId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PhishingTemplateUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    category?: EnumTemplateCategoryFieldUpdateOperationsInput | $Enums.TemplateCategory
+    riskLevel?: EnumRiskLevelFieldUpdateOperationsInput | $Enums.RiskLevel
+    defaultSubject?: StringFieldUpdateOperationsInput | string
+    defaultSenderName?: StringFieldUpdateOperationsInput | string
+    emailBodyHtml?: StringFieldUpdateOperationsInput | string
+    emailBodyText?: StringFieldUpdateOperationsInput | string
+    landingPageHtml?: NullableStringFieldUpdateOperationsInput | string | null
+    captureCredentials?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    previewContent?: StringFieldUpdateOperationsInput | string
+    tags?: PhishingTemplateUpdatetagsInput | string[]
+    usageCount?: IntFieldUpdateOperationsInput | number
+    successRate?: NullableFloatFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PhishingTemplateUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    category?: EnumTemplateCategoryFieldUpdateOperationsInput | $Enums.TemplateCategory
+    riskLevel?: EnumRiskLevelFieldUpdateOperationsInput | $Enums.RiskLevel
+    defaultSubject?: StringFieldUpdateOperationsInput | string
+    defaultSenderName?: StringFieldUpdateOperationsInput | string
+    emailBodyHtml?: StringFieldUpdateOperationsInput | string
+    emailBodyText?: StringFieldUpdateOperationsInput | string
+    landingPageHtml?: NullableStringFieldUpdateOperationsInput | string | null
+    captureCredentials?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    previewContent?: StringFieldUpdateOperationsInput | string
+    tags?: PhishingTemplateUpdatetagsInput | string[]
+    usageCount?: IntFieldUpdateOperationsInput | number
+    successRate?: NullableFloatFieldUpdateOperationsInput | number | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    organizationId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EmailJobCreateInput = {
+    id?: string
+    campaignId: string
+    targetId: string
+    priority?: $Enums.JobPriority
+    scheduledFor: Date | string
+    attempts?: number
+    maxAttempts?: number
+    status?: $Enums.JobStatus
+    processingData?: string | null
+    errorMessage?: string | null
+    lastAttemptAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type EmailJobUncheckedCreateInput = {
+    id?: string
+    campaignId: string
+    targetId: string
+    priority?: $Enums.JobPriority
+    scheduledFor: Date | string
+    attempts?: number
+    maxAttempts?: number
+    status?: $Enums.JobStatus
+    processingData?: string | null
+    errorMessage?: string | null
+    lastAttemptAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type EmailJobUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
     campaignId?: StringFieldUpdateOperationsInput | string
     targetId?: StringFieldUpdateOperationsInput | string
+    priority?: EnumJobPriorityFieldUpdateOperationsInput | $Enums.JobPriority
+    scheduledFor?: DateTimeFieldUpdateOperationsInput | Date | string
+    attempts?: IntFieldUpdateOperationsInput | number
+    maxAttempts?: IntFieldUpdateOperationsInput | number
+    status?: EnumJobStatusFieldUpdateOperationsInput | $Enums.JobStatus
+    processingData?: NullableStringFieldUpdateOperationsInput | string | null
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    lastAttemptAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EmailJobUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    campaignId?: StringFieldUpdateOperationsInput | string
+    targetId?: StringFieldUpdateOperationsInput | string
+    priority?: EnumJobPriorityFieldUpdateOperationsInput | $Enums.JobPriority
+    scheduledFor?: DateTimeFieldUpdateOperationsInput | Date | string
+    attempts?: IntFieldUpdateOperationsInput | number
+    maxAttempts?: IntFieldUpdateOperationsInput | number
+    status?: EnumJobStatusFieldUpdateOperationsInput | $Enums.JobStatus
+    processingData?: NullableStringFieldUpdateOperationsInput | string | null
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    lastAttemptAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EmailJobCreateManyInput = {
+    id?: string
+    campaignId: string
+    targetId: string
+    priority?: $Enums.JobPriority
+    scheduledFor: Date | string
+    attempts?: number
+    maxAttempts?: number
+    status?: $Enums.JobStatus
+    processingData?: string | null
+    errorMessage?: string | null
+    lastAttemptAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type EmailJobUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    campaignId?: StringFieldUpdateOperationsInput | string
+    targetId?: StringFieldUpdateOperationsInput | string
+    priority?: EnumJobPriorityFieldUpdateOperationsInput | $Enums.JobPriority
+    scheduledFor?: DateTimeFieldUpdateOperationsInput | Date | string
+    attempts?: IntFieldUpdateOperationsInput | number
+    maxAttempts?: IntFieldUpdateOperationsInput | number
+    status?: EnumJobStatusFieldUpdateOperationsInput | $Enums.JobStatus
+    processingData?: NullableStringFieldUpdateOperationsInput | string | null
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    lastAttemptAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EmailJobUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    campaignId?: StringFieldUpdateOperationsInput | string
+    targetId?: StringFieldUpdateOperationsInput | string
+    priority?: EnumJobPriorityFieldUpdateOperationsInput | $Enums.JobPriority
+    scheduledFor?: DateTimeFieldUpdateOperationsInput | Date | string
+    attempts?: IntFieldUpdateOperationsInput | number
+    maxAttempts?: IntFieldUpdateOperationsInput | number
+    status?: EnumJobStatusFieldUpdateOperationsInput | $Enums.JobStatus
+    processingData?: NullableStringFieldUpdateOperationsInput | string | null
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    lastAttemptAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type AgentCreateInput = {
@@ -32044,6 +41249,18 @@ export namespace Prisma {
     none?: PhishingTargetWhereInput
   }
 
+  export type PhishingCampaignListRelationFilter = {
+    every?: PhishingCampaignWhereInput
+    some?: PhishingCampaignWhereInput
+    none?: PhishingCampaignWhereInput
+  }
+
+  export type PhishingTemplateListRelationFilter = {
+    every?: PhishingTemplateWhereInput
+    some?: PhishingTemplateWhereInput
+    none?: PhishingTemplateWhereInput
+  }
+
   export type TelemetryEventListRelationFilter = {
     every?: TelemetryEventWhereInput
     some?: TelemetryEventWhereInput
@@ -32062,6 +41279,24 @@ export namespace Prisma {
     none?: RefreshTokenWhereInput
   }
 
+  export type PasswordResetListRelationFilter = {
+    every?: PasswordResetWhereInput
+    some?: PasswordResetWhereInput
+    none?: PasswordResetWhereInput
+  }
+
+  export type InviteCodeListRelationFilter = {
+    every?: InviteCodeWhereInput
+    some?: InviteCodeWhereInput
+    none?: InviteCodeWhereInput
+  }
+
+  export type OrganizationMemberListRelationFilter = {
+    every?: OrganizationMemberWhereInput
+    some?: OrganizationMemberWhereInput
+    none?: OrganizationMemberWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -32075,6 +41310,14 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
+  export type PhishingCampaignOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type PhishingTemplateOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type TelemetryEventOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -32084,6 +41327,18 @@ export namespace Prisma {
   }
 
   export type RefreshTokenOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type PasswordResetOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type InviteCodeOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type OrganizationMemberOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -32232,6 +41487,33 @@ export namespace Prisma {
     createdAt?: SortOrder
   }
 
+  export type PasswordResetCountOrderByAggregateInput = {
+    id?: SortOrder
+    token?: SortOrder
+    userId?: SortOrder
+    expiresAt?: SortOrder
+    used?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type PasswordResetMaxOrderByAggregateInput = {
+    id?: SortOrder
+    token?: SortOrder
+    userId?: SortOrder
+    expiresAt?: SortOrder
+    used?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type PasswordResetMinOrderByAggregateInput = {
+    id?: SortOrder
+    token?: SortOrder
+    userId?: SortOrder
+    expiresAt?: SortOrder
+    used?: SortOrder
+    createdAt?: SortOrder
+  }
+
   export type EnumOrganizationSizeFilter<$PrismaModel = never> = {
     equals?: $Enums.OrganizationSize | EnumOrganizationSizeFieldRefInput<$PrismaModel>
     in?: $Enums.OrganizationSize[] | ListEnumOrganizationSizeFieldRefInput<$PrismaModel>
@@ -32276,12 +41558,6 @@ export namespace Prisma {
     none?: SubscriptionWhereInput
   }
 
-  export type PhishingCampaignListRelationFilter = {
-    every?: PhishingCampaignWhereInput
-    some?: PhishingCampaignWhereInput
-    none?: PhishingCampaignWhereInput
-  }
-
   export type AgentListRelationFilter = {
     every?: AgentWhereInput
     some?: AgentWhereInput
@@ -32299,10 +41575,6 @@ export namespace Prisma {
   }
 
   export type SubscriptionOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type PhishingCampaignOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -32437,6 +41709,144 @@ export namespace Prisma {
     _max?: NestedEnumRiskTierNullableFilter<$PrismaModel>
   }
 
+  export type IntFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntFilter<$PrismaModel> | number
+  }
+
+  export type OrganizationRelationFilter = {
+    is?: OrganizationWhereInput
+    isNot?: OrganizationWhereInput
+  }
+
+  export type InviteCodeCountOrderByAggregateInput = {
+    id?: SortOrder
+    code?: SortOrder
+    organizationId?: SortOrder
+    createdBy?: SortOrder
+    expiresAt?: SortOrder
+    usageLimit?: SortOrder
+    usedCount?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type InviteCodeAvgOrderByAggregateInput = {
+    usageLimit?: SortOrder
+    usedCount?: SortOrder
+  }
+
+  export type InviteCodeMaxOrderByAggregateInput = {
+    id?: SortOrder
+    code?: SortOrder
+    organizationId?: SortOrder
+    createdBy?: SortOrder
+    expiresAt?: SortOrder
+    usageLimit?: SortOrder
+    usedCount?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type InviteCodeMinOrderByAggregateInput = {
+    id?: SortOrder
+    code?: SortOrder
+    organizationId?: SortOrder
+    createdBy?: SortOrder
+    expiresAt?: SortOrder
+    usageLimit?: SortOrder
+    usedCount?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type InviteCodeSumOrderByAggregateInput = {
+    usageLimit?: SortOrder
+    usedCount?: SortOrder
+  }
+
+  export type IntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
+  }
+
+  export type EnumMemberStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.MemberStatus | EnumMemberStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.MemberStatus[] | ListEnumMemberStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.MemberStatus[] | ListEnumMemberStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumMemberStatusFilter<$PrismaModel> | $Enums.MemberStatus
+  }
+
+  export type UserNullableRelationFilter = {
+    is?: UserWhereInput | null
+    isNot?: UserWhereInput | null
+  }
+
+  export type OrganizationMemberUserIdOrganizationIdCompoundUniqueInput = {
+    userId: string
+    organizationId: string
+  }
+
+  export type OrganizationMemberCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    organizationId?: SortOrder
+    role?: SortOrder
+    status?: SortOrder
+    joinedAt?: SortOrder
+    invitedBy?: SortOrder
+    inviteCode?: SortOrder
+  }
+
+  export type OrganizationMemberMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    organizationId?: SortOrder
+    role?: SortOrder
+    status?: SortOrder
+    joinedAt?: SortOrder
+    invitedBy?: SortOrder
+    inviteCode?: SortOrder
+  }
+
+  export type OrganizationMemberMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    organizationId?: SortOrder
+    role?: SortOrder
+    status?: SortOrder
+    joinedAt?: SortOrder
+    invitedBy?: SortOrder
+    inviteCode?: SortOrder
+  }
+
+  export type EnumMemberStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.MemberStatus | EnumMemberStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.MemberStatus[] | ListEnumMemberStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.MemberStatus[] | ListEnumMemberStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumMemberStatusWithAggregatesFilter<$PrismaModel> | $Enums.MemberStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumMemberStatusFilter<$PrismaModel>
+    _max?: NestedEnumMemberStatusFilter<$PrismaModel>
+  }
+
   export type EnumAssessmentTypeFilter<$PrismaModel = never> = {
     equals?: $Enums.AssessmentType | EnumAssessmentTypeFieldRefInput<$PrismaModel>
     in?: $Enums.AssessmentType[] | ListEnumAssessmentTypeFieldRefInput<$PrismaModel>
@@ -32462,15 +41872,15 @@ export namespace Prisma {
     not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
   }
 
-  export type OrganizationRelationFilter = {
-    is?: OrganizationWhereInput
-    isNot?: OrganizationWhereInput
-  }
-
   export type AssessmentResponseListRelationFilter = {
     every?: AssessmentResponseWhereInput
     some?: AssessmentResponseWhereInput
     none?: AssessmentResponseWhereInput
+  }
+
+  export type AssessmentResultNullableRelationFilter = {
+    is?: AssessmentResultWhereInput | null
+    isNot?: AssessmentResultWhereInput | null
   }
 
   export type AssessmentResponseOrderByRelationAggregateInput = {
@@ -32601,17 +42011,6 @@ export namespace Prisma {
     not?: NestedFloatFilter<$PrismaModel> | number
   }
 
-  export type IntFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntFilter<$PrismaModel> | number
-  }
-
   export type QuestionListRelationFilter = {
     every?: QuestionWhereInput
     some?: QuestionWhereInput
@@ -32679,22 +42078,6 @@ export namespace Prisma {
     _sum?: NestedFloatFilter<$PrismaModel>
     _min?: NestedFloatFilter<$PrismaModel>
     _max?: NestedFloatFilter<$PrismaModel>
-  }
-
-  export type IntWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedIntFilter<$PrismaModel>
-    _min?: NestedIntFilter<$PrismaModel>
-    _max?: NestedIntFilter<$PrismaModel>
   }
 
   export type EnumQuestionTypeFilter<$PrismaModel = never> = {
@@ -32909,6 +42292,101 @@ export namespace Prisma {
     _max?: NestedIntNullableFilter<$PrismaModel>
   }
 
+  export type EnumCSITierFilter<$PrismaModel = never> = {
+    equals?: $Enums.CSITier | EnumCSITierFieldRefInput<$PrismaModel>
+    in?: $Enums.CSITier[] | ListEnumCSITierFieldRefInput<$PrismaModel>
+    notIn?: $Enums.CSITier[] | ListEnumCSITierFieldRefInput<$PrismaModel>
+    not?: NestedEnumCSITierFilter<$PrismaModel> | $Enums.CSITier
+  }
+
+  export type AssessmentResultCountOrderByAggregateInput = {
+    id?: SortOrder
+    overallScore?: SortOrder
+    overallPercentage?: SortOrder
+    tier?: SortOrder
+    categoryScores?: SortOrder
+    sectionScores?: SortOrder
+    industryPercentile?: SortOrder
+    sizePercentile?: SortOrder
+    regionPercentile?: SortOrder
+    questionsAnswered?: SortOrder
+    totalQuestions?: SortOrder
+    completionRate?: SortOrder
+    totalTimeMinutes?: SortOrder
+    generatedAt?: SortOrder
+    assessmentId?: SortOrder
+  }
+
+  export type AssessmentResultAvgOrderByAggregateInput = {
+    overallScore?: SortOrder
+    overallPercentage?: SortOrder
+    industryPercentile?: SortOrder
+    sizePercentile?: SortOrder
+    regionPercentile?: SortOrder
+    questionsAnswered?: SortOrder
+    totalQuestions?: SortOrder
+    completionRate?: SortOrder
+    totalTimeMinutes?: SortOrder
+  }
+
+  export type AssessmentResultMaxOrderByAggregateInput = {
+    id?: SortOrder
+    overallScore?: SortOrder
+    overallPercentage?: SortOrder
+    tier?: SortOrder
+    categoryScores?: SortOrder
+    sectionScores?: SortOrder
+    industryPercentile?: SortOrder
+    sizePercentile?: SortOrder
+    regionPercentile?: SortOrder
+    questionsAnswered?: SortOrder
+    totalQuestions?: SortOrder
+    completionRate?: SortOrder
+    totalTimeMinutes?: SortOrder
+    generatedAt?: SortOrder
+    assessmentId?: SortOrder
+  }
+
+  export type AssessmentResultMinOrderByAggregateInput = {
+    id?: SortOrder
+    overallScore?: SortOrder
+    overallPercentage?: SortOrder
+    tier?: SortOrder
+    categoryScores?: SortOrder
+    sectionScores?: SortOrder
+    industryPercentile?: SortOrder
+    sizePercentile?: SortOrder
+    regionPercentile?: SortOrder
+    questionsAnswered?: SortOrder
+    totalQuestions?: SortOrder
+    completionRate?: SortOrder
+    totalTimeMinutes?: SortOrder
+    generatedAt?: SortOrder
+    assessmentId?: SortOrder
+  }
+
+  export type AssessmentResultSumOrderByAggregateInput = {
+    overallScore?: SortOrder
+    overallPercentage?: SortOrder
+    industryPercentile?: SortOrder
+    sizePercentile?: SortOrder
+    regionPercentile?: SortOrder
+    questionsAnswered?: SortOrder
+    totalQuestions?: SortOrder
+    completionRate?: SortOrder
+    totalTimeMinutes?: SortOrder
+  }
+
+  export type EnumCSITierWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.CSITier | EnumCSITierFieldRefInput<$PrismaModel>
+    in?: $Enums.CSITier[] | ListEnumCSITierFieldRefInput<$PrismaModel>
+    notIn?: $Enums.CSITier[] | ListEnumCSITierFieldRefInput<$PrismaModel>
+    not?: NestedEnumCSITierWithAggregatesFilter<$PrismaModel> | $Enums.CSITier
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumCSITierFilter<$PrismaModel>
+    _max?: NestedEnumCSITierFilter<$PrismaModel>
+  }
+
   export type EnumCampaignStatusFilter<$PrismaModel = never> = {
     equals?: $Enums.CampaignStatus | EnumCampaignStatusFieldRefInput<$PrismaModel>
     in?: $Enums.CampaignStatus[] | ListEnumCampaignStatusFieldRefInput<$PrismaModel>
@@ -32930,6 +42408,7 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     description?: SortOrder
+    templateId?: SortOrder
     template?: SortOrder
     subject?: SortOrder
     senderName?: SortOrder
@@ -32937,30 +42416,39 @@ export namespace Prisma {
     landingPageUrl?: SortOrder
     status?: SortOrder
     scheduledAt?: SortOrder
-    startedAt?: SortOrder
+    launchedAt?: SortOrder
     completedAt?: SortOrder
+    pausedAt?: SortOrder
     targetCount?: SortOrder
-    deliveredCount?: SortOrder
-    openedCount?: SortOrder
-    clickedCount?: SortOrder
-    reportedCount?: SortOrder
+    emailsSent?: SortOrder
+    emailsDelivered?: SortOrder
+    emailsOpened?: SortOrder
+    linksClicked?: SortOrder
+    credentialsEntered?: SortOrder
+    phishingReported?: SortOrder
+    emailsBounced?: SortOrder
+    createdBy?: SortOrder
+    organizationId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    organizationId?: SortOrder
   }
 
   export type PhishingCampaignAvgOrderByAggregateInput = {
     targetCount?: SortOrder
-    deliveredCount?: SortOrder
-    openedCount?: SortOrder
-    clickedCount?: SortOrder
-    reportedCount?: SortOrder
+    emailsSent?: SortOrder
+    emailsDelivered?: SortOrder
+    emailsOpened?: SortOrder
+    linksClicked?: SortOrder
+    credentialsEntered?: SortOrder
+    phishingReported?: SortOrder
+    emailsBounced?: SortOrder
   }
 
   export type PhishingCampaignMaxOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
     description?: SortOrder
+    templateId?: SortOrder
     template?: SortOrder
     subject?: SortOrder
     senderName?: SortOrder
@@ -32968,22 +42456,28 @@ export namespace Prisma {
     landingPageUrl?: SortOrder
     status?: SortOrder
     scheduledAt?: SortOrder
-    startedAt?: SortOrder
+    launchedAt?: SortOrder
     completedAt?: SortOrder
+    pausedAt?: SortOrder
     targetCount?: SortOrder
-    deliveredCount?: SortOrder
-    openedCount?: SortOrder
-    clickedCount?: SortOrder
-    reportedCount?: SortOrder
+    emailsSent?: SortOrder
+    emailsDelivered?: SortOrder
+    emailsOpened?: SortOrder
+    linksClicked?: SortOrder
+    credentialsEntered?: SortOrder
+    phishingReported?: SortOrder
+    emailsBounced?: SortOrder
+    createdBy?: SortOrder
+    organizationId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    organizationId?: SortOrder
   }
 
   export type PhishingCampaignMinOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
     description?: SortOrder
+    templateId?: SortOrder
     template?: SortOrder
     subject?: SortOrder
     senderName?: SortOrder
@@ -32991,24 +42485,32 @@ export namespace Prisma {
     landingPageUrl?: SortOrder
     status?: SortOrder
     scheduledAt?: SortOrder
-    startedAt?: SortOrder
+    launchedAt?: SortOrder
     completedAt?: SortOrder
+    pausedAt?: SortOrder
     targetCount?: SortOrder
-    deliveredCount?: SortOrder
-    openedCount?: SortOrder
-    clickedCount?: SortOrder
-    reportedCount?: SortOrder
+    emailsSent?: SortOrder
+    emailsDelivered?: SortOrder
+    emailsOpened?: SortOrder
+    linksClicked?: SortOrder
+    credentialsEntered?: SortOrder
+    phishingReported?: SortOrder
+    emailsBounced?: SortOrder
+    createdBy?: SortOrder
+    organizationId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    organizationId?: SortOrder
   }
 
   export type PhishingCampaignSumOrderByAggregateInput = {
     targetCount?: SortOrder
-    deliveredCount?: SortOrder
-    openedCount?: SortOrder
-    clickedCount?: SortOrder
-    reportedCount?: SortOrder
+    emailsSent?: SortOrder
+    emailsDelivered?: SortOrder
+    emailsOpened?: SortOrder
+    linksClicked?: SortOrder
+    credentialsEntered?: SortOrder
+    phishingReported?: SortOrder
+    emailsBounced?: SortOrder
   }
 
   export type EnumCampaignStatusWithAggregatesFilter<$PrismaModel = never> = {
@@ -33021,21 +42523,14 @@ export namespace Prisma {
     _max?: NestedEnumCampaignStatusFilter<$PrismaModel>
   }
 
-  export type EnumTargetStatusFilter<$PrismaModel = never> = {
-    equals?: $Enums.TargetStatus | EnumTargetStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.TargetStatus[] | ListEnumTargetStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.TargetStatus[] | ListEnumTargetStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumTargetStatusFilter<$PrismaModel> | $Enums.TargetStatus
-  }
-
   export type PhishingCampaignRelationFilter = {
     is?: PhishingCampaignWhereInput
     isNot?: PhishingCampaignWhereInput
   }
 
-  export type UserNullableRelationFilter = {
-    is?: UserWhereInput | null
-    isNot?: UserWhereInput | null
+  export type PhishingTargetCampaignIdEmailCompoundUniqueInput = {
+    campaignId: string
+    email: string
   }
 
   export type PhishingTargetCountOrderByAggregateInput = {
@@ -33044,15 +42539,34 @@ export namespace Prisma {
     firstName?: SortOrder
     lastName?: SortOrder
     department?: SortOrder
-    trackingId?: SortOrder
-    status?: SortOrder
+    jobTitle?: SortOrder
+    emailSent?: SortOrder
+    emailDelivered?: SortOrder
+    emailOpened?: SortOrder
+    linkClicked?: SortOrder
+    credentialsEntered?: SortOrder
+    reportedPhishing?: SortOrder
+    emailBounced?: SortOrder
+    sentAt?: SortOrder
     deliveredAt?: SortOrder
     openedAt?: SortOrder
     clickedAt?: SortOrder
+    credentialsAt?: SortOrder
     reportedAt?: SortOrder
+    bouncedAt?: SortOrder
+    userAgent?: SortOrder
+    ipAddress?: SortOrder
+    clickCount?: SortOrder
+    riskScore?: SortOrder
     createdAt?: SortOrder
+    updatedAt?: SortOrder
     campaignId?: SortOrder
     userId?: SortOrder
+  }
+
+  export type PhishingTargetAvgOrderByAggregateInput = {
+    clickCount?: SortOrder
+    riskScore?: SortOrder
   }
 
   export type PhishingTargetMaxOrderByAggregateInput = {
@@ -33061,13 +42575,27 @@ export namespace Prisma {
     firstName?: SortOrder
     lastName?: SortOrder
     department?: SortOrder
-    trackingId?: SortOrder
-    status?: SortOrder
+    jobTitle?: SortOrder
+    emailSent?: SortOrder
+    emailDelivered?: SortOrder
+    emailOpened?: SortOrder
+    linkClicked?: SortOrder
+    credentialsEntered?: SortOrder
+    reportedPhishing?: SortOrder
+    emailBounced?: SortOrder
+    sentAt?: SortOrder
     deliveredAt?: SortOrder
     openedAt?: SortOrder
     clickedAt?: SortOrder
+    credentialsAt?: SortOrder
     reportedAt?: SortOrder
+    bouncedAt?: SortOrder
+    userAgent?: SortOrder
+    ipAddress?: SortOrder
+    clickCount?: SortOrder
+    riskScore?: SortOrder
     createdAt?: SortOrder
+    updatedAt?: SortOrder
     campaignId?: SortOrder
     userId?: SortOrder
   }
@@ -33078,25 +42606,34 @@ export namespace Prisma {
     firstName?: SortOrder
     lastName?: SortOrder
     department?: SortOrder
-    trackingId?: SortOrder
-    status?: SortOrder
+    jobTitle?: SortOrder
+    emailSent?: SortOrder
+    emailDelivered?: SortOrder
+    emailOpened?: SortOrder
+    linkClicked?: SortOrder
+    credentialsEntered?: SortOrder
+    reportedPhishing?: SortOrder
+    emailBounced?: SortOrder
+    sentAt?: SortOrder
     deliveredAt?: SortOrder
     openedAt?: SortOrder
     clickedAt?: SortOrder
+    credentialsAt?: SortOrder
     reportedAt?: SortOrder
+    bouncedAt?: SortOrder
+    userAgent?: SortOrder
+    ipAddress?: SortOrder
+    clickCount?: SortOrder
+    riskScore?: SortOrder
     createdAt?: SortOrder
+    updatedAt?: SortOrder
     campaignId?: SortOrder
     userId?: SortOrder
   }
 
-  export type EnumTargetStatusWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.TargetStatus | EnumTargetStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.TargetStatus[] | ListEnumTargetStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.TargetStatus[] | ListEnumTargetStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumTargetStatusWithAggregatesFilter<$PrismaModel> | $Enums.TargetStatus
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumTargetStatusFilter<$PrismaModel>
-    _max?: NestedEnumTargetStatusFilter<$PrismaModel>
+  export type PhishingTargetSumOrderByAggregateInput = {
+    clickCount?: SortOrder
+    riskScore?: SortOrder
   }
 
   export type EnumPhishingEventTypeFilter<$PrismaModel = never> = {
@@ -33106,18 +42643,19 @@ export namespace Prisma {
     not?: NestedEnumPhishingEventTypeFilter<$PrismaModel> | $Enums.PhishingEventType
   }
 
-  export type PhishingTargetRelationFilter = {
-    is?: PhishingTargetWhereInput
-    isNot?: PhishingTargetWhereInput
+  export type PhishingTargetNullableRelationFilter = {
+    is?: PhishingTargetWhereInput | null
+    isNot?: PhishingTargetWhereInput | null
   }
 
   export type PhishingEventCountOrderByAggregateInput = {
     id?: SortOrder
     type?: SortOrder
-    metadata?: SortOrder
-    ipAddress?: SortOrder
-    userAgent?: SortOrder
     timestamp?: SortOrder
+    metadata?: SortOrder
+    userAgent?: SortOrder
+    ipAddress?: SortOrder
+    location?: SortOrder
     campaignId?: SortOrder
     targetId?: SortOrder
   }
@@ -33125,10 +42663,11 @@ export namespace Prisma {
   export type PhishingEventMaxOrderByAggregateInput = {
     id?: SortOrder
     type?: SortOrder
-    metadata?: SortOrder
-    ipAddress?: SortOrder
-    userAgent?: SortOrder
     timestamp?: SortOrder
+    metadata?: SortOrder
+    userAgent?: SortOrder
+    ipAddress?: SortOrder
+    location?: SortOrder
     campaignId?: SortOrder
     targetId?: SortOrder
   }
@@ -33136,10 +42675,11 @@ export namespace Prisma {
   export type PhishingEventMinOrderByAggregateInput = {
     id?: SortOrder
     type?: SortOrder
-    metadata?: SortOrder
-    ipAddress?: SortOrder
-    userAgent?: SortOrder
     timestamp?: SortOrder
+    metadata?: SortOrder
+    userAgent?: SortOrder
+    ipAddress?: SortOrder
+    location?: SortOrder
     campaignId?: SortOrder
     targetId?: SortOrder
   }
@@ -33152,6 +42692,217 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumPhishingEventTypeFilter<$PrismaModel>
     _max?: NestedEnumPhishingEventTypeFilter<$PrismaModel>
+  }
+
+  export type EnumTemplateCategoryFilter<$PrismaModel = never> = {
+    equals?: $Enums.TemplateCategory | EnumTemplateCategoryFieldRefInput<$PrismaModel>
+    in?: $Enums.TemplateCategory[] | ListEnumTemplateCategoryFieldRefInput<$PrismaModel>
+    notIn?: $Enums.TemplateCategory[] | ListEnumTemplateCategoryFieldRefInput<$PrismaModel>
+    not?: NestedEnumTemplateCategoryFilter<$PrismaModel> | $Enums.TemplateCategory
+  }
+
+  export type EnumRiskLevelFilter<$PrismaModel = never> = {
+    equals?: $Enums.RiskLevel | EnumRiskLevelFieldRefInput<$PrismaModel>
+    in?: $Enums.RiskLevel[] | ListEnumRiskLevelFieldRefInput<$PrismaModel>
+    notIn?: $Enums.RiskLevel[] | ListEnumRiskLevelFieldRefInput<$PrismaModel>
+    not?: NestedEnumRiskLevelFilter<$PrismaModel> | $Enums.RiskLevel
+  }
+
+  export type StringNullableListFilter<$PrismaModel = never> = {
+    equals?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    has?: string | StringFieldRefInput<$PrismaModel> | null
+    hasEvery?: string[] | ListStringFieldRefInput<$PrismaModel>
+    hasSome?: string[] | ListStringFieldRefInput<$PrismaModel>
+    isEmpty?: boolean
+  }
+
+  export type PhishingTemplateCountOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    category?: SortOrder
+    riskLevel?: SortOrder
+    defaultSubject?: SortOrder
+    defaultSenderName?: SortOrder
+    emailBodyHtml?: SortOrder
+    emailBodyText?: SortOrder
+    landingPageHtml?: SortOrder
+    captureCredentials?: SortOrder
+    isActive?: SortOrder
+    previewContent?: SortOrder
+    tags?: SortOrder
+    usageCount?: SortOrder
+    successRate?: SortOrder
+    createdBy?: SortOrder
+    organizationId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PhishingTemplateAvgOrderByAggregateInput = {
+    usageCount?: SortOrder
+    successRate?: SortOrder
+  }
+
+  export type PhishingTemplateMaxOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    category?: SortOrder
+    riskLevel?: SortOrder
+    defaultSubject?: SortOrder
+    defaultSenderName?: SortOrder
+    emailBodyHtml?: SortOrder
+    emailBodyText?: SortOrder
+    landingPageHtml?: SortOrder
+    captureCredentials?: SortOrder
+    isActive?: SortOrder
+    previewContent?: SortOrder
+    usageCount?: SortOrder
+    successRate?: SortOrder
+    createdBy?: SortOrder
+    organizationId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PhishingTemplateMinOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    category?: SortOrder
+    riskLevel?: SortOrder
+    defaultSubject?: SortOrder
+    defaultSenderName?: SortOrder
+    emailBodyHtml?: SortOrder
+    emailBodyText?: SortOrder
+    landingPageHtml?: SortOrder
+    captureCredentials?: SortOrder
+    isActive?: SortOrder
+    previewContent?: SortOrder
+    usageCount?: SortOrder
+    successRate?: SortOrder
+    createdBy?: SortOrder
+    organizationId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PhishingTemplateSumOrderByAggregateInput = {
+    usageCount?: SortOrder
+    successRate?: SortOrder
+  }
+
+  export type EnumTemplateCategoryWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.TemplateCategory | EnumTemplateCategoryFieldRefInput<$PrismaModel>
+    in?: $Enums.TemplateCategory[] | ListEnumTemplateCategoryFieldRefInput<$PrismaModel>
+    notIn?: $Enums.TemplateCategory[] | ListEnumTemplateCategoryFieldRefInput<$PrismaModel>
+    not?: NestedEnumTemplateCategoryWithAggregatesFilter<$PrismaModel> | $Enums.TemplateCategory
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumTemplateCategoryFilter<$PrismaModel>
+    _max?: NestedEnumTemplateCategoryFilter<$PrismaModel>
+  }
+
+  export type EnumRiskLevelWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.RiskLevel | EnumRiskLevelFieldRefInput<$PrismaModel>
+    in?: $Enums.RiskLevel[] | ListEnumRiskLevelFieldRefInput<$PrismaModel>
+    notIn?: $Enums.RiskLevel[] | ListEnumRiskLevelFieldRefInput<$PrismaModel>
+    not?: NestedEnumRiskLevelWithAggregatesFilter<$PrismaModel> | $Enums.RiskLevel
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumRiskLevelFilter<$PrismaModel>
+    _max?: NestedEnumRiskLevelFilter<$PrismaModel>
+  }
+
+  export type EnumJobPriorityFilter<$PrismaModel = never> = {
+    equals?: $Enums.JobPriority | EnumJobPriorityFieldRefInput<$PrismaModel>
+    in?: $Enums.JobPriority[] | ListEnumJobPriorityFieldRefInput<$PrismaModel>
+    notIn?: $Enums.JobPriority[] | ListEnumJobPriorityFieldRefInput<$PrismaModel>
+    not?: NestedEnumJobPriorityFilter<$PrismaModel> | $Enums.JobPriority
+  }
+
+  export type EnumJobStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.JobStatus | EnumJobStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.JobStatus[] | ListEnumJobStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.JobStatus[] | ListEnumJobStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumJobStatusFilter<$PrismaModel> | $Enums.JobStatus
+  }
+
+  export type EmailJobCountOrderByAggregateInput = {
+    id?: SortOrder
+    campaignId?: SortOrder
+    targetId?: SortOrder
+    priority?: SortOrder
+    scheduledFor?: SortOrder
+    attempts?: SortOrder
+    maxAttempts?: SortOrder
+    status?: SortOrder
+    processingData?: SortOrder
+    errorMessage?: SortOrder
+    lastAttemptAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EmailJobAvgOrderByAggregateInput = {
+    attempts?: SortOrder
+    maxAttempts?: SortOrder
+  }
+
+  export type EmailJobMaxOrderByAggregateInput = {
+    id?: SortOrder
+    campaignId?: SortOrder
+    targetId?: SortOrder
+    priority?: SortOrder
+    scheduledFor?: SortOrder
+    attempts?: SortOrder
+    maxAttempts?: SortOrder
+    status?: SortOrder
+    processingData?: SortOrder
+    errorMessage?: SortOrder
+    lastAttemptAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EmailJobMinOrderByAggregateInput = {
+    id?: SortOrder
+    campaignId?: SortOrder
+    targetId?: SortOrder
+    priority?: SortOrder
+    scheduledFor?: SortOrder
+    attempts?: SortOrder
+    maxAttempts?: SortOrder
+    status?: SortOrder
+    processingData?: SortOrder
+    errorMessage?: SortOrder
+    lastAttemptAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EmailJobSumOrderByAggregateInput = {
+    attempts?: SortOrder
+    maxAttempts?: SortOrder
+  }
+
+  export type EnumJobPriorityWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.JobPriority | EnumJobPriorityFieldRefInput<$PrismaModel>
+    in?: $Enums.JobPriority[] | ListEnumJobPriorityFieldRefInput<$PrismaModel>
+    notIn?: $Enums.JobPriority[] | ListEnumJobPriorityFieldRefInput<$PrismaModel>
+    not?: NestedEnumJobPriorityWithAggregatesFilter<$PrismaModel> | $Enums.JobPriority
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumJobPriorityFilter<$PrismaModel>
+    _max?: NestedEnumJobPriorityFilter<$PrismaModel>
+  }
+
+  export type EnumJobStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.JobStatus | EnumJobStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.JobStatus[] | ListEnumJobStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.JobStatus[] | ListEnumJobStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumJobStatusWithAggregatesFilter<$PrismaModel> | $Enums.JobStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumJobStatusFilter<$PrismaModel>
+    _max?: NestedEnumJobStatusFilter<$PrismaModel>
   }
 
   export type AlertListRelationFilter = {
@@ -33945,6 +43696,20 @@ export namespace Prisma {
     connect?: PhishingTargetWhereUniqueInput | PhishingTargetWhereUniqueInput[]
   }
 
+  export type PhishingCampaignCreateNestedManyWithoutCreatorInput = {
+    create?: XOR<PhishingCampaignCreateWithoutCreatorInput, PhishingCampaignUncheckedCreateWithoutCreatorInput> | PhishingCampaignCreateWithoutCreatorInput[] | PhishingCampaignUncheckedCreateWithoutCreatorInput[]
+    connectOrCreate?: PhishingCampaignCreateOrConnectWithoutCreatorInput | PhishingCampaignCreateOrConnectWithoutCreatorInput[]
+    createMany?: PhishingCampaignCreateManyCreatorInputEnvelope
+    connect?: PhishingCampaignWhereUniqueInput | PhishingCampaignWhereUniqueInput[]
+  }
+
+  export type PhishingTemplateCreateNestedManyWithoutCreatorInput = {
+    create?: XOR<PhishingTemplateCreateWithoutCreatorInput, PhishingTemplateUncheckedCreateWithoutCreatorInput> | PhishingTemplateCreateWithoutCreatorInput[] | PhishingTemplateUncheckedCreateWithoutCreatorInput[]
+    connectOrCreate?: PhishingTemplateCreateOrConnectWithoutCreatorInput | PhishingTemplateCreateOrConnectWithoutCreatorInput[]
+    createMany?: PhishingTemplateCreateManyCreatorInputEnvelope
+    connect?: PhishingTemplateWhereUniqueInput | PhishingTemplateWhereUniqueInput[]
+  }
+
   export type TelemetryEventCreateNestedManyWithoutUserInput = {
     create?: XOR<TelemetryEventCreateWithoutUserInput, TelemetryEventUncheckedCreateWithoutUserInput> | TelemetryEventCreateWithoutUserInput[] | TelemetryEventUncheckedCreateWithoutUserInput[]
     connectOrCreate?: TelemetryEventCreateOrConnectWithoutUserInput | TelemetryEventCreateOrConnectWithoutUserInput[]
@@ -33966,6 +43731,34 @@ export namespace Prisma {
     connect?: RefreshTokenWhereUniqueInput | RefreshTokenWhereUniqueInput[]
   }
 
+  export type PasswordResetCreateNestedManyWithoutUserInput = {
+    create?: XOR<PasswordResetCreateWithoutUserInput, PasswordResetUncheckedCreateWithoutUserInput> | PasswordResetCreateWithoutUserInput[] | PasswordResetUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: PasswordResetCreateOrConnectWithoutUserInput | PasswordResetCreateOrConnectWithoutUserInput[]
+    createMany?: PasswordResetCreateManyUserInputEnvelope
+    connect?: PasswordResetWhereUniqueInput | PasswordResetWhereUniqueInput[]
+  }
+
+  export type InviteCodeCreateNestedManyWithoutCreatorInput = {
+    create?: XOR<InviteCodeCreateWithoutCreatorInput, InviteCodeUncheckedCreateWithoutCreatorInput> | InviteCodeCreateWithoutCreatorInput[] | InviteCodeUncheckedCreateWithoutCreatorInput[]
+    connectOrCreate?: InviteCodeCreateOrConnectWithoutCreatorInput | InviteCodeCreateOrConnectWithoutCreatorInput[]
+    createMany?: InviteCodeCreateManyCreatorInputEnvelope
+    connect?: InviteCodeWhereUniqueInput | InviteCodeWhereUniqueInput[]
+  }
+
+  export type OrganizationMemberCreateNestedManyWithoutUserInput = {
+    create?: XOR<OrganizationMemberCreateWithoutUserInput, OrganizationMemberUncheckedCreateWithoutUserInput> | OrganizationMemberCreateWithoutUserInput[] | OrganizationMemberUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: OrganizationMemberCreateOrConnectWithoutUserInput | OrganizationMemberCreateOrConnectWithoutUserInput[]
+    createMany?: OrganizationMemberCreateManyUserInputEnvelope
+    connect?: OrganizationMemberWhereUniqueInput | OrganizationMemberWhereUniqueInput[]
+  }
+
+  export type OrganizationMemberCreateNestedManyWithoutInviterInput = {
+    create?: XOR<OrganizationMemberCreateWithoutInviterInput, OrganizationMemberUncheckedCreateWithoutInviterInput> | OrganizationMemberCreateWithoutInviterInput[] | OrganizationMemberUncheckedCreateWithoutInviterInput[]
+    connectOrCreate?: OrganizationMemberCreateOrConnectWithoutInviterInput | OrganizationMemberCreateOrConnectWithoutInviterInput[]
+    createMany?: OrganizationMemberCreateManyInviterInputEnvelope
+    connect?: OrganizationMemberWhereUniqueInput | OrganizationMemberWhereUniqueInput[]
+  }
+
   export type AssessmentUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<AssessmentCreateWithoutUserInput, AssessmentUncheckedCreateWithoutUserInput> | AssessmentCreateWithoutUserInput[] | AssessmentUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AssessmentCreateOrConnectWithoutUserInput | AssessmentCreateOrConnectWithoutUserInput[]
@@ -33978,6 +43771,20 @@ export namespace Prisma {
     connectOrCreate?: PhishingTargetCreateOrConnectWithoutUserInput | PhishingTargetCreateOrConnectWithoutUserInput[]
     createMany?: PhishingTargetCreateManyUserInputEnvelope
     connect?: PhishingTargetWhereUniqueInput | PhishingTargetWhereUniqueInput[]
+  }
+
+  export type PhishingCampaignUncheckedCreateNestedManyWithoutCreatorInput = {
+    create?: XOR<PhishingCampaignCreateWithoutCreatorInput, PhishingCampaignUncheckedCreateWithoutCreatorInput> | PhishingCampaignCreateWithoutCreatorInput[] | PhishingCampaignUncheckedCreateWithoutCreatorInput[]
+    connectOrCreate?: PhishingCampaignCreateOrConnectWithoutCreatorInput | PhishingCampaignCreateOrConnectWithoutCreatorInput[]
+    createMany?: PhishingCampaignCreateManyCreatorInputEnvelope
+    connect?: PhishingCampaignWhereUniqueInput | PhishingCampaignWhereUniqueInput[]
+  }
+
+  export type PhishingTemplateUncheckedCreateNestedManyWithoutCreatorInput = {
+    create?: XOR<PhishingTemplateCreateWithoutCreatorInput, PhishingTemplateUncheckedCreateWithoutCreatorInput> | PhishingTemplateCreateWithoutCreatorInput[] | PhishingTemplateUncheckedCreateWithoutCreatorInput[]
+    connectOrCreate?: PhishingTemplateCreateOrConnectWithoutCreatorInput | PhishingTemplateCreateOrConnectWithoutCreatorInput[]
+    createMany?: PhishingTemplateCreateManyCreatorInputEnvelope
+    connect?: PhishingTemplateWhereUniqueInput | PhishingTemplateWhereUniqueInput[]
   }
 
   export type TelemetryEventUncheckedCreateNestedManyWithoutUserInput = {
@@ -33999,6 +43806,34 @@ export namespace Prisma {
     connectOrCreate?: RefreshTokenCreateOrConnectWithoutUserInput | RefreshTokenCreateOrConnectWithoutUserInput[]
     createMany?: RefreshTokenCreateManyUserInputEnvelope
     connect?: RefreshTokenWhereUniqueInput | RefreshTokenWhereUniqueInput[]
+  }
+
+  export type PasswordResetUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<PasswordResetCreateWithoutUserInput, PasswordResetUncheckedCreateWithoutUserInput> | PasswordResetCreateWithoutUserInput[] | PasswordResetUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: PasswordResetCreateOrConnectWithoutUserInput | PasswordResetCreateOrConnectWithoutUserInput[]
+    createMany?: PasswordResetCreateManyUserInputEnvelope
+    connect?: PasswordResetWhereUniqueInput | PasswordResetWhereUniqueInput[]
+  }
+
+  export type InviteCodeUncheckedCreateNestedManyWithoutCreatorInput = {
+    create?: XOR<InviteCodeCreateWithoutCreatorInput, InviteCodeUncheckedCreateWithoutCreatorInput> | InviteCodeCreateWithoutCreatorInput[] | InviteCodeUncheckedCreateWithoutCreatorInput[]
+    connectOrCreate?: InviteCodeCreateOrConnectWithoutCreatorInput | InviteCodeCreateOrConnectWithoutCreatorInput[]
+    createMany?: InviteCodeCreateManyCreatorInputEnvelope
+    connect?: InviteCodeWhereUniqueInput | InviteCodeWhereUniqueInput[]
+  }
+
+  export type OrganizationMemberUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<OrganizationMemberCreateWithoutUserInput, OrganizationMemberUncheckedCreateWithoutUserInput> | OrganizationMemberCreateWithoutUserInput[] | OrganizationMemberUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: OrganizationMemberCreateOrConnectWithoutUserInput | OrganizationMemberCreateOrConnectWithoutUserInput[]
+    createMany?: OrganizationMemberCreateManyUserInputEnvelope
+    connect?: OrganizationMemberWhereUniqueInput | OrganizationMemberWhereUniqueInput[]
+  }
+
+  export type OrganizationMemberUncheckedCreateNestedManyWithoutInviterInput = {
+    create?: XOR<OrganizationMemberCreateWithoutInviterInput, OrganizationMemberUncheckedCreateWithoutInviterInput> | OrganizationMemberCreateWithoutInviterInput[] | OrganizationMemberUncheckedCreateWithoutInviterInput[]
+    connectOrCreate?: OrganizationMemberCreateOrConnectWithoutInviterInput | OrganizationMemberCreateOrConnectWithoutInviterInput[]
+    createMany?: OrganizationMemberCreateManyInviterInputEnvelope
+    connect?: OrganizationMemberWhereUniqueInput | OrganizationMemberWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -34059,6 +43894,34 @@ export namespace Prisma {
     deleteMany?: PhishingTargetScalarWhereInput | PhishingTargetScalarWhereInput[]
   }
 
+  export type PhishingCampaignUpdateManyWithoutCreatorNestedInput = {
+    create?: XOR<PhishingCampaignCreateWithoutCreatorInput, PhishingCampaignUncheckedCreateWithoutCreatorInput> | PhishingCampaignCreateWithoutCreatorInput[] | PhishingCampaignUncheckedCreateWithoutCreatorInput[]
+    connectOrCreate?: PhishingCampaignCreateOrConnectWithoutCreatorInput | PhishingCampaignCreateOrConnectWithoutCreatorInput[]
+    upsert?: PhishingCampaignUpsertWithWhereUniqueWithoutCreatorInput | PhishingCampaignUpsertWithWhereUniqueWithoutCreatorInput[]
+    createMany?: PhishingCampaignCreateManyCreatorInputEnvelope
+    set?: PhishingCampaignWhereUniqueInput | PhishingCampaignWhereUniqueInput[]
+    disconnect?: PhishingCampaignWhereUniqueInput | PhishingCampaignWhereUniqueInput[]
+    delete?: PhishingCampaignWhereUniqueInput | PhishingCampaignWhereUniqueInput[]
+    connect?: PhishingCampaignWhereUniqueInput | PhishingCampaignWhereUniqueInput[]
+    update?: PhishingCampaignUpdateWithWhereUniqueWithoutCreatorInput | PhishingCampaignUpdateWithWhereUniqueWithoutCreatorInput[]
+    updateMany?: PhishingCampaignUpdateManyWithWhereWithoutCreatorInput | PhishingCampaignUpdateManyWithWhereWithoutCreatorInput[]
+    deleteMany?: PhishingCampaignScalarWhereInput | PhishingCampaignScalarWhereInput[]
+  }
+
+  export type PhishingTemplateUpdateManyWithoutCreatorNestedInput = {
+    create?: XOR<PhishingTemplateCreateWithoutCreatorInput, PhishingTemplateUncheckedCreateWithoutCreatorInput> | PhishingTemplateCreateWithoutCreatorInput[] | PhishingTemplateUncheckedCreateWithoutCreatorInput[]
+    connectOrCreate?: PhishingTemplateCreateOrConnectWithoutCreatorInput | PhishingTemplateCreateOrConnectWithoutCreatorInput[]
+    upsert?: PhishingTemplateUpsertWithWhereUniqueWithoutCreatorInput | PhishingTemplateUpsertWithWhereUniqueWithoutCreatorInput[]
+    createMany?: PhishingTemplateCreateManyCreatorInputEnvelope
+    set?: PhishingTemplateWhereUniqueInput | PhishingTemplateWhereUniqueInput[]
+    disconnect?: PhishingTemplateWhereUniqueInput | PhishingTemplateWhereUniqueInput[]
+    delete?: PhishingTemplateWhereUniqueInput | PhishingTemplateWhereUniqueInput[]
+    connect?: PhishingTemplateWhereUniqueInput | PhishingTemplateWhereUniqueInput[]
+    update?: PhishingTemplateUpdateWithWhereUniqueWithoutCreatorInput | PhishingTemplateUpdateWithWhereUniqueWithoutCreatorInput[]
+    updateMany?: PhishingTemplateUpdateManyWithWhereWithoutCreatorInput | PhishingTemplateUpdateManyWithWhereWithoutCreatorInput[]
+    deleteMany?: PhishingTemplateScalarWhereInput | PhishingTemplateScalarWhereInput[]
+  }
+
   export type TelemetryEventUpdateManyWithoutUserNestedInput = {
     create?: XOR<TelemetryEventCreateWithoutUserInput, TelemetryEventUncheckedCreateWithoutUserInput> | TelemetryEventCreateWithoutUserInput[] | TelemetryEventUncheckedCreateWithoutUserInput[]
     connectOrCreate?: TelemetryEventCreateOrConnectWithoutUserInput | TelemetryEventCreateOrConnectWithoutUserInput[]
@@ -34101,6 +43964,62 @@ export namespace Prisma {
     deleteMany?: RefreshTokenScalarWhereInput | RefreshTokenScalarWhereInput[]
   }
 
+  export type PasswordResetUpdateManyWithoutUserNestedInput = {
+    create?: XOR<PasswordResetCreateWithoutUserInput, PasswordResetUncheckedCreateWithoutUserInput> | PasswordResetCreateWithoutUserInput[] | PasswordResetUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: PasswordResetCreateOrConnectWithoutUserInput | PasswordResetCreateOrConnectWithoutUserInput[]
+    upsert?: PasswordResetUpsertWithWhereUniqueWithoutUserInput | PasswordResetUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: PasswordResetCreateManyUserInputEnvelope
+    set?: PasswordResetWhereUniqueInput | PasswordResetWhereUniqueInput[]
+    disconnect?: PasswordResetWhereUniqueInput | PasswordResetWhereUniqueInput[]
+    delete?: PasswordResetWhereUniqueInput | PasswordResetWhereUniqueInput[]
+    connect?: PasswordResetWhereUniqueInput | PasswordResetWhereUniqueInput[]
+    update?: PasswordResetUpdateWithWhereUniqueWithoutUserInput | PasswordResetUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: PasswordResetUpdateManyWithWhereWithoutUserInput | PasswordResetUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: PasswordResetScalarWhereInput | PasswordResetScalarWhereInput[]
+  }
+
+  export type InviteCodeUpdateManyWithoutCreatorNestedInput = {
+    create?: XOR<InviteCodeCreateWithoutCreatorInput, InviteCodeUncheckedCreateWithoutCreatorInput> | InviteCodeCreateWithoutCreatorInput[] | InviteCodeUncheckedCreateWithoutCreatorInput[]
+    connectOrCreate?: InviteCodeCreateOrConnectWithoutCreatorInput | InviteCodeCreateOrConnectWithoutCreatorInput[]
+    upsert?: InviteCodeUpsertWithWhereUniqueWithoutCreatorInput | InviteCodeUpsertWithWhereUniqueWithoutCreatorInput[]
+    createMany?: InviteCodeCreateManyCreatorInputEnvelope
+    set?: InviteCodeWhereUniqueInput | InviteCodeWhereUniqueInput[]
+    disconnect?: InviteCodeWhereUniqueInput | InviteCodeWhereUniqueInput[]
+    delete?: InviteCodeWhereUniqueInput | InviteCodeWhereUniqueInput[]
+    connect?: InviteCodeWhereUniqueInput | InviteCodeWhereUniqueInput[]
+    update?: InviteCodeUpdateWithWhereUniqueWithoutCreatorInput | InviteCodeUpdateWithWhereUniqueWithoutCreatorInput[]
+    updateMany?: InviteCodeUpdateManyWithWhereWithoutCreatorInput | InviteCodeUpdateManyWithWhereWithoutCreatorInput[]
+    deleteMany?: InviteCodeScalarWhereInput | InviteCodeScalarWhereInput[]
+  }
+
+  export type OrganizationMemberUpdateManyWithoutUserNestedInput = {
+    create?: XOR<OrganizationMemberCreateWithoutUserInput, OrganizationMemberUncheckedCreateWithoutUserInput> | OrganizationMemberCreateWithoutUserInput[] | OrganizationMemberUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: OrganizationMemberCreateOrConnectWithoutUserInput | OrganizationMemberCreateOrConnectWithoutUserInput[]
+    upsert?: OrganizationMemberUpsertWithWhereUniqueWithoutUserInput | OrganizationMemberUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: OrganizationMemberCreateManyUserInputEnvelope
+    set?: OrganizationMemberWhereUniqueInput | OrganizationMemberWhereUniqueInput[]
+    disconnect?: OrganizationMemberWhereUniqueInput | OrganizationMemberWhereUniqueInput[]
+    delete?: OrganizationMemberWhereUniqueInput | OrganizationMemberWhereUniqueInput[]
+    connect?: OrganizationMemberWhereUniqueInput | OrganizationMemberWhereUniqueInput[]
+    update?: OrganizationMemberUpdateWithWhereUniqueWithoutUserInput | OrganizationMemberUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: OrganizationMemberUpdateManyWithWhereWithoutUserInput | OrganizationMemberUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: OrganizationMemberScalarWhereInput | OrganizationMemberScalarWhereInput[]
+  }
+
+  export type OrganizationMemberUpdateManyWithoutInviterNestedInput = {
+    create?: XOR<OrganizationMemberCreateWithoutInviterInput, OrganizationMemberUncheckedCreateWithoutInviterInput> | OrganizationMemberCreateWithoutInviterInput[] | OrganizationMemberUncheckedCreateWithoutInviterInput[]
+    connectOrCreate?: OrganizationMemberCreateOrConnectWithoutInviterInput | OrganizationMemberCreateOrConnectWithoutInviterInput[]
+    upsert?: OrganizationMemberUpsertWithWhereUniqueWithoutInviterInput | OrganizationMemberUpsertWithWhereUniqueWithoutInviterInput[]
+    createMany?: OrganizationMemberCreateManyInviterInputEnvelope
+    set?: OrganizationMemberWhereUniqueInput | OrganizationMemberWhereUniqueInput[]
+    disconnect?: OrganizationMemberWhereUniqueInput | OrganizationMemberWhereUniqueInput[]
+    delete?: OrganizationMemberWhereUniqueInput | OrganizationMemberWhereUniqueInput[]
+    connect?: OrganizationMemberWhereUniqueInput | OrganizationMemberWhereUniqueInput[]
+    update?: OrganizationMemberUpdateWithWhereUniqueWithoutInviterInput | OrganizationMemberUpdateWithWhereUniqueWithoutInviterInput[]
+    updateMany?: OrganizationMemberUpdateManyWithWhereWithoutInviterInput | OrganizationMemberUpdateManyWithWhereWithoutInviterInput[]
+    deleteMany?: OrganizationMemberScalarWhereInput | OrganizationMemberScalarWhereInput[]
+  }
+
   export type AssessmentUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<AssessmentCreateWithoutUserInput, AssessmentUncheckedCreateWithoutUserInput> | AssessmentCreateWithoutUserInput[] | AssessmentUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AssessmentCreateOrConnectWithoutUserInput | AssessmentCreateOrConnectWithoutUserInput[]
@@ -34127,6 +44046,34 @@ export namespace Prisma {
     update?: PhishingTargetUpdateWithWhereUniqueWithoutUserInput | PhishingTargetUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: PhishingTargetUpdateManyWithWhereWithoutUserInput | PhishingTargetUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: PhishingTargetScalarWhereInput | PhishingTargetScalarWhereInput[]
+  }
+
+  export type PhishingCampaignUncheckedUpdateManyWithoutCreatorNestedInput = {
+    create?: XOR<PhishingCampaignCreateWithoutCreatorInput, PhishingCampaignUncheckedCreateWithoutCreatorInput> | PhishingCampaignCreateWithoutCreatorInput[] | PhishingCampaignUncheckedCreateWithoutCreatorInput[]
+    connectOrCreate?: PhishingCampaignCreateOrConnectWithoutCreatorInput | PhishingCampaignCreateOrConnectWithoutCreatorInput[]
+    upsert?: PhishingCampaignUpsertWithWhereUniqueWithoutCreatorInput | PhishingCampaignUpsertWithWhereUniqueWithoutCreatorInput[]
+    createMany?: PhishingCampaignCreateManyCreatorInputEnvelope
+    set?: PhishingCampaignWhereUniqueInput | PhishingCampaignWhereUniqueInput[]
+    disconnect?: PhishingCampaignWhereUniqueInput | PhishingCampaignWhereUniqueInput[]
+    delete?: PhishingCampaignWhereUniqueInput | PhishingCampaignWhereUniqueInput[]
+    connect?: PhishingCampaignWhereUniqueInput | PhishingCampaignWhereUniqueInput[]
+    update?: PhishingCampaignUpdateWithWhereUniqueWithoutCreatorInput | PhishingCampaignUpdateWithWhereUniqueWithoutCreatorInput[]
+    updateMany?: PhishingCampaignUpdateManyWithWhereWithoutCreatorInput | PhishingCampaignUpdateManyWithWhereWithoutCreatorInput[]
+    deleteMany?: PhishingCampaignScalarWhereInput | PhishingCampaignScalarWhereInput[]
+  }
+
+  export type PhishingTemplateUncheckedUpdateManyWithoutCreatorNestedInput = {
+    create?: XOR<PhishingTemplateCreateWithoutCreatorInput, PhishingTemplateUncheckedCreateWithoutCreatorInput> | PhishingTemplateCreateWithoutCreatorInput[] | PhishingTemplateUncheckedCreateWithoutCreatorInput[]
+    connectOrCreate?: PhishingTemplateCreateOrConnectWithoutCreatorInput | PhishingTemplateCreateOrConnectWithoutCreatorInput[]
+    upsert?: PhishingTemplateUpsertWithWhereUniqueWithoutCreatorInput | PhishingTemplateUpsertWithWhereUniqueWithoutCreatorInput[]
+    createMany?: PhishingTemplateCreateManyCreatorInputEnvelope
+    set?: PhishingTemplateWhereUniqueInput | PhishingTemplateWhereUniqueInput[]
+    disconnect?: PhishingTemplateWhereUniqueInput | PhishingTemplateWhereUniqueInput[]
+    delete?: PhishingTemplateWhereUniqueInput | PhishingTemplateWhereUniqueInput[]
+    connect?: PhishingTemplateWhereUniqueInput | PhishingTemplateWhereUniqueInput[]
+    update?: PhishingTemplateUpdateWithWhereUniqueWithoutCreatorInput | PhishingTemplateUpdateWithWhereUniqueWithoutCreatorInput[]
+    updateMany?: PhishingTemplateUpdateManyWithWhereWithoutCreatorInput | PhishingTemplateUpdateManyWithWhereWithoutCreatorInput[]
+    deleteMany?: PhishingTemplateScalarWhereInput | PhishingTemplateScalarWhereInput[]
   }
 
   export type TelemetryEventUncheckedUpdateManyWithoutUserNestedInput = {
@@ -34171,6 +44118,62 @@ export namespace Prisma {
     deleteMany?: RefreshTokenScalarWhereInput | RefreshTokenScalarWhereInput[]
   }
 
+  export type PasswordResetUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<PasswordResetCreateWithoutUserInput, PasswordResetUncheckedCreateWithoutUserInput> | PasswordResetCreateWithoutUserInput[] | PasswordResetUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: PasswordResetCreateOrConnectWithoutUserInput | PasswordResetCreateOrConnectWithoutUserInput[]
+    upsert?: PasswordResetUpsertWithWhereUniqueWithoutUserInput | PasswordResetUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: PasswordResetCreateManyUserInputEnvelope
+    set?: PasswordResetWhereUniqueInput | PasswordResetWhereUniqueInput[]
+    disconnect?: PasswordResetWhereUniqueInput | PasswordResetWhereUniqueInput[]
+    delete?: PasswordResetWhereUniqueInput | PasswordResetWhereUniqueInput[]
+    connect?: PasswordResetWhereUniqueInput | PasswordResetWhereUniqueInput[]
+    update?: PasswordResetUpdateWithWhereUniqueWithoutUserInput | PasswordResetUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: PasswordResetUpdateManyWithWhereWithoutUserInput | PasswordResetUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: PasswordResetScalarWhereInput | PasswordResetScalarWhereInput[]
+  }
+
+  export type InviteCodeUncheckedUpdateManyWithoutCreatorNestedInput = {
+    create?: XOR<InviteCodeCreateWithoutCreatorInput, InviteCodeUncheckedCreateWithoutCreatorInput> | InviteCodeCreateWithoutCreatorInput[] | InviteCodeUncheckedCreateWithoutCreatorInput[]
+    connectOrCreate?: InviteCodeCreateOrConnectWithoutCreatorInput | InviteCodeCreateOrConnectWithoutCreatorInput[]
+    upsert?: InviteCodeUpsertWithWhereUniqueWithoutCreatorInput | InviteCodeUpsertWithWhereUniqueWithoutCreatorInput[]
+    createMany?: InviteCodeCreateManyCreatorInputEnvelope
+    set?: InviteCodeWhereUniqueInput | InviteCodeWhereUniqueInput[]
+    disconnect?: InviteCodeWhereUniqueInput | InviteCodeWhereUniqueInput[]
+    delete?: InviteCodeWhereUniqueInput | InviteCodeWhereUniqueInput[]
+    connect?: InviteCodeWhereUniqueInput | InviteCodeWhereUniqueInput[]
+    update?: InviteCodeUpdateWithWhereUniqueWithoutCreatorInput | InviteCodeUpdateWithWhereUniqueWithoutCreatorInput[]
+    updateMany?: InviteCodeUpdateManyWithWhereWithoutCreatorInput | InviteCodeUpdateManyWithWhereWithoutCreatorInput[]
+    deleteMany?: InviteCodeScalarWhereInput | InviteCodeScalarWhereInput[]
+  }
+
+  export type OrganizationMemberUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<OrganizationMemberCreateWithoutUserInput, OrganizationMemberUncheckedCreateWithoutUserInput> | OrganizationMemberCreateWithoutUserInput[] | OrganizationMemberUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: OrganizationMemberCreateOrConnectWithoutUserInput | OrganizationMemberCreateOrConnectWithoutUserInput[]
+    upsert?: OrganizationMemberUpsertWithWhereUniqueWithoutUserInput | OrganizationMemberUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: OrganizationMemberCreateManyUserInputEnvelope
+    set?: OrganizationMemberWhereUniqueInput | OrganizationMemberWhereUniqueInput[]
+    disconnect?: OrganizationMemberWhereUniqueInput | OrganizationMemberWhereUniqueInput[]
+    delete?: OrganizationMemberWhereUniqueInput | OrganizationMemberWhereUniqueInput[]
+    connect?: OrganizationMemberWhereUniqueInput | OrganizationMemberWhereUniqueInput[]
+    update?: OrganizationMemberUpdateWithWhereUniqueWithoutUserInput | OrganizationMemberUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: OrganizationMemberUpdateManyWithWhereWithoutUserInput | OrganizationMemberUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: OrganizationMemberScalarWhereInput | OrganizationMemberScalarWhereInput[]
+  }
+
+  export type OrganizationMemberUncheckedUpdateManyWithoutInviterNestedInput = {
+    create?: XOR<OrganizationMemberCreateWithoutInviterInput, OrganizationMemberUncheckedCreateWithoutInviterInput> | OrganizationMemberCreateWithoutInviterInput[] | OrganizationMemberUncheckedCreateWithoutInviterInput[]
+    connectOrCreate?: OrganizationMemberCreateOrConnectWithoutInviterInput | OrganizationMemberCreateOrConnectWithoutInviterInput[]
+    upsert?: OrganizationMemberUpsertWithWhereUniqueWithoutInviterInput | OrganizationMemberUpsertWithWhereUniqueWithoutInviterInput[]
+    createMany?: OrganizationMemberCreateManyInviterInputEnvelope
+    set?: OrganizationMemberWhereUniqueInput | OrganizationMemberWhereUniqueInput[]
+    disconnect?: OrganizationMemberWhereUniqueInput | OrganizationMemberWhereUniqueInput[]
+    delete?: OrganizationMemberWhereUniqueInput | OrganizationMemberWhereUniqueInput[]
+    connect?: OrganizationMemberWhereUniqueInput | OrganizationMemberWhereUniqueInput[]
+    update?: OrganizationMemberUpdateWithWhereUniqueWithoutInviterInput | OrganizationMemberUpdateWithWhereUniqueWithoutInviterInput[]
+    updateMany?: OrganizationMemberUpdateManyWithWhereWithoutInviterInput | OrganizationMemberUpdateManyWithWhereWithoutInviterInput[]
+    deleteMany?: OrganizationMemberScalarWhereInput | OrganizationMemberScalarWhereInput[]
+  }
+
   export type UserCreateNestedOneWithoutRefreshTokensInput = {
     create?: XOR<UserCreateWithoutRefreshTokensInput, UserUncheckedCreateWithoutRefreshTokensInput>
     connectOrCreate?: UserCreateOrConnectWithoutRefreshTokensInput
@@ -34183,6 +44186,20 @@ export namespace Prisma {
     upsert?: UserUpsertWithoutRefreshTokensInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutRefreshTokensInput, UserUpdateWithoutRefreshTokensInput>, UserUncheckedUpdateWithoutRefreshTokensInput>
+  }
+
+  export type UserCreateNestedOneWithoutPasswordResetsInput = {
+    create?: XOR<UserCreateWithoutPasswordResetsInput, UserUncheckedCreateWithoutPasswordResetsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutPasswordResetsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserUpdateOneRequiredWithoutPasswordResetsNestedInput = {
+    create?: XOR<UserCreateWithoutPasswordResetsInput, UserUncheckedCreateWithoutPasswordResetsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutPasswordResetsInput
+    upsert?: UserUpsertWithoutPasswordResetsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutPasswordResetsInput, UserUpdateWithoutPasswordResetsInput>, UserUncheckedUpdateWithoutPasswordResetsInput>
   }
 
   export type UserCreateNestedManyWithoutOrganizationInput = {
@@ -34213,6 +44230,13 @@ export namespace Prisma {
     connect?: PhishingCampaignWhereUniqueInput | PhishingCampaignWhereUniqueInput[]
   }
 
+  export type PhishingTemplateCreateNestedManyWithoutOrganizationInput = {
+    create?: XOR<PhishingTemplateCreateWithoutOrganizationInput, PhishingTemplateUncheckedCreateWithoutOrganizationInput> | PhishingTemplateCreateWithoutOrganizationInput[] | PhishingTemplateUncheckedCreateWithoutOrganizationInput[]
+    connectOrCreate?: PhishingTemplateCreateOrConnectWithoutOrganizationInput | PhishingTemplateCreateOrConnectWithoutOrganizationInput[]
+    createMany?: PhishingTemplateCreateManyOrganizationInputEnvelope
+    connect?: PhishingTemplateWhereUniqueInput | PhishingTemplateWhereUniqueInput[]
+  }
+
   export type AgentCreateNestedManyWithoutOrganizationInput = {
     create?: XOR<AgentCreateWithoutOrganizationInput, AgentUncheckedCreateWithoutOrganizationInput> | AgentCreateWithoutOrganizationInput[] | AgentUncheckedCreateWithoutOrganizationInput[]
     connectOrCreate?: AgentCreateOrConnectWithoutOrganizationInput | AgentCreateOrConnectWithoutOrganizationInput[]
@@ -34225,6 +44249,20 @@ export namespace Prisma {
     connectOrCreate?: InvoiceCreateOrConnectWithoutOrganizationInput | InvoiceCreateOrConnectWithoutOrganizationInput[]
     createMany?: InvoiceCreateManyOrganizationInputEnvelope
     connect?: InvoiceWhereUniqueInput | InvoiceWhereUniqueInput[]
+  }
+
+  export type InviteCodeCreateNestedManyWithoutOrganizationInput = {
+    create?: XOR<InviteCodeCreateWithoutOrganizationInput, InviteCodeUncheckedCreateWithoutOrganizationInput> | InviteCodeCreateWithoutOrganizationInput[] | InviteCodeUncheckedCreateWithoutOrganizationInput[]
+    connectOrCreate?: InviteCodeCreateOrConnectWithoutOrganizationInput | InviteCodeCreateOrConnectWithoutOrganizationInput[]
+    createMany?: InviteCodeCreateManyOrganizationInputEnvelope
+    connect?: InviteCodeWhereUniqueInput | InviteCodeWhereUniqueInput[]
+  }
+
+  export type OrganizationMemberCreateNestedManyWithoutOrganizationInput = {
+    create?: XOR<OrganizationMemberCreateWithoutOrganizationInput, OrganizationMemberUncheckedCreateWithoutOrganizationInput> | OrganizationMemberCreateWithoutOrganizationInput[] | OrganizationMemberUncheckedCreateWithoutOrganizationInput[]
+    connectOrCreate?: OrganizationMemberCreateOrConnectWithoutOrganizationInput | OrganizationMemberCreateOrConnectWithoutOrganizationInput[]
+    createMany?: OrganizationMemberCreateManyOrganizationInputEnvelope
+    connect?: OrganizationMemberWhereUniqueInput | OrganizationMemberWhereUniqueInput[]
   }
 
   export type UserUncheckedCreateNestedManyWithoutOrganizationInput = {
@@ -34255,6 +44293,13 @@ export namespace Prisma {
     connect?: PhishingCampaignWhereUniqueInput | PhishingCampaignWhereUniqueInput[]
   }
 
+  export type PhishingTemplateUncheckedCreateNestedManyWithoutOrganizationInput = {
+    create?: XOR<PhishingTemplateCreateWithoutOrganizationInput, PhishingTemplateUncheckedCreateWithoutOrganizationInput> | PhishingTemplateCreateWithoutOrganizationInput[] | PhishingTemplateUncheckedCreateWithoutOrganizationInput[]
+    connectOrCreate?: PhishingTemplateCreateOrConnectWithoutOrganizationInput | PhishingTemplateCreateOrConnectWithoutOrganizationInput[]
+    createMany?: PhishingTemplateCreateManyOrganizationInputEnvelope
+    connect?: PhishingTemplateWhereUniqueInput | PhishingTemplateWhereUniqueInput[]
+  }
+
   export type AgentUncheckedCreateNestedManyWithoutOrganizationInput = {
     create?: XOR<AgentCreateWithoutOrganizationInput, AgentUncheckedCreateWithoutOrganizationInput> | AgentCreateWithoutOrganizationInput[] | AgentUncheckedCreateWithoutOrganizationInput[]
     connectOrCreate?: AgentCreateOrConnectWithoutOrganizationInput | AgentCreateOrConnectWithoutOrganizationInput[]
@@ -34267,6 +44312,20 @@ export namespace Prisma {
     connectOrCreate?: InvoiceCreateOrConnectWithoutOrganizationInput | InvoiceCreateOrConnectWithoutOrganizationInput[]
     createMany?: InvoiceCreateManyOrganizationInputEnvelope
     connect?: InvoiceWhereUniqueInput | InvoiceWhereUniqueInput[]
+  }
+
+  export type InviteCodeUncheckedCreateNestedManyWithoutOrganizationInput = {
+    create?: XOR<InviteCodeCreateWithoutOrganizationInput, InviteCodeUncheckedCreateWithoutOrganizationInput> | InviteCodeCreateWithoutOrganizationInput[] | InviteCodeUncheckedCreateWithoutOrganizationInput[]
+    connectOrCreate?: InviteCodeCreateOrConnectWithoutOrganizationInput | InviteCodeCreateOrConnectWithoutOrganizationInput[]
+    createMany?: InviteCodeCreateManyOrganizationInputEnvelope
+    connect?: InviteCodeWhereUniqueInput | InviteCodeWhereUniqueInput[]
+  }
+
+  export type OrganizationMemberUncheckedCreateNestedManyWithoutOrganizationInput = {
+    create?: XOR<OrganizationMemberCreateWithoutOrganizationInput, OrganizationMemberUncheckedCreateWithoutOrganizationInput> | OrganizationMemberCreateWithoutOrganizationInput[] | OrganizationMemberUncheckedCreateWithoutOrganizationInput[]
+    connectOrCreate?: OrganizationMemberCreateOrConnectWithoutOrganizationInput | OrganizationMemberCreateOrConnectWithoutOrganizationInput[]
+    createMany?: OrganizationMemberCreateManyOrganizationInputEnvelope
+    connect?: OrganizationMemberWhereUniqueInput | OrganizationMemberWhereUniqueInput[]
   }
 
   export type EnumOrganizationSizeFieldUpdateOperationsInput = {
@@ -34345,6 +44404,20 @@ export namespace Prisma {
     deleteMany?: PhishingCampaignScalarWhereInput | PhishingCampaignScalarWhereInput[]
   }
 
+  export type PhishingTemplateUpdateManyWithoutOrganizationNestedInput = {
+    create?: XOR<PhishingTemplateCreateWithoutOrganizationInput, PhishingTemplateUncheckedCreateWithoutOrganizationInput> | PhishingTemplateCreateWithoutOrganizationInput[] | PhishingTemplateUncheckedCreateWithoutOrganizationInput[]
+    connectOrCreate?: PhishingTemplateCreateOrConnectWithoutOrganizationInput | PhishingTemplateCreateOrConnectWithoutOrganizationInput[]
+    upsert?: PhishingTemplateUpsertWithWhereUniqueWithoutOrganizationInput | PhishingTemplateUpsertWithWhereUniqueWithoutOrganizationInput[]
+    createMany?: PhishingTemplateCreateManyOrganizationInputEnvelope
+    set?: PhishingTemplateWhereUniqueInput | PhishingTemplateWhereUniqueInput[]
+    disconnect?: PhishingTemplateWhereUniqueInput | PhishingTemplateWhereUniqueInput[]
+    delete?: PhishingTemplateWhereUniqueInput | PhishingTemplateWhereUniqueInput[]
+    connect?: PhishingTemplateWhereUniqueInput | PhishingTemplateWhereUniqueInput[]
+    update?: PhishingTemplateUpdateWithWhereUniqueWithoutOrganizationInput | PhishingTemplateUpdateWithWhereUniqueWithoutOrganizationInput[]
+    updateMany?: PhishingTemplateUpdateManyWithWhereWithoutOrganizationInput | PhishingTemplateUpdateManyWithWhereWithoutOrganizationInput[]
+    deleteMany?: PhishingTemplateScalarWhereInput | PhishingTemplateScalarWhereInput[]
+  }
+
   export type AgentUpdateManyWithoutOrganizationNestedInput = {
     create?: XOR<AgentCreateWithoutOrganizationInput, AgentUncheckedCreateWithoutOrganizationInput> | AgentCreateWithoutOrganizationInput[] | AgentUncheckedCreateWithoutOrganizationInput[]
     connectOrCreate?: AgentCreateOrConnectWithoutOrganizationInput | AgentCreateOrConnectWithoutOrganizationInput[]
@@ -34371,6 +44444,34 @@ export namespace Prisma {
     update?: InvoiceUpdateWithWhereUniqueWithoutOrganizationInput | InvoiceUpdateWithWhereUniqueWithoutOrganizationInput[]
     updateMany?: InvoiceUpdateManyWithWhereWithoutOrganizationInput | InvoiceUpdateManyWithWhereWithoutOrganizationInput[]
     deleteMany?: InvoiceScalarWhereInput | InvoiceScalarWhereInput[]
+  }
+
+  export type InviteCodeUpdateManyWithoutOrganizationNestedInput = {
+    create?: XOR<InviteCodeCreateWithoutOrganizationInput, InviteCodeUncheckedCreateWithoutOrganizationInput> | InviteCodeCreateWithoutOrganizationInput[] | InviteCodeUncheckedCreateWithoutOrganizationInput[]
+    connectOrCreate?: InviteCodeCreateOrConnectWithoutOrganizationInput | InviteCodeCreateOrConnectWithoutOrganizationInput[]
+    upsert?: InviteCodeUpsertWithWhereUniqueWithoutOrganizationInput | InviteCodeUpsertWithWhereUniqueWithoutOrganizationInput[]
+    createMany?: InviteCodeCreateManyOrganizationInputEnvelope
+    set?: InviteCodeWhereUniqueInput | InviteCodeWhereUniqueInput[]
+    disconnect?: InviteCodeWhereUniqueInput | InviteCodeWhereUniqueInput[]
+    delete?: InviteCodeWhereUniqueInput | InviteCodeWhereUniqueInput[]
+    connect?: InviteCodeWhereUniqueInput | InviteCodeWhereUniqueInput[]
+    update?: InviteCodeUpdateWithWhereUniqueWithoutOrganizationInput | InviteCodeUpdateWithWhereUniqueWithoutOrganizationInput[]
+    updateMany?: InviteCodeUpdateManyWithWhereWithoutOrganizationInput | InviteCodeUpdateManyWithWhereWithoutOrganizationInput[]
+    deleteMany?: InviteCodeScalarWhereInput | InviteCodeScalarWhereInput[]
+  }
+
+  export type OrganizationMemberUpdateManyWithoutOrganizationNestedInput = {
+    create?: XOR<OrganizationMemberCreateWithoutOrganizationInput, OrganizationMemberUncheckedCreateWithoutOrganizationInput> | OrganizationMemberCreateWithoutOrganizationInput[] | OrganizationMemberUncheckedCreateWithoutOrganizationInput[]
+    connectOrCreate?: OrganizationMemberCreateOrConnectWithoutOrganizationInput | OrganizationMemberCreateOrConnectWithoutOrganizationInput[]
+    upsert?: OrganizationMemberUpsertWithWhereUniqueWithoutOrganizationInput | OrganizationMemberUpsertWithWhereUniqueWithoutOrganizationInput[]
+    createMany?: OrganizationMemberCreateManyOrganizationInputEnvelope
+    set?: OrganizationMemberWhereUniqueInput | OrganizationMemberWhereUniqueInput[]
+    disconnect?: OrganizationMemberWhereUniqueInput | OrganizationMemberWhereUniqueInput[]
+    delete?: OrganizationMemberWhereUniqueInput | OrganizationMemberWhereUniqueInput[]
+    connect?: OrganizationMemberWhereUniqueInput | OrganizationMemberWhereUniqueInput[]
+    update?: OrganizationMemberUpdateWithWhereUniqueWithoutOrganizationInput | OrganizationMemberUpdateWithWhereUniqueWithoutOrganizationInput[]
+    updateMany?: OrganizationMemberUpdateManyWithWhereWithoutOrganizationInput | OrganizationMemberUpdateManyWithWhereWithoutOrganizationInput[]
+    deleteMany?: OrganizationMemberScalarWhereInput | OrganizationMemberScalarWhereInput[]
   }
 
   export type UserUncheckedUpdateManyWithoutOrganizationNestedInput = {
@@ -34429,6 +44530,20 @@ export namespace Prisma {
     deleteMany?: PhishingCampaignScalarWhereInput | PhishingCampaignScalarWhereInput[]
   }
 
+  export type PhishingTemplateUncheckedUpdateManyWithoutOrganizationNestedInput = {
+    create?: XOR<PhishingTemplateCreateWithoutOrganizationInput, PhishingTemplateUncheckedCreateWithoutOrganizationInput> | PhishingTemplateCreateWithoutOrganizationInput[] | PhishingTemplateUncheckedCreateWithoutOrganizationInput[]
+    connectOrCreate?: PhishingTemplateCreateOrConnectWithoutOrganizationInput | PhishingTemplateCreateOrConnectWithoutOrganizationInput[]
+    upsert?: PhishingTemplateUpsertWithWhereUniqueWithoutOrganizationInput | PhishingTemplateUpsertWithWhereUniqueWithoutOrganizationInput[]
+    createMany?: PhishingTemplateCreateManyOrganizationInputEnvelope
+    set?: PhishingTemplateWhereUniqueInput | PhishingTemplateWhereUniqueInput[]
+    disconnect?: PhishingTemplateWhereUniqueInput | PhishingTemplateWhereUniqueInput[]
+    delete?: PhishingTemplateWhereUniqueInput | PhishingTemplateWhereUniqueInput[]
+    connect?: PhishingTemplateWhereUniqueInput | PhishingTemplateWhereUniqueInput[]
+    update?: PhishingTemplateUpdateWithWhereUniqueWithoutOrganizationInput | PhishingTemplateUpdateWithWhereUniqueWithoutOrganizationInput[]
+    updateMany?: PhishingTemplateUpdateManyWithWhereWithoutOrganizationInput | PhishingTemplateUpdateManyWithWhereWithoutOrganizationInput[]
+    deleteMany?: PhishingTemplateScalarWhereInput | PhishingTemplateScalarWhereInput[]
+  }
+
   export type AgentUncheckedUpdateManyWithoutOrganizationNestedInput = {
     create?: XOR<AgentCreateWithoutOrganizationInput, AgentUncheckedCreateWithoutOrganizationInput> | AgentCreateWithoutOrganizationInput[] | AgentUncheckedCreateWithoutOrganizationInput[]
     connectOrCreate?: AgentCreateOrConnectWithoutOrganizationInput | AgentCreateOrConnectWithoutOrganizationInput[]
@@ -34457,6 +44572,118 @@ export namespace Prisma {
     deleteMany?: InvoiceScalarWhereInput | InvoiceScalarWhereInput[]
   }
 
+  export type InviteCodeUncheckedUpdateManyWithoutOrganizationNestedInput = {
+    create?: XOR<InviteCodeCreateWithoutOrganizationInput, InviteCodeUncheckedCreateWithoutOrganizationInput> | InviteCodeCreateWithoutOrganizationInput[] | InviteCodeUncheckedCreateWithoutOrganizationInput[]
+    connectOrCreate?: InviteCodeCreateOrConnectWithoutOrganizationInput | InviteCodeCreateOrConnectWithoutOrganizationInput[]
+    upsert?: InviteCodeUpsertWithWhereUniqueWithoutOrganizationInput | InviteCodeUpsertWithWhereUniqueWithoutOrganizationInput[]
+    createMany?: InviteCodeCreateManyOrganizationInputEnvelope
+    set?: InviteCodeWhereUniqueInput | InviteCodeWhereUniqueInput[]
+    disconnect?: InviteCodeWhereUniqueInput | InviteCodeWhereUniqueInput[]
+    delete?: InviteCodeWhereUniqueInput | InviteCodeWhereUniqueInput[]
+    connect?: InviteCodeWhereUniqueInput | InviteCodeWhereUniqueInput[]
+    update?: InviteCodeUpdateWithWhereUniqueWithoutOrganizationInput | InviteCodeUpdateWithWhereUniqueWithoutOrganizationInput[]
+    updateMany?: InviteCodeUpdateManyWithWhereWithoutOrganizationInput | InviteCodeUpdateManyWithWhereWithoutOrganizationInput[]
+    deleteMany?: InviteCodeScalarWhereInput | InviteCodeScalarWhereInput[]
+  }
+
+  export type OrganizationMemberUncheckedUpdateManyWithoutOrganizationNestedInput = {
+    create?: XOR<OrganizationMemberCreateWithoutOrganizationInput, OrganizationMemberUncheckedCreateWithoutOrganizationInput> | OrganizationMemberCreateWithoutOrganizationInput[] | OrganizationMemberUncheckedCreateWithoutOrganizationInput[]
+    connectOrCreate?: OrganizationMemberCreateOrConnectWithoutOrganizationInput | OrganizationMemberCreateOrConnectWithoutOrganizationInput[]
+    upsert?: OrganizationMemberUpsertWithWhereUniqueWithoutOrganizationInput | OrganizationMemberUpsertWithWhereUniqueWithoutOrganizationInput[]
+    createMany?: OrganizationMemberCreateManyOrganizationInputEnvelope
+    set?: OrganizationMemberWhereUniqueInput | OrganizationMemberWhereUniqueInput[]
+    disconnect?: OrganizationMemberWhereUniqueInput | OrganizationMemberWhereUniqueInput[]
+    delete?: OrganizationMemberWhereUniqueInput | OrganizationMemberWhereUniqueInput[]
+    connect?: OrganizationMemberWhereUniqueInput | OrganizationMemberWhereUniqueInput[]
+    update?: OrganizationMemberUpdateWithWhereUniqueWithoutOrganizationInput | OrganizationMemberUpdateWithWhereUniqueWithoutOrganizationInput[]
+    updateMany?: OrganizationMemberUpdateManyWithWhereWithoutOrganizationInput | OrganizationMemberUpdateManyWithWhereWithoutOrganizationInput[]
+    deleteMany?: OrganizationMemberScalarWhereInput | OrganizationMemberScalarWhereInput[]
+  }
+
+  export type OrganizationCreateNestedOneWithoutInviteCodesInput = {
+    create?: XOR<OrganizationCreateWithoutInviteCodesInput, OrganizationUncheckedCreateWithoutInviteCodesInput>
+    connectOrCreate?: OrganizationCreateOrConnectWithoutInviteCodesInput
+    connect?: OrganizationWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutCreatedInviteCodesInput = {
+    create?: XOR<UserCreateWithoutCreatedInviteCodesInput, UserUncheckedCreateWithoutCreatedInviteCodesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutCreatedInviteCodesInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type IntFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
+  export type OrganizationUpdateOneRequiredWithoutInviteCodesNestedInput = {
+    create?: XOR<OrganizationCreateWithoutInviteCodesInput, OrganizationUncheckedCreateWithoutInviteCodesInput>
+    connectOrCreate?: OrganizationCreateOrConnectWithoutInviteCodesInput
+    upsert?: OrganizationUpsertWithoutInviteCodesInput
+    connect?: OrganizationWhereUniqueInput
+    update?: XOR<XOR<OrganizationUpdateToOneWithWhereWithoutInviteCodesInput, OrganizationUpdateWithoutInviteCodesInput>, OrganizationUncheckedUpdateWithoutInviteCodesInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutCreatedInviteCodesNestedInput = {
+    create?: XOR<UserCreateWithoutCreatedInviteCodesInput, UserUncheckedCreateWithoutCreatedInviteCodesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutCreatedInviteCodesInput
+    upsert?: UserUpsertWithoutCreatedInviteCodesInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutCreatedInviteCodesInput, UserUpdateWithoutCreatedInviteCodesInput>, UserUncheckedUpdateWithoutCreatedInviteCodesInput>
+  }
+
+  export type UserCreateNestedOneWithoutOrganizationMembershipsInput = {
+    create?: XOR<UserCreateWithoutOrganizationMembershipsInput, UserUncheckedCreateWithoutOrganizationMembershipsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutOrganizationMembershipsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type OrganizationCreateNestedOneWithoutMembersInput = {
+    create?: XOR<OrganizationCreateWithoutMembersInput, OrganizationUncheckedCreateWithoutMembersInput>
+    connectOrCreate?: OrganizationCreateOrConnectWithoutMembersInput
+    connect?: OrganizationWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutSentInvitesInput = {
+    create?: XOR<UserCreateWithoutSentInvitesInput, UserUncheckedCreateWithoutSentInvitesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutSentInvitesInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type EnumMemberStatusFieldUpdateOperationsInput = {
+    set?: $Enums.MemberStatus
+  }
+
+  export type UserUpdateOneRequiredWithoutOrganizationMembershipsNestedInput = {
+    create?: XOR<UserCreateWithoutOrganizationMembershipsInput, UserUncheckedCreateWithoutOrganizationMembershipsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutOrganizationMembershipsInput
+    upsert?: UserUpsertWithoutOrganizationMembershipsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutOrganizationMembershipsInput, UserUpdateWithoutOrganizationMembershipsInput>, UserUncheckedUpdateWithoutOrganizationMembershipsInput>
+  }
+
+  export type OrganizationUpdateOneRequiredWithoutMembersNestedInput = {
+    create?: XOR<OrganizationCreateWithoutMembersInput, OrganizationUncheckedCreateWithoutMembersInput>
+    connectOrCreate?: OrganizationCreateOrConnectWithoutMembersInput
+    upsert?: OrganizationUpsertWithoutMembersInput
+    connect?: OrganizationWhereUniqueInput
+    update?: XOR<XOR<OrganizationUpdateToOneWithWhereWithoutMembersInput, OrganizationUpdateWithoutMembersInput>, OrganizationUncheckedUpdateWithoutMembersInput>
+  }
+
+  export type UserUpdateOneWithoutSentInvitesNestedInput = {
+    create?: XOR<UserCreateWithoutSentInvitesInput, UserUncheckedCreateWithoutSentInvitesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutSentInvitesInput
+    upsert?: UserUpsertWithoutSentInvitesInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutSentInvitesInput, UserUpdateWithoutSentInvitesInput>, UserUncheckedUpdateWithoutSentInvitesInput>
+  }
+
   export type OrganizationCreateNestedOneWithoutAssessmentsInput = {
     create?: XOR<OrganizationCreateWithoutAssessmentsInput, OrganizationUncheckedCreateWithoutAssessmentsInput>
     connectOrCreate?: OrganizationCreateOrConnectWithoutAssessmentsInput
@@ -34476,11 +44703,23 @@ export namespace Prisma {
     connect?: AssessmentResponseWhereUniqueInput | AssessmentResponseWhereUniqueInput[]
   }
 
+  export type AssessmentResultCreateNestedOneWithoutAssessmentInput = {
+    create?: XOR<AssessmentResultCreateWithoutAssessmentInput, AssessmentResultUncheckedCreateWithoutAssessmentInput>
+    connectOrCreate?: AssessmentResultCreateOrConnectWithoutAssessmentInput
+    connect?: AssessmentResultWhereUniqueInput
+  }
+
   export type AssessmentResponseUncheckedCreateNestedManyWithoutAssessmentInput = {
     create?: XOR<AssessmentResponseCreateWithoutAssessmentInput, AssessmentResponseUncheckedCreateWithoutAssessmentInput> | AssessmentResponseCreateWithoutAssessmentInput[] | AssessmentResponseUncheckedCreateWithoutAssessmentInput[]
     connectOrCreate?: AssessmentResponseCreateOrConnectWithoutAssessmentInput | AssessmentResponseCreateOrConnectWithoutAssessmentInput[]
     createMany?: AssessmentResponseCreateManyAssessmentInputEnvelope
     connect?: AssessmentResponseWhereUniqueInput | AssessmentResponseWhereUniqueInput[]
+  }
+
+  export type AssessmentResultUncheckedCreateNestedOneWithoutAssessmentInput = {
+    create?: XOR<AssessmentResultCreateWithoutAssessmentInput, AssessmentResultUncheckedCreateWithoutAssessmentInput>
+    connectOrCreate?: AssessmentResultCreateOrConnectWithoutAssessmentInput
+    connect?: AssessmentResultWhereUniqueInput
   }
 
   export type EnumAssessmentTypeFieldUpdateOperationsInput = {
@@ -34525,6 +44764,16 @@ export namespace Prisma {
     deleteMany?: AssessmentResponseScalarWhereInput | AssessmentResponseScalarWhereInput[]
   }
 
+  export type AssessmentResultUpdateOneWithoutAssessmentNestedInput = {
+    create?: XOR<AssessmentResultCreateWithoutAssessmentInput, AssessmentResultUncheckedCreateWithoutAssessmentInput>
+    connectOrCreate?: AssessmentResultCreateOrConnectWithoutAssessmentInput
+    upsert?: AssessmentResultUpsertWithoutAssessmentInput
+    disconnect?: AssessmentResultWhereInput | boolean
+    delete?: AssessmentResultWhereInput | boolean
+    connect?: AssessmentResultWhereUniqueInput
+    update?: XOR<XOR<AssessmentResultUpdateToOneWithWhereWithoutAssessmentInput, AssessmentResultUpdateWithoutAssessmentInput>, AssessmentResultUncheckedUpdateWithoutAssessmentInput>
+  }
+
   export type AssessmentResponseUncheckedUpdateManyWithoutAssessmentNestedInput = {
     create?: XOR<AssessmentResponseCreateWithoutAssessmentInput, AssessmentResponseUncheckedCreateWithoutAssessmentInput> | AssessmentResponseCreateWithoutAssessmentInput[] | AssessmentResponseUncheckedCreateWithoutAssessmentInput[]
     connectOrCreate?: AssessmentResponseCreateOrConnectWithoutAssessmentInput | AssessmentResponseCreateOrConnectWithoutAssessmentInput[]
@@ -34537,6 +44786,16 @@ export namespace Prisma {
     update?: AssessmentResponseUpdateWithWhereUniqueWithoutAssessmentInput | AssessmentResponseUpdateWithWhereUniqueWithoutAssessmentInput[]
     updateMany?: AssessmentResponseUpdateManyWithWhereWithoutAssessmentInput | AssessmentResponseUpdateManyWithWhereWithoutAssessmentInput[]
     deleteMany?: AssessmentResponseScalarWhereInput | AssessmentResponseScalarWhereInput[]
+  }
+
+  export type AssessmentResultUncheckedUpdateOneWithoutAssessmentNestedInput = {
+    create?: XOR<AssessmentResultCreateWithoutAssessmentInput, AssessmentResultUncheckedCreateWithoutAssessmentInput>
+    connectOrCreate?: AssessmentResultCreateOrConnectWithoutAssessmentInput
+    upsert?: AssessmentResultUpsertWithoutAssessmentInput
+    disconnect?: AssessmentResultWhereInput | boolean
+    delete?: AssessmentResultWhereInput | boolean
+    connect?: AssessmentResultWhereUniqueInput
+    update?: XOR<XOR<AssessmentResultUpdateToOneWithWhereWithoutAssessmentInput, AssessmentResultUpdateWithoutAssessmentInput>, AssessmentResultUncheckedUpdateWithoutAssessmentInput>
   }
 
   export type QuestionCreateNestedManyWithoutCategoryInput = {
@@ -34554,14 +44813,6 @@ export namespace Prisma {
   }
 
   export type FloatFieldUpdateOperationsInput = {
-    set?: number
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
-  }
-
-  export type IntFieldUpdateOperationsInput = {
     set?: number
     increment?: number
     decrement?: number
@@ -34749,10 +45000,34 @@ export namespace Prisma {
     update?: XOR<XOR<QuestionUpdateToOneWithWhereWithoutResponsesInput, QuestionUpdateWithoutResponsesInput>, QuestionUncheckedUpdateWithoutResponsesInput>
   }
 
+  export type AssessmentCreateNestedOneWithoutResultInput = {
+    create?: XOR<AssessmentCreateWithoutResultInput, AssessmentUncheckedCreateWithoutResultInput>
+    connectOrCreate?: AssessmentCreateOrConnectWithoutResultInput
+    connect?: AssessmentWhereUniqueInput
+  }
+
+  export type EnumCSITierFieldUpdateOperationsInput = {
+    set?: $Enums.CSITier
+  }
+
+  export type AssessmentUpdateOneRequiredWithoutResultNestedInput = {
+    create?: XOR<AssessmentCreateWithoutResultInput, AssessmentUncheckedCreateWithoutResultInput>
+    connectOrCreate?: AssessmentCreateOrConnectWithoutResultInput
+    upsert?: AssessmentUpsertWithoutResultInput
+    connect?: AssessmentWhereUniqueInput
+    update?: XOR<XOR<AssessmentUpdateToOneWithWhereWithoutResultInput, AssessmentUpdateWithoutResultInput>, AssessmentUncheckedUpdateWithoutResultInput>
+  }
+
   export type OrganizationCreateNestedOneWithoutPhishingCampaignsInput = {
     create?: XOR<OrganizationCreateWithoutPhishingCampaignsInput, OrganizationUncheckedCreateWithoutPhishingCampaignsInput>
     connectOrCreate?: OrganizationCreateOrConnectWithoutPhishingCampaignsInput
     connect?: OrganizationWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutPhishingCampaignsInput = {
+    create?: XOR<UserCreateWithoutPhishingCampaignsInput, UserUncheckedCreateWithoutPhishingCampaignsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutPhishingCampaignsInput
+    connect?: UserWhereUniqueInput
   }
 
   export type PhishingTargetCreateNestedManyWithoutCampaignInput = {
@@ -34793,6 +45068,14 @@ export namespace Prisma {
     upsert?: OrganizationUpsertWithoutPhishingCampaignsInput
     connect?: OrganizationWhereUniqueInput
     update?: XOR<XOR<OrganizationUpdateToOneWithWhereWithoutPhishingCampaignsInput, OrganizationUpdateWithoutPhishingCampaignsInput>, OrganizationUncheckedUpdateWithoutPhishingCampaignsInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutPhishingCampaignsNestedInput = {
+    create?: XOR<UserCreateWithoutPhishingCampaignsInput, UserUncheckedCreateWithoutPhishingCampaignsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutPhishingCampaignsInput
+    upsert?: UserUpsertWithoutPhishingCampaignsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutPhishingCampaignsInput, UserUpdateWithoutPhishingCampaignsInput>, UserUncheckedUpdateWithoutPhishingCampaignsInput>
   }
 
   export type PhishingTargetUpdateManyWithoutCampaignNestedInput = {
@@ -34877,10 +45160,6 @@ export namespace Prisma {
     connect?: PhishingEventWhereUniqueInput | PhishingEventWhereUniqueInput[]
   }
 
-  export type EnumTargetStatusFieldUpdateOperationsInput = {
-    set?: $Enums.TargetStatus
-  }
-
   export type PhishingCampaignUpdateOneRequiredWithoutTargetsNestedInput = {
     create?: XOR<PhishingCampaignCreateWithoutTargetsInput, PhishingCampaignUncheckedCreateWithoutTargetsInput>
     connectOrCreate?: PhishingCampaignCreateOrConnectWithoutTargetsInput
@@ -34951,12 +45230,71 @@ export namespace Prisma {
     update?: XOR<XOR<PhishingCampaignUpdateToOneWithWhereWithoutEventsInput, PhishingCampaignUpdateWithoutEventsInput>, PhishingCampaignUncheckedUpdateWithoutEventsInput>
   }
 
-  export type PhishingTargetUpdateOneRequiredWithoutEventsNestedInput = {
+  export type PhishingTargetUpdateOneWithoutEventsNestedInput = {
     create?: XOR<PhishingTargetCreateWithoutEventsInput, PhishingTargetUncheckedCreateWithoutEventsInput>
     connectOrCreate?: PhishingTargetCreateOrConnectWithoutEventsInput
     upsert?: PhishingTargetUpsertWithoutEventsInput
+    disconnect?: PhishingTargetWhereInput | boolean
+    delete?: PhishingTargetWhereInput | boolean
     connect?: PhishingTargetWhereUniqueInput
     update?: XOR<XOR<PhishingTargetUpdateToOneWithWhereWithoutEventsInput, PhishingTargetUpdateWithoutEventsInput>, PhishingTargetUncheckedUpdateWithoutEventsInput>
+  }
+
+  export type PhishingTemplateCreatetagsInput = {
+    set: string[]
+  }
+
+  export type OrganizationCreateNestedOneWithoutPhishingTemplatesInput = {
+    create?: XOR<OrganizationCreateWithoutPhishingTemplatesInput, OrganizationUncheckedCreateWithoutPhishingTemplatesInput>
+    connectOrCreate?: OrganizationCreateOrConnectWithoutPhishingTemplatesInput
+    connect?: OrganizationWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutPhishingTemplatesInput = {
+    create?: XOR<UserCreateWithoutPhishingTemplatesInput, UserUncheckedCreateWithoutPhishingTemplatesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutPhishingTemplatesInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type EnumTemplateCategoryFieldUpdateOperationsInput = {
+    set?: $Enums.TemplateCategory
+  }
+
+  export type EnumRiskLevelFieldUpdateOperationsInput = {
+    set?: $Enums.RiskLevel
+  }
+
+  export type PhishingTemplateUpdatetagsInput = {
+    set?: string[]
+    push?: string | string[]
+  }
+
+  export type OrganizationUpdateOneWithoutPhishingTemplatesNestedInput = {
+    create?: XOR<OrganizationCreateWithoutPhishingTemplatesInput, OrganizationUncheckedCreateWithoutPhishingTemplatesInput>
+    connectOrCreate?: OrganizationCreateOrConnectWithoutPhishingTemplatesInput
+    upsert?: OrganizationUpsertWithoutPhishingTemplatesInput
+    disconnect?: OrganizationWhereInput | boolean
+    delete?: OrganizationWhereInput | boolean
+    connect?: OrganizationWhereUniqueInput
+    update?: XOR<XOR<OrganizationUpdateToOneWithWhereWithoutPhishingTemplatesInput, OrganizationUpdateWithoutPhishingTemplatesInput>, OrganizationUncheckedUpdateWithoutPhishingTemplatesInput>
+  }
+
+  export type UserUpdateOneWithoutPhishingTemplatesNestedInput = {
+    create?: XOR<UserCreateWithoutPhishingTemplatesInput, UserUncheckedCreateWithoutPhishingTemplatesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutPhishingTemplatesInput
+    upsert?: UserUpsertWithoutPhishingTemplatesInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutPhishingTemplatesInput, UserUpdateWithoutPhishingTemplatesInput>, UserUncheckedUpdateWithoutPhishingTemplatesInput>
+  }
+
+  export type EnumJobPriorityFieldUpdateOperationsInput = {
+    set?: $Enums.JobPriority
+  }
+
+  export type EnumJobStatusFieldUpdateOperationsInput = {
+    set?: $Enums.JobStatus
   }
 
   export type OrganizationCreateNestedOneWithoutAgentsInput = {
@@ -35688,6 +46026,50 @@ export namespace Prisma {
     _max?: NestedEnumRiskTierNullableFilter<$PrismaModel>
   }
 
+  export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
+  }
+
+  export type NestedFloatFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatFilter<$PrismaModel> | number
+  }
+
+  export type NestedEnumMemberStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.MemberStatus | EnumMemberStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.MemberStatus[] | ListEnumMemberStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.MemberStatus[] | ListEnumMemberStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumMemberStatusFilter<$PrismaModel> | $Enums.MemberStatus
+  }
+
+  export type NestedEnumMemberStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.MemberStatus | EnumMemberStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.MemberStatus[] | ListEnumMemberStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.MemberStatus[] | ListEnumMemberStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumMemberStatusWithAggregatesFilter<$PrismaModel> | $Enums.MemberStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumMemberStatusFilter<$PrismaModel>
+    _max?: NestedEnumMemberStatusFilter<$PrismaModel>
+  }
+
   export type NestedEnumAssessmentTypeFilter<$PrismaModel = never> = {
     equals?: $Enums.AssessmentType | EnumAssessmentTypeFieldRefInput<$PrismaModel>
     in?: $Enums.AssessmentType[] | ListEnumAssessmentTypeFieldRefInput<$PrismaModel>
@@ -35747,17 +46129,6 @@ export namespace Prisma {
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
-  export type NestedFloatFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel>
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatFilter<$PrismaModel> | number
-  }
-
   export type NestedFloatWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | FloatFieldRefInput<$PrismaModel>
     in?: number[] | ListFloatFieldRefInput<$PrismaModel>
@@ -35772,22 +46143,6 @@ export namespace Prisma {
     _sum?: NestedFloatFilter<$PrismaModel>
     _min?: NestedFloatFilter<$PrismaModel>
     _max?: NestedFloatFilter<$PrismaModel>
-  }
-
-  export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedIntFilter<$PrismaModel>
-    _min?: NestedIntFilter<$PrismaModel>
-    _max?: NestedIntFilter<$PrismaModel>
   }
 
   export type NestedEnumQuestionTypeFilter<$PrismaModel = never> = {
@@ -35823,6 +46178,23 @@ export namespace Prisma {
     _max?: NestedIntNullableFilter<$PrismaModel>
   }
 
+  export type NestedEnumCSITierFilter<$PrismaModel = never> = {
+    equals?: $Enums.CSITier | EnumCSITierFieldRefInput<$PrismaModel>
+    in?: $Enums.CSITier[] | ListEnumCSITierFieldRefInput<$PrismaModel>
+    notIn?: $Enums.CSITier[] | ListEnumCSITierFieldRefInput<$PrismaModel>
+    not?: NestedEnumCSITierFilter<$PrismaModel> | $Enums.CSITier
+  }
+
+  export type NestedEnumCSITierWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.CSITier | EnumCSITierFieldRefInput<$PrismaModel>
+    in?: $Enums.CSITier[] | ListEnumCSITierFieldRefInput<$PrismaModel>
+    notIn?: $Enums.CSITier[] | ListEnumCSITierFieldRefInput<$PrismaModel>
+    not?: NestedEnumCSITierWithAggregatesFilter<$PrismaModel> | $Enums.CSITier
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumCSITierFilter<$PrismaModel>
+    _max?: NestedEnumCSITierFilter<$PrismaModel>
+  }
+
   export type NestedEnumCampaignStatusFilter<$PrismaModel = never> = {
     equals?: $Enums.CampaignStatus | EnumCampaignStatusFieldRefInput<$PrismaModel>
     in?: $Enums.CampaignStatus[] | ListEnumCampaignStatusFieldRefInput<$PrismaModel>
@@ -35840,23 +46212,6 @@ export namespace Prisma {
     _max?: NestedEnumCampaignStatusFilter<$PrismaModel>
   }
 
-  export type NestedEnumTargetStatusFilter<$PrismaModel = never> = {
-    equals?: $Enums.TargetStatus | EnumTargetStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.TargetStatus[] | ListEnumTargetStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.TargetStatus[] | ListEnumTargetStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumTargetStatusFilter<$PrismaModel> | $Enums.TargetStatus
-  }
-
-  export type NestedEnumTargetStatusWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.TargetStatus | EnumTargetStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.TargetStatus[] | ListEnumTargetStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.TargetStatus[] | ListEnumTargetStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumTargetStatusWithAggregatesFilter<$PrismaModel> | $Enums.TargetStatus
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumTargetStatusFilter<$PrismaModel>
-    _max?: NestedEnumTargetStatusFilter<$PrismaModel>
-  }
-
   export type NestedEnumPhishingEventTypeFilter<$PrismaModel = never> = {
     equals?: $Enums.PhishingEventType | EnumPhishingEventTypeFieldRefInput<$PrismaModel>
     in?: $Enums.PhishingEventType[] | ListEnumPhishingEventTypeFieldRefInput<$PrismaModel>
@@ -35872,6 +46227,74 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumPhishingEventTypeFilter<$PrismaModel>
     _max?: NestedEnumPhishingEventTypeFilter<$PrismaModel>
+  }
+
+  export type NestedEnumTemplateCategoryFilter<$PrismaModel = never> = {
+    equals?: $Enums.TemplateCategory | EnumTemplateCategoryFieldRefInput<$PrismaModel>
+    in?: $Enums.TemplateCategory[] | ListEnumTemplateCategoryFieldRefInput<$PrismaModel>
+    notIn?: $Enums.TemplateCategory[] | ListEnumTemplateCategoryFieldRefInput<$PrismaModel>
+    not?: NestedEnumTemplateCategoryFilter<$PrismaModel> | $Enums.TemplateCategory
+  }
+
+  export type NestedEnumRiskLevelFilter<$PrismaModel = never> = {
+    equals?: $Enums.RiskLevel | EnumRiskLevelFieldRefInput<$PrismaModel>
+    in?: $Enums.RiskLevel[] | ListEnumRiskLevelFieldRefInput<$PrismaModel>
+    notIn?: $Enums.RiskLevel[] | ListEnumRiskLevelFieldRefInput<$PrismaModel>
+    not?: NestedEnumRiskLevelFilter<$PrismaModel> | $Enums.RiskLevel
+  }
+
+  export type NestedEnumTemplateCategoryWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.TemplateCategory | EnumTemplateCategoryFieldRefInput<$PrismaModel>
+    in?: $Enums.TemplateCategory[] | ListEnumTemplateCategoryFieldRefInput<$PrismaModel>
+    notIn?: $Enums.TemplateCategory[] | ListEnumTemplateCategoryFieldRefInput<$PrismaModel>
+    not?: NestedEnumTemplateCategoryWithAggregatesFilter<$PrismaModel> | $Enums.TemplateCategory
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumTemplateCategoryFilter<$PrismaModel>
+    _max?: NestedEnumTemplateCategoryFilter<$PrismaModel>
+  }
+
+  export type NestedEnumRiskLevelWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.RiskLevel | EnumRiskLevelFieldRefInput<$PrismaModel>
+    in?: $Enums.RiskLevel[] | ListEnumRiskLevelFieldRefInput<$PrismaModel>
+    notIn?: $Enums.RiskLevel[] | ListEnumRiskLevelFieldRefInput<$PrismaModel>
+    not?: NestedEnumRiskLevelWithAggregatesFilter<$PrismaModel> | $Enums.RiskLevel
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumRiskLevelFilter<$PrismaModel>
+    _max?: NestedEnumRiskLevelFilter<$PrismaModel>
+  }
+
+  export type NestedEnumJobPriorityFilter<$PrismaModel = never> = {
+    equals?: $Enums.JobPriority | EnumJobPriorityFieldRefInput<$PrismaModel>
+    in?: $Enums.JobPriority[] | ListEnumJobPriorityFieldRefInput<$PrismaModel>
+    notIn?: $Enums.JobPriority[] | ListEnumJobPriorityFieldRefInput<$PrismaModel>
+    not?: NestedEnumJobPriorityFilter<$PrismaModel> | $Enums.JobPriority
+  }
+
+  export type NestedEnumJobStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.JobStatus | EnumJobStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.JobStatus[] | ListEnumJobStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.JobStatus[] | ListEnumJobStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumJobStatusFilter<$PrismaModel> | $Enums.JobStatus
+  }
+
+  export type NestedEnumJobPriorityWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.JobPriority | EnumJobPriorityFieldRefInput<$PrismaModel>
+    in?: $Enums.JobPriority[] | ListEnumJobPriorityFieldRefInput<$PrismaModel>
+    notIn?: $Enums.JobPriority[] | ListEnumJobPriorityFieldRefInput<$PrismaModel>
+    not?: NestedEnumJobPriorityWithAggregatesFilter<$PrismaModel> | $Enums.JobPriority
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumJobPriorityFilter<$PrismaModel>
+    _max?: NestedEnumJobPriorityFilter<$PrismaModel>
+  }
+
+  export type NestedEnumJobStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.JobStatus | EnumJobStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.JobStatus[] | ListEnumJobStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.JobStatus[] | ListEnumJobStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumJobStatusWithAggregatesFilter<$PrismaModel> | $Enums.JobStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumJobStatusFilter<$PrismaModel>
+    _max?: NestedEnumJobStatusFilter<$PrismaModel>
   }
 
   export type NestedEnumTelemetryTypeFilter<$PrismaModel = never> = {
@@ -36102,8 +46525,11 @@ export namespace Prisma {
     assessments?: AssessmentCreateNestedManyWithoutOrganizationInput
     subscriptions?: SubscriptionCreateNestedManyWithoutOrganizationInput
     phishingCampaigns?: PhishingCampaignCreateNestedManyWithoutOrganizationInput
+    phishingTemplates?: PhishingTemplateCreateNestedManyWithoutOrganizationInput
     agents?: AgentCreateNestedManyWithoutOrganizationInput
     invoices?: InvoiceCreateNestedManyWithoutOrganizationInput
+    inviteCodes?: InviteCodeCreateNestedManyWithoutOrganizationInput
+    members?: OrganizationMemberCreateNestedManyWithoutOrganizationInput
   }
 
   export type OrganizationUncheckedCreateWithoutUsersInput = {
@@ -36130,8 +46556,11 @@ export namespace Prisma {
     assessments?: AssessmentUncheckedCreateNestedManyWithoutOrganizationInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutOrganizationInput
     phishingCampaigns?: PhishingCampaignUncheckedCreateNestedManyWithoutOrganizationInput
+    phishingTemplates?: PhishingTemplateUncheckedCreateNestedManyWithoutOrganizationInput
     agents?: AgentUncheckedCreateNestedManyWithoutOrganizationInput
     invoices?: InvoiceUncheckedCreateNestedManyWithoutOrganizationInput
+    inviteCodes?: InviteCodeUncheckedCreateNestedManyWithoutOrganizationInput
+    members?: OrganizationMemberUncheckedCreateNestedManyWithoutOrganizationInput
   }
 
   export type OrganizationCreateOrConnectWithoutUsersInput = {
@@ -36158,6 +46587,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     organization: OrganizationCreateNestedOneWithoutAssessmentsInput
     responses?: AssessmentResponseCreateNestedManyWithoutAssessmentInput
+    result?: AssessmentResultCreateNestedOneWithoutAssessmentInput
   }
 
   export type AssessmentUncheckedCreateWithoutUserInput = {
@@ -36179,6 +46609,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     organizationId: string
     responses?: AssessmentResponseUncheckedCreateNestedManyWithoutAssessmentInput
+    result?: AssessmentResultUncheckedCreateNestedOneWithoutAssessmentInput
   }
 
   export type AssessmentCreateOrConnectWithoutUserInput = {
@@ -36197,13 +46628,27 @@ export namespace Prisma {
     firstName?: string | null
     lastName?: string | null
     department?: string | null
-    trackingId?: string
-    status?: $Enums.TargetStatus
+    jobTitle?: string | null
+    emailSent?: boolean
+    emailDelivered?: boolean
+    emailOpened?: boolean
+    linkClicked?: boolean
+    credentialsEntered?: boolean
+    reportedPhishing?: boolean
+    emailBounced?: boolean
+    sentAt?: Date | string | null
     deliveredAt?: Date | string | null
     openedAt?: Date | string | null
     clickedAt?: Date | string | null
+    credentialsAt?: Date | string | null
     reportedAt?: Date | string | null
+    bouncedAt?: Date | string | null
+    userAgent?: string | null
+    ipAddress?: string | null
+    clickCount?: number
+    riskScore?: number | null
     createdAt?: Date | string
+    updatedAt?: Date | string
     campaign: PhishingCampaignCreateNestedOneWithoutTargetsInput
     events?: PhishingEventCreateNestedManyWithoutTargetInput
   }
@@ -36214,13 +46659,27 @@ export namespace Prisma {
     firstName?: string | null
     lastName?: string | null
     department?: string | null
-    trackingId?: string
-    status?: $Enums.TargetStatus
+    jobTitle?: string | null
+    emailSent?: boolean
+    emailDelivered?: boolean
+    emailOpened?: boolean
+    linkClicked?: boolean
+    credentialsEntered?: boolean
+    reportedPhishing?: boolean
+    emailBounced?: boolean
+    sentAt?: Date | string | null
     deliveredAt?: Date | string | null
     openedAt?: Date | string | null
     clickedAt?: Date | string | null
+    credentialsAt?: Date | string | null
     reportedAt?: Date | string | null
+    bouncedAt?: Date | string | null
+    userAgent?: string | null
+    ipAddress?: string | null
+    clickCount?: number
+    riskScore?: number | null
     createdAt?: Date | string
+    updatedAt?: Date | string
     campaignId: string
     events?: PhishingEventUncheckedCreateNestedManyWithoutTargetInput
   }
@@ -36232,6 +46691,130 @@ export namespace Prisma {
 
   export type PhishingTargetCreateManyUserInputEnvelope = {
     data: PhishingTargetCreateManyUserInput | PhishingTargetCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type PhishingCampaignCreateWithoutCreatorInput = {
+    id?: string
+    name: string
+    description?: string | null
+    templateId: string
+    template: string
+    subject: string
+    senderName: string
+    senderEmail: string
+    landingPageUrl?: string | null
+    status?: $Enums.CampaignStatus
+    scheduledAt?: Date | string | null
+    launchedAt?: Date | string | null
+    completedAt?: Date | string | null
+    pausedAt?: Date | string | null
+    targetCount?: number
+    emailsSent?: number
+    emailsDelivered?: number
+    emailsOpened?: number
+    linksClicked?: number
+    credentialsEntered?: number
+    phishingReported?: number
+    emailsBounced?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    organization: OrganizationCreateNestedOneWithoutPhishingCampaignsInput
+    targets?: PhishingTargetCreateNestedManyWithoutCampaignInput
+    events?: PhishingEventCreateNestedManyWithoutCampaignInput
+  }
+
+  export type PhishingCampaignUncheckedCreateWithoutCreatorInput = {
+    id?: string
+    name: string
+    description?: string | null
+    templateId: string
+    template: string
+    subject: string
+    senderName: string
+    senderEmail: string
+    landingPageUrl?: string | null
+    status?: $Enums.CampaignStatus
+    scheduledAt?: Date | string | null
+    launchedAt?: Date | string | null
+    completedAt?: Date | string | null
+    pausedAt?: Date | string | null
+    targetCount?: number
+    emailsSent?: number
+    emailsDelivered?: number
+    emailsOpened?: number
+    linksClicked?: number
+    credentialsEntered?: number
+    phishingReported?: number
+    emailsBounced?: number
+    organizationId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    targets?: PhishingTargetUncheckedCreateNestedManyWithoutCampaignInput
+    events?: PhishingEventUncheckedCreateNestedManyWithoutCampaignInput
+  }
+
+  export type PhishingCampaignCreateOrConnectWithoutCreatorInput = {
+    where: PhishingCampaignWhereUniqueInput
+    create: XOR<PhishingCampaignCreateWithoutCreatorInput, PhishingCampaignUncheckedCreateWithoutCreatorInput>
+  }
+
+  export type PhishingCampaignCreateManyCreatorInputEnvelope = {
+    data: PhishingCampaignCreateManyCreatorInput | PhishingCampaignCreateManyCreatorInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type PhishingTemplateCreateWithoutCreatorInput = {
+    id?: string
+    name: string
+    description: string
+    category: $Enums.TemplateCategory
+    riskLevel: $Enums.RiskLevel
+    defaultSubject: string
+    defaultSenderName: string
+    emailBodyHtml: string
+    emailBodyText: string
+    landingPageHtml?: string | null
+    captureCredentials?: boolean
+    isActive?: boolean
+    previewContent: string
+    tags?: PhishingTemplateCreatetagsInput | string[]
+    usageCount?: number
+    successRate?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    organization?: OrganizationCreateNestedOneWithoutPhishingTemplatesInput
+  }
+
+  export type PhishingTemplateUncheckedCreateWithoutCreatorInput = {
+    id?: string
+    name: string
+    description: string
+    category: $Enums.TemplateCategory
+    riskLevel: $Enums.RiskLevel
+    defaultSubject: string
+    defaultSenderName: string
+    emailBodyHtml: string
+    emailBodyText: string
+    landingPageHtml?: string | null
+    captureCredentials?: boolean
+    isActive?: boolean
+    previewContent: string
+    tags?: PhishingTemplateCreatetagsInput | string[]
+    usageCount?: number
+    successRate?: number | null
+    organizationId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PhishingTemplateCreateOrConnectWithoutCreatorInput = {
+    where: PhishingTemplateWhereUniqueInput
+    create: XOR<PhishingTemplateCreateWithoutCreatorInput, PhishingTemplateUncheckedCreateWithoutCreatorInput>
+  }
+
+  export type PhishingTemplateCreateManyCreatorInputEnvelope = {
+    data: PhishingTemplateCreateManyCreatorInput | PhishingTemplateCreateManyCreatorInput[]
     skipDuplicates?: boolean
   }
 
@@ -36323,6 +46906,124 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type PasswordResetCreateWithoutUserInput = {
+    id?: string
+    token: string
+    expiresAt: Date | string
+    used?: boolean
+    createdAt?: Date | string
+  }
+
+  export type PasswordResetUncheckedCreateWithoutUserInput = {
+    id?: string
+    token: string
+    expiresAt: Date | string
+    used?: boolean
+    createdAt?: Date | string
+  }
+
+  export type PasswordResetCreateOrConnectWithoutUserInput = {
+    where: PasswordResetWhereUniqueInput
+    create: XOR<PasswordResetCreateWithoutUserInput, PasswordResetUncheckedCreateWithoutUserInput>
+  }
+
+  export type PasswordResetCreateManyUserInputEnvelope = {
+    data: PasswordResetCreateManyUserInput | PasswordResetCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type InviteCodeCreateWithoutCreatorInput = {
+    id?: string
+    code: string
+    expiresAt: Date | string
+    usageLimit?: number
+    usedCount?: number
+    isActive?: boolean
+    createdAt?: Date | string
+    organization: OrganizationCreateNestedOneWithoutInviteCodesInput
+  }
+
+  export type InviteCodeUncheckedCreateWithoutCreatorInput = {
+    id?: string
+    code: string
+    organizationId: string
+    expiresAt: Date | string
+    usageLimit?: number
+    usedCount?: number
+    isActive?: boolean
+    createdAt?: Date | string
+  }
+
+  export type InviteCodeCreateOrConnectWithoutCreatorInput = {
+    where: InviteCodeWhereUniqueInput
+    create: XOR<InviteCodeCreateWithoutCreatorInput, InviteCodeUncheckedCreateWithoutCreatorInput>
+  }
+
+  export type InviteCodeCreateManyCreatorInputEnvelope = {
+    data: InviteCodeCreateManyCreatorInput | InviteCodeCreateManyCreatorInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type OrganizationMemberCreateWithoutUserInput = {
+    id?: string
+    role?: $Enums.UserRole
+    status?: $Enums.MemberStatus
+    joinedAt?: Date | string
+    inviteCode?: string | null
+    organization: OrganizationCreateNestedOneWithoutMembersInput
+    inviter?: UserCreateNestedOneWithoutSentInvitesInput
+  }
+
+  export type OrganizationMemberUncheckedCreateWithoutUserInput = {
+    id?: string
+    organizationId: string
+    role?: $Enums.UserRole
+    status?: $Enums.MemberStatus
+    joinedAt?: Date | string
+    invitedBy?: string | null
+    inviteCode?: string | null
+  }
+
+  export type OrganizationMemberCreateOrConnectWithoutUserInput = {
+    where: OrganizationMemberWhereUniqueInput
+    create: XOR<OrganizationMemberCreateWithoutUserInput, OrganizationMemberUncheckedCreateWithoutUserInput>
+  }
+
+  export type OrganizationMemberCreateManyUserInputEnvelope = {
+    data: OrganizationMemberCreateManyUserInput | OrganizationMemberCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type OrganizationMemberCreateWithoutInviterInput = {
+    id?: string
+    role?: $Enums.UserRole
+    status?: $Enums.MemberStatus
+    joinedAt?: Date | string
+    inviteCode?: string | null
+    user: UserCreateNestedOneWithoutOrganizationMembershipsInput
+    organization: OrganizationCreateNestedOneWithoutMembersInput
+  }
+
+  export type OrganizationMemberUncheckedCreateWithoutInviterInput = {
+    id?: string
+    userId: string
+    organizationId: string
+    role?: $Enums.UserRole
+    status?: $Enums.MemberStatus
+    joinedAt?: Date | string
+    inviteCode?: string | null
+  }
+
+  export type OrganizationMemberCreateOrConnectWithoutInviterInput = {
+    where: OrganizationMemberWhereUniqueInput
+    create: XOR<OrganizationMemberCreateWithoutInviterInput, OrganizationMemberUncheckedCreateWithoutInviterInput>
+  }
+
+  export type OrganizationMemberCreateManyInviterInputEnvelope = {
+    data: OrganizationMemberCreateManyInviterInput | OrganizationMemberCreateManyInviterInput[]
+    skipDuplicates?: boolean
+  }
+
   export type OrganizationUpsertWithoutUsersInput = {
     update: XOR<OrganizationUpdateWithoutUsersInput, OrganizationUncheckedUpdateWithoutUsersInput>
     create: XOR<OrganizationCreateWithoutUsersInput, OrganizationUncheckedCreateWithoutUsersInput>
@@ -36358,8 +47059,11 @@ export namespace Prisma {
     assessments?: AssessmentUpdateManyWithoutOrganizationNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutOrganizationNestedInput
     phishingCampaigns?: PhishingCampaignUpdateManyWithoutOrganizationNestedInput
+    phishingTemplates?: PhishingTemplateUpdateManyWithoutOrganizationNestedInput
     agents?: AgentUpdateManyWithoutOrganizationNestedInput
     invoices?: InvoiceUpdateManyWithoutOrganizationNestedInput
+    inviteCodes?: InviteCodeUpdateManyWithoutOrganizationNestedInput
+    members?: OrganizationMemberUpdateManyWithoutOrganizationNestedInput
   }
 
   export type OrganizationUncheckedUpdateWithoutUsersInput = {
@@ -36386,8 +47090,11 @@ export namespace Prisma {
     assessments?: AssessmentUncheckedUpdateManyWithoutOrganizationNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutOrganizationNestedInput
     phishingCampaigns?: PhishingCampaignUncheckedUpdateManyWithoutOrganizationNestedInput
+    phishingTemplates?: PhishingTemplateUncheckedUpdateManyWithoutOrganizationNestedInput
     agents?: AgentUncheckedUpdateManyWithoutOrganizationNestedInput
     invoices?: InvoiceUncheckedUpdateManyWithoutOrganizationNestedInput
+    inviteCodes?: InviteCodeUncheckedUpdateManyWithoutOrganizationNestedInput
+    members?: OrganizationMemberUncheckedUpdateManyWithoutOrganizationNestedInput
   }
 
   export type AssessmentUpsertWithWhereUniqueWithoutUserInput = {
@@ -36455,15 +47162,119 @@ export namespace Prisma {
     firstName?: StringNullableFilter<"PhishingTarget"> | string | null
     lastName?: StringNullableFilter<"PhishingTarget"> | string | null
     department?: StringNullableFilter<"PhishingTarget"> | string | null
-    trackingId?: StringFilter<"PhishingTarget"> | string
-    status?: EnumTargetStatusFilter<"PhishingTarget"> | $Enums.TargetStatus
+    jobTitle?: StringNullableFilter<"PhishingTarget"> | string | null
+    emailSent?: BoolFilter<"PhishingTarget"> | boolean
+    emailDelivered?: BoolFilter<"PhishingTarget"> | boolean
+    emailOpened?: BoolFilter<"PhishingTarget"> | boolean
+    linkClicked?: BoolFilter<"PhishingTarget"> | boolean
+    credentialsEntered?: BoolFilter<"PhishingTarget"> | boolean
+    reportedPhishing?: BoolFilter<"PhishingTarget"> | boolean
+    emailBounced?: BoolFilter<"PhishingTarget"> | boolean
+    sentAt?: DateTimeNullableFilter<"PhishingTarget"> | Date | string | null
     deliveredAt?: DateTimeNullableFilter<"PhishingTarget"> | Date | string | null
     openedAt?: DateTimeNullableFilter<"PhishingTarget"> | Date | string | null
     clickedAt?: DateTimeNullableFilter<"PhishingTarget"> | Date | string | null
+    credentialsAt?: DateTimeNullableFilter<"PhishingTarget"> | Date | string | null
     reportedAt?: DateTimeNullableFilter<"PhishingTarget"> | Date | string | null
+    bouncedAt?: DateTimeNullableFilter<"PhishingTarget"> | Date | string | null
+    userAgent?: StringNullableFilter<"PhishingTarget"> | string | null
+    ipAddress?: StringNullableFilter<"PhishingTarget"> | string | null
+    clickCount?: IntFilter<"PhishingTarget"> | number
+    riskScore?: FloatNullableFilter<"PhishingTarget"> | number | null
     createdAt?: DateTimeFilter<"PhishingTarget"> | Date | string
+    updatedAt?: DateTimeFilter<"PhishingTarget"> | Date | string
     campaignId?: StringFilter<"PhishingTarget"> | string
     userId?: StringNullableFilter<"PhishingTarget"> | string | null
+  }
+
+  export type PhishingCampaignUpsertWithWhereUniqueWithoutCreatorInput = {
+    where: PhishingCampaignWhereUniqueInput
+    update: XOR<PhishingCampaignUpdateWithoutCreatorInput, PhishingCampaignUncheckedUpdateWithoutCreatorInput>
+    create: XOR<PhishingCampaignCreateWithoutCreatorInput, PhishingCampaignUncheckedCreateWithoutCreatorInput>
+  }
+
+  export type PhishingCampaignUpdateWithWhereUniqueWithoutCreatorInput = {
+    where: PhishingCampaignWhereUniqueInput
+    data: XOR<PhishingCampaignUpdateWithoutCreatorInput, PhishingCampaignUncheckedUpdateWithoutCreatorInput>
+  }
+
+  export type PhishingCampaignUpdateManyWithWhereWithoutCreatorInput = {
+    where: PhishingCampaignScalarWhereInput
+    data: XOR<PhishingCampaignUpdateManyMutationInput, PhishingCampaignUncheckedUpdateManyWithoutCreatorInput>
+  }
+
+  export type PhishingCampaignScalarWhereInput = {
+    AND?: PhishingCampaignScalarWhereInput | PhishingCampaignScalarWhereInput[]
+    OR?: PhishingCampaignScalarWhereInput[]
+    NOT?: PhishingCampaignScalarWhereInput | PhishingCampaignScalarWhereInput[]
+    id?: StringFilter<"PhishingCampaign"> | string
+    name?: StringFilter<"PhishingCampaign"> | string
+    description?: StringNullableFilter<"PhishingCampaign"> | string | null
+    templateId?: StringFilter<"PhishingCampaign"> | string
+    template?: StringFilter<"PhishingCampaign"> | string
+    subject?: StringFilter<"PhishingCampaign"> | string
+    senderName?: StringFilter<"PhishingCampaign"> | string
+    senderEmail?: StringFilter<"PhishingCampaign"> | string
+    landingPageUrl?: StringNullableFilter<"PhishingCampaign"> | string | null
+    status?: EnumCampaignStatusFilter<"PhishingCampaign"> | $Enums.CampaignStatus
+    scheduledAt?: DateTimeNullableFilter<"PhishingCampaign"> | Date | string | null
+    launchedAt?: DateTimeNullableFilter<"PhishingCampaign"> | Date | string | null
+    completedAt?: DateTimeNullableFilter<"PhishingCampaign"> | Date | string | null
+    pausedAt?: DateTimeNullableFilter<"PhishingCampaign"> | Date | string | null
+    targetCount?: IntFilter<"PhishingCampaign"> | number
+    emailsSent?: IntFilter<"PhishingCampaign"> | number
+    emailsDelivered?: IntFilter<"PhishingCampaign"> | number
+    emailsOpened?: IntFilter<"PhishingCampaign"> | number
+    linksClicked?: IntFilter<"PhishingCampaign"> | number
+    credentialsEntered?: IntFilter<"PhishingCampaign"> | number
+    phishingReported?: IntFilter<"PhishingCampaign"> | number
+    emailsBounced?: IntFilter<"PhishingCampaign"> | number
+    createdBy?: StringFilter<"PhishingCampaign"> | string
+    organizationId?: StringFilter<"PhishingCampaign"> | string
+    createdAt?: DateTimeFilter<"PhishingCampaign"> | Date | string
+    updatedAt?: DateTimeFilter<"PhishingCampaign"> | Date | string
+  }
+
+  export type PhishingTemplateUpsertWithWhereUniqueWithoutCreatorInput = {
+    where: PhishingTemplateWhereUniqueInput
+    update: XOR<PhishingTemplateUpdateWithoutCreatorInput, PhishingTemplateUncheckedUpdateWithoutCreatorInput>
+    create: XOR<PhishingTemplateCreateWithoutCreatorInput, PhishingTemplateUncheckedCreateWithoutCreatorInput>
+  }
+
+  export type PhishingTemplateUpdateWithWhereUniqueWithoutCreatorInput = {
+    where: PhishingTemplateWhereUniqueInput
+    data: XOR<PhishingTemplateUpdateWithoutCreatorInput, PhishingTemplateUncheckedUpdateWithoutCreatorInput>
+  }
+
+  export type PhishingTemplateUpdateManyWithWhereWithoutCreatorInput = {
+    where: PhishingTemplateScalarWhereInput
+    data: XOR<PhishingTemplateUpdateManyMutationInput, PhishingTemplateUncheckedUpdateManyWithoutCreatorInput>
+  }
+
+  export type PhishingTemplateScalarWhereInput = {
+    AND?: PhishingTemplateScalarWhereInput | PhishingTemplateScalarWhereInput[]
+    OR?: PhishingTemplateScalarWhereInput[]
+    NOT?: PhishingTemplateScalarWhereInput | PhishingTemplateScalarWhereInput[]
+    id?: StringFilter<"PhishingTemplate"> | string
+    name?: StringFilter<"PhishingTemplate"> | string
+    description?: StringFilter<"PhishingTemplate"> | string
+    category?: EnumTemplateCategoryFilter<"PhishingTemplate"> | $Enums.TemplateCategory
+    riskLevel?: EnumRiskLevelFilter<"PhishingTemplate"> | $Enums.RiskLevel
+    defaultSubject?: StringFilter<"PhishingTemplate"> | string
+    defaultSenderName?: StringFilter<"PhishingTemplate"> | string
+    emailBodyHtml?: StringFilter<"PhishingTemplate"> | string
+    emailBodyText?: StringFilter<"PhishingTemplate"> | string
+    landingPageHtml?: StringNullableFilter<"PhishingTemplate"> | string | null
+    captureCredentials?: BoolFilter<"PhishingTemplate"> | boolean
+    isActive?: BoolFilter<"PhishingTemplate"> | boolean
+    previewContent?: StringFilter<"PhishingTemplate"> | string
+    tags?: StringNullableListFilter<"PhishingTemplate">
+    usageCount?: IntFilter<"PhishingTemplate"> | number
+    successRate?: FloatNullableFilter<"PhishingTemplate"> | number | null
+    createdBy?: StringNullableFilter<"PhishingTemplate"> | string | null
+    organizationId?: StringNullableFilter<"PhishingTemplate"> | string | null
+    createdAt?: DateTimeFilter<"PhishingTemplate"> | Date | string
+    updatedAt?: DateTimeFilter<"PhishingTemplate"> | Date | string
   }
 
   export type TelemetryEventUpsertWithWhereUniqueWithoutUserInput = {
@@ -36555,6 +47366,111 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"RefreshToken"> | Date | string
   }
 
+  export type PasswordResetUpsertWithWhereUniqueWithoutUserInput = {
+    where: PasswordResetWhereUniqueInput
+    update: XOR<PasswordResetUpdateWithoutUserInput, PasswordResetUncheckedUpdateWithoutUserInput>
+    create: XOR<PasswordResetCreateWithoutUserInput, PasswordResetUncheckedCreateWithoutUserInput>
+  }
+
+  export type PasswordResetUpdateWithWhereUniqueWithoutUserInput = {
+    where: PasswordResetWhereUniqueInput
+    data: XOR<PasswordResetUpdateWithoutUserInput, PasswordResetUncheckedUpdateWithoutUserInput>
+  }
+
+  export type PasswordResetUpdateManyWithWhereWithoutUserInput = {
+    where: PasswordResetScalarWhereInput
+    data: XOR<PasswordResetUpdateManyMutationInput, PasswordResetUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type PasswordResetScalarWhereInput = {
+    AND?: PasswordResetScalarWhereInput | PasswordResetScalarWhereInput[]
+    OR?: PasswordResetScalarWhereInput[]
+    NOT?: PasswordResetScalarWhereInput | PasswordResetScalarWhereInput[]
+    id?: StringFilter<"PasswordReset"> | string
+    token?: StringFilter<"PasswordReset"> | string
+    userId?: StringFilter<"PasswordReset"> | string
+    expiresAt?: DateTimeFilter<"PasswordReset"> | Date | string
+    used?: BoolFilter<"PasswordReset"> | boolean
+    createdAt?: DateTimeFilter<"PasswordReset"> | Date | string
+  }
+
+  export type InviteCodeUpsertWithWhereUniqueWithoutCreatorInput = {
+    where: InviteCodeWhereUniqueInput
+    update: XOR<InviteCodeUpdateWithoutCreatorInput, InviteCodeUncheckedUpdateWithoutCreatorInput>
+    create: XOR<InviteCodeCreateWithoutCreatorInput, InviteCodeUncheckedCreateWithoutCreatorInput>
+  }
+
+  export type InviteCodeUpdateWithWhereUniqueWithoutCreatorInput = {
+    where: InviteCodeWhereUniqueInput
+    data: XOR<InviteCodeUpdateWithoutCreatorInput, InviteCodeUncheckedUpdateWithoutCreatorInput>
+  }
+
+  export type InviteCodeUpdateManyWithWhereWithoutCreatorInput = {
+    where: InviteCodeScalarWhereInput
+    data: XOR<InviteCodeUpdateManyMutationInput, InviteCodeUncheckedUpdateManyWithoutCreatorInput>
+  }
+
+  export type InviteCodeScalarWhereInput = {
+    AND?: InviteCodeScalarWhereInput | InviteCodeScalarWhereInput[]
+    OR?: InviteCodeScalarWhereInput[]
+    NOT?: InviteCodeScalarWhereInput | InviteCodeScalarWhereInput[]
+    id?: StringFilter<"InviteCode"> | string
+    code?: StringFilter<"InviteCode"> | string
+    organizationId?: StringFilter<"InviteCode"> | string
+    createdBy?: StringFilter<"InviteCode"> | string
+    expiresAt?: DateTimeFilter<"InviteCode"> | Date | string
+    usageLimit?: IntFilter<"InviteCode"> | number
+    usedCount?: IntFilter<"InviteCode"> | number
+    isActive?: BoolFilter<"InviteCode"> | boolean
+    createdAt?: DateTimeFilter<"InviteCode"> | Date | string
+  }
+
+  export type OrganizationMemberUpsertWithWhereUniqueWithoutUserInput = {
+    where: OrganizationMemberWhereUniqueInput
+    update: XOR<OrganizationMemberUpdateWithoutUserInput, OrganizationMemberUncheckedUpdateWithoutUserInput>
+    create: XOR<OrganizationMemberCreateWithoutUserInput, OrganizationMemberUncheckedCreateWithoutUserInput>
+  }
+
+  export type OrganizationMemberUpdateWithWhereUniqueWithoutUserInput = {
+    where: OrganizationMemberWhereUniqueInput
+    data: XOR<OrganizationMemberUpdateWithoutUserInput, OrganizationMemberUncheckedUpdateWithoutUserInput>
+  }
+
+  export type OrganizationMemberUpdateManyWithWhereWithoutUserInput = {
+    where: OrganizationMemberScalarWhereInput
+    data: XOR<OrganizationMemberUpdateManyMutationInput, OrganizationMemberUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type OrganizationMemberScalarWhereInput = {
+    AND?: OrganizationMemberScalarWhereInput | OrganizationMemberScalarWhereInput[]
+    OR?: OrganizationMemberScalarWhereInput[]
+    NOT?: OrganizationMemberScalarWhereInput | OrganizationMemberScalarWhereInput[]
+    id?: StringFilter<"OrganizationMember"> | string
+    userId?: StringFilter<"OrganizationMember"> | string
+    organizationId?: StringFilter<"OrganizationMember"> | string
+    role?: EnumUserRoleFilter<"OrganizationMember"> | $Enums.UserRole
+    status?: EnumMemberStatusFilter<"OrganizationMember"> | $Enums.MemberStatus
+    joinedAt?: DateTimeFilter<"OrganizationMember"> | Date | string
+    invitedBy?: StringNullableFilter<"OrganizationMember"> | string | null
+    inviteCode?: StringNullableFilter<"OrganizationMember"> | string | null
+  }
+
+  export type OrganizationMemberUpsertWithWhereUniqueWithoutInviterInput = {
+    where: OrganizationMemberWhereUniqueInput
+    update: XOR<OrganizationMemberUpdateWithoutInviterInput, OrganizationMemberUncheckedUpdateWithoutInviterInput>
+    create: XOR<OrganizationMemberCreateWithoutInviterInput, OrganizationMemberUncheckedCreateWithoutInviterInput>
+  }
+
+  export type OrganizationMemberUpdateWithWhereUniqueWithoutInviterInput = {
+    where: OrganizationMemberWhereUniqueInput
+    data: XOR<OrganizationMemberUpdateWithoutInviterInput, OrganizationMemberUncheckedUpdateWithoutInviterInput>
+  }
+
+  export type OrganizationMemberUpdateManyWithWhereWithoutInviterInput = {
+    where: OrganizationMemberScalarWhereInput
+    data: XOR<OrganizationMemberUpdateManyMutationInput, OrganizationMemberUncheckedUpdateManyWithoutInviterInput>
+  }
+
   export type UserCreateWithoutRefreshTokensInput = {
     id?: string
     email: string
@@ -36571,8 +47487,14 @@ export namespace Prisma {
     organization?: OrganizationCreateNestedOneWithoutUsersInput
     assessments?: AssessmentCreateNestedManyWithoutUserInput
     phishingTargets?: PhishingTargetCreateNestedManyWithoutUserInput
+    phishingCampaigns?: PhishingCampaignCreateNestedManyWithoutCreatorInput
+    phishingTemplates?: PhishingTemplateCreateNestedManyWithoutCreatorInput
     telemetryEvents?: TelemetryEventCreateNestedManyWithoutUserInput
     auditLogs?: AuditLogCreateNestedManyWithoutUserInput
+    passwordResets?: PasswordResetCreateNestedManyWithoutUserInput
+    createdInviteCodes?: InviteCodeCreateNestedManyWithoutCreatorInput
+    organizationMemberships?: OrganizationMemberCreateNestedManyWithoutUserInput
+    sentInvites?: OrganizationMemberCreateNestedManyWithoutInviterInput
   }
 
   export type UserUncheckedCreateWithoutRefreshTokensInput = {
@@ -36591,8 +47513,14 @@ export namespace Prisma {
     organizationId?: string | null
     assessments?: AssessmentUncheckedCreateNestedManyWithoutUserInput
     phishingTargets?: PhishingTargetUncheckedCreateNestedManyWithoutUserInput
+    phishingCampaigns?: PhishingCampaignUncheckedCreateNestedManyWithoutCreatorInput
+    phishingTemplates?: PhishingTemplateUncheckedCreateNestedManyWithoutCreatorInput
     telemetryEvents?: TelemetryEventUncheckedCreateNestedManyWithoutUserInput
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
+    passwordResets?: PasswordResetUncheckedCreateNestedManyWithoutUserInput
+    createdInviteCodes?: InviteCodeUncheckedCreateNestedManyWithoutCreatorInput
+    organizationMemberships?: OrganizationMemberUncheckedCreateNestedManyWithoutUserInput
+    sentInvites?: OrganizationMemberUncheckedCreateNestedManyWithoutInviterInput
   }
 
   export type UserCreateOrConnectWithoutRefreshTokensInput = {
@@ -36627,8 +47555,14 @@ export namespace Prisma {
     organization?: OrganizationUpdateOneWithoutUsersNestedInput
     assessments?: AssessmentUpdateManyWithoutUserNestedInput
     phishingTargets?: PhishingTargetUpdateManyWithoutUserNestedInput
+    phishingCampaigns?: PhishingCampaignUpdateManyWithoutCreatorNestedInput
+    phishingTemplates?: PhishingTemplateUpdateManyWithoutCreatorNestedInput
     telemetryEvents?: TelemetryEventUpdateManyWithoutUserNestedInput
     auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
+    passwordResets?: PasswordResetUpdateManyWithoutUserNestedInput
+    createdInviteCodes?: InviteCodeUpdateManyWithoutCreatorNestedInput
+    organizationMemberships?: OrganizationMemberUpdateManyWithoutUserNestedInput
+    sentInvites?: OrganizationMemberUpdateManyWithoutInviterNestedInput
   }
 
   export type UserUncheckedUpdateWithoutRefreshTokensInput = {
@@ -36647,8 +47581,134 @@ export namespace Prisma {
     organizationId?: NullableStringFieldUpdateOperationsInput | string | null
     assessments?: AssessmentUncheckedUpdateManyWithoutUserNestedInput
     phishingTargets?: PhishingTargetUncheckedUpdateManyWithoutUserNestedInput
+    phishingCampaigns?: PhishingCampaignUncheckedUpdateManyWithoutCreatorNestedInput
+    phishingTemplates?: PhishingTemplateUncheckedUpdateManyWithoutCreatorNestedInput
     telemetryEvents?: TelemetryEventUncheckedUpdateManyWithoutUserNestedInput
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+    passwordResets?: PasswordResetUncheckedUpdateManyWithoutUserNestedInput
+    createdInviteCodes?: InviteCodeUncheckedUpdateManyWithoutCreatorNestedInput
+    organizationMemberships?: OrganizationMemberUncheckedUpdateManyWithoutUserNestedInput
+    sentInvites?: OrganizationMemberUncheckedUpdateManyWithoutInviterNestedInput
+  }
+
+  export type UserCreateWithoutPasswordResetsInput = {
+    id?: string
+    email: string
+    password: string
+    firstName: string
+    lastName: string
+    phone?: string | null
+    avatar?: string | null
+    emailVerified?: boolean
+    isActive?: boolean
+    role?: $Enums.UserRole
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    organization?: OrganizationCreateNestedOneWithoutUsersInput
+    assessments?: AssessmentCreateNestedManyWithoutUserInput
+    phishingTargets?: PhishingTargetCreateNestedManyWithoutUserInput
+    phishingCampaigns?: PhishingCampaignCreateNestedManyWithoutCreatorInput
+    phishingTemplates?: PhishingTemplateCreateNestedManyWithoutCreatorInput
+    telemetryEvents?: TelemetryEventCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUserInput
+    createdInviteCodes?: InviteCodeCreateNestedManyWithoutCreatorInput
+    organizationMemberships?: OrganizationMemberCreateNestedManyWithoutUserInput
+    sentInvites?: OrganizationMemberCreateNestedManyWithoutInviterInput
+  }
+
+  export type UserUncheckedCreateWithoutPasswordResetsInput = {
+    id?: string
+    email: string
+    password: string
+    firstName: string
+    lastName: string
+    phone?: string | null
+    avatar?: string | null
+    emailVerified?: boolean
+    isActive?: boolean
+    role?: $Enums.UserRole
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    organizationId?: string | null
+    assessments?: AssessmentUncheckedCreateNestedManyWithoutUserInput
+    phishingTargets?: PhishingTargetUncheckedCreateNestedManyWithoutUserInput
+    phishingCampaigns?: PhishingCampaignUncheckedCreateNestedManyWithoutCreatorInput
+    phishingTemplates?: PhishingTemplateUncheckedCreateNestedManyWithoutCreatorInput
+    telemetryEvents?: TelemetryEventUncheckedCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+    createdInviteCodes?: InviteCodeUncheckedCreateNestedManyWithoutCreatorInput
+    organizationMemberships?: OrganizationMemberUncheckedCreateNestedManyWithoutUserInput
+    sentInvites?: OrganizationMemberUncheckedCreateNestedManyWithoutInviterInput
+  }
+
+  export type UserCreateOrConnectWithoutPasswordResetsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutPasswordResetsInput, UserUncheckedCreateWithoutPasswordResetsInput>
+  }
+
+  export type UserUpsertWithoutPasswordResetsInput = {
+    update: XOR<UserUpdateWithoutPasswordResetsInput, UserUncheckedUpdateWithoutPasswordResetsInput>
+    create: XOR<UserCreateWithoutPasswordResetsInput, UserUncheckedCreateWithoutPasswordResetsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutPasswordResetsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutPasswordResetsInput, UserUncheckedUpdateWithoutPasswordResetsInput>
+  }
+
+  export type UserUpdateWithoutPasswordResetsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organization?: OrganizationUpdateOneWithoutUsersNestedInput
+    assessments?: AssessmentUpdateManyWithoutUserNestedInput
+    phishingTargets?: PhishingTargetUpdateManyWithoutUserNestedInput
+    phishingCampaigns?: PhishingCampaignUpdateManyWithoutCreatorNestedInput
+    phishingTemplates?: PhishingTemplateUpdateManyWithoutCreatorNestedInput
+    telemetryEvents?: TelemetryEventUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUserNestedInput
+    createdInviteCodes?: InviteCodeUpdateManyWithoutCreatorNestedInput
+    organizationMemberships?: OrganizationMemberUpdateManyWithoutUserNestedInput
+    sentInvites?: OrganizationMemberUpdateManyWithoutInviterNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutPasswordResetsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organizationId?: NullableStringFieldUpdateOperationsInput | string | null
+    assessments?: AssessmentUncheckedUpdateManyWithoutUserNestedInput
+    phishingTargets?: PhishingTargetUncheckedUpdateManyWithoutUserNestedInput
+    phishingCampaigns?: PhishingCampaignUncheckedUpdateManyWithoutCreatorNestedInput
+    phishingTemplates?: PhishingTemplateUncheckedUpdateManyWithoutCreatorNestedInput
+    telemetryEvents?: TelemetryEventUncheckedUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+    createdInviteCodes?: InviteCodeUncheckedUpdateManyWithoutCreatorNestedInput
+    organizationMemberships?: OrganizationMemberUncheckedUpdateManyWithoutUserNestedInput
+    sentInvites?: OrganizationMemberUncheckedUpdateManyWithoutInviterNestedInput
   }
 
   export type UserCreateWithoutOrganizationInput = {
@@ -36666,9 +47726,15 @@ export namespace Prisma {
     updatedAt?: Date | string
     assessments?: AssessmentCreateNestedManyWithoutUserInput
     phishingTargets?: PhishingTargetCreateNestedManyWithoutUserInput
+    phishingCampaigns?: PhishingCampaignCreateNestedManyWithoutCreatorInput
+    phishingTemplates?: PhishingTemplateCreateNestedManyWithoutCreatorInput
     telemetryEvents?: TelemetryEventCreateNestedManyWithoutUserInput
     auditLogs?: AuditLogCreateNestedManyWithoutUserInput
     refreshTokens?: RefreshTokenCreateNestedManyWithoutUserInput
+    passwordResets?: PasswordResetCreateNestedManyWithoutUserInput
+    createdInviteCodes?: InviteCodeCreateNestedManyWithoutCreatorInput
+    organizationMemberships?: OrganizationMemberCreateNestedManyWithoutUserInput
+    sentInvites?: OrganizationMemberCreateNestedManyWithoutInviterInput
   }
 
   export type UserUncheckedCreateWithoutOrganizationInput = {
@@ -36686,9 +47752,15 @@ export namespace Prisma {
     updatedAt?: Date | string
     assessments?: AssessmentUncheckedCreateNestedManyWithoutUserInput
     phishingTargets?: PhishingTargetUncheckedCreateNestedManyWithoutUserInput
+    phishingCampaigns?: PhishingCampaignUncheckedCreateNestedManyWithoutCreatorInput
+    phishingTemplates?: PhishingTemplateUncheckedCreateNestedManyWithoutCreatorInput
     telemetryEvents?: TelemetryEventUncheckedCreateNestedManyWithoutUserInput
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
     refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+    passwordResets?: PasswordResetUncheckedCreateNestedManyWithoutUserInput
+    createdInviteCodes?: InviteCodeUncheckedCreateNestedManyWithoutCreatorInput
+    organizationMemberships?: OrganizationMemberUncheckedCreateNestedManyWithoutUserInput
+    sentInvites?: OrganizationMemberUncheckedCreateNestedManyWithoutInviterInput
   }
 
   export type UserCreateOrConnectWithoutOrganizationInput = {
@@ -36720,6 +47792,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutAssessmentsInput
     responses?: AssessmentResponseCreateNestedManyWithoutAssessmentInput
+    result?: AssessmentResultCreateNestedOneWithoutAssessmentInput
   }
 
   export type AssessmentUncheckedCreateWithoutOrganizationInput = {
@@ -36741,6 +47814,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     userId: string
     responses?: AssessmentResponseUncheckedCreateNestedManyWithoutAssessmentInput
+    result?: AssessmentResultUncheckedCreateNestedOneWithoutAssessmentInput
   }
 
   export type AssessmentCreateOrConnectWithoutOrganizationInput = {
@@ -36797,6 +47871,7 @@ export namespace Prisma {
     id?: string
     name: string
     description?: string | null
+    templateId: string
     template: string
     subject: string
     senderName: string
@@ -36804,15 +47879,20 @@ export namespace Prisma {
     landingPageUrl?: string | null
     status?: $Enums.CampaignStatus
     scheduledAt?: Date | string | null
-    startedAt?: Date | string | null
+    launchedAt?: Date | string | null
     completedAt?: Date | string | null
+    pausedAt?: Date | string | null
     targetCount?: number
-    deliveredCount?: number
-    openedCount?: number
-    clickedCount?: number
-    reportedCount?: number
+    emailsSent?: number
+    emailsDelivered?: number
+    emailsOpened?: number
+    linksClicked?: number
+    credentialsEntered?: number
+    phishingReported?: number
+    emailsBounced?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    creator: UserCreateNestedOneWithoutPhishingCampaignsInput
     targets?: PhishingTargetCreateNestedManyWithoutCampaignInput
     events?: PhishingEventCreateNestedManyWithoutCampaignInput
   }
@@ -36821,6 +47901,7 @@ export namespace Prisma {
     id?: string
     name: string
     description?: string | null
+    templateId: string
     template: string
     subject: string
     senderName: string
@@ -36828,13 +47909,18 @@ export namespace Prisma {
     landingPageUrl?: string | null
     status?: $Enums.CampaignStatus
     scheduledAt?: Date | string | null
-    startedAt?: Date | string | null
+    launchedAt?: Date | string | null
     completedAt?: Date | string | null
+    pausedAt?: Date | string | null
     targetCount?: number
-    deliveredCount?: number
-    openedCount?: number
-    clickedCount?: number
-    reportedCount?: number
+    emailsSent?: number
+    emailsDelivered?: number
+    emailsOpened?: number
+    linksClicked?: number
+    credentialsEntered?: number
+    phishingReported?: number
+    emailsBounced?: number
+    createdBy: string
     createdAt?: Date | string
     updatedAt?: Date | string
     targets?: PhishingTargetUncheckedCreateNestedManyWithoutCampaignInput
@@ -36848,6 +47934,60 @@ export namespace Prisma {
 
   export type PhishingCampaignCreateManyOrganizationInputEnvelope = {
     data: PhishingCampaignCreateManyOrganizationInput | PhishingCampaignCreateManyOrganizationInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type PhishingTemplateCreateWithoutOrganizationInput = {
+    id?: string
+    name: string
+    description: string
+    category: $Enums.TemplateCategory
+    riskLevel: $Enums.RiskLevel
+    defaultSubject: string
+    defaultSenderName: string
+    emailBodyHtml: string
+    emailBodyText: string
+    landingPageHtml?: string | null
+    captureCredentials?: boolean
+    isActive?: boolean
+    previewContent: string
+    tags?: PhishingTemplateCreatetagsInput | string[]
+    usageCount?: number
+    successRate?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    creator?: UserCreateNestedOneWithoutPhishingTemplatesInput
+  }
+
+  export type PhishingTemplateUncheckedCreateWithoutOrganizationInput = {
+    id?: string
+    name: string
+    description: string
+    category: $Enums.TemplateCategory
+    riskLevel: $Enums.RiskLevel
+    defaultSubject: string
+    defaultSenderName: string
+    emailBodyHtml: string
+    emailBodyText: string
+    landingPageHtml?: string | null
+    captureCredentials?: boolean
+    isActive?: boolean
+    previewContent: string
+    tags?: PhishingTemplateCreatetagsInput | string[]
+    usageCount?: number
+    successRate?: number | null
+    createdBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PhishingTemplateCreateOrConnectWithoutOrganizationInput = {
+    where: PhishingTemplateWhereUniqueInput
+    create: XOR<PhishingTemplateCreateWithoutOrganizationInput, PhishingTemplateUncheckedCreateWithoutOrganizationInput>
+  }
+
+  export type PhishingTemplateCreateManyOrganizationInputEnvelope = {
+    data: PhishingTemplateCreateManyOrganizationInput | PhishingTemplateCreateManyOrganizationInput[]
     skipDuplicates?: boolean
   }
 
@@ -36940,6 +48080,68 @@ export namespace Prisma {
 
   export type InvoiceCreateManyOrganizationInputEnvelope = {
     data: InvoiceCreateManyOrganizationInput | InvoiceCreateManyOrganizationInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type InviteCodeCreateWithoutOrganizationInput = {
+    id?: string
+    code: string
+    expiresAt: Date | string
+    usageLimit?: number
+    usedCount?: number
+    isActive?: boolean
+    createdAt?: Date | string
+    creator: UserCreateNestedOneWithoutCreatedInviteCodesInput
+  }
+
+  export type InviteCodeUncheckedCreateWithoutOrganizationInput = {
+    id?: string
+    code: string
+    createdBy: string
+    expiresAt: Date | string
+    usageLimit?: number
+    usedCount?: number
+    isActive?: boolean
+    createdAt?: Date | string
+  }
+
+  export type InviteCodeCreateOrConnectWithoutOrganizationInput = {
+    where: InviteCodeWhereUniqueInput
+    create: XOR<InviteCodeCreateWithoutOrganizationInput, InviteCodeUncheckedCreateWithoutOrganizationInput>
+  }
+
+  export type InviteCodeCreateManyOrganizationInputEnvelope = {
+    data: InviteCodeCreateManyOrganizationInput | InviteCodeCreateManyOrganizationInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type OrganizationMemberCreateWithoutOrganizationInput = {
+    id?: string
+    role?: $Enums.UserRole
+    status?: $Enums.MemberStatus
+    joinedAt?: Date | string
+    inviteCode?: string | null
+    user: UserCreateNestedOneWithoutOrganizationMembershipsInput
+    inviter?: UserCreateNestedOneWithoutSentInvitesInput
+  }
+
+  export type OrganizationMemberUncheckedCreateWithoutOrganizationInput = {
+    id?: string
+    userId: string
+    role?: $Enums.UserRole
+    status?: $Enums.MemberStatus
+    joinedAt?: Date | string
+    invitedBy?: string | null
+    inviteCode?: string | null
+  }
+
+  export type OrganizationMemberCreateOrConnectWithoutOrganizationInput = {
+    where: OrganizationMemberWhereUniqueInput
+    create: XOR<OrganizationMemberCreateWithoutOrganizationInput, OrganizationMemberUncheckedCreateWithoutOrganizationInput>
+  }
+
+  export type OrganizationMemberCreateManyOrganizationInputEnvelope = {
+    data: OrganizationMemberCreateManyOrganizationInput | OrganizationMemberCreateManyOrganizationInput[]
     skipDuplicates?: boolean
   }
 
@@ -37044,30 +48246,20 @@ export namespace Prisma {
     data: XOR<PhishingCampaignUpdateManyMutationInput, PhishingCampaignUncheckedUpdateManyWithoutOrganizationInput>
   }
 
-  export type PhishingCampaignScalarWhereInput = {
-    AND?: PhishingCampaignScalarWhereInput | PhishingCampaignScalarWhereInput[]
-    OR?: PhishingCampaignScalarWhereInput[]
-    NOT?: PhishingCampaignScalarWhereInput | PhishingCampaignScalarWhereInput[]
-    id?: StringFilter<"PhishingCampaign"> | string
-    name?: StringFilter<"PhishingCampaign"> | string
-    description?: StringNullableFilter<"PhishingCampaign"> | string | null
-    template?: StringFilter<"PhishingCampaign"> | string
-    subject?: StringFilter<"PhishingCampaign"> | string
-    senderName?: StringFilter<"PhishingCampaign"> | string
-    senderEmail?: StringFilter<"PhishingCampaign"> | string
-    landingPageUrl?: StringNullableFilter<"PhishingCampaign"> | string | null
-    status?: EnumCampaignStatusFilter<"PhishingCampaign"> | $Enums.CampaignStatus
-    scheduledAt?: DateTimeNullableFilter<"PhishingCampaign"> | Date | string | null
-    startedAt?: DateTimeNullableFilter<"PhishingCampaign"> | Date | string | null
-    completedAt?: DateTimeNullableFilter<"PhishingCampaign"> | Date | string | null
-    targetCount?: IntFilter<"PhishingCampaign"> | number
-    deliveredCount?: IntFilter<"PhishingCampaign"> | number
-    openedCount?: IntFilter<"PhishingCampaign"> | number
-    clickedCount?: IntFilter<"PhishingCampaign"> | number
-    reportedCount?: IntFilter<"PhishingCampaign"> | number
-    createdAt?: DateTimeFilter<"PhishingCampaign"> | Date | string
-    updatedAt?: DateTimeFilter<"PhishingCampaign"> | Date | string
-    organizationId?: StringFilter<"PhishingCampaign"> | string
+  export type PhishingTemplateUpsertWithWhereUniqueWithoutOrganizationInput = {
+    where: PhishingTemplateWhereUniqueInput
+    update: XOR<PhishingTemplateUpdateWithoutOrganizationInput, PhishingTemplateUncheckedUpdateWithoutOrganizationInput>
+    create: XOR<PhishingTemplateCreateWithoutOrganizationInput, PhishingTemplateUncheckedCreateWithoutOrganizationInput>
+  }
+
+  export type PhishingTemplateUpdateWithWhereUniqueWithoutOrganizationInput = {
+    where: PhishingTemplateWhereUniqueInput
+    data: XOR<PhishingTemplateUpdateWithoutOrganizationInput, PhishingTemplateUncheckedUpdateWithoutOrganizationInput>
+  }
+
+  export type PhishingTemplateUpdateManyWithWhereWithoutOrganizationInput = {
+    where: PhishingTemplateScalarWhereInput
+    data: XOR<PhishingTemplateUpdateManyMutationInput, PhishingTemplateUncheckedUpdateManyWithoutOrganizationInput>
   }
 
   export type AgentUpsertWithWhereUniqueWithoutOrganizationInput = {
@@ -37142,6 +48334,678 @@ export namespace Prisma {
     subscriptionId?: StringFilter<"Invoice"> | string
   }
 
+  export type InviteCodeUpsertWithWhereUniqueWithoutOrganizationInput = {
+    where: InviteCodeWhereUniqueInput
+    update: XOR<InviteCodeUpdateWithoutOrganizationInput, InviteCodeUncheckedUpdateWithoutOrganizationInput>
+    create: XOR<InviteCodeCreateWithoutOrganizationInput, InviteCodeUncheckedCreateWithoutOrganizationInput>
+  }
+
+  export type InviteCodeUpdateWithWhereUniqueWithoutOrganizationInput = {
+    where: InviteCodeWhereUniqueInput
+    data: XOR<InviteCodeUpdateWithoutOrganizationInput, InviteCodeUncheckedUpdateWithoutOrganizationInput>
+  }
+
+  export type InviteCodeUpdateManyWithWhereWithoutOrganizationInput = {
+    where: InviteCodeScalarWhereInput
+    data: XOR<InviteCodeUpdateManyMutationInput, InviteCodeUncheckedUpdateManyWithoutOrganizationInput>
+  }
+
+  export type OrganizationMemberUpsertWithWhereUniqueWithoutOrganizationInput = {
+    where: OrganizationMemberWhereUniqueInput
+    update: XOR<OrganizationMemberUpdateWithoutOrganizationInput, OrganizationMemberUncheckedUpdateWithoutOrganizationInput>
+    create: XOR<OrganizationMemberCreateWithoutOrganizationInput, OrganizationMemberUncheckedCreateWithoutOrganizationInput>
+  }
+
+  export type OrganizationMemberUpdateWithWhereUniqueWithoutOrganizationInput = {
+    where: OrganizationMemberWhereUniqueInput
+    data: XOR<OrganizationMemberUpdateWithoutOrganizationInput, OrganizationMemberUncheckedUpdateWithoutOrganizationInput>
+  }
+
+  export type OrganizationMemberUpdateManyWithWhereWithoutOrganizationInput = {
+    where: OrganizationMemberScalarWhereInput
+    data: XOR<OrganizationMemberUpdateManyMutationInput, OrganizationMemberUncheckedUpdateManyWithoutOrganizationInput>
+  }
+
+  export type OrganizationCreateWithoutInviteCodesInput = {
+    id?: string
+    name: string
+    email?: string | null
+    phone?: string | null
+    website?: string | null
+    description?: string | null
+    logo?: string | null
+    address?: string | null
+    city?: string | null
+    region?: string | null
+    country?: string
+    gpsAddress?: string | null
+    size: $Enums.OrganizationSize
+    sector: $Enums.Sector
+    isPublic?: boolean
+    csiScore?: number | null
+    riskTier?: $Enums.RiskTier | null
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    users?: UserCreateNestedManyWithoutOrganizationInput
+    assessments?: AssessmentCreateNestedManyWithoutOrganizationInput
+    subscriptions?: SubscriptionCreateNestedManyWithoutOrganizationInput
+    phishingCampaigns?: PhishingCampaignCreateNestedManyWithoutOrganizationInput
+    phishingTemplates?: PhishingTemplateCreateNestedManyWithoutOrganizationInput
+    agents?: AgentCreateNestedManyWithoutOrganizationInput
+    invoices?: InvoiceCreateNestedManyWithoutOrganizationInput
+    members?: OrganizationMemberCreateNestedManyWithoutOrganizationInput
+  }
+
+  export type OrganizationUncheckedCreateWithoutInviteCodesInput = {
+    id?: string
+    name: string
+    email?: string | null
+    phone?: string | null
+    website?: string | null
+    description?: string | null
+    logo?: string | null
+    address?: string | null
+    city?: string | null
+    region?: string | null
+    country?: string
+    gpsAddress?: string | null
+    size: $Enums.OrganizationSize
+    sector: $Enums.Sector
+    isPublic?: boolean
+    csiScore?: number | null
+    riskTier?: $Enums.RiskTier | null
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    users?: UserUncheckedCreateNestedManyWithoutOrganizationInput
+    assessments?: AssessmentUncheckedCreateNestedManyWithoutOrganizationInput
+    subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutOrganizationInput
+    phishingCampaigns?: PhishingCampaignUncheckedCreateNestedManyWithoutOrganizationInput
+    phishingTemplates?: PhishingTemplateUncheckedCreateNestedManyWithoutOrganizationInput
+    agents?: AgentUncheckedCreateNestedManyWithoutOrganizationInput
+    invoices?: InvoiceUncheckedCreateNestedManyWithoutOrganizationInput
+    members?: OrganizationMemberUncheckedCreateNestedManyWithoutOrganizationInput
+  }
+
+  export type OrganizationCreateOrConnectWithoutInviteCodesInput = {
+    where: OrganizationWhereUniqueInput
+    create: XOR<OrganizationCreateWithoutInviteCodesInput, OrganizationUncheckedCreateWithoutInviteCodesInput>
+  }
+
+  export type UserCreateWithoutCreatedInviteCodesInput = {
+    id?: string
+    email: string
+    password: string
+    firstName: string
+    lastName: string
+    phone?: string | null
+    avatar?: string | null
+    emailVerified?: boolean
+    isActive?: boolean
+    role?: $Enums.UserRole
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    organization?: OrganizationCreateNestedOneWithoutUsersInput
+    assessments?: AssessmentCreateNestedManyWithoutUserInput
+    phishingTargets?: PhishingTargetCreateNestedManyWithoutUserInput
+    phishingCampaigns?: PhishingCampaignCreateNestedManyWithoutCreatorInput
+    phishingTemplates?: PhishingTemplateCreateNestedManyWithoutCreatorInput
+    telemetryEvents?: TelemetryEventCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUserInput
+    passwordResets?: PasswordResetCreateNestedManyWithoutUserInput
+    organizationMemberships?: OrganizationMemberCreateNestedManyWithoutUserInput
+    sentInvites?: OrganizationMemberCreateNestedManyWithoutInviterInput
+  }
+
+  export type UserUncheckedCreateWithoutCreatedInviteCodesInput = {
+    id?: string
+    email: string
+    password: string
+    firstName: string
+    lastName: string
+    phone?: string | null
+    avatar?: string | null
+    emailVerified?: boolean
+    isActive?: boolean
+    role?: $Enums.UserRole
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    organizationId?: string | null
+    assessments?: AssessmentUncheckedCreateNestedManyWithoutUserInput
+    phishingTargets?: PhishingTargetUncheckedCreateNestedManyWithoutUserInput
+    phishingCampaigns?: PhishingCampaignUncheckedCreateNestedManyWithoutCreatorInput
+    phishingTemplates?: PhishingTemplateUncheckedCreateNestedManyWithoutCreatorInput
+    telemetryEvents?: TelemetryEventUncheckedCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+    passwordResets?: PasswordResetUncheckedCreateNestedManyWithoutUserInput
+    organizationMemberships?: OrganizationMemberUncheckedCreateNestedManyWithoutUserInput
+    sentInvites?: OrganizationMemberUncheckedCreateNestedManyWithoutInviterInput
+  }
+
+  export type UserCreateOrConnectWithoutCreatedInviteCodesInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutCreatedInviteCodesInput, UserUncheckedCreateWithoutCreatedInviteCodesInput>
+  }
+
+  export type OrganizationUpsertWithoutInviteCodesInput = {
+    update: XOR<OrganizationUpdateWithoutInviteCodesInput, OrganizationUncheckedUpdateWithoutInviteCodesInput>
+    create: XOR<OrganizationCreateWithoutInviteCodesInput, OrganizationUncheckedCreateWithoutInviteCodesInput>
+    where?: OrganizationWhereInput
+  }
+
+  export type OrganizationUpdateToOneWithWhereWithoutInviteCodesInput = {
+    where?: OrganizationWhereInput
+    data: XOR<OrganizationUpdateWithoutInviteCodesInput, OrganizationUncheckedUpdateWithoutInviteCodesInput>
+  }
+
+  export type OrganizationUpdateWithoutInviteCodesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    website?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    logo?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: StringFieldUpdateOperationsInput | string
+    gpsAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    size?: EnumOrganizationSizeFieldUpdateOperationsInput | $Enums.OrganizationSize
+    sector?: EnumSectorFieldUpdateOperationsInput | $Enums.Sector
+    isPublic?: BoolFieldUpdateOperationsInput | boolean
+    csiScore?: NullableFloatFieldUpdateOperationsInput | number | null
+    riskTier?: NullableEnumRiskTierFieldUpdateOperationsInput | $Enums.RiskTier | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    users?: UserUpdateManyWithoutOrganizationNestedInput
+    assessments?: AssessmentUpdateManyWithoutOrganizationNestedInput
+    subscriptions?: SubscriptionUpdateManyWithoutOrganizationNestedInput
+    phishingCampaigns?: PhishingCampaignUpdateManyWithoutOrganizationNestedInput
+    phishingTemplates?: PhishingTemplateUpdateManyWithoutOrganizationNestedInput
+    agents?: AgentUpdateManyWithoutOrganizationNestedInput
+    invoices?: InvoiceUpdateManyWithoutOrganizationNestedInput
+    members?: OrganizationMemberUpdateManyWithoutOrganizationNestedInput
+  }
+
+  export type OrganizationUncheckedUpdateWithoutInviteCodesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    website?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    logo?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: StringFieldUpdateOperationsInput | string
+    gpsAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    size?: EnumOrganizationSizeFieldUpdateOperationsInput | $Enums.OrganizationSize
+    sector?: EnumSectorFieldUpdateOperationsInput | $Enums.Sector
+    isPublic?: BoolFieldUpdateOperationsInput | boolean
+    csiScore?: NullableFloatFieldUpdateOperationsInput | number | null
+    riskTier?: NullableEnumRiskTierFieldUpdateOperationsInput | $Enums.RiskTier | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    users?: UserUncheckedUpdateManyWithoutOrganizationNestedInput
+    assessments?: AssessmentUncheckedUpdateManyWithoutOrganizationNestedInput
+    subscriptions?: SubscriptionUncheckedUpdateManyWithoutOrganizationNestedInput
+    phishingCampaigns?: PhishingCampaignUncheckedUpdateManyWithoutOrganizationNestedInput
+    phishingTemplates?: PhishingTemplateUncheckedUpdateManyWithoutOrganizationNestedInput
+    agents?: AgentUncheckedUpdateManyWithoutOrganizationNestedInput
+    invoices?: InvoiceUncheckedUpdateManyWithoutOrganizationNestedInput
+    members?: OrganizationMemberUncheckedUpdateManyWithoutOrganizationNestedInput
+  }
+
+  export type UserUpsertWithoutCreatedInviteCodesInput = {
+    update: XOR<UserUpdateWithoutCreatedInviteCodesInput, UserUncheckedUpdateWithoutCreatedInviteCodesInput>
+    create: XOR<UserCreateWithoutCreatedInviteCodesInput, UserUncheckedCreateWithoutCreatedInviteCodesInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutCreatedInviteCodesInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutCreatedInviteCodesInput, UserUncheckedUpdateWithoutCreatedInviteCodesInput>
+  }
+
+  export type UserUpdateWithoutCreatedInviteCodesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organization?: OrganizationUpdateOneWithoutUsersNestedInput
+    assessments?: AssessmentUpdateManyWithoutUserNestedInput
+    phishingTargets?: PhishingTargetUpdateManyWithoutUserNestedInput
+    phishingCampaigns?: PhishingCampaignUpdateManyWithoutCreatorNestedInput
+    phishingTemplates?: PhishingTemplateUpdateManyWithoutCreatorNestedInput
+    telemetryEvents?: TelemetryEventUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUserNestedInput
+    passwordResets?: PasswordResetUpdateManyWithoutUserNestedInput
+    organizationMemberships?: OrganizationMemberUpdateManyWithoutUserNestedInput
+    sentInvites?: OrganizationMemberUpdateManyWithoutInviterNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutCreatedInviteCodesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organizationId?: NullableStringFieldUpdateOperationsInput | string | null
+    assessments?: AssessmentUncheckedUpdateManyWithoutUserNestedInput
+    phishingTargets?: PhishingTargetUncheckedUpdateManyWithoutUserNestedInput
+    phishingCampaigns?: PhishingCampaignUncheckedUpdateManyWithoutCreatorNestedInput
+    phishingTemplates?: PhishingTemplateUncheckedUpdateManyWithoutCreatorNestedInput
+    telemetryEvents?: TelemetryEventUncheckedUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+    passwordResets?: PasswordResetUncheckedUpdateManyWithoutUserNestedInput
+    organizationMemberships?: OrganizationMemberUncheckedUpdateManyWithoutUserNestedInput
+    sentInvites?: OrganizationMemberUncheckedUpdateManyWithoutInviterNestedInput
+  }
+
+  export type UserCreateWithoutOrganizationMembershipsInput = {
+    id?: string
+    email: string
+    password: string
+    firstName: string
+    lastName: string
+    phone?: string | null
+    avatar?: string | null
+    emailVerified?: boolean
+    isActive?: boolean
+    role?: $Enums.UserRole
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    organization?: OrganizationCreateNestedOneWithoutUsersInput
+    assessments?: AssessmentCreateNestedManyWithoutUserInput
+    phishingTargets?: PhishingTargetCreateNestedManyWithoutUserInput
+    phishingCampaigns?: PhishingCampaignCreateNestedManyWithoutCreatorInput
+    phishingTemplates?: PhishingTemplateCreateNestedManyWithoutCreatorInput
+    telemetryEvents?: TelemetryEventCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUserInput
+    passwordResets?: PasswordResetCreateNestedManyWithoutUserInput
+    createdInviteCodes?: InviteCodeCreateNestedManyWithoutCreatorInput
+    sentInvites?: OrganizationMemberCreateNestedManyWithoutInviterInput
+  }
+
+  export type UserUncheckedCreateWithoutOrganizationMembershipsInput = {
+    id?: string
+    email: string
+    password: string
+    firstName: string
+    lastName: string
+    phone?: string | null
+    avatar?: string | null
+    emailVerified?: boolean
+    isActive?: boolean
+    role?: $Enums.UserRole
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    organizationId?: string | null
+    assessments?: AssessmentUncheckedCreateNestedManyWithoutUserInput
+    phishingTargets?: PhishingTargetUncheckedCreateNestedManyWithoutUserInput
+    phishingCampaigns?: PhishingCampaignUncheckedCreateNestedManyWithoutCreatorInput
+    phishingTemplates?: PhishingTemplateUncheckedCreateNestedManyWithoutCreatorInput
+    telemetryEvents?: TelemetryEventUncheckedCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+    passwordResets?: PasswordResetUncheckedCreateNestedManyWithoutUserInput
+    createdInviteCodes?: InviteCodeUncheckedCreateNestedManyWithoutCreatorInput
+    sentInvites?: OrganizationMemberUncheckedCreateNestedManyWithoutInviterInput
+  }
+
+  export type UserCreateOrConnectWithoutOrganizationMembershipsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutOrganizationMembershipsInput, UserUncheckedCreateWithoutOrganizationMembershipsInput>
+  }
+
+  export type OrganizationCreateWithoutMembersInput = {
+    id?: string
+    name: string
+    email?: string | null
+    phone?: string | null
+    website?: string | null
+    description?: string | null
+    logo?: string | null
+    address?: string | null
+    city?: string | null
+    region?: string | null
+    country?: string
+    gpsAddress?: string | null
+    size: $Enums.OrganizationSize
+    sector: $Enums.Sector
+    isPublic?: boolean
+    csiScore?: number | null
+    riskTier?: $Enums.RiskTier | null
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    users?: UserCreateNestedManyWithoutOrganizationInput
+    assessments?: AssessmentCreateNestedManyWithoutOrganizationInput
+    subscriptions?: SubscriptionCreateNestedManyWithoutOrganizationInput
+    phishingCampaigns?: PhishingCampaignCreateNestedManyWithoutOrganizationInput
+    phishingTemplates?: PhishingTemplateCreateNestedManyWithoutOrganizationInput
+    agents?: AgentCreateNestedManyWithoutOrganizationInput
+    invoices?: InvoiceCreateNestedManyWithoutOrganizationInput
+    inviteCodes?: InviteCodeCreateNestedManyWithoutOrganizationInput
+  }
+
+  export type OrganizationUncheckedCreateWithoutMembersInput = {
+    id?: string
+    name: string
+    email?: string | null
+    phone?: string | null
+    website?: string | null
+    description?: string | null
+    logo?: string | null
+    address?: string | null
+    city?: string | null
+    region?: string | null
+    country?: string
+    gpsAddress?: string | null
+    size: $Enums.OrganizationSize
+    sector: $Enums.Sector
+    isPublic?: boolean
+    csiScore?: number | null
+    riskTier?: $Enums.RiskTier | null
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    users?: UserUncheckedCreateNestedManyWithoutOrganizationInput
+    assessments?: AssessmentUncheckedCreateNestedManyWithoutOrganizationInput
+    subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutOrganizationInput
+    phishingCampaigns?: PhishingCampaignUncheckedCreateNestedManyWithoutOrganizationInput
+    phishingTemplates?: PhishingTemplateUncheckedCreateNestedManyWithoutOrganizationInput
+    agents?: AgentUncheckedCreateNestedManyWithoutOrganizationInput
+    invoices?: InvoiceUncheckedCreateNestedManyWithoutOrganizationInput
+    inviteCodes?: InviteCodeUncheckedCreateNestedManyWithoutOrganizationInput
+  }
+
+  export type OrganizationCreateOrConnectWithoutMembersInput = {
+    where: OrganizationWhereUniqueInput
+    create: XOR<OrganizationCreateWithoutMembersInput, OrganizationUncheckedCreateWithoutMembersInput>
+  }
+
+  export type UserCreateWithoutSentInvitesInput = {
+    id?: string
+    email: string
+    password: string
+    firstName: string
+    lastName: string
+    phone?: string | null
+    avatar?: string | null
+    emailVerified?: boolean
+    isActive?: boolean
+    role?: $Enums.UserRole
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    organization?: OrganizationCreateNestedOneWithoutUsersInput
+    assessments?: AssessmentCreateNestedManyWithoutUserInput
+    phishingTargets?: PhishingTargetCreateNestedManyWithoutUserInput
+    phishingCampaigns?: PhishingCampaignCreateNestedManyWithoutCreatorInput
+    phishingTemplates?: PhishingTemplateCreateNestedManyWithoutCreatorInput
+    telemetryEvents?: TelemetryEventCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUserInput
+    passwordResets?: PasswordResetCreateNestedManyWithoutUserInput
+    createdInviteCodes?: InviteCodeCreateNestedManyWithoutCreatorInput
+    organizationMemberships?: OrganizationMemberCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutSentInvitesInput = {
+    id?: string
+    email: string
+    password: string
+    firstName: string
+    lastName: string
+    phone?: string | null
+    avatar?: string | null
+    emailVerified?: boolean
+    isActive?: boolean
+    role?: $Enums.UserRole
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    organizationId?: string | null
+    assessments?: AssessmentUncheckedCreateNestedManyWithoutUserInput
+    phishingTargets?: PhishingTargetUncheckedCreateNestedManyWithoutUserInput
+    phishingCampaigns?: PhishingCampaignUncheckedCreateNestedManyWithoutCreatorInput
+    phishingTemplates?: PhishingTemplateUncheckedCreateNestedManyWithoutCreatorInput
+    telemetryEvents?: TelemetryEventUncheckedCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+    passwordResets?: PasswordResetUncheckedCreateNestedManyWithoutUserInput
+    createdInviteCodes?: InviteCodeUncheckedCreateNestedManyWithoutCreatorInput
+    organizationMemberships?: OrganizationMemberUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutSentInvitesInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutSentInvitesInput, UserUncheckedCreateWithoutSentInvitesInput>
+  }
+
+  export type UserUpsertWithoutOrganizationMembershipsInput = {
+    update: XOR<UserUpdateWithoutOrganizationMembershipsInput, UserUncheckedUpdateWithoutOrganizationMembershipsInput>
+    create: XOR<UserCreateWithoutOrganizationMembershipsInput, UserUncheckedCreateWithoutOrganizationMembershipsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutOrganizationMembershipsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutOrganizationMembershipsInput, UserUncheckedUpdateWithoutOrganizationMembershipsInput>
+  }
+
+  export type UserUpdateWithoutOrganizationMembershipsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organization?: OrganizationUpdateOneWithoutUsersNestedInput
+    assessments?: AssessmentUpdateManyWithoutUserNestedInput
+    phishingTargets?: PhishingTargetUpdateManyWithoutUserNestedInput
+    phishingCampaigns?: PhishingCampaignUpdateManyWithoutCreatorNestedInput
+    phishingTemplates?: PhishingTemplateUpdateManyWithoutCreatorNestedInput
+    telemetryEvents?: TelemetryEventUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUserNestedInput
+    passwordResets?: PasswordResetUpdateManyWithoutUserNestedInput
+    createdInviteCodes?: InviteCodeUpdateManyWithoutCreatorNestedInput
+    sentInvites?: OrganizationMemberUpdateManyWithoutInviterNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutOrganizationMembershipsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organizationId?: NullableStringFieldUpdateOperationsInput | string | null
+    assessments?: AssessmentUncheckedUpdateManyWithoutUserNestedInput
+    phishingTargets?: PhishingTargetUncheckedUpdateManyWithoutUserNestedInput
+    phishingCampaigns?: PhishingCampaignUncheckedUpdateManyWithoutCreatorNestedInput
+    phishingTemplates?: PhishingTemplateUncheckedUpdateManyWithoutCreatorNestedInput
+    telemetryEvents?: TelemetryEventUncheckedUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+    passwordResets?: PasswordResetUncheckedUpdateManyWithoutUserNestedInput
+    createdInviteCodes?: InviteCodeUncheckedUpdateManyWithoutCreatorNestedInput
+    sentInvites?: OrganizationMemberUncheckedUpdateManyWithoutInviterNestedInput
+  }
+
+  export type OrganizationUpsertWithoutMembersInput = {
+    update: XOR<OrganizationUpdateWithoutMembersInput, OrganizationUncheckedUpdateWithoutMembersInput>
+    create: XOR<OrganizationCreateWithoutMembersInput, OrganizationUncheckedCreateWithoutMembersInput>
+    where?: OrganizationWhereInput
+  }
+
+  export type OrganizationUpdateToOneWithWhereWithoutMembersInput = {
+    where?: OrganizationWhereInput
+    data: XOR<OrganizationUpdateWithoutMembersInput, OrganizationUncheckedUpdateWithoutMembersInput>
+  }
+
+  export type OrganizationUpdateWithoutMembersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    website?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    logo?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: StringFieldUpdateOperationsInput | string
+    gpsAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    size?: EnumOrganizationSizeFieldUpdateOperationsInput | $Enums.OrganizationSize
+    sector?: EnumSectorFieldUpdateOperationsInput | $Enums.Sector
+    isPublic?: BoolFieldUpdateOperationsInput | boolean
+    csiScore?: NullableFloatFieldUpdateOperationsInput | number | null
+    riskTier?: NullableEnumRiskTierFieldUpdateOperationsInput | $Enums.RiskTier | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    users?: UserUpdateManyWithoutOrganizationNestedInput
+    assessments?: AssessmentUpdateManyWithoutOrganizationNestedInput
+    subscriptions?: SubscriptionUpdateManyWithoutOrganizationNestedInput
+    phishingCampaigns?: PhishingCampaignUpdateManyWithoutOrganizationNestedInput
+    phishingTemplates?: PhishingTemplateUpdateManyWithoutOrganizationNestedInput
+    agents?: AgentUpdateManyWithoutOrganizationNestedInput
+    invoices?: InvoiceUpdateManyWithoutOrganizationNestedInput
+    inviteCodes?: InviteCodeUpdateManyWithoutOrganizationNestedInput
+  }
+
+  export type OrganizationUncheckedUpdateWithoutMembersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    website?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    logo?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: StringFieldUpdateOperationsInput | string
+    gpsAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    size?: EnumOrganizationSizeFieldUpdateOperationsInput | $Enums.OrganizationSize
+    sector?: EnumSectorFieldUpdateOperationsInput | $Enums.Sector
+    isPublic?: BoolFieldUpdateOperationsInput | boolean
+    csiScore?: NullableFloatFieldUpdateOperationsInput | number | null
+    riskTier?: NullableEnumRiskTierFieldUpdateOperationsInput | $Enums.RiskTier | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    users?: UserUncheckedUpdateManyWithoutOrganizationNestedInput
+    assessments?: AssessmentUncheckedUpdateManyWithoutOrganizationNestedInput
+    subscriptions?: SubscriptionUncheckedUpdateManyWithoutOrganizationNestedInput
+    phishingCampaigns?: PhishingCampaignUncheckedUpdateManyWithoutOrganizationNestedInput
+    phishingTemplates?: PhishingTemplateUncheckedUpdateManyWithoutOrganizationNestedInput
+    agents?: AgentUncheckedUpdateManyWithoutOrganizationNestedInput
+    invoices?: InvoiceUncheckedUpdateManyWithoutOrganizationNestedInput
+    inviteCodes?: InviteCodeUncheckedUpdateManyWithoutOrganizationNestedInput
+  }
+
+  export type UserUpsertWithoutSentInvitesInput = {
+    update: XOR<UserUpdateWithoutSentInvitesInput, UserUncheckedUpdateWithoutSentInvitesInput>
+    create: XOR<UserCreateWithoutSentInvitesInput, UserUncheckedCreateWithoutSentInvitesInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutSentInvitesInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutSentInvitesInput, UserUncheckedUpdateWithoutSentInvitesInput>
+  }
+
+  export type UserUpdateWithoutSentInvitesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organization?: OrganizationUpdateOneWithoutUsersNestedInput
+    assessments?: AssessmentUpdateManyWithoutUserNestedInput
+    phishingTargets?: PhishingTargetUpdateManyWithoutUserNestedInput
+    phishingCampaigns?: PhishingCampaignUpdateManyWithoutCreatorNestedInput
+    phishingTemplates?: PhishingTemplateUpdateManyWithoutCreatorNestedInput
+    telemetryEvents?: TelemetryEventUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUserNestedInput
+    passwordResets?: PasswordResetUpdateManyWithoutUserNestedInput
+    createdInviteCodes?: InviteCodeUpdateManyWithoutCreatorNestedInput
+    organizationMemberships?: OrganizationMemberUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutSentInvitesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organizationId?: NullableStringFieldUpdateOperationsInput | string | null
+    assessments?: AssessmentUncheckedUpdateManyWithoutUserNestedInput
+    phishingTargets?: PhishingTargetUncheckedUpdateManyWithoutUserNestedInput
+    phishingCampaigns?: PhishingCampaignUncheckedUpdateManyWithoutCreatorNestedInput
+    phishingTemplates?: PhishingTemplateUncheckedUpdateManyWithoutCreatorNestedInput
+    telemetryEvents?: TelemetryEventUncheckedUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+    passwordResets?: PasswordResetUncheckedUpdateManyWithoutUserNestedInput
+    createdInviteCodes?: InviteCodeUncheckedUpdateManyWithoutCreatorNestedInput
+    organizationMemberships?: OrganizationMemberUncheckedUpdateManyWithoutUserNestedInput
+  }
+
   export type OrganizationCreateWithoutAssessmentsInput = {
     id?: string
     name: string
@@ -37166,8 +49030,11 @@ export namespace Prisma {
     users?: UserCreateNestedManyWithoutOrganizationInput
     subscriptions?: SubscriptionCreateNestedManyWithoutOrganizationInput
     phishingCampaigns?: PhishingCampaignCreateNestedManyWithoutOrganizationInput
+    phishingTemplates?: PhishingTemplateCreateNestedManyWithoutOrganizationInput
     agents?: AgentCreateNestedManyWithoutOrganizationInput
     invoices?: InvoiceCreateNestedManyWithoutOrganizationInput
+    inviteCodes?: InviteCodeCreateNestedManyWithoutOrganizationInput
+    members?: OrganizationMemberCreateNestedManyWithoutOrganizationInput
   }
 
   export type OrganizationUncheckedCreateWithoutAssessmentsInput = {
@@ -37194,8 +49061,11 @@ export namespace Prisma {
     users?: UserUncheckedCreateNestedManyWithoutOrganizationInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutOrganizationInput
     phishingCampaigns?: PhishingCampaignUncheckedCreateNestedManyWithoutOrganizationInput
+    phishingTemplates?: PhishingTemplateUncheckedCreateNestedManyWithoutOrganizationInput
     agents?: AgentUncheckedCreateNestedManyWithoutOrganizationInput
     invoices?: InvoiceUncheckedCreateNestedManyWithoutOrganizationInput
+    inviteCodes?: InviteCodeUncheckedCreateNestedManyWithoutOrganizationInput
+    members?: OrganizationMemberUncheckedCreateNestedManyWithoutOrganizationInput
   }
 
   export type OrganizationCreateOrConnectWithoutAssessmentsInput = {
@@ -37218,9 +49088,15 @@ export namespace Prisma {
     updatedAt?: Date | string
     organization?: OrganizationCreateNestedOneWithoutUsersInput
     phishingTargets?: PhishingTargetCreateNestedManyWithoutUserInput
+    phishingCampaigns?: PhishingCampaignCreateNestedManyWithoutCreatorInput
+    phishingTemplates?: PhishingTemplateCreateNestedManyWithoutCreatorInput
     telemetryEvents?: TelemetryEventCreateNestedManyWithoutUserInput
     auditLogs?: AuditLogCreateNestedManyWithoutUserInput
     refreshTokens?: RefreshTokenCreateNestedManyWithoutUserInput
+    passwordResets?: PasswordResetCreateNestedManyWithoutUserInput
+    createdInviteCodes?: InviteCodeCreateNestedManyWithoutCreatorInput
+    organizationMemberships?: OrganizationMemberCreateNestedManyWithoutUserInput
+    sentInvites?: OrganizationMemberCreateNestedManyWithoutInviterInput
   }
 
   export type UserUncheckedCreateWithoutAssessmentsInput = {
@@ -37238,9 +49114,15 @@ export namespace Prisma {
     updatedAt?: Date | string
     organizationId?: string | null
     phishingTargets?: PhishingTargetUncheckedCreateNestedManyWithoutUserInput
+    phishingCampaigns?: PhishingCampaignUncheckedCreateNestedManyWithoutCreatorInput
+    phishingTemplates?: PhishingTemplateUncheckedCreateNestedManyWithoutCreatorInput
     telemetryEvents?: TelemetryEventUncheckedCreateNestedManyWithoutUserInput
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
     refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+    passwordResets?: PasswordResetUncheckedCreateNestedManyWithoutUserInput
+    createdInviteCodes?: InviteCodeUncheckedCreateNestedManyWithoutCreatorInput
+    organizationMemberships?: OrganizationMemberUncheckedCreateNestedManyWithoutUserInput
+    sentInvites?: OrganizationMemberUncheckedCreateNestedManyWithoutInviterInput
   }
 
   export type UserCreateOrConnectWithoutAssessmentsInput = {
@@ -37274,6 +49156,45 @@ export namespace Prisma {
   export type AssessmentResponseCreateManyAssessmentInputEnvelope = {
     data: AssessmentResponseCreateManyAssessmentInput | AssessmentResponseCreateManyAssessmentInput[]
     skipDuplicates?: boolean
+  }
+
+  export type AssessmentResultCreateWithoutAssessmentInput = {
+    id?: string
+    overallScore: number
+    overallPercentage: number
+    tier: $Enums.CSITier
+    categoryScores: string
+    sectionScores: string
+    industryPercentile?: number | null
+    sizePercentile?: number | null
+    regionPercentile?: number | null
+    questionsAnswered: number
+    totalQuestions: number
+    completionRate: number
+    totalTimeMinutes?: number | null
+    generatedAt?: Date | string
+  }
+
+  export type AssessmentResultUncheckedCreateWithoutAssessmentInput = {
+    id?: string
+    overallScore: number
+    overallPercentage: number
+    tier: $Enums.CSITier
+    categoryScores: string
+    sectionScores: string
+    industryPercentile?: number | null
+    sizePercentile?: number | null
+    regionPercentile?: number | null
+    questionsAnswered: number
+    totalQuestions: number
+    completionRate: number
+    totalTimeMinutes?: number | null
+    generatedAt?: Date | string
+  }
+
+  export type AssessmentResultCreateOrConnectWithoutAssessmentInput = {
+    where: AssessmentResultWhereUniqueInput
+    create: XOR<AssessmentResultCreateWithoutAssessmentInput, AssessmentResultUncheckedCreateWithoutAssessmentInput>
   }
 
   export type OrganizationUpsertWithoutAssessmentsInput = {
@@ -37311,8 +49232,11 @@ export namespace Prisma {
     users?: UserUpdateManyWithoutOrganizationNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutOrganizationNestedInput
     phishingCampaigns?: PhishingCampaignUpdateManyWithoutOrganizationNestedInput
+    phishingTemplates?: PhishingTemplateUpdateManyWithoutOrganizationNestedInput
     agents?: AgentUpdateManyWithoutOrganizationNestedInput
     invoices?: InvoiceUpdateManyWithoutOrganizationNestedInput
+    inviteCodes?: InviteCodeUpdateManyWithoutOrganizationNestedInput
+    members?: OrganizationMemberUpdateManyWithoutOrganizationNestedInput
   }
 
   export type OrganizationUncheckedUpdateWithoutAssessmentsInput = {
@@ -37339,8 +49263,11 @@ export namespace Prisma {
     users?: UserUncheckedUpdateManyWithoutOrganizationNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutOrganizationNestedInput
     phishingCampaigns?: PhishingCampaignUncheckedUpdateManyWithoutOrganizationNestedInput
+    phishingTemplates?: PhishingTemplateUncheckedUpdateManyWithoutOrganizationNestedInput
     agents?: AgentUncheckedUpdateManyWithoutOrganizationNestedInput
     invoices?: InvoiceUncheckedUpdateManyWithoutOrganizationNestedInput
+    inviteCodes?: InviteCodeUncheckedUpdateManyWithoutOrganizationNestedInput
+    members?: OrganizationMemberUncheckedUpdateManyWithoutOrganizationNestedInput
   }
 
   export type UserUpsertWithoutAssessmentsInput = {
@@ -37369,9 +49296,15 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     organization?: OrganizationUpdateOneWithoutUsersNestedInput
     phishingTargets?: PhishingTargetUpdateManyWithoutUserNestedInput
+    phishingCampaigns?: PhishingCampaignUpdateManyWithoutCreatorNestedInput
+    phishingTemplates?: PhishingTemplateUpdateManyWithoutCreatorNestedInput
     telemetryEvents?: TelemetryEventUpdateManyWithoutUserNestedInput
     auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
     refreshTokens?: RefreshTokenUpdateManyWithoutUserNestedInput
+    passwordResets?: PasswordResetUpdateManyWithoutUserNestedInput
+    createdInviteCodes?: InviteCodeUpdateManyWithoutCreatorNestedInput
+    organizationMemberships?: OrganizationMemberUpdateManyWithoutUserNestedInput
+    sentInvites?: OrganizationMemberUpdateManyWithoutInviterNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAssessmentsInput = {
@@ -37389,9 +49322,15 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     organizationId?: NullableStringFieldUpdateOperationsInput | string | null
     phishingTargets?: PhishingTargetUncheckedUpdateManyWithoutUserNestedInput
+    phishingCampaigns?: PhishingCampaignUncheckedUpdateManyWithoutCreatorNestedInput
+    phishingTemplates?: PhishingTemplateUncheckedUpdateManyWithoutCreatorNestedInput
     telemetryEvents?: TelemetryEventUncheckedUpdateManyWithoutUserNestedInput
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
     refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+    passwordResets?: PasswordResetUncheckedUpdateManyWithoutUserNestedInput
+    createdInviteCodes?: InviteCodeUncheckedUpdateManyWithoutCreatorNestedInput
+    organizationMemberships?: OrganizationMemberUncheckedUpdateManyWithoutUserNestedInput
+    sentInvites?: OrganizationMemberUncheckedUpdateManyWithoutInviterNestedInput
   }
 
   export type AssessmentResponseUpsertWithWhereUniqueWithoutAssessmentInput = {
@@ -37421,6 +49360,51 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"AssessmentResponse"> | Date | string
     assessmentId?: StringFilter<"AssessmentResponse"> | string
     questionId?: StringFilter<"AssessmentResponse"> | string
+  }
+
+  export type AssessmentResultUpsertWithoutAssessmentInput = {
+    update: XOR<AssessmentResultUpdateWithoutAssessmentInput, AssessmentResultUncheckedUpdateWithoutAssessmentInput>
+    create: XOR<AssessmentResultCreateWithoutAssessmentInput, AssessmentResultUncheckedCreateWithoutAssessmentInput>
+    where?: AssessmentResultWhereInput
+  }
+
+  export type AssessmentResultUpdateToOneWithWhereWithoutAssessmentInput = {
+    where?: AssessmentResultWhereInput
+    data: XOR<AssessmentResultUpdateWithoutAssessmentInput, AssessmentResultUncheckedUpdateWithoutAssessmentInput>
+  }
+
+  export type AssessmentResultUpdateWithoutAssessmentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    overallScore?: FloatFieldUpdateOperationsInput | number
+    overallPercentage?: FloatFieldUpdateOperationsInput | number
+    tier?: EnumCSITierFieldUpdateOperationsInput | $Enums.CSITier
+    categoryScores?: StringFieldUpdateOperationsInput | string
+    sectionScores?: StringFieldUpdateOperationsInput | string
+    industryPercentile?: NullableFloatFieldUpdateOperationsInput | number | null
+    sizePercentile?: NullableFloatFieldUpdateOperationsInput | number | null
+    regionPercentile?: NullableFloatFieldUpdateOperationsInput | number | null
+    questionsAnswered?: IntFieldUpdateOperationsInput | number
+    totalQuestions?: IntFieldUpdateOperationsInput | number
+    completionRate?: FloatFieldUpdateOperationsInput | number
+    totalTimeMinutes?: NullableIntFieldUpdateOperationsInput | number | null
+    generatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AssessmentResultUncheckedUpdateWithoutAssessmentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    overallScore?: FloatFieldUpdateOperationsInput | number
+    overallPercentage?: FloatFieldUpdateOperationsInput | number
+    tier?: EnumCSITierFieldUpdateOperationsInput | $Enums.CSITier
+    categoryScores?: StringFieldUpdateOperationsInput | string
+    sectionScores?: StringFieldUpdateOperationsInput | string
+    industryPercentile?: NullableFloatFieldUpdateOperationsInput | number | null
+    sizePercentile?: NullableFloatFieldUpdateOperationsInput | number | null
+    regionPercentile?: NullableFloatFieldUpdateOperationsInput | number | null
+    questionsAnswered?: IntFieldUpdateOperationsInput | number
+    totalQuestions?: IntFieldUpdateOperationsInput | number
+    completionRate?: FloatFieldUpdateOperationsInput | number
+    totalTimeMinutes?: NullableIntFieldUpdateOperationsInput | number | null
+    generatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type QuestionCreateWithoutCategoryInput = {
@@ -37766,6 +49750,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     organization: OrganizationCreateNestedOneWithoutAssessmentsInput
     user: UserCreateNestedOneWithoutAssessmentsInput
+    result?: AssessmentResultCreateNestedOneWithoutAssessmentInput
   }
 
   export type AssessmentUncheckedCreateWithoutResponsesInput = {
@@ -37787,6 +49772,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     organizationId: string
     userId: string
+    result?: AssessmentResultUncheckedCreateNestedOneWithoutAssessmentInput
   }
 
   export type AssessmentCreateOrConnectWithoutResponsesInput = {
@@ -37863,6 +49849,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     organization?: OrganizationUpdateOneRequiredWithoutAssessmentsNestedInput
     user?: UserUpdateOneRequiredWithoutAssessmentsNestedInput
+    result?: AssessmentResultUpdateOneWithoutAssessmentNestedInput
   }
 
   export type AssessmentUncheckedUpdateWithoutResponsesInput = {
@@ -37884,6 +49871,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     organizationId?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
+    result?: AssessmentResultUncheckedUpdateOneWithoutAssessmentNestedInput
   }
 
   export type QuestionUpsertWithoutResponsesInput = {
@@ -37931,6 +49919,110 @@ export namespace Prisma {
     options?: QuestionOptionUncheckedUpdateManyWithoutQuestionNestedInput
   }
 
+  export type AssessmentCreateWithoutResultInput = {
+    id?: string
+    title: string
+    description?: string | null
+    type?: $Enums.AssessmentType
+    status?: $Enums.AssessmentStatus
+    score?: number | null
+    maxScore?: number | null
+    riskTier?: $Enums.RiskTier | null
+    benchmarkRegion?: number | null
+    benchmarkSector?: number | null
+    benchmarkSize?: number | null
+    startedAt?: Date | string | null
+    completedAt?: Date | string | null
+    reportUrl?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    organization: OrganizationCreateNestedOneWithoutAssessmentsInput
+    user: UserCreateNestedOneWithoutAssessmentsInput
+    responses?: AssessmentResponseCreateNestedManyWithoutAssessmentInput
+  }
+
+  export type AssessmentUncheckedCreateWithoutResultInput = {
+    id?: string
+    title: string
+    description?: string | null
+    type?: $Enums.AssessmentType
+    status?: $Enums.AssessmentStatus
+    score?: number | null
+    maxScore?: number | null
+    riskTier?: $Enums.RiskTier | null
+    benchmarkRegion?: number | null
+    benchmarkSector?: number | null
+    benchmarkSize?: number | null
+    startedAt?: Date | string | null
+    completedAt?: Date | string | null
+    reportUrl?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    organizationId: string
+    userId: string
+    responses?: AssessmentResponseUncheckedCreateNestedManyWithoutAssessmentInput
+  }
+
+  export type AssessmentCreateOrConnectWithoutResultInput = {
+    where: AssessmentWhereUniqueInput
+    create: XOR<AssessmentCreateWithoutResultInput, AssessmentUncheckedCreateWithoutResultInput>
+  }
+
+  export type AssessmentUpsertWithoutResultInput = {
+    update: XOR<AssessmentUpdateWithoutResultInput, AssessmentUncheckedUpdateWithoutResultInput>
+    create: XOR<AssessmentCreateWithoutResultInput, AssessmentUncheckedCreateWithoutResultInput>
+    where?: AssessmentWhereInput
+  }
+
+  export type AssessmentUpdateToOneWithWhereWithoutResultInput = {
+    where?: AssessmentWhereInput
+    data: XOR<AssessmentUpdateWithoutResultInput, AssessmentUncheckedUpdateWithoutResultInput>
+  }
+
+  export type AssessmentUpdateWithoutResultInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: EnumAssessmentTypeFieldUpdateOperationsInput | $Enums.AssessmentType
+    status?: EnumAssessmentStatusFieldUpdateOperationsInput | $Enums.AssessmentStatus
+    score?: NullableFloatFieldUpdateOperationsInput | number | null
+    maxScore?: NullableFloatFieldUpdateOperationsInput | number | null
+    riskTier?: NullableEnumRiskTierFieldUpdateOperationsInput | $Enums.RiskTier | null
+    benchmarkRegion?: NullableFloatFieldUpdateOperationsInput | number | null
+    benchmarkSector?: NullableFloatFieldUpdateOperationsInput | number | null
+    benchmarkSize?: NullableFloatFieldUpdateOperationsInput | number | null
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reportUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organization?: OrganizationUpdateOneRequiredWithoutAssessmentsNestedInput
+    user?: UserUpdateOneRequiredWithoutAssessmentsNestedInput
+    responses?: AssessmentResponseUpdateManyWithoutAssessmentNestedInput
+  }
+
+  export type AssessmentUncheckedUpdateWithoutResultInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: EnumAssessmentTypeFieldUpdateOperationsInput | $Enums.AssessmentType
+    status?: EnumAssessmentStatusFieldUpdateOperationsInput | $Enums.AssessmentStatus
+    score?: NullableFloatFieldUpdateOperationsInput | number | null
+    maxScore?: NullableFloatFieldUpdateOperationsInput | number | null
+    riskTier?: NullableEnumRiskTierFieldUpdateOperationsInput | $Enums.RiskTier | null
+    benchmarkRegion?: NullableFloatFieldUpdateOperationsInput | number | null
+    benchmarkSector?: NullableFloatFieldUpdateOperationsInput | number | null
+    benchmarkSize?: NullableFloatFieldUpdateOperationsInput | number | null
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reportUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organizationId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    responses?: AssessmentResponseUncheckedUpdateManyWithoutAssessmentNestedInput
+  }
+
   export type OrganizationCreateWithoutPhishingCampaignsInput = {
     id?: string
     name: string
@@ -37955,8 +50047,11 @@ export namespace Prisma {
     users?: UserCreateNestedManyWithoutOrganizationInput
     assessments?: AssessmentCreateNestedManyWithoutOrganizationInput
     subscriptions?: SubscriptionCreateNestedManyWithoutOrganizationInput
+    phishingTemplates?: PhishingTemplateCreateNestedManyWithoutOrganizationInput
     agents?: AgentCreateNestedManyWithoutOrganizationInput
     invoices?: InvoiceCreateNestedManyWithoutOrganizationInput
+    inviteCodes?: InviteCodeCreateNestedManyWithoutOrganizationInput
+    members?: OrganizationMemberCreateNestedManyWithoutOrganizationInput
   }
 
   export type OrganizationUncheckedCreateWithoutPhishingCampaignsInput = {
@@ -37983,13 +50078,73 @@ export namespace Prisma {
     users?: UserUncheckedCreateNestedManyWithoutOrganizationInput
     assessments?: AssessmentUncheckedCreateNestedManyWithoutOrganizationInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutOrganizationInput
+    phishingTemplates?: PhishingTemplateUncheckedCreateNestedManyWithoutOrganizationInput
     agents?: AgentUncheckedCreateNestedManyWithoutOrganizationInput
     invoices?: InvoiceUncheckedCreateNestedManyWithoutOrganizationInput
+    inviteCodes?: InviteCodeUncheckedCreateNestedManyWithoutOrganizationInput
+    members?: OrganizationMemberUncheckedCreateNestedManyWithoutOrganizationInput
   }
 
   export type OrganizationCreateOrConnectWithoutPhishingCampaignsInput = {
     where: OrganizationWhereUniqueInput
     create: XOR<OrganizationCreateWithoutPhishingCampaignsInput, OrganizationUncheckedCreateWithoutPhishingCampaignsInput>
+  }
+
+  export type UserCreateWithoutPhishingCampaignsInput = {
+    id?: string
+    email: string
+    password: string
+    firstName: string
+    lastName: string
+    phone?: string | null
+    avatar?: string | null
+    emailVerified?: boolean
+    isActive?: boolean
+    role?: $Enums.UserRole
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    organization?: OrganizationCreateNestedOneWithoutUsersInput
+    assessments?: AssessmentCreateNestedManyWithoutUserInput
+    phishingTargets?: PhishingTargetCreateNestedManyWithoutUserInput
+    phishingTemplates?: PhishingTemplateCreateNestedManyWithoutCreatorInput
+    telemetryEvents?: TelemetryEventCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUserInput
+    passwordResets?: PasswordResetCreateNestedManyWithoutUserInput
+    createdInviteCodes?: InviteCodeCreateNestedManyWithoutCreatorInput
+    organizationMemberships?: OrganizationMemberCreateNestedManyWithoutUserInput
+    sentInvites?: OrganizationMemberCreateNestedManyWithoutInviterInput
+  }
+
+  export type UserUncheckedCreateWithoutPhishingCampaignsInput = {
+    id?: string
+    email: string
+    password: string
+    firstName: string
+    lastName: string
+    phone?: string | null
+    avatar?: string | null
+    emailVerified?: boolean
+    isActive?: boolean
+    role?: $Enums.UserRole
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    organizationId?: string | null
+    assessments?: AssessmentUncheckedCreateNestedManyWithoutUserInput
+    phishingTargets?: PhishingTargetUncheckedCreateNestedManyWithoutUserInput
+    phishingTemplates?: PhishingTemplateUncheckedCreateNestedManyWithoutCreatorInput
+    telemetryEvents?: TelemetryEventUncheckedCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+    passwordResets?: PasswordResetUncheckedCreateNestedManyWithoutUserInput
+    createdInviteCodes?: InviteCodeUncheckedCreateNestedManyWithoutCreatorInput
+    organizationMemberships?: OrganizationMemberUncheckedCreateNestedManyWithoutUserInput
+    sentInvites?: OrganizationMemberUncheckedCreateNestedManyWithoutInviterInput
+  }
+
+  export type UserCreateOrConnectWithoutPhishingCampaignsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutPhishingCampaignsInput, UserUncheckedCreateWithoutPhishingCampaignsInput>
   }
 
   export type PhishingTargetCreateWithoutCampaignInput = {
@@ -37998,13 +50153,27 @@ export namespace Prisma {
     firstName?: string | null
     lastName?: string | null
     department?: string | null
-    trackingId?: string
-    status?: $Enums.TargetStatus
+    jobTitle?: string | null
+    emailSent?: boolean
+    emailDelivered?: boolean
+    emailOpened?: boolean
+    linkClicked?: boolean
+    credentialsEntered?: boolean
+    reportedPhishing?: boolean
+    emailBounced?: boolean
+    sentAt?: Date | string | null
     deliveredAt?: Date | string | null
     openedAt?: Date | string | null
     clickedAt?: Date | string | null
+    credentialsAt?: Date | string | null
     reportedAt?: Date | string | null
+    bouncedAt?: Date | string | null
+    userAgent?: string | null
+    ipAddress?: string | null
+    clickCount?: number
+    riskScore?: number | null
     createdAt?: Date | string
+    updatedAt?: Date | string
     user?: UserCreateNestedOneWithoutPhishingTargetsInput
     events?: PhishingEventCreateNestedManyWithoutTargetInput
   }
@@ -38015,13 +50184,27 @@ export namespace Prisma {
     firstName?: string | null
     lastName?: string | null
     department?: string | null
-    trackingId?: string
-    status?: $Enums.TargetStatus
+    jobTitle?: string | null
+    emailSent?: boolean
+    emailDelivered?: boolean
+    emailOpened?: boolean
+    linkClicked?: boolean
+    credentialsEntered?: boolean
+    reportedPhishing?: boolean
+    emailBounced?: boolean
+    sentAt?: Date | string | null
     deliveredAt?: Date | string | null
     openedAt?: Date | string | null
     clickedAt?: Date | string | null
+    credentialsAt?: Date | string | null
     reportedAt?: Date | string | null
+    bouncedAt?: Date | string | null
+    userAgent?: string | null
+    ipAddress?: string | null
+    clickCount?: number
+    riskScore?: number | null
     createdAt?: Date | string
+    updatedAt?: Date | string
     userId?: string | null
     events?: PhishingEventUncheckedCreateNestedManyWithoutTargetInput
   }
@@ -38039,21 +50222,23 @@ export namespace Prisma {
   export type PhishingEventCreateWithoutCampaignInput = {
     id?: string
     type: $Enums.PhishingEventType
-    metadata?: string | null
-    ipAddress?: string | null
-    userAgent?: string | null
     timestamp?: Date | string
-    target: PhishingTargetCreateNestedOneWithoutEventsInput
+    metadata?: string | null
+    userAgent?: string | null
+    ipAddress?: string | null
+    location?: string | null
+    target?: PhishingTargetCreateNestedOneWithoutEventsInput
   }
 
   export type PhishingEventUncheckedCreateWithoutCampaignInput = {
     id?: string
     type: $Enums.PhishingEventType
-    metadata?: string | null
-    ipAddress?: string | null
-    userAgent?: string | null
     timestamp?: Date | string
-    targetId: string
+    metadata?: string | null
+    userAgent?: string | null
+    ipAddress?: string | null
+    location?: string | null
+    targetId?: string | null
   }
 
   export type PhishingEventCreateOrConnectWithoutCampaignInput = {
@@ -38101,8 +50286,11 @@ export namespace Prisma {
     users?: UserUpdateManyWithoutOrganizationNestedInput
     assessments?: AssessmentUpdateManyWithoutOrganizationNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutOrganizationNestedInput
+    phishingTemplates?: PhishingTemplateUpdateManyWithoutOrganizationNestedInput
     agents?: AgentUpdateManyWithoutOrganizationNestedInput
     invoices?: InvoiceUpdateManyWithoutOrganizationNestedInput
+    inviteCodes?: InviteCodeUpdateManyWithoutOrganizationNestedInput
+    members?: OrganizationMemberUpdateManyWithoutOrganizationNestedInput
   }
 
   export type OrganizationUncheckedUpdateWithoutPhishingCampaignsInput = {
@@ -38129,8 +50317,74 @@ export namespace Prisma {
     users?: UserUncheckedUpdateManyWithoutOrganizationNestedInput
     assessments?: AssessmentUncheckedUpdateManyWithoutOrganizationNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutOrganizationNestedInput
+    phishingTemplates?: PhishingTemplateUncheckedUpdateManyWithoutOrganizationNestedInput
     agents?: AgentUncheckedUpdateManyWithoutOrganizationNestedInput
     invoices?: InvoiceUncheckedUpdateManyWithoutOrganizationNestedInput
+    inviteCodes?: InviteCodeUncheckedUpdateManyWithoutOrganizationNestedInput
+    members?: OrganizationMemberUncheckedUpdateManyWithoutOrganizationNestedInput
+  }
+
+  export type UserUpsertWithoutPhishingCampaignsInput = {
+    update: XOR<UserUpdateWithoutPhishingCampaignsInput, UserUncheckedUpdateWithoutPhishingCampaignsInput>
+    create: XOR<UserCreateWithoutPhishingCampaignsInput, UserUncheckedCreateWithoutPhishingCampaignsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutPhishingCampaignsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutPhishingCampaignsInput, UserUncheckedUpdateWithoutPhishingCampaignsInput>
+  }
+
+  export type UserUpdateWithoutPhishingCampaignsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organization?: OrganizationUpdateOneWithoutUsersNestedInput
+    assessments?: AssessmentUpdateManyWithoutUserNestedInput
+    phishingTargets?: PhishingTargetUpdateManyWithoutUserNestedInput
+    phishingTemplates?: PhishingTemplateUpdateManyWithoutCreatorNestedInput
+    telemetryEvents?: TelemetryEventUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUserNestedInput
+    passwordResets?: PasswordResetUpdateManyWithoutUserNestedInput
+    createdInviteCodes?: InviteCodeUpdateManyWithoutCreatorNestedInput
+    organizationMemberships?: OrganizationMemberUpdateManyWithoutUserNestedInput
+    sentInvites?: OrganizationMemberUpdateManyWithoutInviterNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutPhishingCampaignsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organizationId?: NullableStringFieldUpdateOperationsInput | string | null
+    assessments?: AssessmentUncheckedUpdateManyWithoutUserNestedInput
+    phishingTargets?: PhishingTargetUncheckedUpdateManyWithoutUserNestedInput
+    phishingTemplates?: PhishingTemplateUncheckedUpdateManyWithoutCreatorNestedInput
+    telemetryEvents?: TelemetryEventUncheckedUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+    passwordResets?: PasswordResetUncheckedUpdateManyWithoutUserNestedInput
+    createdInviteCodes?: InviteCodeUncheckedUpdateManyWithoutCreatorNestedInput
+    organizationMemberships?: OrganizationMemberUncheckedUpdateManyWithoutUserNestedInput
+    sentInvites?: OrganizationMemberUncheckedUpdateManyWithoutInviterNestedInput
   }
 
   export type PhishingTargetUpsertWithWhereUniqueWithoutCampaignInput = {
@@ -38171,18 +50425,20 @@ export namespace Prisma {
     NOT?: PhishingEventScalarWhereInput | PhishingEventScalarWhereInput[]
     id?: StringFilter<"PhishingEvent"> | string
     type?: EnumPhishingEventTypeFilter<"PhishingEvent"> | $Enums.PhishingEventType
-    metadata?: StringNullableFilter<"PhishingEvent"> | string | null
-    ipAddress?: StringNullableFilter<"PhishingEvent"> | string | null
-    userAgent?: StringNullableFilter<"PhishingEvent"> | string | null
     timestamp?: DateTimeFilter<"PhishingEvent"> | Date | string
+    metadata?: StringNullableFilter<"PhishingEvent"> | string | null
+    userAgent?: StringNullableFilter<"PhishingEvent"> | string | null
+    ipAddress?: StringNullableFilter<"PhishingEvent"> | string | null
+    location?: StringNullableFilter<"PhishingEvent"> | string | null
     campaignId?: StringFilter<"PhishingEvent"> | string
-    targetId?: StringFilter<"PhishingEvent"> | string
+    targetId?: StringNullableFilter<"PhishingEvent"> | string | null
   }
 
   export type PhishingCampaignCreateWithoutTargetsInput = {
     id?: string
     name: string
     description?: string | null
+    templateId: string
     template: string
     subject: string
     senderName: string
@@ -38190,16 +50446,21 @@ export namespace Prisma {
     landingPageUrl?: string | null
     status?: $Enums.CampaignStatus
     scheduledAt?: Date | string | null
-    startedAt?: Date | string | null
+    launchedAt?: Date | string | null
     completedAt?: Date | string | null
+    pausedAt?: Date | string | null
     targetCount?: number
-    deliveredCount?: number
-    openedCount?: number
-    clickedCount?: number
-    reportedCount?: number
+    emailsSent?: number
+    emailsDelivered?: number
+    emailsOpened?: number
+    linksClicked?: number
+    credentialsEntered?: number
+    phishingReported?: number
+    emailsBounced?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     organization: OrganizationCreateNestedOneWithoutPhishingCampaignsInput
+    creator: UserCreateNestedOneWithoutPhishingCampaignsInput
     events?: PhishingEventCreateNestedManyWithoutCampaignInput
   }
 
@@ -38207,6 +50468,7 @@ export namespace Prisma {
     id?: string
     name: string
     description?: string | null
+    templateId: string
     template: string
     subject: string
     senderName: string
@@ -38214,16 +50476,21 @@ export namespace Prisma {
     landingPageUrl?: string | null
     status?: $Enums.CampaignStatus
     scheduledAt?: Date | string | null
-    startedAt?: Date | string | null
+    launchedAt?: Date | string | null
     completedAt?: Date | string | null
+    pausedAt?: Date | string | null
     targetCount?: number
-    deliveredCount?: number
-    openedCount?: number
-    clickedCount?: number
-    reportedCount?: number
+    emailsSent?: number
+    emailsDelivered?: number
+    emailsOpened?: number
+    linksClicked?: number
+    credentialsEntered?: number
+    phishingReported?: number
+    emailsBounced?: number
+    createdBy: string
+    organizationId: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    organizationId: string
     events?: PhishingEventUncheckedCreateNestedManyWithoutCampaignInput
   }
 
@@ -38247,9 +50514,15 @@ export namespace Prisma {
     updatedAt?: Date | string
     organization?: OrganizationCreateNestedOneWithoutUsersInput
     assessments?: AssessmentCreateNestedManyWithoutUserInput
+    phishingCampaigns?: PhishingCampaignCreateNestedManyWithoutCreatorInput
+    phishingTemplates?: PhishingTemplateCreateNestedManyWithoutCreatorInput
     telemetryEvents?: TelemetryEventCreateNestedManyWithoutUserInput
     auditLogs?: AuditLogCreateNestedManyWithoutUserInput
     refreshTokens?: RefreshTokenCreateNestedManyWithoutUserInput
+    passwordResets?: PasswordResetCreateNestedManyWithoutUserInput
+    createdInviteCodes?: InviteCodeCreateNestedManyWithoutCreatorInput
+    organizationMemberships?: OrganizationMemberCreateNestedManyWithoutUserInput
+    sentInvites?: OrganizationMemberCreateNestedManyWithoutInviterInput
   }
 
   export type UserUncheckedCreateWithoutPhishingTargetsInput = {
@@ -38267,9 +50540,15 @@ export namespace Prisma {
     updatedAt?: Date | string
     organizationId?: string | null
     assessments?: AssessmentUncheckedCreateNestedManyWithoutUserInput
+    phishingCampaigns?: PhishingCampaignUncheckedCreateNestedManyWithoutCreatorInput
+    phishingTemplates?: PhishingTemplateUncheckedCreateNestedManyWithoutCreatorInput
     telemetryEvents?: TelemetryEventUncheckedCreateNestedManyWithoutUserInput
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
     refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+    passwordResets?: PasswordResetUncheckedCreateNestedManyWithoutUserInput
+    createdInviteCodes?: InviteCodeUncheckedCreateNestedManyWithoutCreatorInput
+    organizationMemberships?: OrganizationMemberUncheckedCreateNestedManyWithoutUserInput
+    sentInvites?: OrganizationMemberUncheckedCreateNestedManyWithoutInviterInput
   }
 
   export type UserCreateOrConnectWithoutPhishingTargetsInput = {
@@ -38280,20 +50559,22 @@ export namespace Prisma {
   export type PhishingEventCreateWithoutTargetInput = {
     id?: string
     type: $Enums.PhishingEventType
-    metadata?: string | null
-    ipAddress?: string | null
-    userAgent?: string | null
     timestamp?: Date | string
+    metadata?: string | null
+    userAgent?: string | null
+    ipAddress?: string | null
+    location?: string | null
     campaign: PhishingCampaignCreateNestedOneWithoutEventsInput
   }
 
   export type PhishingEventUncheckedCreateWithoutTargetInput = {
     id?: string
     type: $Enums.PhishingEventType
-    metadata?: string | null
-    ipAddress?: string | null
-    userAgent?: string | null
     timestamp?: Date | string
+    metadata?: string | null
+    userAgent?: string | null
+    ipAddress?: string | null
+    location?: string | null
     campaignId: string
   }
 
@@ -38322,6 +50603,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    templateId?: StringFieldUpdateOperationsInput | string
     template?: StringFieldUpdateOperationsInput | string
     subject?: StringFieldUpdateOperationsInput | string
     senderName?: StringFieldUpdateOperationsInput | string
@@ -38329,16 +50611,21 @@ export namespace Prisma {
     landingPageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumCampaignStatusFieldUpdateOperationsInput | $Enums.CampaignStatus
     scheduledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    launchedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    pausedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     targetCount?: IntFieldUpdateOperationsInput | number
-    deliveredCount?: IntFieldUpdateOperationsInput | number
-    openedCount?: IntFieldUpdateOperationsInput | number
-    clickedCount?: IntFieldUpdateOperationsInput | number
-    reportedCount?: IntFieldUpdateOperationsInput | number
+    emailsSent?: IntFieldUpdateOperationsInput | number
+    emailsDelivered?: IntFieldUpdateOperationsInput | number
+    emailsOpened?: IntFieldUpdateOperationsInput | number
+    linksClicked?: IntFieldUpdateOperationsInput | number
+    credentialsEntered?: IntFieldUpdateOperationsInput | number
+    phishingReported?: IntFieldUpdateOperationsInput | number
+    emailsBounced?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     organization?: OrganizationUpdateOneRequiredWithoutPhishingCampaignsNestedInput
+    creator?: UserUpdateOneRequiredWithoutPhishingCampaignsNestedInput
     events?: PhishingEventUpdateManyWithoutCampaignNestedInput
   }
 
@@ -38346,6 +50633,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    templateId?: StringFieldUpdateOperationsInput | string
     template?: StringFieldUpdateOperationsInput | string
     subject?: StringFieldUpdateOperationsInput | string
     senderName?: StringFieldUpdateOperationsInput | string
@@ -38353,16 +50641,21 @@ export namespace Prisma {
     landingPageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumCampaignStatusFieldUpdateOperationsInput | $Enums.CampaignStatus
     scheduledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    launchedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    pausedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     targetCount?: IntFieldUpdateOperationsInput | number
-    deliveredCount?: IntFieldUpdateOperationsInput | number
-    openedCount?: IntFieldUpdateOperationsInput | number
-    clickedCount?: IntFieldUpdateOperationsInput | number
-    reportedCount?: IntFieldUpdateOperationsInput | number
+    emailsSent?: IntFieldUpdateOperationsInput | number
+    emailsDelivered?: IntFieldUpdateOperationsInput | number
+    emailsOpened?: IntFieldUpdateOperationsInput | number
+    linksClicked?: IntFieldUpdateOperationsInput | number
+    credentialsEntered?: IntFieldUpdateOperationsInput | number
+    phishingReported?: IntFieldUpdateOperationsInput | number
+    emailsBounced?: IntFieldUpdateOperationsInput | number
+    createdBy?: StringFieldUpdateOperationsInput | string
+    organizationId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    organizationId?: StringFieldUpdateOperationsInput | string
     events?: PhishingEventUncheckedUpdateManyWithoutCampaignNestedInput
   }
 
@@ -38392,9 +50685,15 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     organization?: OrganizationUpdateOneWithoutUsersNestedInput
     assessments?: AssessmentUpdateManyWithoutUserNestedInput
+    phishingCampaigns?: PhishingCampaignUpdateManyWithoutCreatorNestedInput
+    phishingTemplates?: PhishingTemplateUpdateManyWithoutCreatorNestedInput
     telemetryEvents?: TelemetryEventUpdateManyWithoutUserNestedInput
     auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
     refreshTokens?: RefreshTokenUpdateManyWithoutUserNestedInput
+    passwordResets?: PasswordResetUpdateManyWithoutUserNestedInput
+    createdInviteCodes?: InviteCodeUpdateManyWithoutCreatorNestedInput
+    organizationMemberships?: OrganizationMemberUpdateManyWithoutUserNestedInput
+    sentInvites?: OrganizationMemberUpdateManyWithoutInviterNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPhishingTargetsInput = {
@@ -38412,9 +50711,15 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     organizationId?: NullableStringFieldUpdateOperationsInput | string | null
     assessments?: AssessmentUncheckedUpdateManyWithoutUserNestedInput
+    phishingCampaigns?: PhishingCampaignUncheckedUpdateManyWithoutCreatorNestedInput
+    phishingTemplates?: PhishingTemplateUncheckedUpdateManyWithoutCreatorNestedInput
     telemetryEvents?: TelemetryEventUncheckedUpdateManyWithoutUserNestedInput
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
     refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+    passwordResets?: PasswordResetUncheckedUpdateManyWithoutUserNestedInput
+    createdInviteCodes?: InviteCodeUncheckedUpdateManyWithoutCreatorNestedInput
+    organizationMemberships?: OrganizationMemberUncheckedUpdateManyWithoutUserNestedInput
+    sentInvites?: OrganizationMemberUncheckedUpdateManyWithoutInviterNestedInput
   }
 
   export type PhishingEventUpsertWithWhereUniqueWithoutTargetInput = {
@@ -38437,6 +50742,7 @@ export namespace Prisma {
     id?: string
     name: string
     description?: string | null
+    templateId: string
     template: string
     subject: string
     senderName: string
@@ -38444,16 +50750,21 @@ export namespace Prisma {
     landingPageUrl?: string | null
     status?: $Enums.CampaignStatus
     scheduledAt?: Date | string | null
-    startedAt?: Date | string | null
+    launchedAt?: Date | string | null
     completedAt?: Date | string | null
+    pausedAt?: Date | string | null
     targetCount?: number
-    deliveredCount?: number
-    openedCount?: number
-    clickedCount?: number
-    reportedCount?: number
+    emailsSent?: number
+    emailsDelivered?: number
+    emailsOpened?: number
+    linksClicked?: number
+    credentialsEntered?: number
+    phishingReported?: number
+    emailsBounced?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     organization: OrganizationCreateNestedOneWithoutPhishingCampaignsInput
+    creator: UserCreateNestedOneWithoutPhishingCampaignsInput
     targets?: PhishingTargetCreateNestedManyWithoutCampaignInput
   }
 
@@ -38461,6 +50772,7 @@ export namespace Prisma {
     id?: string
     name: string
     description?: string | null
+    templateId: string
     template: string
     subject: string
     senderName: string
@@ -38468,16 +50780,21 @@ export namespace Prisma {
     landingPageUrl?: string | null
     status?: $Enums.CampaignStatus
     scheduledAt?: Date | string | null
-    startedAt?: Date | string | null
+    launchedAt?: Date | string | null
     completedAt?: Date | string | null
+    pausedAt?: Date | string | null
     targetCount?: number
-    deliveredCount?: number
-    openedCount?: number
-    clickedCount?: number
-    reportedCount?: number
+    emailsSent?: number
+    emailsDelivered?: number
+    emailsOpened?: number
+    linksClicked?: number
+    credentialsEntered?: number
+    phishingReported?: number
+    emailsBounced?: number
+    createdBy: string
+    organizationId: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    organizationId: string
     targets?: PhishingTargetUncheckedCreateNestedManyWithoutCampaignInput
   }
 
@@ -38492,13 +50809,27 @@ export namespace Prisma {
     firstName?: string | null
     lastName?: string | null
     department?: string | null
-    trackingId?: string
-    status?: $Enums.TargetStatus
+    jobTitle?: string | null
+    emailSent?: boolean
+    emailDelivered?: boolean
+    emailOpened?: boolean
+    linkClicked?: boolean
+    credentialsEntered?: boolean
+    reportedPhishing?: boolean
+    emailBounced?: boolean
+    sentAt?: Date | string | null
     deliveredAt?: Date | string | null
     openedAt?: Date | string | null
     clickedAt?: Date | string | null
+    credentialsAt?: Date | string | null
     reportedAt?: Date | string | null
+    bouncedAt?: Date | string | null
+    userAgent?: string | null
+    ipAddress?: string | null
+    clickCount?: number
+    riskScore?: number | null
     createdAt?: Date | string
+    updatedAt?: Date | string
     campaign: PhishingCampaignCreateNestedOneWithoutTargetsInput
     user?: UserCreateNestedOneWithoutPhishingTargetsInput
   }
@@ -38509,13 +50840,27 @@ export namespace Prisma {
     firstName?: string | null
     lastName?: string | null
     department?: string | null
-    trackingId?: string
-    status?: $Enums.TargetStatus
+    jobTitle?: string | null
+    emailSent?: boolean
+    emailDelivered?: boolean
+    emailOpened?: boolean
+    linkClicked?: boolean
+    credentialsEntered?: boolean
+    reportedPhishing?: boolean
+    emailBounced?: boolean
+    sentAt?: Date | string | null
     deliveredAt?: Date | string | null
     openedAt?: Date | string | null
     clickedAt?: Date | string | null
+    credentialsAt?: Date | string | null
     reportedAt?: Date | string | null
+    bouncedAt?: Date | string | null
+    userAgent?: string | null
+    ipAddress?: string | null
+    clickCount?: number
+    riskScore?: number | null
     createdAt?: Date | string
+    updatedAt?: Date | string
     campaignId: string
     userId?: string | null
   }
@@ -38540,6 +50885,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    templateId?: StringFieldUpdateOperationsInput | string
     template?: StringFieldUpdateOperationsInput | string
     subject?: StringFieldUpdateOperationsInput | string
     senderName?: StringFieldUpdateOperationsInput | string
@@ -38547,16 +50893,21 @@ export namespace Prisma {
     landingPageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumCampaignStatusFieldUpdateOperationsInput | $Enums.CampaignStatus
     scheduledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    launchedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    pausedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     targetCount?: IntFieldUpdateOperationsInput | number
-    deliveredCount?: IntFieldUpdateOperationsInput | number
-    openedCount?: IntFieldUpdateOperationsInput | number
-    clickedCount?: IntFieldUpdateOperationsInput | number
-    reportedCount?: IntFieldUpdateOperationsInput | number
+    emailsSent?: IntFieldUpdateOperationsInput | number
+    emailsDelivered?: IntFieldUpdateOperationsInput | number
+    emailsOpened?: IntFieldUpdateOperationsInput | number
+    linksClicked?: IntFieldUpdateOperationsInput | number
+    credentialsEntered?: IntFieldUpdateOperationsInput | number
+    phishingReported?: IntFieldUpdateOperationsInput | number
+    emailsBounced?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     organization?: OrganizationUpdateOneRequiredWithoutPhishingCampaignsNestedInput
+    creator?: UserUpdateOneRequiredWithoutPhishingCampaignsNestedInput
     targets?: PhishingTargetUpdateManyWithoutCampaignNestedInput
   }
 
@@ -38564,6 +50915,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    templateId?: StringFieldUpdateOperationsInput | string
     template?: StringFieldUpdateOperationsInput | string
     subject?: StringFieldUpdateOperationsInput | string
     senderName?: StringFieldUpdateOperationsInput | string
@@ -38571,16 +50923,21 @@ export namespace Prisma {
     landingPageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumCampaignStatusFieldUpdateOperationsInput | $Enums.CampaignStatus
     scheduledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    launchedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    pausedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     targetCount?: IntFieldUpdateOperationsInput | number
-    deliveredCount?: IntFieldUpdateOperationsInput | number
-    openedCount?: IntFieldUpdateOperationsInput | number
-    clickedCount?: IntFieldUpdateOperationsInput | number
-    reportedCount?: IntFieldUpdateOperationsInput | number
+    emailsSent?: IntFieldUpdateOperationsInput | number
+    emailsDelivered?: IntFieldUpdateOperationsInput | number
+    emailsOpened?: IntFieldUpdateOperationsInput | number
+    linksClicked?: IntFieldUpdateOperationsInput | number
+    credentialsEntered?: IntFieldUpdateOperationsInput | number
+    phishingReported?: IntFieldUpdateOperationsInput | number
+    emailsBounced?: IntFieldUpdateOperationsInput | number
+    createdBy?: StringFieldUpdateOperationsInput | string
+    organizationId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    organizationId?: StringFieldUpdateOperationsInput | string
     targets?: PhishingTargetUncheckedUpdateManyWithoutCampaignNestedInput
   }
 
@@ -38601,13 +50958,27 @@ export namespace Prisma {
     firstName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: NullableStringFieldUpdateOperationsInput | string | null
     department?: NullableStringFieldUpdateOperationsInput | string | null
-    trackingId?: StringFieldUpdateOperationsInput | string
-    status?: EnumTargetStatusFieldUpdateOperationsInput | $Enums.TargetStatus
+    jobTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    emailSent?: BoolFieldUpdateOperationsInput | boolean
+    emailDelivered?: BoolFieldUpdateOperationsInput | boolean
+    emailOpened?: BoolFieldUpdateOperationsInput | boolean
+    linkClicked?: BoolFieldUpdateOperationsInput | boolean
+    credentialsEntered?: BoolFieldUpdateOperationsInput | boolean
+    reportedPhishing?: BoolFieldUpdateOperationsInput | boolean
+    emailBounced?: BoolFieldUpdateOperationsInput | boolean
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     openedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     clickedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    credentialsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     reportedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bouncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    clickCount?: IntFieldUpdateOperationsInput | number
+    riskScore?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     campaign?: PhishingCampaignUpdateOneRequiredWithoutTargetsNestedInput
     user?: UserUpdateOneWithoutPhishingTargetsNestedInput
   }
@@ -38618,15 +50989,289 @@ export namespace Prisma {
     firstName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: NullableStringFieldUpdateOperationsInput | string | null
     department?: NullableStringFieldUpdateOperationsInput | string | null
-    trackingId?: StringFieldUpdateOperationsInput | string
-    status?: EnumTargetStatusFieldUpdateOperationsInput | $Enums.TargetStatus
+    jobTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    emailSent?: BoolFieldUpdateOperationsInput | boolean
+    emailDelivered?: BoolFieldUpdateOperationsInput | boolean
+    emailOpened?: BoolFieldUpdateOperationsInput | boolean
+    linkClicked?: BoolFieldUpdateOperationsInput | boolean
+    credentialsEntered?: BoolFieldUpdateOperationsInput | boolean
+    reportedPhishing?: BoolFieldUpdateOperationsInput | boolean
+    emailBounced?: BoolFieldUpdateOperationsInput | boolean
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     openedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     clickedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    credentialsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     reportedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bouncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    clickCount?: IntFieldUpdateOperationsInput | number
+    riskScore?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     campaignId?: StringFieldUpdateOperationsInput | string
     userId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type OrganizationCreateWithoutPhishingTemplatesInput = {
+    id?: string
+    name: string
+    email?: string | null
+    phone?: string | null
+    website?: string | null
+    description?: string | null
+    logo?: string | null
+    address?: string | null
+    city?: string | null
+    region?: string | null
+    country?: string
+    gpsAddress?: string | null
+    size: $Enums.OrganizationSize
+    sector: $Enums.Sector
+    isPublic?: boolean
+    csiScore?: number | null
+    riskTier?: $Enums.RiskTier | null
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    users?: UserCreateNestedManyWithoutOrganizationInput
+    assessments?: AssessmentCreateNestedManyWithoutOrganizationInput
+    subscriptions?: SubscriptionCreateNestedManyWithoutOrganizationInput
+    phishingCampaigns?: PhishingCampaignCreateNestedManyWithoutOrganizationInput
+    agents?: AgentCreateNestedManyWithoutOrganizationInput
+    invoices?: InvoiceCreateNestedManyWithoutOrganizationInput
+    inviteCodes?: InviteCodeCreateNestedManyWithoutOrganizationInput
+    members?: OrganizationMemberCreateNestedManyWithoutOrganizationInput
+  }
+
+  export type OrganizationUncheckedCreateWithoutPhishingTemplatesInput = {
+    id?: string
+    name: string
+    email?: string | null
+    phone?: string | null
+    website?: string | null
+    description?: string | null
+    logo?: string | null
+    address?: string | null
+    city?: string | null
+    region?: string | null
+    country?: string
+    gpsAddress?: string | null
+    size: $Enums.OrganizationSize
+    sector: $Enums.Sector
+    isPublic?: boolean
+    csiScore?: number | null
+    riskTier?: $Enums.RiskTier | null
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    users?: UserUncheckedCreateNestedManyWithoutOrganizationInput
+    assessments?: AssessmentUncheckedCreateNestedManyWithoutOrganizationInput
+    subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutOrganizationInput
+    phishingCampaigns?: PhishingCampaignUncheckedCreateNestedManyWithoutOrganizationInput
+    agents?: AgentUncheckedCreateNestedManyWithoutOrganizationInput
+    invoices?: InvoiceUncheckedCreateNestedManyWithoutOrganizationInput
+    inviteCodes?: InviteCodeUncheckedCreateNestedManyWithoutOrganizationInput
+    members?: OrganizationMemberUncheckedCreateNestedManyWithoutOrganizationInput
+  }
+
+  export type OrganizationCreateOrConnectWithoutPhishingTemplatesInput = {
+    where: OrganizationWhereUniqueInput
+    create: XOR<OrganizationCreateWithoutPhishingTemplatesInput, OrganizationUncheckedCreateWithoutPhishingTemplatesInput>
+  }
+
+  export type UserCreateWithoutPhishingTemplatesInput = {
+    id?: string
+    email: string
+    password: string
+    firstName: string
+    lastName: string
+    phone?: string | null
+    avatar?: string | null
+    emailVerified?: boolean
+    isActive?: boolean
+    role?: $Enums.UserRole
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    organization?: OrganizationCreateNestedOneWithoutUsersInput
+    assessments?: AssessmentCreateNestedManyWithoutUserInput
+    phishingTargets?: PhishingTargetCreateNestedManyWithoutUserInput
+    phishingCampaigns?: PhishingCampaignCreateNestedManyWithoutCreatorInput
+    telemetryEvents?: TelemetryEventCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUserInput
+    passwordResets?: PasswordResetCreateNestedManyWithoutUserInput
+    createdInviteCodes?: InviteCodeCreateNestedManyWithoutCreatorInput
+    organizationMemberships?: OrganizationMemberCreateNestedManyWithoutUserInput
+    sentInvites?: OrganizationMemberCreateNestedManyWithoutInviterInput
+  }
+
+  export type UserUncheckedCreateWithoutPhishingTemplatesInput = {
+    id?: string
+    email: string
+    password: string
+    firstName: string
+    lastName: string
+    phone?: string | null
+    avatar?: string | null
+    emailVerified?: boolean
+    isActive?: boolean
+    role?: $Enums.UserRole
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    organizationId?: string | null
+    assessments?: AssessmentUncheckedCreateNestedManyWithoutUserInput
+    phishingTargets?: PhishingTargetUncheckedCreateNestedManyWithoutUserInput
+    phishingCampaigns?: PhishingCampaignUncheckedCreateNestedManyWithoutCreatorInput
+    telemetryEvents?: TelemetryEventUncheckedCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+    passwordResets?: PasswordResetUncheckedCreateNestedManyWithoutUserInput
+    createdInviteCodes?: InviteCodeUncheckedCreateNestedManyWithoutCreatorInput
+    organizationMemberships?: OrganizationMemberUncheckedCreateNestedManyWithoutUserInput
+    sentInvites?: OrganizationMemberUncheckedCreateNestedManyWithoutInviterInput
+  }
+
+  export type UserCreateOrConnectWithoutPhishingTemplatesInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutPhishingTemplatesInput, UserUncheckedCreateWithoutPhishingTemplatesInput>
+  }
+
+  export type OrganizationUpsertWithoutPhishingTemplatesInput = {
+    update: XOR<OrganizationUpdateWithoutPhishingTemplatesInput, OrganizationUncheckedUpdateWithoutPhishingTemplatesInput>
+    create: XOR<OrganizationCreateWithoutPhishingTemplatesInput, OrganizationUncheckedCreateWithoutPhishingTemplatesInput>
+    where?: OrganizationWhereInput
+  }
+
+  export type OrganizationUpdateToOneWithWhereWithoutPhishingTemplatesInput = {
+    where?: OrganizationWhereInput
+    data: XOR<OrganizationUpdateWithoutPhishingTemplatesInput, OrganizationUncheckedUpdateWithoutPhishingTemplatesInput>
+  }
+
+  export type OrganizationUpdateWithoutPhishingTemplatesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    website?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    logo?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: StringFieldUpdateOperationsInput | string
+    gpsAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    size?: EnumOrganizationSizeFieldUpdateOperationsInput | $Enums.OrganizationSize
+    sector?: EnumSectorFieldUpdateOperationsInput | $Enums.Sector
+    isPublic?: BoolFieldUpdateOperationsInput | boolean
+    csiScore?: NullableFloatFieldUpdateOperationsInput | number | null
+    riskTier?: NullableEnumRiskTierFieldUpdateOperationsInput | $Enums.RiskTier | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    users?: UserUpdateManyWithoutOrganizationNestedInput
+    assessments?: AssessmentUpdateManyWithoutOrganizationNestedInput
+    subscriptions?: SubscriptionUpdateManyWithoutOrganizationNestedInput
+    phishingCampaigns?: PhishingCampaignUpdateManyWithoutOrganizationNestedInput
+    agents?: AgentUpdateManyWithoutOrganizationNestedInput
+    invoices?: InvoiceUpdateManyWithoutOrganizationNestedInput
+    inviteCodes?: InviteCodeUpdateManyWithoutOrganizationNestedInput
+    members?: OrganizationMemberUpdateManyWithoutOrganizationNestedInput
+  }
+
+  export type OrganizationUncheckedUpdateWithoutPhishingTemplatesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    website?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    logo?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: StringFieldUpdateOperationsInput | string
+    gpsAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    size?: EnumOrganizationSizeFieldUpdateOperationsInput | $Enums.OrganizationSize
+    sector?: EnumSectorFieldUpdateOperationsInput | $Enums.Sector
+    isPublic?: BoolFieldUpdateOperationsInput | boolean
+    csiScore?: NullableFloatFieldUpdateOperationsInput | number | null
+    riskTier?: NullableEnumRiskTierFieldUpdateOperationsInput | $Enums.RiskTier | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    users?: UserUncheckedUpdateManyWithoutOrganizationNestedInput
+    assessments?: AssessmentUncheckedUpdateManyWithoutOrganizationNestedInput
+    subscriptions?: SubscriptionUncheckedUpdateManyWithoutOrganizationNestedInput
+    phishingCampaigns?: PhishingCampaignUncheckedUpdateManyWithoutOrganizationNestedInput
+    agents?: AgentUncheckedUpdateManyWithoutOrganizationNestedInput
+    invoices?: InvoiceUncheckedUpdateManyWithoutOrganizationNestedInput
+    inviteCodes?: InviteCodeUncheckedUpdateManyWithoutOrganizationNestedInput
+    members?: OrganizationMemberUncheckedUpdateManyWithoutOrganizationNestedInput
+  }
+
+  export type UserUpsertWithoutPhishingTemplatesInput = {
+    update: XOR<UserUpdateWithoutPhishingTemplatesInput, UserUncheckedUpdateWithoutPhishingTemplatesInput>
+    create: XOR<UserCreateWithoutPhishingTemplatesInput, UserUncheckedCreateWithoutPhishingTemplatesInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutPhishingTemplatesInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutPhishingTemplatesInput, UserUncheckedUpdateWithoutPhishingTemplatesInput>
+  }
+
+  export type UserUpdateWithoutPhishingTemplatesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organization?: OrganizationUpdateOneWithoutUsersNestedInput
+    assessments?: AssessmentUpdateManyWithoutUserNestedInput
+    phishingTargets?: PhishingTargetUpdateManyWithoutUserNestedInput
+    phishingCampaigns?: PhishingCampaignUpdateManyWithoutCreatorNestedInput
+    telemetryEvents?: TelemetryEventUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUserNestedInput
+    passwordResets?: PasswordResetUpdateManyWithoutUserNestedInput
+    createdInviteCodes?: InviteCodeUpdateManyWithoutCreatorNestedInput
+    organizationMemberships?: OrganizationMemberUpdateManyWithoutUserNestedInput
+    sentInvites?: OrganizationMemberUpdateManyWithoutInviterNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutPhishingTemplatesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organizationId?: NullableStringFieldUpdateOperationsInput | string | null
+    assessments?: AssessmentUncheckedUpdateManyWithoutUserNestedInput
+    phishingTargets?: PhishingTargetUncheckedUpdateManyWithoutUserNestedInput
+    phishingCampaigns?: PhishingCampaignUncheckedUpdateManyWithoutCreatorNestedInput
+    telemetryEvents?: TelemetryEventUncheckedUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+    passwordResets?: PasswordResetUncheckedUpdateManyWithoutUserNestedInput
+    createdInviteCodes?: InviteCodeUncheckedUpdateManyWithoutCreatorNestedInput
+    organizationMemberships?: OrganizationMemberUncheckedUpdateManyWithoutUserNestedInput
+    sentInvites?: OrganizationMemberUncheckedUpdateManyWithoutInviterNestedInput
   }
 
   export type OrganizationCreateWithoutAgentsInput = {
@@ -38654,7 +51299,10 @@ export namespace Prisma {
     assessments?: AssessmentCreateNestedManyWithoutOrganizationInput
     subscriptions?: SubscriptionCreateNestedManyWithoutOrganizationInput
     phishingCampaigns?: PhishingCampaignCreateNestedManyWithoutOrganizationInput
+    phishingTemplates?: PhishingTemplateCreateNestedManyWithoutOrganizationInput
     invoices?: InvoiceCreateNestedManyWithoutOrganizationInput
+    inviteCodes?: InviteCodeCreateNestedManyWithoutOrganizationInput
+    members?: OrganizationMemberCreateNestedManyWithoutOrganizationInput
   }
 
   export type OrganizationUncheckedCreateWithoutAgentsInput = {
@@ -38682,7 +51330,10 @@ export namespace Prisma {
     assessments?: AssessmentUncheckedCreateNestedManyWithoutOrganizationInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutOrganizationInput
     phishingCampaigns?: PhishingCampaignUncheckedCreateNestedManyWithoutOrganizationInput
+    phishingTemplates?: PhishingTemplateUncheckedCreateNestedManyWithoutOrganizationInput
     invoices?: InvoiceUncheckedCreateNestedManyWithoutOrganizationInput
+    inviteCodes?: InviteCodeUncheckedCreateNestedManyWithoutOrganizationInput
+    members?: OrganizationMemberUncheckedCreateNestedManyWithoutOrganizationInput
   }
 
   export type OrganizationCreateOrConnectWithoutAgentsInput = {
@@ -38830,7 +51481,10 @@ export namespace Prisma {
     assessments?: AssessmentUpdateManyWithoutOrganizationNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutOrganizationNestedInput
     phishingCampaigns?: PhishingCampaignUpdateManyWithoutOrganizationNestedInput
+    phishingTemplates?: PhishingTemplateUpdateManyWithoutOrganizationNestedInput
     invoices?: InvoiceUpdateManyWithoutOrganizationNestedInput
+    inviteCodes?: InviteCodeUpdateManyWithoutOrganizationNestedInput
+    members?: OrganizationMemberUpdateManyWithoutOrganizationNestedInput
   }
 
   export type OrganizationUncheckedUpdateWithoutAgentsInput = {
@@ -38858,7 +51512,10 @@ export namespace Prisma {
     assessments?: AssessmentUncheckedUpdateManyWithoutOrganizationNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutOrganizationNestedInput
     phishingCampaigns?: PhishingCampaignUncheckedUpdateManyWithoutOrganizationNestedInput
+    phishingTemplates?: PhishingTemplateUncheckedUpdateManyWithoutOrganizationNestedInput
     invoices?: InvoiceUncheckedUpdateManyWithoutOrganizationNestedInput
+    inviteCodes?: InviteCodeUncheckedUpdateManyWithoutOrganizationNestedInput
+    members?: OrganizationMemberUncheckedUpdateManyWithoutOrganizationNestedInput
   }
 
   export type TelemetryEventUpsertWithWhereUniqueWithoutAgentInput = {
@@ -39003,8 +51660,14 @@ export namespace Prisma {
     organization?: OrganizationCreateNestedOneWithoutUsersInput
     assessments?: AssessmentCreateNestedManyWithoutUserInput
     phishingTargets?: PhishingTargetCreateNestedManyWithoutUserInput
+    phishingCampaigns?: PhishingCampaignCreateNestedManyWithoutCreatorInput
+    phishingTemplates?: PhishingTemplateCreateNestedManyWithoutCreatorInput
     auditLogs?: AuditLogCreateNestedManyWithoutUserInput
     refreshTokens?: RefreshTokenCreateNestedManyWithoutUserInput
+    passwordResets?: PasswordResetCreateNestedManyWithoutUserInput
+    createdInviteCodes?: InviteCodeCreateNestedManyWithoutCreatorInput
+    organizationMemberships?: OrganizationMemberCreateNestedManyWithoutUserInput
+    sentInvites?: OrganizationMemberCreateNestedManyWithoutInviterInput
   }
 
   export type UserUncheckedCreateWithoutTelemetryEventsInput = {
@@ -39023,8 +51686,14 @@ export namespace Prisma {
     organizationId?: string | null
     assessments?: AssessmentUncheckedCreateNestedManyWithoutUserInput
     phishingTargets?: PhishingTargetUncheckedCreateNestedManyWithoutUserInput
+    phishingCampaigns?: PhishingCampaignUncheckedCreateNestedManyWithoutCreatorInput
+    phishingTemplates?: PhishingTemplateUncheckedCreateNestedManyWithoutCreatorInput
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
     refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+    passwordResets?: PasswordResetUncheckedCreateNestedManyWithoutUserInput
+    createdInviteCodes?: InviteCodeUncheckedCreateNestedManyWithoutCreatorInput
+    organizationMemberships?: OrganizationMemberUncheckedCreateNestedManyWithoutUserInput
+    sentInvites?: OrganizationMemberUncheckedCreateNestedManyWithoutInviterInput
   }
 
   export type UserCreateOrConnectWithoutTelemetryEventsInput = {
@@ -39108,8 +51777,14 @@ export namespace Prisma {
     organization?: OrganizationUpdateOneWithoutUsersNestedInput
     assessments?: AssessmentUpdateManyWithoutUserNestedInput
     phishingTargets?: PhishingTargetUpdateManyWithoutUserNestedInput
+    phishingCampaigns?: PhishingCampaignUpdateManyWithoutCreatorNestedInput
+    phishingTemplates?: PhishingTemplateUpdateManyWithoutCreatorNestedInput
     auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
     refreshTokens?: RefreshTokenUpdateManyWithoutUserNestedInput
+    passwordResets?: PasswordResetUpdateManyWithoutUserNestedInput
+    createdInviteCodes?: InviteCodeUpdateManyWithoutCreatorNestedInput
+    organizationMemberships?: OrganizationMemberUpdateManyWithoutUserNestedInput
+    sentInvites?: OrganizationMemberUpdateManyWithoutInviterNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTelemetryEventsInput = {
@@ -39128,8 +51803,14 @@ export namespace Prisma {
     organizationId?: NullableStringFieldUpdateOperationsInput | string | null
     assessments?: AssessmentUncheckedUpdateManyWithoutUserNestedInput
     phishingTargets?: PhishingTargetUncheckedUpdateManyWithoutUserNestedInput
+    phishingCampaigns?: PhishingCampaignUncheckedUpdateManyWithoutCreatorNestedInput
+    phishingTemplates?: PhishingTemplateUncheckedUpdateManyWithoutCreatorNestedInput
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
     refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+    passwordResets?: PasswordResetUncheckedUpdateManyWithoutUserNestedInput
+    createdInviteCodes?: InviteCodeUncheckedUpdateManyWithoutCreatorNestedInput
+    organizationMemberships?: OrganizationMemberUncheckedUpdateManyWithoutUserNestedInput
+    sentInvites?: OrganizationMemberUncheckedUpdateManyWithoutInviterNestedInput
   }
 
   export type AlertCreateWithoutRuleInput = {
@@ -39516,8 +52197,11 @@ export namespace Prisma {
     users?: UserCreateNestedManyWithoutOrganizationInput
     assessments?: AssessmentCreateNestedManyWithoutOrganizationInput
     phishingCampaigns?: PhishingCampaignCreateNestedManyWithoutOrganizationInput
+    phishingTemplates?: PhishingTemplateCreateNestedManyWithoutOrganizationInput
     agents?: AgentCreateNestedManyWithoutOrganizationInput
     invoices?: InvoiceCreateNestedManyWithoutOrganizationInput
+    inviteCodes?: InviteCodeCreateNestedManyWithoutOrganizationInput
+    members?: OrganizationMemberCreateNestedManyWithoutOrganizationInput
   }
 
   export type OrganizationUncheckedCreateWithoutSubscriptionsInput = {
@@ -39544,8 +52228,11 @@ export namespace Prisma {
     users?: UserUncheckedCreateNestedManyWithoutOrganizationInput
     assessments?: AssessmentUncheckedCreateNestedManyWithoutOrganizationInput
     phishingCampaigns?: PhishingCampaignUncheckedCreateNestedManyWithoutOrganizationInput
+    phishingTemplates?: PhishingTemplateUncheckedCreateNestedManyWithoutOrganizationInput
     agents?: AgentUncheckedCreateNestedManyWithoutOrganizationInput
     invoices?: InvoiceUncheckedCreateNestedManyWithoutOrganizationInput
+    inviteCodes?: InviteCodeUncheckedCreateNestedManyWithoutOrganizationInput
+    members?: OrganizationMemberUncheckedCreateNestedManyWithoutOrganizationInput
   }
 
   export type OrganizationCreateOrConnectWithoutSubscriptionsInput = {
@@ -39669,8 +52356,11 @@ export namespace Prisma {
     users?: UserUpdateManyWithoutOrganizationNestedInput
     assessments?: AssessmentUpdateManyWithoutOrganizationNestedInput
     phishingCampaigns?: PhishingCampaignUpdateManyWithoutOrganizationNestedInput
+    phishingTemplates?: PhishingTemplateUpdateManyWithoutOrganizationNestedInput
     agents?: AgentUpdateManyWithoutOrganizationNestedInput
     invoices?: InvoiceUpdateManyWithoutOrganizationNestedInput
+    inviteCodes?: InviteCodeUpdateManyWithoutOrganizationNestedInput
+    members?: OrganizationMemberUpdateManyWithoutOrganizationNestedInput
   }
 
   export type OrganizationUncheckedUpdateWithoutSubscriptionsInput = {
@@ -39697,8 +52387,11 @@ export namespace Prisma {
     users?: UserUncheckedUpdateManyWithoutOrganizationNestedInput
     assessments?: AssessmentUncheckedUpdateManyWithoutOrganizationNestedInput
     phishingCampaigns?: PhishingCampaignUncheckedUpdateManyWithoutOrganizationNestedInput
+    phishingTemplates?: PhishingTemplateUncheckedUpdateManyWithoutOrganizationNestedInput
     agents?: AgentUncheckedUpdateManyWithoutOrganizationNestedInput
     invoices?: InvoiceUncheckedUpdateManyWithoutOrganizationNestedInput
+    inviteCodes?: InviteCodeUncheckedUpdateManyWithoutOrganizationNestedInput
+    members?: OrganizationMemberUncheckedUpdateManyWithoutOrganizationNestedInput
   }
 
   export type SubscriptionPlanUpsertWithoutSubscriptionsInput = {
@@ -39785,7 +52478,10 @@ export namespace Prisma {
     assessments?: AssessmentCreateNestedManyWithoutOrganizationInput
     subscriptions?: SubscriptionCreateNestedManyWithoutOrganizationInput
     phishingCampaigns?: PhishingCampaignCreateNestedManyWithoutOrganizationInput
+    phishingTemplates?: PhishingTemplateCreateNestedManyWithoutOrganizationInput
     agents?: AgentCreateNestedManyWithoutOrganizationInput
+    inviteCodes?: InviteCodeCreateNestedManyWithoutOrganizationInput
+    members?: OrganizationMemberCreateNestedManyWithoutOrganizationInput
   }
 
   export type OrganizationUncheckedCreateWithoutInvoicesInput = {
@@ -39813,7 +52509,10 @@ export namespace Prisma {
     assessments?: AssessmentUncheckedCreateNestedManyWithoutOrganizationInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutOrganizationInput
     phishingCampaigns?: PhishingCampaignUncheckedCreateNestedManyWithoutOrganizationInput
+    phishingTemplates?: PhishingTemplateUncheckedCreateNestedManyWithoutOrganizationInput
     agents?: AgentUncheckedCreateNestedManyWithoutOrganizationInput
+    inviteCodes?: InviteCodeUncheckedCreateNestedManyWithoutOrganizationInput
+    members?: OrganizationMemberUncheckedCreateNestedManyWithoutOrganizationInput
   }
 
   export type OrganizationCreateOrConnectWithoutInvoicesInput = {
@@ -39928,7 +52627,10 @@ export namespace Prisma {
     assessments?: AssessmentUpdateManyWithoutOrganizationNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutOrganizationNestedInput
     phishingCampaigns?: PhishingCampaignUpdateManyWithoutOrganizationNestedInput
+    phishingTemplates?: PhishingTemplateUpdateManyWithoutOrganizationNestedInput
     agents?: AgentUpdateManyWithoutOrganizationNestedInput
+    inviteCodes?: InviteCodeUpdateManyWithoutOrganizationNestedInput
+    members?: OrganizationMemberUpdateManyWithoutOrganizationNestedInput
   }
 
   export type OrganizationUncheckedUpdateWithoutInvoicesInput = {
@@ -39956,7 +52658,10 @@ export namespace Prisma {
     assessments?: AssessmentUncheckedUpdateManyWithoutOrganizationNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutOrganizationNestedInput
     phishingCampaigns?: PhishingCampaignUncheckedUpdateManyWithoutOrganizationNestedInput
+    phishingTemplates?: PhishingTemplateUncheckedUpdateManyWithoutOrganizationNestedInput
     agents?: AgentUncheckedUpdateManyWithoutOrganizationNestedInput
+    inviteCodes?: InviteCodeUncheckedUpdateManyWithoutOrganizationNestedInput
+    members?: OrganizationMemberUncheckedUpdateManyWithoutOrganizationNestedInput
   }
 
   export type SubscriptionUpsertWithoutInvoicesInput = {
@@ -40133,8 +52838,14 @@ export namespace Prisma {
     organization?: OrganizationCreateNestedOneWithoutUsersInput
     assessments?: AssessmentCreateNestedManyWithoutUserInput
     phishingTargets?: PhishingTargetCreateNestedManyWithoutUserInput
+    phishingCampaigns?: PhishingCampaignCreateNestedManyWithoutCreatorInput
+    phishingTemplates?: PhishingTemplateCreateNestedManyWithoutCreatorInput
     telemetryEvents?: TelemetryEventCreateNestedManyWithoutUserInput
     refreshTokens?: RefreshTokenCreateNestedManyWithoutUserInput
+    passwordResets?: PasswordResetCreateNestedManyWithoutUserInput
+    createdInviteCodes?: InviteCodeCreateNestedManyWithoutCreatorInput
+    organizationMemberships?: OrganizationMemberCreateNestedManyWithoutUserInput
+    sentInvites?: OrganizationMemberCreateNestedManyWithoutInviterInput
   }
 
   export type UserUncheckedCreateWithoutAuditLogsInput = {
@@ -40153,8 +52864,14 @@ export namespace Prisma {
     organizationId?: string | null
     assessments?: AssessmentUncheckedCreateNestedManyWithoutUserInput
     phishingTargets?: PhishingTargetUncheckedCreateNestedManyWithoutUserInput
+    phishingCampaigns?: PhishingCampaignUncheckedCreateNestedManyWithoutCreatorInput
+    phishingTemplates?: PhishingTemplateUncheckedCreateNestedManyWithoutCreatorInput
     telemetryEvents?: TelemetryEventUncheckedCreateNestedManyWithoutUserInput
     refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+    passwordResets?: PasswordResetUncheckedCreateNestedManyWithoutUserInput
+    createdInviteCodes?: InviteCodeUncheckedCreateNestedManyWithoutCreatorInput
+    organizationMemberships?: OrganizationMemberUncheckedCreateNestedManyWithoutUserInput
+    sentInvites?: OrganizationMemberUncheckedCreateNestedManyWithoutInviterInput
   }
 
   export type UserCreateOrConnectWithoutAuditLogsInput = {
@@ -40189,8 +52906,14 @@ export namespace Prisma {
     organization?: OrganizationUpdateOneWithoutUsersNestedInput
     assessments?: AssessmentUpdateManyWithoutUserNestedInput
     phishingTargets?: PhishingTargetUpdateManyWithoutUserNestedInput
+    phishingCampaigns?: PhishingCampaignUpdateManyWithoutCreatorNestedInput
+    phishingTemplates?: PhishingTemplateUpdateManyWithoutCreatorNestedInput
     telemetryEvents?: TelemetryEventUpdateManyWithoutUserNestedInput
     refreshTokens?: RefreshTokenUpdateManyWithoutUserNestedInput
+    passwordResets?: PasswordResetUpdateManyWithoutUserNestedInput
+    createdInviteCodes?: InviteCodeUpdateManyWithoutCreatorNestedInput
+    organizationMemberships?: OrganizationMemberUpdateManyWithoutUserNestedInput
+    sentInvites?: OrganizationMemberUpdateManyWithoutInviterNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAuditLogsInput = {
@@ -40209,8 +52932,14 @@ export namespace Prisma {
     organizationId?: NullableStringFieldUpdateOperationsInput | string | null
     assessments?: AssessmentUncheckedUpdateManyWithoutUserNestedInput
     phishingTargets?: PhishingTargetUncheckedUpdateManyWithoutUserNestedInput
+    phishingCampaigns?: PhishingCampaignUncheckedUpdateManyWithoutCreatorNestedInput
+    phishingTemplates?: PhishingTemplateUncheckedUpdateManyWithoutCreatorNestedInput
     telemetryEvents?: TelemetryEventUncheckedUpdateManyWithoutUserNestedInput
     refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+    passwordResets?: PasswordResetUncheckedUpdateManyWithoutUserNestedInput
+    createdInviteCodes?: InviteCodeUncheckedUpdateManyWithoutCreatorNestedInput
+    organizationMemberships?: OrganizationMemberUncheckedUpdateManyWithoutUserNestedInput
+    sentInvites?: OrganizationMemberUncheckedUpdateManyWithoutInviterNestedInput
   }
 
   export type AssessmentCreateManyUserInput = {
@@ -40239,14 +52968,78 @@ export namespace Prisma {
     firstName?: string | null
     lastName?: string | null
     department?: string | null
-    trackingId?: string
-    status?: $Enums.TargetStatus
+    jobTitle?: string | null
+    emailSent?: boolean
+    emailDelivered?: boolean
+    emailOpened?: boolean
+    linkClicked?: boolean
+    credentialsEntered?: boolean
+    reportedPhishing?: boolean
+    emailBounced?: boolean
+    sentAt?: Date | string | null
     deliveredAt?: Date | string | null
     openedAt?: Date | string | null
     clickedAt?: Date | string | null
+    credentialsAt?: Date | string | null
     reportedAt?: Date | string | null
+    bouncedAt?: Date | string | null
+    userAgent?: string | null
+    ipAddress?: string | null
+    clickCount?: number
+    riskScore?: number | null
     createdAt?: Date | string
+    updatedAt?: Date | string
     campaignId: string
+  }
+
+  export type PhishingCampaignCreateManyCreatorInput = {
+    id?: string
+    name: string
+    description?: string | null
+    templateId: string
+    template: string
+    subject: string
+    senderName: string
+    senderEmail: string
+    landingPageUrl?: string | null
+    status?: $Enums.CampaignStatus
+    scheduledAt?: Date | string | null
+    launchedAt?: Date | string | null
+    completedAt?: Date | string | null
+    pausedAt?: Date | string | null
+    targetCount?: number
+    emailsSent?: number
+    emailsDelivered?: number
+    emailsOpened?: number
+    linksClicked?: number
+    credentialsEntered?: number
+    phishingReported?: number
+    emailsBounced?: number
+    organizationId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PhishingTemplateCreateManyCreatorInput = {
+    id?: string
+    name: string
+    description: string
+    category: $Enums.TemplateCategory
+    riskLevel: $Enums.RiskLevel
+    defaultSubject: string
+    defaultSenderName: string
+    emailBodyHtml: string
+    emailBodyText: string
+    landingPageHtml?: string | null
+    captureCredentials?: boolean
+    isActive?: boolean
+    previewContent: string
+    tags?: PhishingTemplateCreatetagsInput | string[]
+    usageCount?: number
+    successRate?: number | null
+    organizationId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type TelemetryEventCreateManyUserInput = {
@@ -40278,6 +53071,45 @@ export namespace Prisma {
     createdAt?: Date | string
   }
 
+  export type PasswordResetCreateManyUserInput = {
+    id?: string
+    token: string
+    expiresAt: Date | string
+    used?: boolean
+    createdAt?: Date | string
+  }
+
+  export type InviteCodeCreateManyCreatorInput = {
+    id?: string
+    code: string
+    organizationId: string
+    expiresAt: Date | string
+    usageLimit?: number
+    usedCount?: number
+    isActive?: boolean
+    createdAt?: Date | string
+  }
+
+  export type OrganizationMemberCreateManyUserInput = {
+    id?: string
+    organizationId: string
+    role?: $Enums.UserRole
+    status?: $Enums.MemberStatus
+    joinedAt?: Date | string
+    invitedBy?: string | null
+    inviteCode?: string | null
+  }
+
+  export type OrganizationMemberCreateManyInviterInput = {
+    id?: string
+    userId: string
+    organizationId: string
+    role?: $Enums.UserRole
+    status?: $Enums.MemberStatus
+    joinedAt?: Date | string
+    inviteCode?: string | null
+  }
+
   export type AssessmentUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
@@ -40297,6 +53129,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     organization?: OrganizationUpdateOneRequiredWithoutAssessmentsNestedInput
     responses?: AssessmentResponseUpdateManyWithoutAssessmentNestedInput
+    result?: AssessmentResultUpdateOneWithoutAssessmentNestedInput
   }
 
   export type AssessmentUncheckedUpdateWithoutUserInput = {
@@ -40318,6 +53151,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     organizationId?: StringFieldUpdateOperationsInput | string
     responses?: AssessmentResponseUncheckedUpdateManyWithoutAssessmentNestedInput
+    result?: AssessmentResultUncheckedUpdateOneWithoutAssessmentNestedInput
   }
 
   export type AssessmentUncheckedUpdateManyWithoutUserInput = {
@@ -40346,13 +53180,27 @@ export namespace Prisma {
     firstName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: NullableStringFieldUpdateOperationsInput | string | null
     department?: NullableStringFieldUpdateOperationsInput | string | null
-    trackingId?: StringFieldUpdateOperationsInput | string
-    status?: EnumTargetStatusFieldUpdateOperationsInput | $Enums.TargetStatus
+    jobTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    emailSent?: BoolFieldUpdateOperationsInput | boolean
+    emailDelivered?: BoolFieldUpdateOperationsInput | boolean
+    emailOpened?: BoolFieldUpdateOperationsInput | boolean
+    linkClicked?: BoolFieldUpdateOperationsInput | boolean
+    credentialsEntered?: BoolFieldUpdateOperationsInput | boolean
+    reportedPhishing?: BoolFieldUpdateOperationsInput | boolean
+    emailBounced?: BoolFieldUpdateOperationsInput | boolean
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     openedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     clickedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    credentialsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     reportedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bouncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    clickCount?: IntFieldUpdateOperationsInput | number
+    riskScore?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     campaign?: PhishingCampaignUpdateOneRequiredWithoutTargetsNestedInput
     events?: PhishingEventUpdateManyWithoutTargetNestedInput
   }
@@ -40363,13 +53211,27 @@ export namespace Prisma {
     firstName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: NullableStringFieldUpdateOperationsInput | string | null
     department?: NullableStringFieldUpdateOperationsInput | string | null
-    trackingId?: StringFieldUpdateOperationsInput | string
-    status?: EnumTargetStatusFieldUpdateOperationsInput | $Enums.TargetStatus
+    jobTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    emailSent?: BoolFieldUpdateOperationsInput | boolean
+    emailDelivered?: BoolFieldUpdateOperationsInput | boolean
+    emailOpened?: BoolFieldUpdateOperationsInput | boolean
+    linkClicked?: BoolFieldUpdateOperationsInput | boolean
+    credentialsEntered?: BoolFieldUpdateOperationsInput | boolean
+    reportedPhishing?: BoolFieldUpdateOperationsInput | boolean
+    emailBounced?: BoolFieldUpdateOperationsInput | boolean
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     openedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     clickedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    credentialsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     reportedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bouncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    clickCount?: IntFieldUpdateOperationsInput | number
+    riskScore?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     campaignId?: StringFieldUpdateOperationsInput | string
     events?: PhishingEventUncheckedUpdateManyWithoutTargetNestedInput
   }
@@ -40380,14 +53242,182 @@ export namespace Prisma {
     firstName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: NullableStringFieldUpdateOperationsInput | string | null
     department?: NullableStringFieldUpdateOperationsInput | string | null
-    trackingId?: StringFieldUpdateOperationsInput | string
-    status?: EnumTargetStatusFieldUpdateOperationsInput | $Enums.TargetStatus
+    jobTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    emailSent?: BoolFieldUpdateOperationsInput | boolean
+    emailDelivered?: BoolFieldUpdateOperationsInput | boolean
+    emailOpened?: BoolFieldUpdateOperationsInput | boolean
+    linkClicked?: BoolFieldUpdateOperationsInput | boolean
+    credentialsEntered?: BoolFieldUpdateOperationsInput | boolean
+    reportedPhishing?: BoolFieldUpdateOperationsInput | boolean
+    emailBounced?: BoolFieldUpdateOperationsInput | boolean
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     openedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     clickedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    credentialsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     reportedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bouncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    clickCount?: IntFieldUpdateOperationsInput | number
+    riskScore?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     campaignId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type PhishingCampaignUpdateWithoutCreatorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    templateId?: StringFieldUpdateOperationsInput | string
+    template?: StringFieldUpdateOperationsInput | string
+    subject?: StringFieldUpdateOperationsInput | string
+    senderName?: StringFieldUpdateOperationsInput | string
+    senderEmail?: StringFieldUpdateOperationsInput | string
+    landingPageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumCampaignStatusFieldUpdateOperationsInput | $Enums.CampaignStatus
+    scheduledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    launchedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    pausedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    targetCount?: IntFieldUpdateOperationsInput | number
+    emailsSent?: IntFieldUpdateOperationsInput | number
+    emailsDelivered?: IntFieldUpdateOperationsInput | number
+    emailsOpened?: IntFieldUpdateOperationsInput | number
+    linksClicked?: IntFieldUpdateOperationsInput | number
+    credentialsEntered?: IntFieldUpdateOperationsInput | number
+    phishingReported?: IntFieldUpdateOperationsInput | number
+    emailsBounced?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organization?: OrganizationUpdateOneRequiredWithoutPhishingCampaignsNestedInput
+    targets?: PhishingTargetUpdateManyWithoutCampaignNestedInput
+    events?: PhishingEventUpdateManyWithoutCampaignNestedInput
+  }
+
+  export type PhishingCampaignUncheckedUpdateWithoutCreatorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    templateId?: StringFieldUpdateOperationsInput | string
+    template?: StringFieldUpdateOperationsInput | string
+    subject?: StringFieldUpdateOperationsInput | string
+    senderName?: StringFieldUpdateOperationsInput | string
+    senderEmail?: StringFieldUpdateOperationsInput | string
+    landingPageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumCampaignStatusFieldUpdateOperationsInput | $Enums.CampaignStatus
+    scheduledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    launchedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    pausedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    targetCount?: IntFieldUpdateOperationsInput | number
+    emailsSent?: IntFieldUpdateOperationsInput | number
+    emailsDelivered?: IntFieldUpdateOperationsInput | number
+    emailsOpened?: IntFieldUpdateOperationsInput | number
+    linksClicked?: IntFieldUpdateOperationsInput | number
+    credentialsEntered?: IntFieldUpdateOperationsInput | number
+    phishingReported?: IntFieldUpdateOperationsInput | number
+    emailsBounced?: IntFieldUpdateOperationsInput | number
+    organizationId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    targets?: PhishingTargetUncheckedUpdateManyWithoutCampaignNestedInput
+    events?: PhishingEventUncheckedUpdateManyWithoutCampaignNestedInput
+  }
+
+  export type PhishingCampaignUncheckedUpdateManyWithoutCreatorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    templateId?: StringFieldUpdateOperationsInput | string
+    template?: StringFieldUpdateOperationsInput | string
+    subject?: StringFieldUpdateOperationsInput | string
+    senderName?: StringFieldUpdateOperationsInput | string
+    senderEmail?: StringFieldUpdateOperationsInput | string
+    landingPageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumCampaignStatusFieldUpdateOperationsInput | $Enums.CampaignStatus
+    scheduledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    launchedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    pausedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    targetCount?: IntFieldUpdateOperationsInput | number
+    emailsSent?: IntFieldUpdateOperationsInput | number
+    emailsDelivered?: IntFieldUpdateOperationsInput | number
+    emailsOpened?: IntFieldUpdateOperationsInput | number
+    linksClicked?: IntFieldUpdateOperationsInput | number
+    credentialsEntered?: IntFieldUpdateOperationsInput | number
+    phishingReported?: IntFieldUpdateOperationsInput | number
+    emailsBounced?: IntFieldUpdateOperationsInput | number
+    organizationId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PhishingTemplateUpdateWithoutCreatorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    category?: EnumTemplateCategoryFieldUpdateOperationsInput | $Enums.TemplateCategory
+    riskLevel?: EnumRiskLevelFieldUpdateOperationsInput | $Enums.RiskLevel
+    defaultSubject?: StringFieldUpdateOperationsInput | string
+    defaultSenderName?: StringFieldUpdateOperationsInput | string
+    emailBodyHtml?: StringFieldUpdateOperationsInput | string
+    emailBodyText?: StringFieldUpdateOperationsInput | string
+    landingPageHtml?: NullableStringFieldUpdateOperationsInput | string | null
+    captureCredentials?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    previewContent?: StringFieldUpdateOperationsInput | string
+    tags?: PhishingTemplateUpdatetagsInput | string[]
+    usageCount?: IntFieldUpdateOperationsInput | number
+    successRate?: NullableFloatFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organization?: OrganizationUpdateOneWithoutPhishingTemplatesNestedInput
+  }
+
+  export type PhishingTemplateUncheckedUpdateWithoutCreatorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    category?: EnumTemplateCategoryFieldUpdateOperationsInput | $Enums.TemplateCategory
+    riskLevel?: EnumRiskLevelFieldUpdateOperationsInput | $Enums.RiskLevel
+    defaultSubject?: StringFieldUpdateOperationsInput | string
+    defaultSenderName?: StringFieldUpdateOperationsInput | string
+    emailBodyHtml?: StringFieldUpdateOperationsInput | string
+    emailBodyText?: StringFieldUpdateOperationsInput | string
+    landingPageHtml?: NullableStringFieldUpdateOperationsInput | string | null
+    captureCredentials?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    previewContent?: StringFieldUpdateOperationsInput | string
+    tags?: PhishingTemplateUpdatetagsInput | string[]
+    usageCount?: IntFieldUpdateOperationsInput | number
+    successRate?: NullableFloatFieldUpdateOperationsInput | number | null
+    organizationId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PhishingTemplateUncheckedUpdateManyWithoutCreatorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    category?: EnumTemplateCategoryFieldUpdateOperationsInput | $Enums.TemplateCategory
+    riskLevel?: EnumRiskLevelFieldUpdateOperationsInput | $Enums.RiskLevel
+    defaultSubject?: StringFieldUpdateOperationsInput | string
+    defaultSenderName?: StringFieldUpdateOperationsInput | string
+    emailBodyHtml?: StringFieldUpdateOperationsInput | string
+    emailBodyText?: StringFieldUpdateOperationsInput | string
+    landingPageHtml?: NullableStringFieldUpdateOperationsInput | string | null
+    captureCredentials?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    previewContent?: StringFieldUpdateOperationsInput | string
+    tags?: PhishingTemplateUpdatetagsInput | string[]
+    usageCount?: IntFieldUpdateOperationsInput | number
+    successRate?: NullableFloatFieldUpdateOperationsInput | number | null
+    organizationId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type TelemetryEventUpdateWithoutUserInput = {
@@ -40477,6 +53507,123 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type PasswordResetUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    token?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    used?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PasswordResetUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    token?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    used?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PasswordResetUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    token?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    used?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type InviteCodeUpdateWithoutCreatorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    usageLimit?: IntFieldUpdateOperationsInput | number
+    usedCount?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organization?: OrganizationUpdateOneRequiredWithoutInviteCodesNestedInput
+  }
+
+  export type InviteCodeUncheckedUpdateWithoutCreatorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    organizationId?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    usageLimit?: IntFieldUpdateOperationsInput | number
+    usedCount?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type InviteCodeUncheckedUpdateManyWithoutCreatorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    organizationId?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    usageLimit?: IntFieldUpdateOperationsInput | number
+    usedCount?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type OrganizationMemberUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    status?: EnumMemberStatusFieldUpdateOperationsInput | $Enums.MemberStatus
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    inviteCode?: NullableStringFieldUpdateOperationsInput | string | null
+    organization?: OrganizationUpdateOneRequiredWithoutMembersNestedInput
+    inviter?: UserUpdateOneWithoutSentInvitesNestedInput
+  }
+
+  export type OrganizationMemberUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    organizationId?: StringFieldUpdateOperationsInput | string
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    status?: EnumMemberStatusFieldUpdateOperationsInput | $Enums.MemberStatus
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    invitedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    inviteCode?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type OrganizationMemberUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    organizationId?: StringFieldUpdateOperationsInput | string
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    status?: EnumMemberStatusFieldUpdateOperationsInput | $Enums.MemberStatus
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    invitedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    inviteCode?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type OrganizationMemberUpdateWithoutInviterInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    status?: EnumMemberStatusFieldUpdateOperationsInput | $Enums.MemberStatus
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    inviteCode?: NullableStringFieldUpdateOperationsInput | string | null
+    user?: UserUpdateOneRequiredWithoutOrganizationMembershipsNestedInput
+    organization?: OrganizationUpdateOneRequiredWithoutMembersNestedInput
+  }
+
+  export type OrganizationMemberUncheckedUpdateWithoutInviterInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    organizationId?: StringFieldUpdateOperationsInput | string
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    status?: EnumMemberStatusFieldUpdateOperationsInput | $Enums.MemberStatus
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    inviteCode?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type OrganizationMemberUncheckedUpdateManyWithoutInviterInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    organizationId?: StringFieldUpdateOperationsInput | string
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    status?: EnumMemberStatusFieldUpdateOperationsInput | $Enums.MemberStatus
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    inviteCode?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
   export type UserCreateManyOrganizationInput = {
     id?: string
     email: string
@@ -40530,6 +53677,7 @@ export namespace Prisma {
     id?: string
     name: string
     description?: string | null
+    templateId: string
     template: string
     subject: string
     senderName: string
@@ -40537,13 +53685,40 @@ export namespace Prisma {
     landingPageUrl?: string | null
     status?: $Enums.CampaignStatus
     scheduledAt?: Date | string | null
-    startedAt?: Date | string | null
+    launchedAt?: Date | string | null
     completedAt?: Date | string | null
+    pausedAt?: Date | string | null
     targetCount?: number
-    deliveredCount?: number
-    openedCount?: number
-    clickedCount?: number
-    reportedCount?: number
+    emailsSent?: number
+    emailsDelivered?: number
+    emailsOpened?: number
+    linksClicked?: number
+    credentialsEntered?: number
+    phishingReported?: number
+    emailsBounced?: number
+    createdBy: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PhishingTemplateCreateManyOrganizationInput = {
+    id?: string
+    name: string
+    description: string
+    category: $Enums.TemplateCategory
+    riskLevel: $Enums.RiskLevel
+    defaultSubject: string
+    defaultSenderName: string
+    emailBodyHtml: string
+    emailBodyText: string
+    landingPageHtml?: string | null
+    captureCredentials?: boolean
+    isActive?: boolean
+    previewContent: string
+    tags?: PhishingTemplateCreatetagsInput | string[]
+    usageCount?: number
+    successRate?: number | null
+    createdBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -40580,6 +53755,27 @@ export namespace Prisma {
     subscriptionId: string
   }
 
+  export type InviteCodeCreateManyOrganizationInput = {
+    id?: string
+    code: string
+    createdBy: string
+    expiresAt: Date | string
+    usageLimit?: number
+    usedCount?: number
+    isActive?: boolean
+    createdAt?: Date | string
+  }
+
+  export type OrganizationMemberCreateManyOrganizationInput = {
+    id?: string
+    userId: string
+    role?: $Enums.UserRole
+    status?: $Enums.MemberStatus
+    joinedAt?: Date | string
+    invitedBy?: string | null
+    inviteCode?: string | null
+  }
+
   export type UserUpdateWithoutOrganizationInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
@@ -40595,9 +53791,15 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     assessments?: AssessmentUpdateManyWithoutUserNestedInput
     phishingTargets?: PhishingTargetUpdateManyWithoutUserNestedInput
+    phishingCampaigns?: PhishingCampaignUpdateManyWithoutCreatorNestedInput
+    phishingTemplates?: PhishingTemplateUpdateManyWithoutCreatorNestedInput
     telemetryEvents?: TelemetryEventUpdateManyWithoutUserNestedInput
     auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
     refreshTokens?: RefreshTokenUpdateManyWithoutUserNestedInput
+    passwordResets?: PasswordResetUpdateManyWithoutUserNestedInput
+    createdInviteCodes?: InviteCodeUpdateManyWithoutCreatorNestedInput
+    organizationMemberships?: OrganizationMemberUpdateManyWithoutUserNestedInput
+    sentInvites?: OrganizationMemberUpdateManyWithoutInviterNestedInput
   }
 
   export type UserUncheckedUpdateWithoutOrganizationInput = {
@@ -40615,9 +53817,15 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     assessments?: AssessmentUncheckedUpdateManyWithoutUserNestedInput
     phishingTargets?: PhishingTargetUncheckedUpdateManyWithoutUserNestedInput
+    phishingCampaigns?: PhishingCampaignUncheckedUpdateManyWithoutCreatorNestedInput
+    phishingTemplates?: PhishingTemplateUncheckedUpdateManyWithoutCreatorNestedInput
     telemetryEvents?: TelemetryEventUncheckedUpdateManyWithoutUserNestedInput
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
     refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+    passwordResets?: PasswordResetUncheckedUpdateManyWithoutUserNestedInput
+    createdInviteCodes?: InviteCodeUncheckedUpdateManyWithoutCreatorNestedInput
+    organizationMemberships?: OrganizationMemberUncheckedUpdateManyWithoutUserNestedInput
+    sentInvites?: OrganizationMemberUncheckedUpdateManyWithoutInviterNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutOrganizationInput = {
@@ -40654,6 +53862,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutAssessmentsNestedInput
     responses?: AssessmentResponseUpdateManyWithoutAssessmentNestedInput
+    result?: AssessmentResultUpdateOneWithoutAssessmentNestedInput
   }
 
   export type AssessmentUncheckedUpdateWithoutOrganizationInput = {
@@ -40675,6 +53884,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: StringFieldUpdateOperationsInput | string
     responses?: AssessmentResponseUncheckedUpdateManyWithoutAssessmentNestedInput
+    result?: AssessmentResultUncheckedUpdateOneWithoutAssessmentNestedInput
   }
 
   export type AssessmentUncheckedUpdateManyWithoutOrganizationInput = {
@@ -40745,6 +53955,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    templateId?: StringFieldUpdateOperationsInput | string
     template?: StringFieldUpdateOperationsInput | string
     subject?: StringFieldUpdateOperationsInput | string
     senderName?: StringFieldUpdateOperationsInput | string
@@ -40752,15 +53963,20 @@ export namespace Prisma {
     landingPageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumCampaignStatusFieldUpdateOperationsInput | $Enums.CampaignStatus
     scheduledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    launchedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    pausedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     targetCount?: IntFieldUpdateOperationsInput | number
-    deliveredCount?: IntFieldUpdateOperationsInput | number
-    openedCount?: IntFieldUpdateOperationsInput | number
-    clickedCount?: IntFieldUpdateOperationsInput | number
-    reportedCount?: IntFieldUpdateOperationsInput | number
+    emailsSent?: IntFieldUpdateOperationsInput | number
+    emailsDelivered?: IntFieldUpdateOperationsInput | number
+    emailsOpened?: IntFieldUpdateOperationsInput | number
+    linksClicked?: IntFieldUpdateOperationsInput | number
+    credentialsEntered?: IntFieldUpdateOperationsInput | number
+    phishingReported?: IntFieldUpdateOperationsInput | number
+    emailsBounced?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    creator?: UserUpdateOneRequiredWithoutPhishingCampaignsNestedInput
     targets?: PhishingTargetUpdateManyWithoutCampaignNestedInput
     events?: PhishingEventUpdateManyWithoutCampaignNestedInput
   }
@@ -40769,6 +53985,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    templateId?: StringFieldUpdateOperationsInput | string
     template?: StringFieldUpdateOperationsInput | string
     subject?: StringFieldUpdateOperationsInput | string
     senderName?: StringFieldUpdateOperationsInput | string
@@ -40776,13 +53993,18 @@ export namespace Prisma {
     landingPageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumCampaignStatusFieldUpdateOperationsInput | $Enums.CampaignStatus
     scheduledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    launchedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    pausedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     targetCount?: IntFieldUpdateOperationsInput | number
-    deliveredCount?: IntFieldUpdateOperationsInput | number
-    openedCount?: IntFieldUpdateOperationsInput | number
-    clickedCount?: IntFieldUpdateOperationsInput | number
-    reportedCount?: IntFieldUpdateOperationsInput | number
+    emailsSent?: IntFieldUpdateOperationsInput | number
+    emailsDelivered?: IntFieldUpdateOperationsInput | number
+    emailsOpened?: IntFieldUpdateOperationsInput | number
+    linksClicked?: IntFieldUpdateOperationsInput | number
+    credentialsEntered?: IntFieldUpdateOperationsInput | number
+    phishingReported?: IntFieldUpdateOperationsInput | number
+    emailsBounced?: IntFieldUpdateOperationsInput | number
+    createdBy?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     targets?: PhishingTargetUncheckedUpdateManyWithoutCampaignNestedInput
@@ -40793,6 +54015,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    templateId?: StringFieldUpdateOperationsInput | string
     template?: StringFieldUpdateOperationsInput | string
     subject?: StringFieldUpdateOperationsInput | string
     senderName?: StringFieldUpdateOperationsInput | string
@@ -40800,13 +54023,84 @@ export namespace Prisma {
     landingPageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumCampaignStatusFieldUpdateOperationsInput | $Enums.CampaignStatus
     scheduledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    launchedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    pausedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     targetCount?: IntFieldUpdateOperationsInput | number
-    deliveredCount?: IntFieldUpdateOperationsInput | number
-    openedCount?: IntFieldUpdateOperationsInput | number
-    clickedCount?: IntFieldUpdateOperationsInput | number
-    reportedCount?: IntFieldUpdateOperationsInput | number
+    emailsSent?: IntFieldUpdateOperationsInput | number
+    emailsDelivered?: IntFieldUpdateOperationsInput | number
+    emailsOpened?: IntFieldUpdateOperationsInput | number
+    linksClicked?: IntFieldUpdateOperationsInput | number
+    credentialsEntered?: IntFieldUpdateOperationsInput | number
+    phishingReported?: IntFieldUpdateOperationsInput | number
+    emailsBounced?: IntFieldUpdateOperationsInput | number
+    createdBy?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PhishingTemplateUpdateWithoutOrganizationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    category?: EnumTemplateCategoryFieldUpdateOperationsInput | $Enums.TemplateCategory
+    riskLevel?: EnumRiskLevelFieldUpdateOperationsInput | $Enums.RiskLevel
+    defaultSubject?: StringFieldUpdateOperationsInput | string
+    defaultSenderName?: StringFieldUpdateOperationsInput | string
+    emailBodyHtml?: StringFieldUpdateOperationsInput | string
+    emailBodyText?: StringFieldUpdateOperationsInput | string
+    landingPageHtml?: NullableStringFieldUpdateOperationsInput | string | null
+    captureCredentials?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    previewContent?: StringFieldUpdateOperationsInput | string
+    tags?: PhishingTemplateUpdatetagsInput | string[]
+    usageCount?: IntFieldUpdateOperationsInput | number
+    successRate?: NullableFloatFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    creator?: UserUpdateOneWithoutPhishingTemplatesNestedInput
+  }
+
+  export type PhishingTemplateUncheckedUpdateWithoutOrganizationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    category?: EnumTemplateCategoryFieldUpdateOperationsInput | $Enums.TemplateCategory
+    riskLevel?: EnumRiskLevelFieldUpdateOperationsInput | $Enums.RiskLevel
+    defaultSubject?: StringFieldUpdateOperationsInput | string
+    defaultSenderName?: StringFieldUpdateOperationsInput | string
+    emailBodyHtml?: StringFieldUpdateOperationsInput | string
+    emailBodyText?: StringFieldUpdateOperationsInput | string
+    landingPageHtml?: NullableStringFieldUpdateOperationsInput | string | null
+    captureCredentials?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    previewContent?: StringFieldUpdateOperationsInput | string
+    tags?: PhishingTemplateUpdatetagsInput | string[]
+    usageCount?: IntFieldUpdateOperationsInput | number
+    successRate?: NullableFloatFieldUpdateOperationsInput | number | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PhishingTemplateUncheckedUpdateManyWithoutOrganizationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    category?: EnumTemplateCategoryFieldUpdateOperationsInput | $Enums.TemplateCategory
+    riskLevel?: EnumRiskLevelFieldUpdateOperationsInput | $Enums.RiskLevel
+    defaultSubject?: StringFieldUpdateOperationsInput | string
+    defaultSenderName?: StringFieldUpdateOperationsInput | string
+    emailBodyHtml?: StringFieldUpdateOperationsInput | string
+    emailBodyText?: StringFieldUpdateOperationsInput | string
+    landingPageHtml?: NullableStringFieldUpdateOperationsInput | string | null
+    captureCredentials?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    previewContent?: StringFieldUpdateOperationsInput | string
+    tags?: PhishingTemplateUpdatetagsInput | string[]
+    usageCount?: IntFieldUpdateOperationsInput | number
+    successRate?: NullableFloatFieldUpdateOperationsInput | number | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -40913,6 +54207,69 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     subscriptionId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type InviteCodeUpdateWithoutOrganizationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    usageLimit?: IntFieldUpdateOperationsInput | number
+    usedCount?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    creator?: UserUpdateOneRequiredWithoutCreatedInviteCodesNestedInput
+  }
+
+  export type InviteCodeUncheckedUpdateWithoutOrganizationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    createdBy?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    usageLimit?: IntFieldUpdateOperationsInput | number
+    usedCount?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type InviteCodeUncheckedUpdateManyWithoutOrganizationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    createdBy?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    usageLimit?: IntFieldUpdateOperationsInput | number
+    usedCount?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type OrganizationMemberUpdateWithoutOrganizationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    status?: EnumMemberStatusFieldUpdateOperationsInput | $Enums.MemberStatus
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    inviteCode?: NullableStringFieldUpdateOperationsInput | string | null
+    user?: UserUpdateOneRequiredWithoutOrganizationMembershipsNestedInput
+    inviter?: UserUpdateOneWithoutSentInvitesNestedInput
+  }
+
+  export type OrganizationMemberUncheckedUpdateWithoutOrganizationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    status?: EnumMemberStatusFieldUpdateOperationsInput | $Enums.MemberStatus
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    invitedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    inviteCode?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type OrganizationMemberUncheckedUpdateManyWithoutOrganizationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    status?: EnumMemberStatusFieldUpdateOperationsInput | $Enums.MemberStatus
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    invitedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    inviteCode?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type AssessmentResponseCreateManyAssessmentInput = {
@@ -41093,24 +54450,39 @@ export namespace Prisma {
     firstName?: string | null
     lastName?: string | null
     department?: string | null
-    trackingId?: string
-    status?: $Enums.TargetStatus
+    jobTitle?: string | null
+    emailSent?: boolean
+    emailDelivered?: boolean
+    emailOpened?: boolean
+    linkClicked?: boolean
+    credentialsEntered?: boolean
+    reportedPhishing?: boolean
+    emailBounced?: boolean
+    sentAt?: Date | string | null
     deliveredAt?: Date | string | null
     openedAt?: Date | string | null
     clickedAt?: Date | string | null
+    credentialsAt?: Date | string | null
     reportedAt?: Date | string | null
+    bouncedAt?: Date | string | null
+    userAgent?: string | null
+    ipAddress?: string | null
+    clickCount?: number
+    riskScore?: number | null
     createdAt?: Date | string
+    updatedAt?: Date | string
     userId?: string | null
   }
 
   export type PhishingEventCreateManyCampaignInput = {
     id?: string
     type: $Enums.PhishingEventType
-    metadata?: string | null
-    ipAddress?: string | null
-    userAgent?: string | null
     timestamp?: Date | string
-    targetId: string
+    metadata?: string | null
+    userAgent?: string | null
+    ipAddress?: string | null
+    location?: string | null
+    targetId?: string | null
   }
 
   export type PhishingTargetUpdateWithoutCampaignInput = {
@@ -41119,13 +54491,27 @@ export namespace Prisma {
     firstName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: NullableStringFieldUpdateOperationsInput | string | null
     department?: NullableStringFieldUpdateOperationsInput | string | null
-    trackingId?: StringFieldUpdateOperationsInput | string
-    status?: EnumTargetStatusFieldUpdateOperationsInput | $Enums.TargetStatus
+    jobTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    emailSent?: BoolFieldUpdateOperationsInput | boolean
+    emailDelivered?: BoolFieldUpdateOperationsInput | boolean
+    emailOpened?: BoolFieldUpdateOperationsInput | boolean
+    linkClicked?: BoolFieldUpdateOperationsInput | boolean
+    credentialsEntered?: BoolFieldUpdateOperationsInput | boolean
+    reportedPhishing?: BoolFieldUpdateOperationsInput | boolean
+    emailBounced?: BoolFieldUpdateOperationsInput | boolean
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     openedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     clickedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    credentialsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     reportedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bouncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    clickCount?: IntFieldUpdateOperationsInput | number
+    riskScore?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneWithoutPhishingTargetsNestedInput
     events?: PhishingEventUpdateManyWithoutTargetNestedInput
   }
@@ -41136,13 +54522,27 @@ export namespace Prisma {
     firstName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: NullableStringFieldUpdateOperationsInput | string | null
     department?: NullableStringFieldUpdateOperationsInput | string | null
-    trackingId?: StringFieldUpdateOperationsInput | string
-    status?: EnumTargetStatusFieldUpdateOperationsInput | $Enums.TargetStatus
+    jobTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    emailSent?: BoolFieldUpdateOperationsInput | boolean
+    emailDelivered?: BoolFieldUpdateOperationsInput | boolean
+    emailOpened?: BoolFieldUpdateOperationsInput | boolean
+    linkClicked?: BoolFieldUpdateOperationsInput | boolean
+    credentialsEntered?: BoolFieldUpdateOperationsInput | boolean
+    reportedPhishing?: BoolFieldUpdateOperationsInput | boolean
+    emailBounced?: BoolFieldUpdateOperationsInput | boolean
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     openedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     clickedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    credentialsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     reportedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bouncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    clickCount?: IntFieldUpdateOperationsInput | number
+    riskScore?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: NullableStringFieldUpdateOperationsInput | string | null
     events?: PhishingEventUncheckedUpdateManyWithoutTargetNestedInput
   }
@@ -41153,83 +54553,104 @@ export namespace Prisma {
     firstName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: NullableStringFieldUpdateOperationsInput | string | null
     department?: NullableStringFieldUpdateOperationsInput | string | null
-    trackingId?: StringFieldUpdateOperationsInput | string
-    status?: EnumTargetStatusFieldUpdateOperationsInput | $Enums.TargetStatus
+    jobTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    emailSent?: BoolFieldUpdateOperationsInput | boolean
+    emailDelivered?: BoolFieldUpdateOperationsInput | boolean
+    emailOpened?: BoolFieldUpdateOperationsInput | boolean
+    linkClicked?: BoolFieldUpdateOperationsInput | boolean
+    credentialsEntered?: BoolFieldUpdateOperationsInput | boolean
+    reportedPhishing?: BoolFieldUpdateOperationsInput | boolean
+    emailBounced?: BoolFieldUpdateOperationsInput | boolean
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     openedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     clickedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    credentialsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     reportedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bouncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    clickCount?: IntFieldUpdateOperationsInput | number
+    riskScore?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type PhishingEventUpdateWithoutCampaignInput = {
     id?: StringFieldUpdateOperationsInput | string
     type?: EnumPhishingEventTypeFieldUpdateOperationsInput | $Enums.PhishingEventType
-    metadata?: NullableStringFieldUpdateOperationsInput | string | null
-    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
-    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
     timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
-    target?: PhishingTargetUpdateOneRequiredWithoutEventsNestedInput
+    metadata?: NullableStringFieldUpdateOperationsInput | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    target?: PhishingTargetUpdateOneWithoutEventsNestedInput
   }
 
   export type PhishingEventUncheckedUpdateWithoutCampaignInput = {
     id?: StringFieldUpdateOperationsInput | string
     type?: EnumPhishingEventTypeFieldUpdateOperationsInput | $Enums.PhishingEventType
-    metadata?: NullableStringFieldUpdateOperationsInput | string | null
-    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
-    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
     timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
-    targetId?: StringFieldUpdateOperationsInput | string
+    metadata?: NullableStringFieldUpdateOperationsInput | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    targetId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type PhishingEventUncheckedUpdateManyWithoutCampaignInput = {
     id?: StringFieldUpdateOperationsInput | string
     type?: EnumPhishingEventTypeFieldUpdateOperationsInput | $Enums.PhishingEventType
-    metadata?: NullableStringFieldUpdateOperationsInput | string | null
-    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
-    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
     timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
-    targetId?: StringFieldUpdateOperationsInput | string
+    metadata?: NullableStringFieldUpdateOperationsInput | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    targetId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type PhishingEventCreateManyTargetInput = {
     id?: string
     type: $Enums.PhishingEventType
-    metadata?: string | null
-    ipAddress?: string | null
-    userAgent?: string | null
     timestamp?: Date | string
+    metadata?: string | null
+    userAgent?: string | null
+    ipAddress?: string | null
+    location?: string | null
     campaignId: string
   }
 
   export type PhishingEventUpdateWithoutTargetInput = {
     id?: StringFieldUpdateOperationsInput | string
     type?: EnumPhishingEventTypeFieldUpdateOperationsInput | $Enums.PhishingEventType
-    metadata?: NullableStringFieldUpdateOperationsInput | string | null
-    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
-    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
     timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    metadata?: NullableStringFieldUpdateOperationsInput | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
     campaign?: PhishingCampaignUpdateOneRequiredWithoutEventsNestedInput
   }
 
   export type PhishingEventUncheckedUpdateWithoutTargetInput = {
     id?: StringFieldUpdateOperationsInput | string
     type?: EnumPhishingEventTypeFieldUpdateOperationsInput | $Enums.PhishingEventType
-    metadata?: NullableStringFieldUpdateOperationsInput | string | null
-    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
-    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
     timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    metadata?: NullableStringFieldUpdateOperationsInput | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
     campaignId?: StringFieldUpdateOperationsInput | string
   }
 
   export type PhishingEventUncheckedUpdateManyWithoutTargetInput = {
     id?: StringFieldUpdateOperationsInput | string
     type?: EnumPhishingEventTypeFieldUpdateOperationsInput | $Enums.PhishingEventType
-    metadata?: NullableStringFieldUpdateOperationsInput | string | null
-    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
-    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
     timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    metadata?: NullableStringFieldUpdateOperationsInput | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
     campaignId?: StringFieldUpdateOperationsInput | string
   }
 
@@ -41679,9 +55100,21 @@ export namespace Prisma {
      */
     export type RefreshTokenArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = RefreshTokenDefaultArgs<ExtArgs>
     /**
+     * @deprecated Use PasswordResetDefaultArgs instead
+     */
+    export type PasswordResetArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = PasswordResetDefaultArgs<ExtArgs>
+    /**
      * @deprecated Use OrganizationDefaultArgs instead
      */
     export type OrganizationArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = OrganizationDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use InviteCodeDefaultArgs instead
+     */
+    export type InviteCodeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = InviteCodeDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use OrganizationMemberDefaultArgs instead
+     */
+    export type OrganizationMemberArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = OrganizationMemberDefaultArgs<ExtArgs>
     /**
      * @deprecated Use AssessmentDefaultArgs instead
      */
@@ -41703,6 +55136,10 @@ export namespace Prisma {
      */
     export type AssessmentResponseArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = AssessmentResponseDefaultArgs<ExtArgs>
     /**
+     * @deprecated Use AssessmentResultDefaultArgs instead
+     */
+    export type AssessmentResultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = AssessmentResultDefaultArgs<ExtArgs>
+    /**
      * @deprecated Use PhishingCampaignDefaultArgs instead
      */
     export type PhishingCampaignArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = PhishingCampaignDefaultArgs<ExtArgs>
@@ -41714,6 +55151,14 @@ export namespace Prisma {
      * @deprecated Use PhishingEventDefaultArgs instead
      */
     export type PhishingEventArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = PhishingEventDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use PhishingTemplateDefaultArgs instead
+     */
+    export type PhishingTemplateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = PhishingTemplateDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use EmailJobDefaultArgs instead
+     */
+    export type EmailJobArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = EmailJobDefaultArgs<ExtArgs>
     /**
      * @deprecated Use AgentDefaultArgs instead
      */

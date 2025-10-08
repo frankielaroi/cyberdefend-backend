@@ -81,6 +81,7 @@ export class AuthService {
     });
 
     return {
+      message: 'Login successful',
       access_token: accessToken,
       refresh_token: refreshToken,
       user: {
@@ -88,7 +89,15 @@ export class AuthService {
         email: user.email,
         firstName: user.firstName,
         lastName: user.lastName,
+        name: `${user.firstName} ${user.lastName}`,
         role: user.role,
+        organizationId: user.organizationId,
+        organizationName: user.organization?.name,
+        phone: user.phone,
+        emailVerified: user.emailVerified,
+        isActive: user.isActive,
+        lastLogin: new Date().toISOString(),
+        createdAt: user.createdAt?.toISOString(),
         organization: user.organization,
       },
     };
@@ -173,6 +182,18 @@ export class AuthService {
       },
     });
 
+    // Create organization membership if user belongs to an organization
+    if (organizationId) {
+      await this.prisma.organizationMember.create({
+        data: {
+          userId: user.id,
+          organizationId,
+          role: userRole as any,
+          status: 'ACTIVE',
+        },
+      });
+    }
+
     // Generate email verification token
     const verificationToken = uuidv4();
     
@@ -207,7 +228,13 @@ export class AuthService {
       message: 'User registered successfully. Please check your email for verification.',
       access_token: accessToken,
       refresh_token: refreshToken,
-      user: result,
+      user: {
+        ...result,
+        name: `${result.firstName} ${result.lastName}`,
+        organizationName: result.organization?.name,
+        lastLogin: new Date().toISOString(),
+        createdAt: result.createdAt?.toISOString(),
+      },
     };
   }
 
@@ -236,9 +263,23 @@ export class AuthService {
       };
 
       const accessToken = this.jwtService.sign(newPayload);
+      const newRefreshToken = this.jwtService.sign(newPayload, {
+        secret: this.configService.get('JWT_REFRESH_SECRET'),
+        expiresIn: this.configService.get('JWT_REFRESH_EXPIRES_IN'),
+      });
+
+      // Update refresh token in database
+      await this.prisma.refreshToken.update({
+        where: { token: refreshToken },
+        data: { 
+          token: newRefreshToken,
+          expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+        },
+      });
 
       return {
         access_token: accessToken,
+        refresh_token: newRefreshToken,
       };
     } catch (error) {
       throw new UnauthorizedException('Invalid refresh token');
@@ -300,13 +341,17 @@ export class AuthService {
     const resetToken = uuidv4();
     const resetExpires = new Date(Date.now() + 3600000); // 1 hour from now
 
-    // Store reset token in user record (temporary solution)
-    // In production, you'd want a separate PasswordReset table
-    await this.prisma.user.update({
-      where: { id: user.id },
+    // Delete any existing reset tokens for this user
+    await this.prisma.passwordReset.deleteMany({
+      where: { userId: user.id },
+    });
+
+    // Create new reset token
+    await this.prisma.passwordReset.create({
       data: {
-        // Store reset data as JSON in a custom field or use a separate table
-        updatedAt: new Date(), // Track that a reset was requested
+        token: resetToken,
+        userId: user.id,
+        expiresAt: resetExpires,
       },
     });
 
@@ -317,7 +362,8 @@ export class AuthService {
     console.log(`Password reset requested for ${user.email}. Token: ${resetToken} (expires: ${resetExpires})`);
     
     return { 
-      message: 'If the email exists, a reset link has been sent',
+      success: true,
+      message: 'Password reset link sent to your email',
       // Remove this in production - only for development
       ...(process.env.NODE_ENV === 'development' && { 
         resetToken, 
@@ -328,46 +374,90 @@ export class AuthService {
   }
 
   async resetPassword(resetPasswordDto: ResetPasswordDto) {
-    // For now, we'll implement a basic version
-    // In production, you'd verify the token against a PasswordReset table
-    
-    // Find user by email (in production, find by token)
-    const user = await this.prisma.user.findUnique({
-      where: { email: resetPasswordDto.email },
+    // Find the reset token
+    const resetRecord = await this.prisma.passwordReset.findUnique({
+      where: { token: resetPasswordDto.token },
+      include: { user: true },
     });
 
-    if (!user) {
-      throw new UnauthorizedException('Invalid reset request');
+    if (!resetRecord || resetRecord.used || resetRecord.expiresAt < new Date()) {
+      throw new UnauthorizedException('Invalid or expired reset token');
     }
 
-    // TODO: Verify token and expiration
-    // For now, accept any valid token format
-    if (!resetPasswordDto.token || resetPasswordDto.token.length < 10) {
-      throw new UnauthorizedException('Invalid reset token');
-    }
+    const hashedPassword = await bcrypt.hash(resetPasswordDto.password, 12);
 
-    const hashedPassword = await bcrypt.hash(resetPasswordDto.newPassword, 12);
-
-    await this.prisma.user.update({
-      where: { id: user.id },
-      data: { 
-        password: hashedPassword,
-        updatedAt: new Date(),
-      },
-    });
+    // Update password and mark token as used
+    await this.prisma.$transaction([
+      this.prisma.user.update({
+        where: { id: resetRecord.userId },
+        data: { 
+          password: hashedPassword,
+          updatedAt: new Date(),
+        },
+      }),
+      this.prisma.passwordReset.update({
+        where: { id: resetRecord.id },
+        data: { used: true },
+      }),
+    ]);
 
     // Invalidate all refresh tokens
     await this.prisma.refreshToken.deleteMany({
-      where: { userId: user.id },
+      where: { userId: resetRecord.userId },
     });
 
-    return { message: 'Password reset successfully' };
+    return { 
+      success: true,
+      message: 'Password reset successful' 
+    };
   }
 
   async verifyEmail(token: string) {
     // TODO: Verify email token and activate user
     
     return { message: 'Email verified successfully' };
+  }
+
+  async validateToken(token: string) {
+    try {
+      const payload = this.jwtService.verify(token);
+      const user = await this.prisma.user.findUnique({
+        where: { id: payload.sub },
+        select: {
+          id: true,
+          email: true,
+          firstName: true,
+          lastName: true,
+          role: true,
+          isActive: true,
+          emailVerified: true,
+          organizationId: true,
+          organization: {
+            select: {
+              id: true,
+              name: true,
+              size: true,
+              sector: true,
+            },
+          },
+        },
+      });
+
+      if (!user || !user.isActive) {
+        throw new UnauthorizedException('Invalid token');
+      }
+
+      return {
+        valid: true,
+        user: {
+          ...user,
+          name: `${user.firstName} ${user.lastName}`,
+          organizationName: user.organization?.name,
+        },
+      };
+    } catch (error) {
+      throw new UnauthorizedException('Invalid token');
+    }
   }
 
   async getProfile(userId: string) {

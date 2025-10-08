@@ -1,9 +1,12 @@
-import { Injectable, NotFoundException, ForbiddenException, ConflictException, BadRequestException } from '@nestjs/common';
+import { Injectable, NotFoundException, ForbiddenException, ConflictException, BadRequestException, UnauthorizedException } from '@nestjs/common';
 import { PrismaService } from '../database/prisma.service';
 import { CreateOrganizationDto } from './dto/create-organization.dto';
 import { UpdateOrganizationDto } from './dto/update-organization.dto';
 import { QueryOrganizationsDto } from './dto/query-organizations.dto';
 import { UpdateMemberRoleDto, InviteMemberDto } from './dto/member.dto';
+import { JoinOrganizationDto } from './dto/join-organization.dto';
+import { CreateInviteCodeDto } from './dto/invite-code.dto';
+import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class OrganizationService {
@@ -470,4 +473,163 @@ export class OrganizationService {
 
     return user.organization;
   }
+
+  // Invite Code Management
+  async createInviteCode(orgId: string, createInviteDto: CreateInviteCodeDto, userId: string) {
+    // Check if user has permission to create invite codes
+    const membership = await this.prisma.organizationMember.findUnique({
+      where: {
+        userId_organizationId: {
+          userId,
+          organizationId: orgId,
+        },
+      },
+    });
+
+    if (!membership || !['ORG_ADMIN', 'ORG_MANAGER'].includes(membership.role)) {
+      throw new UnauthorizedException('Insufficient permissions to create invite codes');
+    }
+
+    const expirationDays = createInviteDto.expirationDays || 7;
+    const usageLimit = createInviteDto.usageLimit || 10;
+    const expiresAt = new Date();
+    expiresAt.setDate(expiresAt.getDate() + expirationDays);
+
+    // Generate unique invite code
+    let inviteCode: string;
+    let isUnique = false;
+    let attempts = 0;
+
+    do {
+      inviteCode = `INV-${uuidv4().replace(/-/g, '').substring(0, 8).toUpperCase()}`;
+      const existing = await this.prisma.inviteCode.findUnique({
+        where: { code: inviteCode },
+      });
+      isUnique = !existing;
+      attempts++;
+    } while (!isUnique && attempts < 10);
+
+    if (!isUnique) {
+      throw new BadRequestException('Failed to generate unique invite code');
+    }
+
+    const createdInviteCode = await this.prisma.inviteCode.create({
+      data: {
+        code: inviteCode,
+        organizationId: orgId,
+        createdBy: userId,
+        expiresAt,
+        usageLimit,
+      },
+    });
+
+    return {
+      success: true,
+      data: {
+        inviteCode: createdInviteCode.code,
+        expiresAt: createdInviteCode.expiresAt,
+        usageLimit: createdInviteCode.usageLimit,
+        usedCount: createdInviteCode.usedCount,
+        createdBy: userId,
+        createdAt: createdInviteCode.createdAt,
+      },
+    };
+  }
+
+  async joinOrganizationByInviteCode(joinDto: JoinOrganizationDto, userId: string) {
+    let organizationId: string;
+
+    // Check if user is already a member of any organization
+    const existingMembership = await this.prisma.organizationMember.findFirst({
+      where: { userId },
+    });
+
+    if (existingMembership) {
+      throw new ConflictException('You are already a member of an organization');
+    }
+
+    if (joinDto.inviteCode) {
+      // Join via invite code
+      const inviteCode = await this.prisma.inviteCode.findUnique({
+        where: { code: joinDto.inviteCode },
+        include: { organization: true },
+      });
+
+      if (!inviteCode || !inviteCode.isActive || inviteCode.expiresAt < new Date()) {
+        throw new BadRequestException('Invalid or expired invite code');
+      }
+
+      if (inviteCode.usedCount >= inviteCode.usageLimit) {
+        throw new BadRequestException('Invite code has reached its usage limit');
+      }
+
+      organizationId = inviteCode.organizationId;
+
+      // Update invite code usage
+      await this.prisma.inviteCode.update({
+        where: { id: inviteCode.id },
+        data: { usedCount: inviteCode.usedCount + 1 },
+      });
+    } else if (joinDto.organizationId) {
+      // Join via organization ID
+      const organization = await this.prisma.organization.findUnique({
+        where: { id: joinDto.organizationId },
+      });
+
+      if (!organization) {
+        throw new NotFoundException('Organization not found');
+      }
+
+      if (!organization.isPublic) {
+        throw new UnauthorizedException('This organization is not open for public joining');
+      }
+
+      organizationId = organization.id;
+    } else {
+      throw new BadRequestException('Either invite code or organization ID is required');
+    }
+
+    // Create membership
+    await this.prisma.organizationMember.create({
+      data: {
+        userId,
+        organizationId,
+        role: 'END_USER',
+        status: 'ACTIVE',
+        inviteCode: joinDto.inviteCode,
+      },
+    });
+
+    // Update user's organizationId
+    await this.prisma.user.update({
+      where: { id: userId },
+      data: { organizationId },
+    });
+
+    const organization = await this.prisma.organization.findUnique({
+      where: { id: organizationId },
+      include: {
+        _count: {
+          select: { users: true }
+        }
+      }
+    });
+
+    return {
+      success: true,
+      message: 'Successfully joined organization',
+      data: {
+        organization: {
+          id: organization.id,
+          name: organization.name,
+          sector: organization.sector,
+          size: organization.size,
+          memberCount: organization._count.users,
+        },
+        userRole: 'END_USER',
+        joinedAt: new Date().toISOString(),
+      },
+    };
+  }
+
 }

@@ -146,6 +146,15 @@ exports.Prisma.RefreshTokenScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.PasswordResetScalarFieldEnum = {
+  id: 'id',
+  token: 'token',
+  userId: 'userId',
+  expiresAt: 'expiresAt',
+  used: 'used',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.OrganizationScalarFieldEnum = {
   id: 'id',
   name: 'name',
@@ -167,6 +176,29 @@ exports.Prisma.OrganizationScalarFieldEnum = {
   isActive: 'isActive',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
+};
+
+exports.Prisma.InviteCodeScalarFieldEnum = {
+  id: 'id',
+  code: 'code',
+  organizationId: 'organizationId',
+  createdBy: 'createdBy',
+  expiresAt: 'expiresAt',
+  usageLimit: 'usageLimit',
+  usedCount: 'usedCount',
+  isActive: 'isActive',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.OrganizationMemberScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  organizationId: 'organizationId',
+  role: 'role',
+  status: 'status',
+  joinedAt: 'joinedAt',
+  invitedBy: 'invitedBy',
+  inviteCode: 'inviteCode'
 };
 
 exports.Prisma.AssessmentScalarFieldEnum = {
@@ -237,10 +269,29 @@ exports.Prisma.AssessmentResponseScalarFieldEnum = {
   questionId: 'questionId'
 };
 
+exports.Prisma.AssessmentResultScalarFieldEnum = {
+  id: 'id',
+  overallScore: 'overallScore',
+  overallPercentage: 'overallPercentage',
+  tier: 'tier',
+  categoryScores: 'categoryScores',
+  sectionScores: 'sectionScores',
+  industryPercentile: 'industryPercentile',
+  sizePercentile: 'sizePercentile',
+  regionPercentile: 'regionPercentile',
+  questionsAnswered: 'questionsAnswered',
+  totalQuestions: 'totalQuestions',
+  completionRate: 'completionRate',
+  totalTimeMinutes: 'totalTimeMinutes',
+  generatedAt: 'generatedAt',
+  assessmentId: 'assessmentId'
+};
+
 exports.Prisma.PhishingCampaignScalarFieldEnum = {
   id: 'id',
   name: 'name',
   description: 'description',
+  templateId: 'templateId',
   template: 'template',
   subject: 'subject',
   senderName: 'senderName',
@@ -248,16 +299,21 @@ exports.Prisma.PhishingCampaignScalarFieldEnum = {
   landingPageUrl: 'landingPageUrl',
   status: 'status',
   scheduledAt: 'scheduledAt',
-  startedAt: 'startedAt',
+  launchedAt: 'launchedAt',
   completedAt: 'completedAt',
+  pausedAt: 'pausedAt',
   targetCount: 'targetCount',
-  deliveredCount: 'deliveredCount',
-  openedCount: 'openedCount',
-  clickedCount: 'clickedCount',
-  reportedCount: 'reportedCount',
+  emailsSent: 'emailsSent',
+  emailsDelivered: 'emailsDelivered',
+  emailsOpened: 'emailsOpened',
+  linksClicked: 'linksClicked',
+  credentialsEntered: 'credentialsEntered',
+  phishingReported: 'phishingReported',
+  emailsBounced: 'emailsBounced',
+  createdBy: 'createdBy',
+  organizationId: 'organizationId',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  organizationId: 'organizationId'
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.PhishingTargetScalarFieldEnum = {
@@ -266,13 +322,27 @@ exports.Prisma.PhishingTargetScalarFieldEnum = {
   firstName: 'firstName',
   lastName: 'lastName',
   department: 'department',
-  trackingId: 'trackingId',
-  status: 'status',
+  jobTitle: 'jobTitle',
+  emailSent: 'emailSent',
+  emailDelivered: 'emailDelivered',
+  emailOpened: 'emailOpened',
+  linkClicked: 'linkClicked',
+  credentialsEntered: 'credentialsEntered',
+  reportedPhishing: 'reportedPhishing',
+  emailBounced: 'emailBounced',
+  sentAt: 'sentAt',
   deliveredAt: 'deliveredAt',
   openedAt: 'openedAt',
   clickedAt: 'clickedAt',
+  credentialsAt: 'credentialsAt',
   reportedAt: 'reportedAt',
+  bouncedAt: 'bouncedAt',
+  userAgent: 'userAgent',
+  ipAddress: 'ipAddress',
+  clickCount: 'clickCount',
+  riskScore: 'riskScore',
   createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
   campaignId: 'campaignId',
   userId: 'userId'
 };
@@ -280,12 +350,52 @@ exports.Prisma.PhishingTargetScalarFieldEnum = {
 exports.Prisma.PhishingEventScalarFieldEnum = {
   id: 'id',
   type: 'type',
-  metadata: 'metadata',
-  ipAddress: 'ipAddress',
-  userAgent: 'userAgent',
   timestamp: 'timestamp',
+  metadata: 'metadata',
+  userAgent: 'userAgent',
+  ipAddress: 'ipAddress',
+  location: 'location',
   campaignId: 'campaignId',
   targetId: 'targetId'
+};
+
+exports.Prisma.PhishingTemplateScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description',
+  category: 'category',
+  riskLevel: 'riskLevel',
+  defaultSubject: 'defaultSubject',
+  defaultSenderName: 'defaultSenderName',
+  emailBodyHtml: 'emailBodyHtml',
+  emailBodyText: 'emailBodyText',
+  landingPageHtml: 'landingPageHtml',
+  captureCredentials: 'captureCredentials',
+  isActive: 'isActive',
+  previewContent: 'previewContent',
+  tags: 'tags',
+  usageCount: 'usageCount',
+  successRate: 'successRate',
+  createdBy: 'createdBy',
+  organizationId: 'organizationId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.EmailJobScalarFieldEnum = {
+  id: 'id',
+  campaignId: 'campaignId',
+  targetId: 'targetId',
+  priority: 'priority',
+  scheduledFor: 'scheduledFor',
+  attempts: 'attempts',
+  maxAttempts: 'maxAttempts',
+  status: 'status',
+  processingData: 'processingData',
+  errorMessage: 'errorMessage',
+  lastAttemptAt: 'lastAttemptAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.AgentScalarFieldEnum = {
@@ -497,6 +607,12 @@ exports.RiskTier = exports.$Enums.RiskTier = {
   VERY_HIGH: 'VERY_HIGH'
 };
 
+exports.MemberStatus = exports.$Enums.MemberStatus = {
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE',
+  PENDING: 'PENDING'
+};
+
 exports.AssessmentType = exports.$Enums.AssessmentType = {
   CSI_ASSESSMENT: 'CSI_ASSESSMENT',
   COMPLIANCE_CHECK: 'COMPLIANCE_CHECK',
@@ -521,32 +637,69 @@ exports.QuestionType = exports.$Enums.QuestionType = {
   FILE_UPLOAD: 'FILE_UPLOAD'
 };
 
+exports.CSITier = exports.$Enums.CSITier = {
+  BASIC: 'BASIC',
+  FOUNDATIONAL: 'FOUNDATIONAL',
+  ORGANIZATIONAL: 'ORGANIZATIONAL',
+  ADVANCED: 'ADVANCED',
+  PROGRESSIVE: 'PROGRESSIVE',
+  INNOVATIVE: 'INNOVATIVE'
+};
+
 exports.CampaignStatus = exports.$Enums.CampaignStatus = {
   DRAFT: 'DRAFT',
   SCHEDULED: 'SCHEDULED',
-  ACTIVE: 'ACTIVE',
+  RUNNING: 'RUNNING',
   PAUSED: 'PAUSED',
   COMPLETED: 'COMPLETED',
   CANCELLED: 'CANCELLED'
 };
 
-exports.TargetStatus = exports.$Enums.TargetStatus = {
-  PENDING: 'PENDING',
-  DELIVERED: 'DELIVERED',
-  OPENED: 'OPENED',
-  CLICKED: 'CLICKED',
-  REPORTED: 'REPORTED',
-  FAILED: 'FAILED'
-};
-
 exports.PhishingEventType = exports.$Enums.PhishingEventType = {
+  EMAIL_QUEUED: 'EMAIL_QUEUED',
   EMAIL_SENT: 'EMAIL_SENT',
   EMAIL_DELIVERED: 'EMAIL_DELIVERED',
   EMAIL_BOUNCED: 'EMAIL_BOUNCED',
   EMAIL_OPENED: 'EMAIL_OPENED',
   LINK_CLICKED: 'LINK_CLICKED',
-  DATA_SUBMITTED: 'DATA_SUBMITTED',
-  EMAIL_REPORTED: 'EMAIL_REPORTED'
+  CREDENTIALS_ENTERED: 'CREDENTIALS_ENTERED',
+  PHISHING_REPORTED: 'PHISHING_REPORTED',
+  CAMPAIGN_STARTED: 'CAMPAIGN_STARTED',
+  CAMPAIGN_PAUSED: 'CAMPAIGN_PAUSED',
+  CAMPAIGN_RESUMED: 'CAMPAIGN_RESUMED',
+  CAMPAIGN_COMPLETED: 'CAMPAIGN_COMPLETED',
+  CAMPAIGN_CANCELLED: 'CAMPAIGN_CANCELLED'
+};
+
+exports.TemplateCategory = exports.$Enums.TemplateCategory = {
+  SECURITY: 'SECURITY',
+  HR: 'HR',
+  FINANCE: 'FINANCE',
+  IT: 'IT',
+  EXECUTIVE: 'EXECUTIVE',
+  GENERAL: 'GENERAL'
+};
+
+exports.RiskLevel = exports.$Enums.RiskLevel = {
+  LOW: 'LOW',
+  MEDIUM: 'MEDIUM',
+  HIGH: 'HIGH',
+  VERY_HIGH: 'VERY_HIGH'
+};
+
+exports.JobPriority = exports.$Enums.JobPriority = {
+  LOW: 'LOW',
+  MEDIUM: 'MEDIUM',
+  HIGH: 'HIGH',
+  URGENT: 'URGENT'
+};
+
+exports.JobStatus = exports.$Enums.JobStatus = {
+  PENDING: 'PENDING',
+  PROCESSING: 'PROCESSING',
+  SENT: 'SENT',
+  FAILED: 'FAILED',
+  CANCELLED: 'CANCELLED'
 };
 
 exports.TelemetryType = exports.$Enums.TelemetryType = {
@@ -647,15 +800,21 @@ exports.PaymentStatus = exports.$Enums.PaymentStatus = {
 exports.Prisma.ModelName = {
   User: 'User',
   RefreshToken: 'RefreshToken',
+  PasswordReset: 'PasswordReset',
   Organization: 'Organization',
+  InviteCode: 'InviteCode',
+  OrganizationMember: 'OrganizationMember',
   Assessment: 'Assessment',
   QuestionCategory: 'QuestionCategory',
   Question: 'Question',
   QuestionOption: 'QuestionOption',
   AssessmentResponse: 'AssessmentResponse',
+  AssessmentResult: 'AssessmentResult',
   PhishingCampaign: 'PhishingCampaign',
   PhishingTarget: 'PhishingTarget',
   PhishingEvent: 'PhishingEvent',
+  PhishingTemplate: 'PhishingTemplate',
+  EmailJob: 'EmailJob',
   Agent: 'Agent',
   TelemetryEvent: 'TelemetryEvent',
   DetectionRule: 'DetectionRule',

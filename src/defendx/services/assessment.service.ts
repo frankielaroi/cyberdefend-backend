@@ -1,8 +1,18 @@
-import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
+import { Injectable, NotFoundException, ForbiddenException, BadRequestException } from '@nestjs/common';
 import { PrismaService } from '../../database/prisma.service';
-import { CreateAssessmentDto } from '../dto/create-assessment.dto';
-import { SubmitResponseDto } from '../dto/submit-response.dto';
-import { BulkSubmitResponseDto } from '../dto/bulk-submit-response.dto';
+import {
+  CreateAssessmentDto,
+  SubmitAssessmentDto,
+  AssessmentQueryDto,
+  ReportQueryDto,
+  CSIDirectoryQueryDto,
+  BulkSubmitResponseDto,
+  SingleResponseDto,
+  CSIScoreDto,
+  AssessmentStatsDto,
+  CSIBenchmarkDto
+} from '../dto/assessment.dto';
+import { AssessmentType, AssessmentStatus, CSITier, RiskTier } from '../../../generated/prisma';
 import { QuestionService } from './question.service';
 import { BenchmarkService } from './benchmark.service';
 
@@ -14,61 +24,183 @@ export class AssessmentService {
     private benchmarkService: BenchmarkService,
   ) {}
 
-  async startAssessment(userId: string, organizationId: string, createAssessmentDto: CreateAssessmentDto) {
-    // Verify user belongs to organization
-    const user = await this.prisma.user.findFirst({
+  /**
+   * Create a new assessment
+   */
+  async createAssessment(userId: string, dto: CreateAssessmentDto) {
+    // Verify user has access to the organization
+    const membership = await this.prisma.organizationMember.findFirst({
       where: {
-        id: userId,
-        organizationId,
-        isActive: true,
-      },
+        userId,
+        organizationId: dto.organizationId,
+        status: 'ACTIVE'
+      }
     });
 
-    if (!user) {
-      throw new ForbiddenException('Access denied to this organization');
+    if (!membership) {
+      throw new ForbiddenException('You do not have access to this organization');
     }
 
-    // Check if there's an active assessment
-    const activeAssessment = await this.prisma.assessment.findFirst({
+    // Check if there's already an active assessment
+    const existingAssessment = await this.prisma.assessment.findFirst({
       where: {
-        organizationId,
-        status: { in: ['DRAFT', 'IN_PROGRESS'] },
-      },
+        organizationId: dto.organizationId,
+        status: { in: [AssessmentStatus.DRAFT, AssessmentStatus.IN_PROGRESS] }
+      }
     });
 
-    if (activeAssessment) {
-      throw new ForbiddenException('An assessment is already in progress');
+    if (existingAssessment) {
+      throw new BadRequestException('Organization already has an active assessment');
     }
 
-    // Create new assessment
     const assessment = await this.prisma.assessment.create({
       data: {
-        title: createAssessmentDto.title,
-        description: createAssessmentDto.description,
-        type: (createAssessmentDto.type as any) || 'CSI_ASSESSMENT',
-        status: 'IN_PROGRESS',
-        organizationId,
+        title: dto.title,
+        description: dto.description,
+        type: dto.type || AssessmentType.CSI_ASSESSMENT,
+        organizationId: dto.organizationId,
         userId,
-        startedAt: new Date(),
+        status: AssessmentStatus.DRAFT
       },
+      include: {
+        organization: true,
+        user: true
+      }
+    });
+
+    return assessment;
+  }
+
+  /**
+   * Get assessment by ID
+   */
+  async getAssessment(id: string, userId: string) {
+    const assessment = await this.prisma.assessment.findUnique({
+      where: { id },
+      include: {
+        organization: true,
+        user: true,
+        responses: {
+          include: {
+            question: {
+              include: {
+                category: true,
+                options: true
+              }
+            }
+          }
+        },
+        result: true
+      }
+    });
+
+    if (!assessment) {
+      throw new NotFoundException('Assessment not found');
+    }
+
+    // Check if user has access
+    const hasAccess = await this.checkUserAccess(userId, assessment.organizationId);
+    if (!hasAccess) {
+      throw new ForbiddenException('You do not have access to this assessment');
+    }
+
+    return assessment;
+  }
+
+  /**
+   * Get assessments with filtering
+   */
+  async getAssessments(userId: string, query: AssessmentQueryDto) {
+    const where: any = {};
+
+    // If organizationId is provided, check access
+    if (query.organizationId) {
+      const hasAccess = await this.checkUserAccess(userId, query.organizationId);
+      if (!hasAccess) {
+        throw new ForbiddenException('You do not have access to this organization');
+      }
+      where.organizationId = query.organizationId;
+    } else {
+      // Get all organizations user has access to
+      const memberships = await this.prisma.organizationMember.findMany({
+        where: { userId, status: 'ACTIVE' },
+        select: { organizationId: true }
+      });
+      where.organizationId = { in: memberships.map(m => m.organizationId) };
+    }
+
+    if (query.status) {
+      where.status = query.status;
+    }
+
+    if (query.type) {
+      where.type = query.type;
+    }
+
+    if (query.startDate && query.endDate) {
+      where.createdAt = {
+        gte: new Date(query.startDate),
+        lte: new Date(query.endDate)
+      };
+    }
+
+    const [assessments, total] = await Promise.all([
+      this.prisma.assessment.findMany({
+        where,
+        include: {
+          organization: true,
+          user: true,
+          result: true
+        },
+        orderBy: { createdAt: 'desc' },
+        skip: query.skip || 0,
+        take: query.take || 20
+      }),
+      this.prisma.assessment.count({ where })
+    ]);
+
+    return {
+      data: assessments,
+      total,
+      skip: query.skip || 0,
+      take: query.take || 20
+    };
+  }
+
+  /**
+   * Start an assessment (change status from DRAFT to IN_PROGRESS)
+   */
+  async startAssessment(id: string, userId: string) {
+    const assessment = await this.getAssessment(id, userId);
+    
+    if (assessment.status !== AssessmentStatus.DRAFT) {
+      throw new BadRequestException('Assessment has already been started');
+    }
+
+    const updatedAssessment = await this.prisma.assessment.update({
+      where: { id },
+      data: {
+        status: AssessmentStatus.IN_PROGRESS,
+        startedAt: new Date()
+      },
+      include: {
+        organization: true,
+        user: true
+      }
     });
 
     // Get questions for the assessment
     const questions = await this.questionService.getActiveQuestions();
 
     return {
-      assessment: {
-        id: assessment.id,
-        title: assessment.title,
-        status: assessment.status,
-        startedAt: assessment.startedAt,
-      },
+      assessment: updatedAssessment,
       questions: questions.map(q => ({
         id: q.id,
         text: q.text,
         description: q.description,
         type: q.type,
         isRequired: q.isRequired,
+        category: q.category,
         options: q.options?.map(o => ({
           id: o.id,
           text: o.text,
@@ -78,390 +210,323 @@ export class AssessmentService {
     };
   }
 
-  async submitResponse(userId: string, assessmentId: string, submitResponseDto: SubmitResponseDto) {
-    // Verify assessment belongs to user's organization
-    const assessment = await this.prisma.assessment.findFirst({
-      where: {
-        id: assessmentId,
-        status: 'IN_PROGRESS',
-        user: {
-          id: userId,
-        },
-      },
-      include: {
-        organization: true,
-      },
-    });
-
-    if (!assessment) {
-      throw new NotFoundException('Assessment not found or not accessible');
+  /**
+   * Submit assessment response
+   */
+  async submitResponse(assessmentId: string, userId: string, dto: SingleResponseDto) {
+    const assessment = await this.getAssessment(assessmentId, userId);
+    
+    if (assessment.status === AssessmentStatus.COMPLETED) {
+      throw new BadRequestException('Assessment is already completed');
     }
 
-    // Get question details for scoring
+    // Get the question to validate the response
     const question = await this.prisma.question.findUnique({
-      where: { id: submitResponseDto.questionId },
-      include: { options: true },
+      where: { id: dto.questionId },
+      include: { options: true }
     });
 
     if (!question) {
       throw new NotFoundException('Question not found');
     }
 
-    // Calculate score for the response
-    let score = 0;
-    if (question.type === 'YES_NO' || question.type === 'SINGLE_CHOICE') {
-      const selectedOption = question.options.find(
-        option => option.value === submitResponseDto.answer
-      );
-      score = selectedOption?.score || 0;
-    } else if (question.type === 'MULTIPLE_CHOICE') {
-      const answers = Array.isArray(submitResponseDto.answer) 
-        ? submitResponseDto.answer 
-        : [submitResponseDto.answer];
-      
-      score = answers.reduce((total, answer) => {
-        const option = question.options.find(opt => opt.value === answer);
-        return total + (option?.score || 0);
-      }, 0);
-    }
+    // Calculate score based on question type and response
+    const score = this.calculateQuestionScore(question, dto.answer);
 
-    // Apply question weight
-    score = score * question.weight;
-
-    // Upsert response
-    await this.prisma.assessmentResponse.upsert({
+    // Upsert the response
+    const response = await this.prisma.assessmentResponse.upsert({
       where: {
         assessmentId_questionId: {
           assessmentId,
-          questionId: submitResponseDto.questionId,
-        },
+          questionId: dto.questionId
+        }
       },
       update: {
-        answer: JSON.stringify(submitResponseDto.answer),
+        answer: JSON.stringify(dto.answer),
         score,
-        timeSpent: submitResponseDto.timeSpent,
+        timeSpent: dto.timeSpent
       },
       create: {
         assessmentId,
-        questionId: submitResponseDto.questionId,
-        answer: JSON.stringify(submitResponseDto.answer),
+        questionId: dto.questionId,
+        answer: JSON.stringify(dto.answer),
         score,
-        timeSpent: submitResponseDto.timeSpent,
-      },
+        timeSpent: dto.timeSpent
+      }
     });
 
-    return { message: 'Response saved successfully' };
+    return response;
   }
 
-  async submitBulkResponse(userId: string, bulkSubmitDto: BulkSubmitResponseDto) {
-    const { assessmentId, responses } = bulkSubmitDto;
-
-    // Verify assessment belongs to user's organization
-    const assessment = await this.prisma.assessment.findFirst({
-      where: {
-        id: assessmentId,
-        status: 'IN_PROGRESS',
-        user: {
-          id: userId,
-        },
-      },
-      include: {
-        organization: true,
-      },
-    });
-
-    if (!assessment) {
-      throw new NotFoundException('Assessment not found or not accessible');
+  /**
+   * Bulk submit multiple responses
+   */
+  async bulkSubmitResponses(assessmentId: string, userId: string, dto: BulkSubmitResponseDto) {
+    const assessment = await this.getAssessment(assessmentId, userId);
+    
+    if (assessment.status === AssessmentStatus.COMPLETED) {
+      throw new BadRequestException('Assessment is already completed');
     }
 
-    // Get all questions for validation and scoring
-    const questionIds = responses.map(r => r.questionId);
-    const questions = await this.prisma.question.findMany({
-      where: { id: { in: questionIds } },
-      include: { options: true },
-    });
-
-    if (questions.length !== questionIds.length) {
-      throw new NotFoundException('One or more questions not found');
-    }
-
-    // Process each response
-    const processedResponses = [];
-    for (const responseDto of responses) {
-      const question = questions.find(q => q.id === responseDto.questionId);
-      if (!question) continue;
-
-      // Calculate score for the response
-      let score = 0;
-      if (question.type === 'YES_NO' || question.type === 'SINGLE_CHOICE') {
-        const selectedOption = question.options.find(
-          option => option.value === responseDto.answer
-        );
-        score = selectedOption?.score || 0;
-      } else if (question.type === 'MULTIPLE_CHOICE') {
-        const answers = Array.isArray(responseDto.answer) 
-          ? responseDto.answer 
-          : [responseDto.answer];
-        
-        score = answers.reduce((total, answer) => {
-          const option = question.options.find(opt => opt.value === answer);
-          return total + (option?.score || 0);
-        }, 0);
-      }
-
-      // Apply question weight
-      score = score * question.weight;
-
-      processedResponses.push({
-        assessmentId,
-        questionId: responseDto.questionId,
-        answer: JSON.stringify(responseDto.answer),
-        score,
-        timeSpent: responseDto.timeSpent,
-      });
-    }
-
-    // Bulk upsert responses using transaction
-    await this.prisma.$transaction(async (tx) => {
-      for (const response of processedResponses) {
-        await tx.assessmentResponse.upsert({
-          where: {
-            assessmentId_questionId: {
-              assessmentId: response.assessmentId,
-              questionId: response.questionId,
-            },
-          },
-          update: {
-            answer: response.answer,
-            score: response.score,
-            timeSpent: response.timeSpent,
-          },
-          create: response,
+    const results = [];
+    
+    for (const responseDto of dto.responses) {
+      try {
+        const result = await this.submitResponse(assessmentId, userId, responseDto);
+        results.push({ success: true, questionId: responseDto.questionId, result });
+      } catch (error) {
+        results.push({ 
+          success: false, 
+          questionId: responseDto.questionId, 
+          error: error.message 
         });
       }
-    });
-
-    return { 
-      message: 'All responses saved successfully',
-      processedCount: processedResponses.length,
-      assessmentId 
-    };
-  }
-
-  async completeAssessment(userId: string, assessmentId: string) {
-    const assessment = await this.prisma.assessment.findFirst({
-      where: {
-        id: assessmentId,
-        user: { id: userId },
-        status: 'IN_PROGRESS',
-      },
-      include: {
-        responses: {
-          include: {
-            question: {
-              include: {
-                category: true,
-              },
-            },
-          },
-        },
-        organization: true,
-      },
-    });
-
-    if (!assessment) {
-      throw new NotFoundException('Assessment not found or not accessible');
     }
 
-    // Calculate total score
-    const totalScore = assessment.responses.reduce((sum, response) => sum + (response.score || 0), 0);
-    const maxPossibleScore = assessment.responses.reduce((sum, response) => {
-      return sum + (response.question.weight * 10); // Assuming max score per question is 10
-    }, 0);
+    return { results };
+  }
 
-    const finalScore = maxPossibleScore > 0 ? (totalScore / maxPossibleScore) * 100 : 0;
-    const riskTier = this.calculateRiskTier(finalScore);
+  /**
+   * Complete assessment and generate results
+   */
+  async completeAssessment(id: string, userId: string) {
+    const assessment = await this.getAssessment(id, userId);
+    
+    if (assessment.status === AssessmentStatus.COMPLETED) {
+      throw new BadRequestException('Assessment is already completed');
+    }
 
-    // Get benchmarks
-    const benchmarks = await this.benchmarkService.getBenchmarks(
-      assessment.organization.region,
-      assessment.organization.sector,
-      assessment.organization.size,
-    );
+    // Get all responses for scoring
+    const responses = await this.prisma.assessmentResponse.findMany({
+      where: { assessmentId: id },
+      include: {
+        question: {
+          include: { category: true }
+        }
+      }
+    });
 
-    // Update assessment
-    const completedAssessment = await this.prisma.assessment.update({
-      where: { id: assessmentId },
+    // Get all available questions for completion rate
+    const totalQuestions = await this.prisma.question.count({
+      where: { isActive: true }
+    });
+
+    // Calculate overall score and tier
+    const scoreResult = this.calculateOverallScore(responses);
+    const tier = this.determineTier(scoreResult.overallScore);
+    
+    // Get benchmarking data
+    const benchmarks = await this.getBenchmarkData(assessment.organizationId);
+
+    // Create assessment result
+    const result = await this.prisma.assessmentResult.create({
       data: {
-        status: 'COMPLETED',
-        score: finalScore,
-        maxScore: maxPossibleScore,
-        riskTier: riskTier as any,
-        benchmarkRegion: benchmarks.regional,
-        benchmarkSector: benchmarks.sectoral,
-        benchmarkSize: benchmarks.sizeBased,
+        assessmentId: id,
+        overallScore: scoreResult.overallScore,
+        overallPercentage: scoreResult.overallPercentage,
+        tier,
+        categoryScores: JSON.stringify(scoreResult.categoryScores),
+        sectionScores: JSON.stringify(scoreResult.sectionScores),
+        industryPercentile: benchmarks.industryPercentile,
+        sizePercentile: benchmarks.sizePercentile,
+        regionPercentile: benchmarks.regionPercentile,
+        questionsAnswered: responses.length,
+        totalQuestions,
+        completionRate: (responses.length / totalQuestions) * 100,
+        totalTimeMinutes: Math.round(responses.reduce((sum, r) => sum + (r.timeSpent || 0), 0) / 60)
+      }
+    });
+
+    // Update assessment status
+    const updatedAssessment = await this.prisma.assessment.update({
+      where: { id },
+      data: {
+        status: AssessmentStatus.COMPLETED,
         completedAt: new Date(),
-      },
+        score: scoreResult.overallPercentage,
+        maxScore: 100,
+        riskTier: this.mapTierToRiskTier(tier)
+      }
     });
 
     // Update organization CSI score
     await this.prisma.organization.update({
       where: { id: assessment.organizationId },
       data: {
-        csiScore: finalScore,
-        riskTier: riskTier as any,
-      },
-    });
-
-    return {
-      assessment: {
-        id: completedAssessment.id,
-        score: finalScore,
-        riskTier,
-        benchmarks,
-        completedAt: completedAssessment.completedAt,
-      },
-    };
-  }
-
-  async getAssessmentResult(userId: string, assessmentId: string) {
-    const assessment = await this.prisma.assessment.findFirst({
-      where: {
-        id: assessmentId,
-        user: { organizationId: { not: null } },
-      },
-      include: {
-        responses: {
-          include: {
-            question: {
-              include: {
-                category: true,
-              },
-            },
-          },
-        },
-        organization: {
-          select: {
-            id: true,
-            name: true,
-            sector: true,
-            size: true,
-            region: true,
-          },
-        },
-      },
-    });
-
-    if (!assessment) {
-      throw new NotFoundException('Assessment not found');
-    }
-
-    // Check if user has access to this assessment
-    const user = await this.prisma.user.findUnique({
-      where: { id: userId },
-    });
-
-    if (user?.organizationId !== assessment.organizationId) {
-      throw new ForbiddenException('Access denied to this assessment');
-    }
-
-    // Group responses by category
-    const categoryScores = {};
-    assessment.responses.forEach(response => {
-      const categoryName = response.question.category.name;
-      if (!categoryScores[categoryName]) {
-        categoryScores[categoryName] = {
-          name: categoryName,
-          weight: response.question.category.weight,
-          totalScore: 0,
-          maxScore: 0,
-          responses: 0,
-        };
+        csiScore: scoreResult.overallPercentage,
+        riskTier: this.mapTierToRiskTier(tier)
       }
-      categoryScores[categoryName].totalScore += response.score || 0;
-      categoryScores[categoryName].maxScore += response.question.weight * 10;
-      categoryScores[categoryName].responses += 1;
     });
 
-    return {
-      assessment: {
-        id: assessment.id,
-        title: assessment.title,
-        score: assessment.score,
-        riskTier: assessment.riskTier,
-        benchmarkRegion: assessment.benchmarkRegion,
-        benchmarkSector: assessment.benchmarkSector,
-        benchmarkSize: assessment.benchmarkSize,
-        completedAt: assessment.completedAt,
-      },
-      organization: assessment.organization,
-      categoryBreakdown: Object.values(categoryScores),
-      recommendations: this.generateRecommendations(assessment.riskTier, categoryScores),
-    };
+    return { assessment: updatedAssessment, result };
   }
 
-  async getOrganizationAssessments(userId: string, organizationId: string, page: number = 1, limit: number = 10) {
-    // Verify user has access to this organization
-    const user = await this.prisma.user.findUnique({
-      where: { id: userId },
-    });
+  /**
+   * Get CSI directory with filtering and benchmarking
+   */
+  async getCSIDirectory(query: CSIDirectoryQueryDto) {
+    const where: any = {
+      status: AssessmentStatus.COMPLETED,
+      result: { isNot: null }
+    };
 
-    if (user?.organizationId !== organizationId) {
-      throw new ForbiddenException('Access denied to this organization');
+    if (query.sector) {
+      where.organization = { sector: query.sector };
     }
 
-    const skip = (page - 1) * limit;
-    const take = limit;
+    if (query.size) {
+      where.organization = { ...where.organization, size: query.size };
+    }
+
+    if (query.region) {
+      where.organization = { ...where.organization, region: query.region };
+    }
+
+    if (query.minScore !== undefined) {
+      where.result = { ...where.result, overallScore: { gte: query.minScore } };
+    }
+
+    if (query.maxScore !== undefined) {
+      where.result = { 
+        ...where.result, 
+        overallScore: { ...where.result.overallScore, lte: query.maxScore } 
+      };
+    }
+
+    if (query.tier) {
+      where.result = { ...where.result, tier: query.tier };
+    }
 
     const [assessments, total] = await Promise.all([
       this.prisma.assessment.findMany({
-        where: {
-          organizationId,
-        },
-        select: {
-          id: true,
-          title: true,
-          type: true,
-          status: true,
-          score: true,
-          riskTier: true,
-          startedAt: true,
-          completedAt: true,
-          createdAt: true,
-          user: {
+        where,
+        include: {
+          organization: {
             select: {
-              firstName: true,
-              lastName: true,
-            },
+              name: true,
+              sector: true,
+              size: true,
+              region: true,
+              isPublic: true
+            }
           },
+          result: true
         },
-        orderBy: { createdAt: 'desc' },
-        skip,
-        take,
+        orderBy: query.orderBy === 'score' 
+          ? { result: { overallScore: query.orderDirection || 'desc' } }
+          : { completedAt: query.orderDirection || 'desc' },
+        skip: query.skip || 0,
+        take: query.take || 50
       }),
-      this.prisma.assessment.count({
-        where: { organizationId },
-      }),
+      this.prisma.assessment.count({ where })
     ]);
 
+    // Filter out private organizations unless specifically requested
+    const filteredAssessments = assessments.filter(a => 
+      a.organization.isPublic || query.includePrivate
+    );
+
     return {
-      data: assessments,
-      pagination: {
-        page,
-        limit,
-        total,
-        pages: Math.ceil(total / limit),
-      },
+      data: filteredAssessments,
+      total: filteredAssessments.length,
+      skip: query.skip || 0,
+      take: query.take || 50
     };
   }
 
-  async getDashboardStats(userId: string, organizationId: string) {
-    // Verify user has access to this organization
-    const user = await this.prisma.user.findUnique({
-      where: { id: userId },
+  /**
+   * Generate assessment report
+   */
+  async generateReport(id: string, userId: string, query: ReportQueryDto) {
+    const assessment = await this.getAssessment(id, userId);
+    
+    if (assessment.status !== AssessmentStatus.COMPLETED) {
+      throw new BadRequestException('Assessment must be completed to generate report');
+    }
+
+    // Get detailed results
+    const responses = await this.prisma.assessmentResponse.findMany({
+      where: { assessmentId: id },
+      include: {
+        question: {
+          include: { 
+            category: true,
+            options: true 
+          }
+        }
+      }
     });
 
-    if (user?.organizationId !== organizationId) {
+    const report = {
+      assessment,
+      responses: responses.map(r => ({
+        question: r.question,
+        answer: r.answer,
+        score: r.score,
+        timeSpent: r.timeSpent
+      })),
+      result: assessment.result,
+      includeDetails: query.includeDetails !== false,
+      includeRecommendations: query.includeRecommendations !== false,
+      includeBenchmarks: query.includeBenchmarks !== false
+    };
+
+    return report;
+  }
+
+  /**
+   * Get assessment statistics
+   */
+  async getAssessmentStats(organizationId?: string): Promise<AssessmentStatsDto> {
+    const where: any = {};
+    
+    if (organizationId) {
+      where.organizationId = organizationId;
+    }
+
+    const [
+      totalAssessments,
+      completedAssessments,
+      avgScore,
+      assessmentsByTier
+    ] = await Promise.all([
+      this.prisma.assessment.count({ where }),
+      this.prisma.assessment.count({ 
+        where: { ...where, status: AssessmentStatus.COMPLETED } 
+      }),
+      this.prisma.assessmentResult.aggregate({
+        where: organizationId ? { assessment: { organizationId } } : {},
+        _avg: { overallScore: true }
+      }),
+      this.prisma.assessmentResult.groupBy({
+        by: ['tier'],
+        where: organizationId ? { assessment: { organizationId } } : {},
+        _count: { tier: true }
+      })
+    ]);
+
+    const tierDistribution = assessmentsByTier.reduce((acc, item) => {
+      acc[item.tier] = item._count.tier;
+      return acc;
+    }, {} as Record<string, number>);
+
+    return {
+      totalAssessments,
+      completedAssessments,
+      inProgress: totalAssessments - completedAssessments,
+      averageScore: avgScore._avg.overallScore || 0,
+      completionRate: totalAssessments > 0 ? (completedAssessments / totalAssessments) * 100 : 0,
+      tierDistribution
+    };
+  }
+
+  /**
+   * Get dashboard stats (legacy method for backward compatibility)
+   */
+  async getDashboardStats(userId: string, organizationId: string) {
+    // Verify user has access to this organization
+    const hasAccess = await this.checkUserAccess(userId, organizationId);
+    if (!hasAccess) {
       throw new ForbiddenException('Access denied to this organization');
     }
 
@@ -486,7 +551,7 @@ export class AssessmentService {
     // Get assessment statistics
     const [totalAssessments, recentAssessments, latestCompleted, previousCompleted] = await Promise.all([
       this.prisma.assessment.count({
-        where: { organizationId, status: 'COMPLETED' },
+        where: { organizationId, status: AssessmentStatus.COMPLETED },
       }),
       this.prisma.assessment.findMany({
         where: { organizationId },
@@ -507,12 +572,12 @@ export class AssessmentService {
         take: 5,
       }),
       this.prisma.assessment.findFirst({
-        where: { organizationId, status: 'COMPLETED' },
+        where: { organizationId, status: AssessmentStatus.COMPLETED },
         orderBy: { completedAt: 'desc' },
         select: { score: true, completedAt: true },
       }),
       this.prisma.assessment.findMany({
-        where: { organizationId, status: 'COMPLETED' },
+        where: { organizationId, status: AssessmentStatus.COMPLETED },
         orderBy: { completedAt: 'desc' },
         select: { score: true },
         skip: 1,
@@ -560,12 +625,137 @@ export class AssessmentService {
     };
   }
 
-  private calculateRiskTier(score: number): string {
-    if (score >= 81) return 'VERY_LOW';
-    if (score >= 61) return 'LOW';
-    if (score >= 41) return 'MEDIUM';
-    if (score >= 21) return 'HIGH';
-    return 'VERY_HIGH';
+  /**
+   * Private helper methods
+   */
+  private async checkUserAccess(userId: string, organizationId: string): Promise<boolean> {
+    const membership = await this.prisma.organizationMember.findFirst({
+      where: {
+        userId,
+        organizationId,
+        status: 'ACTIVE'
+      }
+    });
+    return !!membership;
+  }
+
+  private calculateQuestionScore(question: any, answer: string | number): number {
+    // Basic scoring logic - can be enhanced based on question type
+    const answerString = typeof answer === 'number' ? answer.toString() : answer;
+    
+    switch (question.type) {
+      case 'YES_NO':
+        // For yes/no questions, typically "yes" scores higher
+        return answerString.toLowerCase() === 'yes' ? question.weight : 0;
+      
+      case 'SCALE':
+        // For scale questions, parse the numeric value
+        const numericValue = typeof answer === 'number' ? answer : parseFloat(answerString);
+        return isNaN(numericValue) ? 0 : (numericValue / 5) * question.weight;
+      
+      case 'SINGLE_CHOICE':
+      case 'MULTIPLE_CHOICE':
+        // For choice questions, look up the option value
+        const option = question.options.find((opt: any) => opt.text === answerString || opt.value === answerString);
+        return option ? parseFloat(option.value) * question.weight : 0;
+      
+      default:
+        return 0;
+    }
+  }
+
+  private calculateOverallScore(responses: any[]) {
+    const categoryScores: Record<string, { score: number; maxScore: number; count: number }> = {};
+    let totalScore = 0;
+    let maxTotalScore = 0;
+
+    responses.forEach(response => {
+      const categoryName = response.question.category.name;
+      const score = response.score || 0;
+      const maxScore = response.question.weight;
+
+      if (!categoryScores[categoryName]) {
+        categoryScores[categoryName] = { score: 0, maxScore: 0, count: 0 };
+      }
+
+      categoryScores[categoryName].score += score;
+      categoryScores[categoryName].maxScore += maxScore;
+      categoryScores[categoryName].count += 1;
+      
+      totalScore += score;
+      maxTotalScore += maxScore;
+    });
+
+    // Calculate category percentages
+    const categoryPercentages: Record<string, number> = {};
+    Object.keys(categoryScores).forEach(category => {
+      const cat = categoryScores[category];
+      categoryPercentages[category] = cat.maxScore > 0 ? (cat.score / cat.maxScore) * 100 : 0;
+    });
+
+    const overallScore = maxTotalScore > 0 ? totalScore / maxTotalScore * 5 : 0; // 0-5 scale
+    const overallPercentage = maxTotalScore > 0 ? (totalScore / maxTotalScore) * 100 : 0;
+
+    return {
+      overallScore,
+      overallPercentage,
+      categoryScores: categoryPercentages,
+      sectionScores: categoryPercentages // For now, sections = categories
+    };
+  }
+
+  private determineTier(score: number): CSITier {
+    if (score >= 4.5) return CSITier.INNOVATIVE;
+    if (score >= 4.0) return CSITier.PROGRESSIVE;
+    if (score >= 3.5) return CSITier.ADVANCED;
+    if (score >= 3.0) return CSITier.ORGANIZATIONAL;
+    if (score >= 2.0) return CSITier.FOUNDATIONAL;
+    return CSITier.BASIC;
+  }
+
+  private mapTierToRiskTier(tier: CSITier): RiskTier {
+    switch (tier) {
+      case CSITier.BASIC:
+      case CSITier.FOUNDATIONAL:
+        return RiskTier.HIGH;
+      case CSITier.ORGANIZATIONAL:
+        return RiskTier.MEDIUM;
+      case CSITier.ADVANCED:
+      case CSITier.PROGRESSIVE:
+        return RiskTier.LOW;
+      case CSITier.INNOVATIVE:
+        return RiskTier.VERY_LOW;
+      default:
+        return RiskTier.HIGH;
+    }
+  }
+
+  private async getBenchmarkData(organizationId: string) {
+    const org = await this.prisma.organization.findUnique({
+      where: { id: organizationId }
+    });
+
+    if (!org) {
+      return { industryPercentile: null, sizePercentile: null, regionPercentile: null };
+    }
+
+    // Get benchmark data from database
+    const benchmarkData = await this.prisma.benchmarkData.findFirst({
+      where: {
+        region: org.region,
+        sector: org.sector,
+        size: org.size,
+        period: new Date().getFullYear() + '-Q' + Math.ceil((new Date().getMonth() + 1) / 3)
+      }
+    });
+
+    // This would be calculated based on actual benchmark data
+    // For now, return placeholder values
+    return {
+      industryPercentile: benchmarkData ? 65 : null,
+      sizePercentile: benchmarkData ? 72 : null,
+      regionPercentile: benchmarkData ? 58 : null
+    };
   }
 
   private generateRecommendations(riskTier: string, categoryScores: any): string[] {

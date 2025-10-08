@@ -18,7 +18,7 @@ import { TelemetryService } from '../services/telemetry.service';
 import { ApiKeyGuard } from '../guards/api-key.guard';
 
 @ApiTags('defendxplus-telemetry')
-@Controller('defendxplus/telemetry')
+@Controller('defendx-plus/telemetry')
 @UseGuards(ApiKeyGuard)
 export class TelemetryController {
   constructor(private telemetryService: TelemetryService) {}

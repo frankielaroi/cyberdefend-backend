@@ -23,7 +23,7 @@ import { Roles } from '../../auth/decorators/roles.decorator';
 import { GetUser } from '../../auth/decorators/get-user.decorator';
 
 @ApiTags('defendxplus-agents')
-@Controller('defendxplus/agents')
+@Controller('defendx-plus/agents')
 @UseGuards(JwtAuthGuard, RolesGuard)
 @ApiBearerAuth()
 export class AgentController {

@@ -18,7 +18,7 @@ import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
 import { GetUser } from '../../auth/decorators/get-user.decorator';
 
 @ApiTags('defendxplus-incidents')
-@Controller('defendxplus/report')
+@Controller('defendx-plus/report')
 @UseGuards(JwtAuthGuard)
 @ApiBearerAuth()
 export class IncidentController {

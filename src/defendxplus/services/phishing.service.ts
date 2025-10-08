@@ -12,12 +12,14 @@ export class PhishingService {
       data: {
         name: createCampaignDto.name,
         description: createCampaignDto.description,
+        templateId: createCampaignDto.templateId || 'default-template',
         template: createCampaignDto.template,
         subject: createCampaignDto.subject,
         senderName: createCampaignDto.senderName,
         senderEmail: createCampaignDto.senderEmail,
         landingPageUrl: createCampaignDto.landingPageUrl,
         organizationId,
+        createdBy: userId,
         status: 'DRAFT',
         scheduledAt: createCampaignDto.scheduledAt ? new Date(createCampaignDto.scheduledAt) : null,
         targetCount: createCampaignDto.targets.length,
@@ -32,7 +34,7 @@ export class PhishingService {
         lastName: target.lastName,
         department: target.department,
         campaignId: campaign.id,
-        status: 'PENDING',
+        userId: target.userId || null,
       })),
     });
 
@@ -67,8 +69,8 @@ export class PhishingService {
     const updatedCampaign = await this.prisma.phishingCampaign.update({
       where: { id: campaign.id },
       data: {
-        status: isImmediate ? 'ACTIVE' : 'SCHEDULED',
-        startedAt: isImmediate ? new Date() : undefined,
+        status: isImmediate ? 'RUNNING' : 'SCHEDULED',
+        launchedAt: isImmediate ? new Date() : undefined,
         scheduledAt: launchCampaignDto.scheduledAt ? new Date(launchCampaignDto.scheduledAt) : campaign.scheduledAt,
       },
     });
@@ -100,7 +102,7 @@ export class PhishingService {
       await this.prisma.phishingTarget.update({
         where: { id: target.id },
         data: {
-          status: 'DELIVERED',
+          emailDelivered: true,
           deliveredAt: new Date(),
         },
       });
@@ -111,7 +113,6 @@ export class PhishingService {
           type: 'EMAIL_DELIVERED',
           campaignId,
           targetId: target.id,
-          timestamp: new Date(),
         },
       });
     }
@@ -120,7 +121,7 @@ export class PhishingService {
     await this.prisma.phishingCampaign.update({
       where: { id: campaignId },
       data: {
-        deliveredCount: deliveredTargets.length,
+        emailsDelivered: deliveredTargets.length,
       },
     });
   }
@@ -147,10 +148,10 @@ export class PhishingService {
 
     // Calculate detailed analytics
     const totalTargets = campaign.targets.length;
-    const deliveredTargets = campaign.targets.filter(t => ['DELIVERED', 'OPENED', 'CLICKED', 'REPORTED'].includes(t.status));
-    const openedTargets = campaign.targets.filter(t => ['OPENED', 'CLICKED', 'REPORTED'].includes(t.status));
-    const clickedTargets = campaign.targets.filter(t => ['CLICKED', 'REPORTED'].includes(t.status));
-    const reportedTargets = campaign.targets.filter(t => t.status === 'REPORTED');
+    const deliveredTargets = campaign.targets.filter(t => t.emailDelivered);
+    const openedTargets = campaign.targets.filter(t => t.emailOpened);
+    const clickedTargets = campaign.targets.filter(t => t.linkClicked);
+    const reportedTargets = campaign.targets.filter(t => t.reportedPhishing);
 
     // Department breakdown
     const departmentStats = campaign.targets.reduce((acc, target) => {
@@ -159,20 +160,20 @@ export class PhishingService {
         acc[dept] = { total: 0, clicked: 0, reported: 0 };
       }
       acc[dept].total++;
-      if (['CLICKED', 'REPORTED'].includes(target.status)) acc[dept].clicked++;
-      if (target.status === 'REPORTED') acc[dept].reported++;
+      if (target.linkClicked) acc[dept].clicked++;
+      if (target.reportedPhishing) acc[dept].reported++;
       return acc;
     }, {} as Record<string, { total: number; clicked: number; reported: number }>);
 
     // Repeat offenders (those who clicked in multiple campaigns)
-    const repeatOffenders = await this.findRepeatOffenders(organizationId, campaign.targets.filter(t => t.status === 'CLICKED').map(t => t.email));
+    const repeatOffenders = await this.findRepeatOffenders(organizationId, campaign.targets.filter(t => t.linkClicked).map(t => t.email));
 
     return {
       campaignId: campaign.id,
       name: campaign.name,
       status: campaign.status,
       createdAt: campaign.createdAt,
-      startedAt: campaign.startedAt,
+      launchedAt: campaign.launchedAt,
       completedAt: campaign.completedAt,
       analytics: {
         totalTargets,
@@ -185,21 +186,27 @@ export class PhishingService {
         clickRate: deliveredTargets.length > 0 ? (clickedTargets.length / deliveredTargets.length) * 100 : 0,
         reportRate: deliveredTargets.length > 0 ? (reportedTargets.length / deliveredTargets.length) * 100 : 0,
       },
-      departmentBreakdown: Object.entries(departmentStats).map(([dept, stats]) => ({
-        department: dept,
-        total: stats.total,
-        clicked: stats.clicked,
-        reported: stats.reported,
-        clickRate: stats.total > 0 ? (stats.clicked / stats.total) * 100 : 0,
-        reportRate: stats.total > 0 ? (stats.reported / stats.total) * 100 : 0,
-      })),
+      departmentBreakdown: Object.entries(departmentStats).map(([dept, stats]) => {
+        const deptStats = stats as { total: number; clicked: number; reported: number };
+        return {
+          department: dept,
+          total: deptStats.total,
+          clicked: deptStats.clicked,
+          reported: deptStats.reported,
+          clickRate: deptStats.total > 0 ? (deptStats.clicked / deptStats.total) * 100 : 0,
+          reportRate: deptStats.total > 0 ? (deptStats.reported / deptStats.total) * 100 : 0,
+        };
+      }),
       repeatOffenders,
       targets: campaign.targets.map(target => ({
         id: target.id,
         email: target.email,
         name: `${target.firstName || ''} ${target.lastName || ''}`.trim(),
         department: target.department,
-        status: target.status,
+        emailDelivered: target.emailDelivered,
+        emailOpened: target.emailOpened,
+        linkClicked: target.linkClicked,
+        reportedPhishing: target.reportedPhishing,
         deliveredAt: target.deliveredAt,
         openedAt: target.openedAt,
         clickedAt: target.clickedAt,
@@ -222,7 +229,7 @@ export class PhishingService {
       where: {
         email: { in: clickedEmails },
         campaign: { organizationId },
-        status: 'CLICKED',
+        linkClicked: true,
       },
       _count: { email: true },
       having: {
@@ -298,8 +305,8 @@ export class PhishingService {
       throw new NotFoundException('Campaign not found');
     }
 
-    if (campaign.status === 'ACTIVE') {
-      throw new ForbiddenException('Cannot update an active campaign');
+    if (campaign.status === 'RUNNING') {
+      throw new ForbiddenException('Cannot update a running campaign');
     }
 
     const updatedCampaign = await this.prisma.phishingCampaign.update({
@@ -331,8 +338,8 @@ export class PhishingService {
       throw new NotFoundException('Campaign not found');
     }
 
-    if (campaign.status === 'ACTIVE') {
-      throw new ForbiddenException('Cannot delete an active campaign');
+    if (campaign.status === 'RUNNING') {
+      throw new ForbiddenException('Cannot delete a running campaign');
     }
 
     await this.prisma.phishingCampaign.delete({

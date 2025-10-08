@@ -25,6 +25,7 @@ import { CreateOrganizationDto } from './dto/create-organization.dto';
 import { UpdateOrganizationDto } from './dto/update-organization.dto';
 import { QueryOrganizationsDto } from './dto/query-organizations.dto';
 import { JoinOrganizationDto } from './dto/join-organization.dto';
+import { CreateInviteCodeDto } from './dto/invite-code.dto';
 import { UpdateMemberRoleDto, InviteMemberDto } from './dto/member.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
@@ -163,6 +164,7 @@ export class OrganizationController {
   })
   @ApiResponse({ status: 400, description: 'User not part of any organization or cannot leave as only admin' })
   leaveOrganization(@GetUser('id') userId: string) {
+    // Get user's organization ID first
     return this.organizationService.leaveOrganization(userId);
   }
 
@@ -263,6 +265,43 @@ export class OrganizationController {
     return this.organizationService.remove(id, userId);
   }
 
+  @Post('join')
+  @ApiBearerAuth()
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ 
+    summary: 'Join organization via invite code',
+    description: 'Join an organization using an invite code or organization ID'
+  })
+  @ApiResponse({ 
+    status: 200, 
+    description: 'Successfully joined organization',
+    schema: {
+      example: {
+        success: true,
+        message: 'Successfully joined organization',
+        data: {
+          organization: {
+            id: 'org_12345',
+            name: 'ACME Corporation',
+            sector: 'TECHNOLOGY',
+            size: 'MEDIUM',
+            memberCount: 126
+          },
+          userRole: 'END_USER',
+          joinedAt: '2024-01-01T12:00:00Z'
+        }
+      }
+    }
+  })
+  @ApiResponse({ status: 400, description: 'Invalid invite code or already a member' })
+  @ApiResponse({ status: 404, description: 'Organization not found' })
+  joinOrganizationByCode(
+    @Body() joinDto: JoinOrganizationDto,
+    @GetUser('id') userId: string,
+  ) {
+    return this.organizationService.joinOrganizationByInviteCode(joinDto, userId);
+  }
+
   @Post(':id/join')
   @ApiBearerAuth()
   @HttpCode(HttpStatus.OK)
@@ -283,11 +322,10 @@ export class OrganizationController {
   @ApiResponse({ status: 404, description: 'Organization not found or inactive' })
   @ApiResponse({ status: 409, description: 'User already belongs to an organization' })
   joinOrganization(
-    @Param('id') id: string,
-    @Body() joinOrganizationDto: JoinOrganizationDto,
+    @Body() joinDto: JoinOrganizationDto,
     @GetUser('id') userId: string,
   ) {
-    return this.organizationService.joinOrganization(id, userId);
+    return this.organizationService.joinOrganizationByInviteCode(joinDto, userId);
   }
 
   @Get(':id/members')
@@ -399,5 +437,38 @@ export class OrganizationController {
     @GetUser('id') userId: string,
   ) {
     return this.organizationService.removeMember(id, memberId, userId);
+  }
+
+  @Post(':id/invite-codes')
+  @Roles('ORG_ADMIN', 'ORG_MANAGER')
+  @ApiOperation({ 
+    summary: 'Create invite code',
+    description: 'Generate an invite code for the organization'
+  })
+  @ApiParam({ name: 'id', description: 'Organization ID' })
+  @ApiResponse({ 
+    status: 201, 
+    description: 'Invite code created successfully',
+    schema: {
+      example: {
+        success: true,
+        data: {
+          inviteCode: 'INV-ABC123XYZ',
+          expiresAt: '2024-01-08T12:00:00Z',
+          usageLimit: 10,
+          usedCount: 0,
+          createdBy: 'user_123',
+          createdAt: '2024-01-01T12:00:00Z'
+        }
+      }
+    }
+  })
+  @ApiResponse({ status: 403, description: 'Insufficient permissions' })
+  createInviteCode(
+    @Param('id') orgId: string,
+    @Body() createInviteDto: CreateInviteCodeDto,
+    @GetUser('id') userId: string,
+  ) {
+    return this.organizationService.createInviteCode(orgId, createInviteDto, userId);
   }
 }

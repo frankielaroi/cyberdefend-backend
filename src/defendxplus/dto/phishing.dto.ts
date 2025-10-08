@@ -34,6 +34,14 @@ export class PhishingTargetDto {
   @IsOptional()
   @IsString()
   department?: string;
+
+  @ApiPropertyOptional({
+    description: 'Target user ID if linked to a user account',
+    example: 'user-uuid',
+  })
+  @IsOptional()
+  @IsString()
+  userId?: string;
 }
 
 export class CreateCampaignDto {
@@ -52,6 +60,14 @@ export class CreateCampaignDto {
   @IsOptional()
   @IsString()
   description?: string;
+
+  @ApiPropertyOptional({
+    description: 'Template ID to use for the campaign',
+    example: 'template-uuid',
+  })
+  @IsOptional()
+  @IsString()
+  templateId?: string;
 
   @ApiProperty({
     description: 'Email template to use',

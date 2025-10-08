@@ -26,7 +26,7 @@ import { Roles } from '../../auth/decorators/roles.decorator';
 import { GetUser } from '../../auth/decorators/get-user.decorator';
 
 @ApiTags('defendxplus-scans')
-@Controller('defendxplus/scans')
+@Controller('defendx-plus/scans')
 @UseGuards(JwtAuthGuard, RolesGuard)
 @ApiBearerAuth()
 export class ScanController {
