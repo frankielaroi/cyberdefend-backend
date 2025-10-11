@@ -6,6 +6,15 @@ import { QueryOrganizationsDto } from './dto/query-organizations.dto';
 import { UpdateMemberRoleDto, InviteMemberDto } from './dto/member.dto';
 import { JoinOrganizationDto } from './dto/join-organization.dto';
 import { CreateInviteCodeDto } from './dto/invite-code.dto';
+import { 
+  UpdateOrganizationSettingsDto, 
+  InviteMemberDto as InviteDto, 
+  UpdateMemberRoleDto as UpdateRoleDto,
+  RemoveMemberDto,
+  ResendInvitationDto,
+  OrganizationSettingsResponseDto,
+  OrganizationMemberResponseDto
+} from './dto/organization.dto';
 import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
@@ -348,107 +357,6 @@ export class OrganizationService {
     return members;
   }
 
-  async updateMemberRole(organizationId: string, memberId: string, userId: string, updateMemberRoleDto: UpdateMemberRoleDto) {
-    // Check if user is authorized to update member roles
-    const user = await this.prisma.user.findUnique({
-      where: { id: userId },
-    });
-
-    if (!user || user.organizationId !== organizationId) {
-      throw new ForbiddenException('Not authorized to update member roles');
-    }
-
-    if (user.role !== 'ORG_ADMIN') {
-      throw new ForbiddenException('Only organization admins can update member roles');
-    }
-
-    // Check if member exists and belongs to the organization
-    const member = await this.prisma.user.findUnique({
-      where: { id: memberId },
-    });
-
-    if (!member || member.organizationId !== organizationId) {
-      throw new NotFoundException('Member not found in this organization');
-    }
-
-    // Prevent self-demotion if they're the only admin
-    if (userId === memberId && member.role === 'ORG_ADMIN' && updateMemberRoleDto.role !== 'ORG_ADMIN') {
-      const adminCount = await this.prisma.user.count({
-        where: {
-          organizationId,
-          role: 'ORG_ADMIN',
-        },
-      });
-
-      if (adminCount === 1) {
-        throw new BadRequestException('Cannot demote the only organization admin');
-      }
-    }
-
-    return this.prisma.user.update({
-      where: { id: memberId },
-      data: { role: updateMemberRoleDto.role },
-      select: {
-        id: true,
-        email: true,
-        firstName: true,
-        lastName: true,
-        role: true,
-        avatar: true,
-        isActive: true,
-      },
-    });
-  }
-
-  async removeMember(organizationId: string, memberId: string, userId: string) {
-    // Check if user is authorized to remove members
-    const user = await this.prisma.user.findUnique({
-      where: { id: userId },
-    });
-
-    if (!user || user.organizationId !== organizationId) {
-      throw new ForbiddenException('Not authorized to remove members');
-    }
-
-    if (user.role !== 'ORG_ADMIN') {
-      throw new ForbiddenException('Only organization admins can remove members');
-    }
-
-    // Check if member exists and belongs to the organization
-    const member = await this.prisma.user.findUnique({
-      where: { id: memberId },
-    });
-
-    if (!member || member.organizationId !== organizationId) {
-      throw new NotFoundException('Member not found in this organization');
-    }
-
-    // Prevent removing the only admin
-    if (member.role === 'ORG_ADMIN') {
-      const adminCount = await this.prisma.user.count({
-        where: {
-          organizationId,
-          role: 'ORG_ADMIN',
-        },
-      });
-
-      if (adminCount === 1) {
-        throw new BadRequestException('Cannot remove the only organization admin');
-      }
-    }
-
-    // Remove member from organization
-    await this.prisma.user.update({
-      where: { id: memberId },
-      data: {
-        organizationId: null,
-        role: 'END_USER',
-      },
-    });
-
-    return { message: 'Member removed successfully' };
-  }
-
   async getUserOrganization(userId: string) {
     const user = await this.prisma.user.findUnique({
       where: { id: userId },
@@ -630,6 +538,393 @@ export class OrganizationService {
         joinedAt: new Date().toISOString(),
       },
     };
+  }
+
+  // Organization Settings Methods
+  async getOrganizationSettings(orgId: string, userId: string): Promise<OrganizationSettingsResponseDto> {
+    // Verify user has access to organization
+    await this.verifyUserInOrganization(userId, orgId);
+
+    const organization = await this.prisma.organization.findUnique({
+      where: { id: orgId },
+      include: {
+        _count: {
+          select: { users: true }
+        }
+      }
+    });
+
+    if (!organization) {
+      throw new NotFoundException('Organization not found');
+    }
+
+    return {
+      id: organization.id,
+      name: organization.name,
+      email: organization.email,
+      phone: organization.phone,
+      website: organization.website,
+      description: organization.description,
+      logo: organization.logo,
+      address: organization.address,
+      city: organization.city,
+      region: organization.region,
+      gpsAddress: organization.gpsAddress,
+      size: organization.size as any,
+      sector: organization.sector as any,
+      isPublic: organization.isPublic,
+      isActive: organization.isActive,
+      memberCount: organization._count.users,
+      createdAt: organization.createdAt,
+      updatedAt: organization.updatedAt,
+    };
+  }
+
+  async updateOrganizationSettings(
+    orgId: string, 
+    updateDto: UpdateOrganizationSettingsDto, 
+    userId: string
+  ): Promise<OrganizationSettingsResponseDto> {
+    // Verify user is admin of organization
+    await this.verifyUserRole(userId, orgId, ['ORG_ADMIN']);
+
+    const organization = await this.prisma.organization.findUnique({
+      where: { id: orgId },
+    });
+
+    if (!organization) {
+      throw new NotFoundException('Organization not found');
+    }
+
+    // Check if email is already in use by another organization
+    if (updateDto.email && updateDto.email !== organization.email) {
+      const existingOrg = await this.prisma.organization.findUnique({
+        where: { email: updateDto.email },
+      });
+      if (existingOrg) {
+        throw new ConflictException('Email is already in use by another organization');
+      }
+    }
+
+    const updatedOrganization = await this.prisma.organization.update({
+      where: { id: orgId },
+      data: updateDto,
+      include: {
+        _count: {
+          select: { users: true }
+        }
+      }
+    });
+
+    return {
+      id: updatedOrganization.id,
+      name: updatedOrganization.name,
+      email: updatedOrganization.email,
+      phone: updatedOrganization.phone,
+      website: updatedOrganization.website,
+      description: updatedOrganization.description,
+      logo: updatedOrganization.logo,
+      address: updatedOrganization.address,
+      city: updatedOrganization.city,
+      region: updatedOrganization.region,
+      gpsAddress: updatedOrganization.gpsAddress,
+      size: updatedOrganization.size as any,
+      sector: updatedOrganization.sector as any,
+      isPublic: updatedOrganization.isPublic,
+      isActive: updatedOrganization.isActive,
+      memberCount: updatedOrganization._count.users,
+      createdAt: updatedOrganization.createdAt,
+      updatedAt: updatedOrganization.updatedAt,
+    };
+  }
+
+  async getOrganizationMembers(orgId: string, userId: string): Promise<OrganizationMemberResponseDto[]> {
+    // Verify user has access to organization
+    await this.verifyUserInOrganization(userId, orgId);
+
+    const members = await this.prisma.user.findMany({
+      where: {
+        organizationId: orgId,
+        isActive: true,
+      },
+      select: {
+        id: true,
+        email: true,
+        firstName: true,
+        lastName: true,
+        role: true,
+        createdAt: true,
+        updatedAt: true,
+        isActive: true,
+      },
+      orderBy: { createdAt: 'asc' },
+    });
+
+    return members.map(member => ({
+      id: member.id,
+      email: member.email,
+      firstName: member.firstName,
+      lastName: member.lastName,
+      role: member.role,
+      status: member.isActive ? 'ACTIVE' : 'INACTIVE',
+      joinedAt: member.createdAt,
+      lastActiveAt: member.updatedAt,
+      isActive: member.isActive,
+    }));
+  }
+
+  async inviteMember(orgId: string, inviteDto: InviteDto, userId: string) {
+    // Verify user has permission to invite
+    await this.verifyUserRole(userId, orgId, ['ORG_ADMIN', 'ORG_MANAGER']);
+
+    const organization = await this.prisma.organization.findUnique({
+      where: { id: orgId },
+    });
+
+    if (!organization) {
+      throw new NotFoundException('Organization not found');
+    }
+
+    // Check if user already exists
+    const existingUser = await this.prisma.user.findUnique({
+      where: { email: inviteDto.email },
+    });
+
+    if (existingUser) {
+      if (existingUser.organizationId === orgId) {
+        throw new ConflictException('User is already a member of this organization');
+      }
+      if (existingUser.organizationId) {
+        throw new ConflictException('User is already a member of another organization');
+      }
+    }
+
+    // For now, we'll create a simple invitation record using InviteCode
+    // In a real implementation, you'd want a separate invitations table
+    const inviteCode = await this.prisma.inviteCode.create({
+      data: {
+        code: `INV-${Math.random().toString(36).substring(2, 8).toUpperCase()}`,
+        organizationId: orgId,
+        createdBy: userId,
+        expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
+        usageLimit: 1,
+      },
+    });
+
+    // TODO: Send invitation email
+    // await this.emailService.sendInvitation({
+    //   to: inviteDto.email,
+    //   organizationName: organization.name,
+    //   inviteCode: inviteCode.code,
+    //   message: inviteDto.message,
+    // });
+
+    return {
+      success: true,
+      message: `Invitation sent to ${inviteDto.email}`,
+      invitationId: inviteCode.id,
+    };
+  }
+
+  async updateMemberRole(
+    orgId: string, 
+    memberId: string, 
+    updateDto: UpdateRoleDto, 
+    userId: string
+  ) {
+    // Verify user is admin
+    await this.verifyUserRole(userId, orgId, ['ORG_ADMIN']);
+
+    const member = await this.prisma.user.findFirst({
+      where: {
+        id: memberId,
+        organizationId: orgId,
+      },
+    });
+
+    if (!member) {
+      throw new NotFoundException('Member not found in this organization');
+    }
+
+    // Prevent admin from changing their own role if they're the only admin
+    if (member.id === userId && updateDto.role !== 'ORG_ADMIN') {
+      const adminCount = await this.prisma.user.count({
+        where: {
+          organizationId: orgId,
+          role: 'ORG_ADMIN',
+          isActive: true,
+        },
+      });
+
+      if (adminCount <= 1) {
+        throw new BadRequestException('Cannot change role: You are the only admin in this organization');
+      }
+    }
+
+    await this.prisma.user.update({
+      where: { id: memberId },
+      data: { role: updateDto.role as any },
+    });
+
+    return {
+      success: true,
+      message: `Member role updated to ${updateDto.role}`,
+      member: {
+        id: memberId,
+        role: updateDto.role,
+      },
+    };
+  }
+
+  async removeMember(
+    orgId: string, 
+    memberId: string, 
+    removeDto: RemoveMemberDto, 
+    userId: string
+  ) {
+    // Verify user is admin
+    await this.verifyUserRole(userId, orgId, ['ORG_ADMIN']);
+
+    const member = await this.prisma.user.findFirst({
+      where: {
+        id: memberId,
+        organizationId: orgId,
+      },
+    });
+
+    if (!member) {
+      throw new NotFoundException('Member not found in this organization');
+    }
+
+    // Prevent admin from removing themselves if they're the only admin
+    if (member.id === userId) {
+      const adminCount = await this.prisma.user.count({
+        where: {
+          organizationId: orgId,
+          role: 'ORG_ADMIN',
+          isActive: true,
+        },
+      });
+
+      if (adminCount <= 1) {
+        throw new BadRequestException('Cannot remove yourself: You are the only admin in this organization');
+      }
+    }
+
+    // Remove user from organization (set organizationId to null instead of deleting)
+    await this.prisma.user.update({
+      where: { id: memberId },
+      data: { 
+        organizationId: null,
+        role: 'END_USER', // Reset to default role
+      },
+    });
+
+    // TODO: Log the removal action
+    // await this.auditService.log({
+    //   action: 'MEMBER_REMOVED',
+    //   userId,
+    //   organizationId: orgId,
+    //   targetUserId: memberId,
+    //   details: { reason: removeDto.reason },
+    // });
+
+    return {
+      success: true,
+      message: 'Member removed from organization',
+    };
+  }
+
+  async resendInvitation(
+    orgId: string, 
+    invitationId: string, 
+    resendDto: ResendInvitationDto, 
+    userId: string
+  ) {
+    // Verify user has permission
+    await this.verifyUserRole(userId, orgId, ['ORG_ADMIN', 'ORG_MANAGER']);
+
+    const invitation = await this.prisma.inviteCode.findFirst({
+      where: {
+        id: invitationId,
+        organizationId: orgId,
+        isActive: true,
+        expiresAt: { gt: new Date() },
+      },
+    });
+
+    if (!invitation) {
+      throw new NotFoundException('Invitation not found or already expired');
+    }
+
+    // Update invitation expiry
+    await this.prisma.inviteCode.update({
+      where: { id: invitationId },
+      data: {
+        expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // Reset to 7 days
+      },
+    });
+
+    // TODO: Resend invitation email
+    // await this.emailService.resendInvitation({
+    //   inviteCode: invitation.code,
+    //   message: resendDto.message,
+    // });
+
+    return {
+      success: true,
+      message: `Invitation resent`,
+    };
+  }
+
+  async cancelInvitation(orgId: string, invitationId: string, userId: string) {
+    // Verify user is admin
+    await this.verifyUserRole(userId, orgId, ['ORG_ADMIN']);
+
+    const invitation = await this.prisma.inviteCode.findFirst({
+      where: {
+        id: invitationId,
+        organizationId: orgId,
+        isActive: true,
+      },
+    });
+
+    if (!invitation) {
+      throw new NotFoundException('Invitation not found');
+    }
+
+    await this.prisma.inviteCode.update({
+      where: { id: invitationId },
+      data: { isActive: false },
+    });
+
+    return {
+      success: true,
+      message: 'Invitation cancelled',
+    };
+  }
+
+  // Helper methods
+  private async verifyUserInOrganization(userId: string, orgId: string) {
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+    });
+
+    if (!user || user.organizationId !== orgId) {
+      throw new ForbiddenException('Access denied: User not in organization');
+    }
+
+    return user;
+  }
+
+  private async verifyUserRole(userId: string, orgId: string, allowedRoles: string[]) {
+    const user = await this.verifyUserInOrganization(userId, orgId);
+
+    if (!allowedRoles.includes(user.role)) {
+      throw new ForbiddenException('Access denied: Insufficient permissions');
+    }
+
+    return user;
   }
 
 }

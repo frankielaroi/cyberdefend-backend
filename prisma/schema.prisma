@@ -42,6 +42,8 @@ model User {
   createdInviteCodes InviteCode[]
   organizationMemberships OrganizationMember[]
   sentInvites        OrganizationMember[] @relation("UserInvites")
+  notificationHistory NotificationHistory[]
+  notificationPreferences NotificationPreference?
 
   @@map("users")
 }
@@ -905,4 +907,78 @@ model BenchmarkData {
 
   @@unique([region, sector, size, period])
   @@map("benchmark_data")
+}
+
+// Notification System
+model NotificationHistory {
+  id          String              @id @default(uuid())
+  type        NotificationType    
+  recipient   String              // Email or phone number
+  subject     String?             // For emails only
+  content     String              // Message content or template data
+  status      NotificationStatus  @default(PENDING)
+  attempts    Int                 @default(0)
+  lastAttempt DateTime?
+  sentAt      DateTime?
+  error       String?
+  jobId       String?             // Bull queue job ID
+  messageId   String?             // External service message ID
+  metadata    String?             // JSON: additional data
+  createdAt   DateTime            @default(now())
+  updatedAt   DateTime            @updatedAt
+
+  // Relationships
+  user        User?               @relation(fields: [userId], references: [id])
+  userId      String?
+
+  @@map("notification_history")
+}
+
+model EmailTemplate {
+  id          String   @id @default(uuid())
+  name        String   @unique
+  subject     String
+  htmlContent String
+  textContent String?
+  variables   String?  // JSON: list of template variables
+  description String?
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("email_templates")
+}
+
+model NotificationPreference {
+  id                String   @id @default(uuid())
+  emailEnabled      Boolean  @default(true)
+  smsEnabled        Boolean  @default(false)
+  pushEnabled       Boolean  @default(true)
+  securityAlerts    Boolean  @default(true)
+  assessmentUpdates Boolean  @default(true)
+  systemUpdates     Boolean  @default(false)
+  marketingEmails   Boolean  @default(false)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  // Relationships
+  user              User     @relation(fields: [userId], references: [id])
+  userId            String   @unique
+
+  @@map("notification_preferences")
+}
+
+// Enums for Notification System
+enum NotificationType {
+  EMAIL
+  SMS
+  PUSH
+}
+
+enum NotificationStatus {
+  PENDING
+  SENT
+  FAILED
+  RETRY
+  CANCELLED
 }

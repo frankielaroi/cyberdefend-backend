@@ -33,15 +33,17 @@ model User {
   // User activities
   assessments             Assessment[]
   phishingTargets         PhishingTarget[]
-  phishingCampaigns       PhishingCampaign[]   @relation("CampaignCreator")
-  phishingTemplates       PhishingTemplate[]   @relation("TemplateCreator")
+  phishingCampaigns       PhishingCampaign[]      @relation("CampaignCreator")
+  phishingTemplates       PhishingTemplate[]      @relation("TemplateCreator")
   telemetryEvents         TelemetryEvent[]
   auditLogs               AuditLog[]
   refreshTokens           RefreshToken[]
   passwordResets          PasswordReset[]
   createdInviteCodes      InviteCode[]
   organizationMemberships OrganizationMember[]
-  sentInvites             OrganizationMember[] @relation("UserInvites")
+  sentInvites             OrganizationMember[]    @relation("UserInvites")
+  notificationHistory     NotificationHistory[]
+  notificationPreferences NotificationPreference?
 
   @@map("users")
 }
@@ -362,13 +364,23 @@ model PhishingCampaign {
   name        String
   description String?
 
-  // Template & Email Configuration
-  templateId     String // Reference to template
-  template       String // HTML email template (cached)
-  subject        String
-  senderName     String
-  senderEmail    String
+  // Campaign Type & Configuration
+  campaignType CampaignType @default(EMAIL)
+  templateId   String // Reference to template
+  template     String // HTML email template or SMS message (cached)
+
+  // Email-specific fields
+  subject        String? // Only for email campaigns
+  senderName     String? // Only for email campaigns
+  senderEmail    String? // Only for email campaigns
   landingPageUrl String? // Phishing landing page
+
+  // SMS-specific fields
+  senderNumber String? // Only for SMS campaigns
+
+  // Common fields
+  messageContent String? // For SMS campaigns or email plain text
+  trackingUrl    String? // Shortened tracking URL for SMS
 
   // Status & Timing
   status      CampaignStatus @default(DRAFT)
@@ -377,15 +389,21 @@ model PhishingCampaign {
   completedAt DateTime?
   pausedAt    DateTime?
 
-  // Statistics
+  // Statistics - generalized for both email and SMS
   targetCount        Int @default(0)
-  emailsSent         Int @default(0)
-  emailsDelivered    Int @default(0)
-  emailsOpened       Int @default(0)
+  messagesSent       Int @default(0)
+  messagesDelivered  Int @default(0)
+  messagesOpened     Int @default(0) // Email opens or SMS link clicks
   linksClicked       Int @default(0)
   credentialsEntered Int @default(0)
   phishingReported   Int @default(0)
-  emailsBounced      Int @default(0)
+  messagesFailed     Int @default(0) // Email bounces or SMS failures
+
+  // Legacy email fields (keep for backward compatibility)
+  emailsSent      Int @default(0)
+  emailsDelivered Int @default(0)
+  emailsOpened    Int @default(0)
+  emailsBounced   Int @default(0)
 
   // Metadata
   createdBy      String // User ID who created campaign
@@ -402,6 +420,11 @@ model PhishingCampaign {
   @@map("phishing_campaigns")
 }
 
+enum CampaignType {
+  EMAIL
+  SMS
+}
+
 enum CampaignStatus {
   DRAFT
   SCHEDULED
@@ -412,21 +435,30 @@ enum CampaignStatus {
 }
 
 model PhishingTarget {
-  id         String  @id @default(uuid())
-  email      String
-  firstName  String?
-  lastName   String?
-  department String?
-  jobTitle   String?
+  id String @id @default(uuid())
 
-  // Tracking Status
-  emailSent          Boolean @default(false)
-  emailDelivered     Boolean @default(false)
-  emailOpened        Boolean @default(false)
+  // Contact Information - flexible for email or phone
+  email       String? // For email campaigns
+  phoneNumber String? // For SMS campaigns
+  firstName   String?
+  lastName    String?
+  department  String?
+  jobTitle    String?
+
+  // Tracking Status - generalized for both types
+  messageSent        Boolean @default(false)
+  messageDelivered   Boolean @default(false)
+  messageOpened      Boolean @default(false) // Email opened or SMS link clicked
   linkClicked        Boolean @default(false)
   credentialsEntered Boolean @default(false)
   reportedPhishing   Boolean @default(false)
-  emailBounced       Boolean @default(false)
+  messageFailed      Boolean @default(false) // Email bounced or SMS failed
+
+  // Legacy email fields (keep for backward compatibility)
+  emailSent      Boolean @default(false)
+  emailDelivered Boolean @default(false)
+  emailOpened    Boolean @default(false)
+  emailBounced   Boolean @default(false)
 
   // Timestamps
   sentAt        DateTime?
@@ -435,12 +467,19 @@ model PhishingTarget {
   clickedAt     DateTime?
   credentialsAt DateTime?
   reportedAt    DateTime?
-  bouncedAt     DateTime?
+  failedAt      DateTime? // Bounced or failed timestamp
+
+  // Legacy timestamps (keep for backward compatibility)
+  bouncedAt DateTime?
 
   // Tracking Data
   userAgent  String?
   ipAddress  String?
   clickCount Int     @default(0)
+
+  // SMS-specific tracking
+  smsProvider String? // Which SMS service was used
+  messageId   String? // Provider message ID
 
   // Risk Assessment
   riskScore Float? // 0-10 scale
@@ -481,14 +520,26 @@ model PhishingEvent {
 }
 
 enum PhishingEventType {
+  // Email Events
   EMAIL_QUEUED
   EMAIL_SENT
   EMAIL_DELIVERED
   EMAIL_BOUNCED
   EMAIL_OPENED
+
+  // SMS Events
+  SMS_QUEUED
+  SMS_SENT
+  SMS_DELIVERED
+  SMS_FAILED
+  SMS_CLICKED // When someone clicks a link in SMS
+
+  // Common Events
   LINK_CLICKED
   CREDENTIALS_ENTERED
   PHISHING_REPORTED
+
+  // Campaign Events
   CAMPAIGN_STARTED
   CAMPAIGN_PAUSED
   CAMPAIGN_RESUMED
@@ -497,17 +548,25 @@ enum PhishingEventType {
 }
 
 model PhishingTemplate {
-  id          String           @id @default(uuid())
-  name        String           @unique
-  description String
-  category    TemplateCategory
-  riskLevel   RiskLevel
+  id           String           @id @default(uuid())
+  name         String           @unique
+  description  String
+  category     TemplateCategory
+  riskLevel    RiskLevel
+  templateType TemplateType     @default(EMAIL)
 
   // Email Content
-  defaultSubject    String
-  defaultSenderName String
-  emailBodyHtml     String // HTML email template
-  emailBodyText     String // Plain text version
+  defaultSubject    String? // Only for email templates
+  defaultSenderName String? // Only for email templates
+  emailBodyHtml     String? // HTML email template
+  emailBodyText     String? // Plain text version
+
+  // SMS Content
+  smsContent          String? // SMS message template
+  defaultSenderNumber String? // Default SMS sender number
+
+  // Common Content
+  messageContent String? // Generic message content
 
   // Landing Page
   landingPageHtml    String? // HTML landing page
@@ -542,6 +601,11 @@ enum TemplateCategory {
   IT
   EXECUTIVE
   GENERAL
+}
+
+enum TemplateType {
+  EMAIL
+  SMS
 }
 
 enum RiskLevel {
@@ -905,4 +969,78 @@ model BenchmarkData {
 
   @@unique([region, sector, size, period])
   @@map("benchmark_data")
+}
+
+// Notification System
+model NotificationHistory {
+  id          String             @id @default(uuid())
+  type        NotificationType
+  recipient   String // Email or phone number
+  subject     String? // For emails only
+  content     String // Message content or template data
+  status      NotificationStatus @default(PENDING)
+  attempts    Int                @default(0)
+  lastAttempt DateTime?
+  sentAt      DateTime?
+  error       String?
+  jobId       String? // Bull queue job ID
+  messageId   String? // External service message ID
+  metadata    String? // JSON: additional data
+  createdAt   DateTime           @default(now())
+  updatedAt   DateTime           @updatedAt
+
+  // Relationships
+  user   User?   @relation(fields: [userId], references: [id])
+  userId String?
+
+  @@map("notification_history")
+}
+
+model EmailTemplate {
+  id          String   @id @default(uuid())
+  name        String   @unique
+  subject     String
+  htmlContent String
+  textContent String?
+  variables   String? // JSON: list of template variables
+  description String?
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("email_templates")
+}
+
+model NotificationPreference {
+  id                String   @id @default(uuid())
+  emailEnabled      Boolean  @default(true)
+  smsEnabled        Boolean  @default(false)
+  pushEnabled       Boolean  @default(true)
+  securityAlerts    Boolean  @default(true)
+  assessmentUpdates Boolean  @default(true)
+  systemUpdates     Boolean  @default(false)
+  marketingEmails   Boolean  @default(false)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  // Relationships
+  user   User   @relation(fields: [userId], references: [id])
+  userId String @unique
+
+  @@map("notification_preferences")
+}
+
+// Enums for Notification System
+enum NotificationType {
+  EMAIL
+  SMS
+  PUSH
+}
+
+enum NotificationStatus {
+  PENDING
+  SENT
+  FAILED
+  RETRY
+  CANCELLED
 }

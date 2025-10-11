@@ -1,64 +1,81 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../database/prisma.service';
+import { BenchmarkService } from './benchmark.service';
 
 @Injectable()
 export class ReportService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private benchmarkService: BenchmarkService
+  ) {}
 
-  async generateAssessmentReport(assessmentId: string) {
-    const assessment = await this.prisma.assessment.findUnique({
-      where: { id: assessmentId },
-      include: {
-        organization: true,
-        user: true,
-        responses: {
-          include: {
-            question: {
-              include: {
-                category: true,
-              },
-            },
-          },
+  async generateAssessmentReport(assessmentId: string, options: {
+    includeDetails?: boolean;
+    includeRecommendations?: boolean;
+    includeBenchmarks?: boolean;
+  } = {}) {
+    const {
+      includeDetails = true,
+      includeRecommendations = true,
+      includeBenchmarks = true
+    } = options;
+
+    try {
+      const assessment = await this.prisma.assessment.findUnique({
+        where: { id: assessmentId },
+        include: {
+          organization: true,
+          responses: {
+            include: {
+              question: {
+                include: {
+                  category: true
+                }
+              }
+            }
+          }
         },
-      },
-    });
+      });
 
-    if (!assessment) {
-      throw new Error('Assessment not found');
+      if (!assessment) {
+        return { success: false, message: 'Assessment not found' };
+      }
+
+      const categories = this.calculateCategoryBreakdown(assessment.responses);
+      const recommendations = this.generateRecommendations(
+        assessment.score,
+        assessment.riskTier,
+      );
+
+      const reportData = {
+        assessment: {
+          id: assessment.id,
+          title: assessment.title,
+          score: assessment.score,
+          riskTier: assessment.riskTier,
+          completedAt: assessment.completedAt,
+        },
+        organization: {
+          name: assessment.organization.name,
+          sector: assessment.organization.sector,
+          size: assessment.organization.size,
+        },
+        categories,
+        recommendations,
+        generatedAt: new Date().toISOString(),
+      };
+
+      return {
+        success: true,
+        data: reportData,
+      };
+    } catch (error) {
+      console.error('Error generating basic report:', error);
+      return {
+        success: false,
+        message: 'Failed to generate report',
+      };
     }
-
-    // Generate report data structure
-    const reportData = {
-      assessment: {
-        id: assessment.id,
-        title: assessment.title,
-        score: assessment.score,
-        riskTier: assessment.riskTier,
-        completedAt: assessment.completedAt,
-      },
-      organization: {
-        name: assessment.organization.name,
-        sector: assessment.organization.sector,
-        size: assessment.organization.size,
-        region: assessment.organization.region,
-      },
-      categoryBreakdown: this.calculateCategoryBreakdown(assessment.responses),
-      recommendations: this.generateRecommendations(assessment.score, assessment.riskTier),
-      benchmarks: {
-        regional: assessment.benchmarkRegion,
-        sectoral: assessment.benchmarkSector,
-        sizeBased: assessment.benchmarkSize,
-      },
-    };
-
-    // TODO: Generate PDF using puppeteer or similar
-    // TODO: Upload to S3
-    // TODO: Return S3 URL
-
-    return {
-      reportUrl: null, // Will be S3 URL after implementation
-      data: reportData,
-    };
   }
 
   private calculateCategoryBreakdown(responses: any[]) {

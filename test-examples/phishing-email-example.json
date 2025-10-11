@@ -1,0 +1,19 @@
+{
+  "description": "Single email with custom sender for phishing campaign simulation",
+  "endpoint": "POST /api/v1/notifications/email/send",
+  "payload": {
+    "to": "target@company.com",
+    "subject": "Urgent: Security Verification Required",
+    "htmlContent": "<html><body><h2>Account Security Alert</h2><p>Dear User,</p><p>We've detected unusual activity on your account. Please verify your identity by clicking the link below:</p><p><a href='https://phishing-sim.com/verify'>Verify Account</a></p><p>Thank you,<br>Security Team</p></body></html>",
+    "textContent": "Account Security Alert - We've detected unusual activity. Please verify your identity at: https://phishing-sim.com/verify",
+    "fromEmail": "security@yourbank-alerts.com",
+    "fromName": "Security Team",
+    "category": "Phishing Campaign - Banking"
+  },
+  "notes": [
+    "✅ Custom fromEmail: security@yourbank-alerts.com (simulates bank email)",
+    "✅ Custom fromName: Security Team (trusted sender name)",
+    "✅ Subject creates urgency typical in phishing campaigns",
+    "✅ Perfect for testing user awareness of phishing attempts"
+  ]
+}

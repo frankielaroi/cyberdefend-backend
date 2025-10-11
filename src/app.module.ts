@@ -11,7 +11,9 @@ import { DefendxPlusModule } from './defendxplus/defendxplus.module';
 import { BillingModule } from './billing/billing.module';
 import { AdminModule } from './admin/admin.module';
 import { OrganizationModule } from './organization/organization.module';
+import { UserModule } from './user/user.module';
 import { CommonModule } from './common/common.module';
+import { NotificationModule } from './notification/notification.module';
 import { configValidation } from './config/config.validation';
 
 @Module({
@@ -52,6 +54,8 @@ import { configValidation } from './config/config.validation';
     BillingModule,
     AdminModule,
     OrganizationModule,
+    UserModule,
+    NotificationModule,
   ],
 })
 export class AppModule {}

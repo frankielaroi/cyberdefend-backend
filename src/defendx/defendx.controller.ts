@@ -20,6 +20,7 @@ import {
 
 import { DefendxService } from './defendx.service';
 import { AssessmentService } from './services/assessment.service';
+import { ComprehensiveReportService } from './services/comprehensive-report.service';
 import {
   CreateAssessmentDto,
   SubmitAssessmentDto,
@@ -42,6 +43,7 @@ export class DefendxController {
   constructor(
     private defendxService: DefendxService,
     private assessmentService: AssessmentService,
+    private comprehensiveReportService: ComprehensiveReportService,
   ) {}
 
   // Public CSI Directory Endpoints
@@ -187,6 +189,24 @@ export class DefendxController {
     @Query() query: ReportQueryDto,
   ) {
     return this.assessmentService.generateReport(assessmentId, userId, query);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('assessments/:id/report/comprehensive')
+  @ApiBearerAuth()
+  @ApiOperation({ 
+    summary: 'Generate comprehensive assessment report',
+    description: 'Generate detailed report with recommendations, vulnerabilities, benchmarking, and compliance mapping'
+  })
+  @ApiResponse({ status: 200, description: 'Comprehensive report generated successfully' })
+  @ApiResponse({ status: 404, description: 'Assessment not found' })
+  @ApiResponse({ status: 400, description: 'Assessment not completed' })
+  @ApiParam({ name: 'id', description: 'Assessment ID' })
+  async generateComprehensiveReport(
+    @GetUser('userId') userId: string,
+    @Param('id') assessmentId: string,
+  ) {
+    return this.comprehensiveReportService.generateAssessmentReport(assessmentId);
   }
 
   @UseGuards(JwtAuthGuard)

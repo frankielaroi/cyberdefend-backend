@@ -1,0 +1,27 @@
+{
+  "description": "Bulk email campaign with dynamic sender for corporate phishing simulation",
+  "endpoint": "POST /api/v1/notifications/email/bulk-send",
+  "payload": {
+    "recipients": [
+      "employee1@testcompany.com",
+      "employee2@testcompany.com", 
+      "employee3@testcompany.com",
+      "manager@testcompany.com",
+      "admin@testcompany.com"
+    ],
+    "subject": "Mandatory IT Security Training - Complete by EOD",
+    "content": "<html><body><h3>IT Security Department</h3><p>Dear Team Member,</p><p>You are required to complete the mandatory security training before end of business today.</p><p><strong>Click here to start training:</strong> <a href='https://training-sim.phishing-test.com'>Complete Training</a></p><p>Failure to complete will result in account suspension.</p><p>Best regards,<br>IT Security Department</p></body></html>",
+    "isHtml": true,
+    "fromEmail": "it-security@company-internal.com",
+    "fromName": "IT Security Department",
+    "category": "Bulk Phishing Campaign - Corporate Training"
+  },
+  "notes": [
+    "✅ Bulk campaign targeting multiple employees",
+    "✅ Custom fromEmail: it-security@company-internal.com (internal domain simulation)",
+    "✅ Custom fromName: IT Security Department (authoritative sender)",
+    "✅ Creates urgency with deadline pressure",
+    "✅ Tests employee response to internal phishing attempts",
+    "✅ Perfect for security awareness training"
+  ]
+}

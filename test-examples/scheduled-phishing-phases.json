@@ -1,0 +1,49 @@
+{
+  "description": "Scheduled email campaign with different sender for each phase",
+  "endpoint": "POST /api/v1/notifications/email/schedule",
+  "scenarios": [
+    {
+      "phase": "Initial Contact",
+      "payload": {
+        "to": "target@company.com",
+        "subject": "Welcome to Our Service",
+        "htmlContent": "<p>Welcome! Please confirm your email address.</p>",
+        "fromEmail": "welcome@legitservice.com",
+        "fromName": "Customer Service",
+        "scheduledFor": "2025-10-11T09:00:00Z",
+        "category": "Campaign Phase 1"
+      }
+    },
+    {
+      "phase": "Follow-up",
+      "payload": {
+        "to": "target@company.com", 
+        "subject": "Action Required: Account Verification",
+        "htmlContent": "<p>Your account needs verification. Click here to verify.</p>",
+        "fromEmail": "support@legitservice.com",
+        "fromName": "Account Support",
+        "scheduledFor": "2025-10-11T14:00:00Z",
+        "category": "Campaign Phase 2"
+      }
+    },
+    {
+      "phase": "Urgent Follow-up",
+      "payload": {
+        "to": "target@company.com",
+        "subject": "URGENT: Account Suspension Warning",
+        "htmlContent": "<p>Your account will be suspended unless you verify immediately!</p>",
+        "fromEmail": "security@legitservice.com",
+        "fromName": "Security Alert System",
+        "scheduledFor": "2025-10-11T16:00:00Z",
+        "category": "Campaign Phase 3"
+      }
+    }
+  ],
+  "notes": [
+    "✅ Multi-phase campaign with escalating urgency",
+    "✅ Different sender emails for each phase (welcome@, support@, security@)",
+    "✅ Progressive sender names (Customer Service → Account Support → Security Alert)",
+    "✅ Tests how targets respond to escalating pressure over time",
+    "✅ Demonstrates sophisticated phishing campaign simulation"
+  ]
+}

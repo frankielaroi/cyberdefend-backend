@@ -104,7 +104,24 @@ export class AssessmentService {
       throw new ForbiddenException('You do not have access to this assessment');
     }
 
-    return assessment;
+    // Get all available questions for this assessment
+    const allQuestions = await this.questionService.getActiveQuestions();
+    
+    // Map responses by questionId for easy lookup
+    const responseMap = new Map(
+      assessment.responses.map(r => [r.question.id, r])
+    );
+
+    // Combine all questions with their responses (if any)
+    const questionsWithResponses = allQuestions.map(question => ({
+      ...question,
+      response: responseMap.get(question.id) || null
+    }));
+
+    return {
+      ...assessment,
+      questions: questionsWithResponses
+    };
   }
 
   /**
@@ -739,13 +756,17 @@ export class AssessmentService {
       return { industryPercentile: null, sizePercentile: null, regionPercentile: null };
     }
 
+    // Use default region if organization region is null
+    const region = org.region || 'Unknown';
+    const currentPeriod = new Date().getFullYear() + '-Q' + Math.ceil((new Date().getMonth() + 1) / 3);
+
     // Get benchmark data from database
     const benchmarkData = await this.prisma.benchmarkData.findFirst({
       where: {
-        region: org.region,
+        region: region,
         sector: org.sector,
         size: org.size,
-        period: new Date().getFullYear() + '-Q' + Math.ceil((new Date().getMonth() + 1) / 3)
+        period: currentPeriod
       }
     });
 

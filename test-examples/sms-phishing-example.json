@@ -1,0 +1,17 @@
+{
+  "description": "SMS phishing campaign with dynamic sender ID",
+  "endpoint": "POST /api/v1/notifications/sms/send",
+  "payload": {
+    "to": "+233123456789",
+    "message": "URGENT: Your bank account has been compromised. Verify immediately: https://bank-verify.phishing-test.com/secure Reply STOP to opt out.",
+    "from": "BANK-ALERT",
+    "category": "SMS Phishing - Banking"
+  },
+  "notes": [
+    "✅ Custom sender ID: BANK-ALERT (simulates bank SMS)",
+    "✅ Creates urgency with account compromise claim",
+    "✅ Includes phishing link for verification", 
+    "✅ Professional opt-out message for realism",
+    "✅ Tests SMS phishing awareness"
+  ]
+}

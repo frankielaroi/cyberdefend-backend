@@ -5,6 +5,7 @@ import { CSIDirectoryController } from './csi-directory.controller';
 import { AssessmentService } from './services/assessment.service';
 import { QuestionService } from './services/question.service';
 import { ReportService } from './services/report.service';
+import { ComprehensiveReportService } from './services/comprehensive-report.service';
 import { BenchmarkService } from './services/benchmark.service';
 
 @Module({
@@ -13,6 +14,7 @@ import { BenchmarkService } from './services/benchmark.service';
     AssessmentService,
     QuestionService,
     ReportService,
+    ComprehensiveReportService,
     BenchmarkService,
   ],
   controllers: [DefendxController, CSIDirectoryController],

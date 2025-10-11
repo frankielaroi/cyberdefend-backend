@@ -291,24 +291,32 @@ exports.Prisma.PhishingCampaignScalarFieldEnum = {
   id: 'id',
   name: 'name',
   description: 'description',
+  campaignType: 'campaignType',
   templateId: 'templateId',
   template: 'template',
   subject: 'subject',
   senderName: 'senderName',
   senderEmail: 'senderEmail',
   landingPageUrl: 'landingPageUrl',
+  senderNumber: 'senderNumber',
+  messageContent: 'messageContent',
+  trackingUrl: 'trackingUrl',
   status: 'status',
   scheduledAt: 'scheduledAt',
   launchedAt: 'launchedAt',
   completedAt: 'completedAt',
   pausedAt: 'pausedAt',
   targetCount: 'targetCount',
-  emailsSent: 'emailsSent',
-  emailsDelivered: 'emailsDelivered',
-  emailsOpened: 'emailsOpened',
+  messagesSent: 'messagesSent',
+  messagesDelivered: 'messagesDelivered',
+  messagesOpened: 'messagesOpened',
   linksClicked: 'linksClicked',
   credentialsEntered: 'credentialsEntered',
   phishingReported: 'phishingReported',
+  messagesFailed: 'messagesFailed',
+  emailsSent: 'emailsSent',
+  emailsDelivered: 'emailsDelivered',
+  emailsOpened: 'emailsOpened',
   emailsBounced: 'emailsBounced',
   createdBy: 'createdBy',
   organizationId: 'organizationId',
@@ -319,16 +327,21 @@ exports.Prisma.PhishingCampaignScalarFieldEnum = {
 exports.Prisma.PhishingTargetScalarFieldEnum = {
   id: 'id',
   email: 'email',
+  phoneNumber: 'phoneNumber',
   firstName: 'firstName',
   lastName: 'lastName',
   department: 'department',
   jobTitle: 'jobTitle',
-  emailSent: 'emailSent',
-  emailDelivered: 'emailDelivered',
-  emailOpened: 'emailOpened',
+  messageSent: 'messageSent',
+  messageDelivered: 'messageDelivered',
+  messageOpened: 'messageOpened',
   linkClicked: 'linkClicked',
   credentialsEntered: 'credentialsEntered',
   reportedPhishing: 'reportedPhishing',
+  messageFailed: 'messageFailed',
+  emailSent: 'emailSent',
+  emailDelivered: 'emailDelivered',
+  emailOpened: 'emailOpened',
   emailBounced: 'emailBounced',
   sentAt: 'sentAt',
   deliveredAt: 'deliveredAt',
@@ -336,10 +349,13 @@ exports.Prisma.PhishingTargetScalarFieldEnum = {
   clickedAt: 'clickedAt',
   credentialsAt: 'credentialsAt',
   reportedAt: 'reportedAt',
+  failedAt: 'failedAt',
   bouncedAt: 'bouncedAt',
   userAgent: 'userAgent',
   ipAddress: 'ipAddress',
   clickCount: 'clickCount',
+  smsProvider: 'smsProvider',
+  messageId: 'messageId',
   riskScore: 'riskScore',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
@@ -365,10 +381,14 @@ exports.Prisma.PhishingTemplateScalarFieldEnum = {
   description: 'description',
   category: 'category',
   riskLevel: 'riskLevel',
+  templateType: 'templateType',
   defaultSubject: 'defaultSubject',
   defaultSenderName: 'defaultSenderName',
   emailBodyHtml: 'emailBodyHtml',
   emailBodyText: 'emailBodyText',
+  smsContent: 'smsContent',
+  defaultSenderNumber: 'defaultSenderNumber',
+  messageContent: 'messageContent',
   landingPageHtml: 'landingPageHtml',
   captureCredentials: 'captureCredentials',
   isActive: 'isActive',
@@ -553,6 +573,52 @@ exports.Prisma.BenchmarkDataScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.NotificationHistoryScalarFieldEnum = {
+  id: 'id',
+  type: 'type',
+  recipient: 'recipient',
+  subject: 'subject',
+  content: 'content',
+  status: 'status',
+  attempts: 'attempts',
+  lastAttempt: 'lastAttempt',
+  sentAt: 'sentAt',
+  error: 'error',
+  jobId: 'jobId',
+  messageId: 'messageId',
+  metadata: 'metadata',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  userId: 'userId'
+};
+
+exports.Prisma.EmailTemplateScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  subject: 'subject',
+  htmlContent: 'htmlContent',
+  textContent: 'textContent',
+  variables: 'variables',
+  description: 'description',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.NotificationPreferenceScalarFieldEnum = {
+  id: 'id',
+  emailEnabled: 'emailEnabled',
+  smsEnabled: 'smsEnabled',
+  pushEnabled: 'pushEnabled',
+  securityAlerts: 'securityAlerts',
+  assessmentUpdates: 'assessmentUpdates',
+  systemUpdates: 'systemUpdates',
+  marketingEmails: 'marketingEmails',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  userId: 'userId'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -646,6 +712,11 @@ exports.CSITier = exports.$Enums.CSITier = {
   INNOVATIVE: 'INNOVATIVE'
 };
 
+exports.CampaignType = exports.$Enums.CampaignType = {
+  EMAIL: 'EMAIL',
+  SMS: 'SMS'
+};
+
 exports.CampaignStatus = exports.$Enums.CampaignStatus = {
   DRAFT: 'DRAFT',
   SCHEDULED: 'SCHEDULED',
@@ -661,6 +732,11 @@ exports.PhishingEventType = exports.$Enums.PhishingEventType = {
   EMAIL_DELIVERED: 'EMAIL_DELIVERED',
   EMAIL_BOUNCED: 'EMAIL_BOUNCED',
   EMAIL_OPENED: 'EMAIL_OPENED',
+  SMS_QUEUED: 'SMS_QUEUED',
+  SMS_SENT: 'SMS_SENT',
+  SMS_DELIVERED: 'SMS_DELIVERED',
+  SMS_FAILED: 'SMS_FAILED',
+  SMS_CLICKED: 'SMS_CLICKED',
   LINK_CLICKED: 'LINK_CLICKED',
   CREDENTIALS_ENTERED: 'CREDENTIALS_ENTERED',
   PHISHING_REPORTED: 'PHISHING_REPORTED',
@@ -685,6 +761,11 @@ exports.RiskLevel = exports.$Enums.RiskLevel = {
   MEDIUM: 'MEDIUM',
   HIGH: 'HIGH',
   VERY_HIGH: 'VERY_HIGH'
+};
+
+exports.TemplateType = exports.$Enums.TemplateType = {
+  EMAIL: 'EMAIL',
+  SMS: 'SMS'
 };
 
 exports.JobPriority = exports.$Enums.JobPriority = {
@@ -797,6 +878,20 @@ exports.PaymentStatus = exports.$Enums.PaymentStatus = {
   REFUNDED: 'REFUNDED'
 };
 
+exports.NotificationType = exports.$Enums.NotificationType = {
+  EMAIL: 'EMAIL',
+  SMS: 'SMS',
+  PUSH: 'PUSH'
+};
+
+exports.NotificationStatus = exports.$Enums.NotificationStatus = {
+  PENDING: 'PENDING',
+  SENT: 'SENT',
+  FAILED: 'FAILED',
+  RETRY: 'RETRY',
+  CANCELLED: 'CANCELLED'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
   RefreshToken: 'RefreshToken',
@@ -825,7 +920,10 @@ exports.Prisma.ModelName = {
   Invoice: 'Invoice',
   Payment: 'Payment',
   AuditLog: 'AuditLog',
-  BenchmarkData: 'BenchmarkData'
+  BenchmarkData: 'BenchmarkData',
+  NotificationHistory: 'NotificationHistory',
+  EmailTemplate: 'EmailTemplate',
+  NotificationPreference: 'NotificationPreference'
 };
 
 /**

@@ -153,6 +153,21 @@ export type AuditLog = $Result.DefaultSelection<Prisma.$AuditLogPayload>
  * 
  */
 export type BenchmarkData = $Result.DefaultSelection<Prisma.$BenchmarkDataPayload>
+/**
+ * Model NotificationHistory
+ * 
+ */
+export type NotificationHistory = $Result.DefaultSelection<Prisma.$NotificationHistoryPayload>
+/**
+ * Model EmailTemplate
+ * 
+ */
+export type EmailTemplate = $Result.DefaultSelection<Prisma.$EmailTemplatePayload>
+/**
+ * Model NotificationPreference
+ * 
+ */
+export type NotificationPreference = $Result.DefaultSelection<Prisma.$NotificationPreferencePayload>
 
 /**
  * Enums
@@ -264,6 +279,14 @@ export const CSITier: {
 export type CSITier = (typeof CSITier)[keyof typeof CSITier]
 
 
+export const CampaignType: {
+  EMAIL: 'EMAIL',
+  SMS: 'SMS'
+};
+
+export type CampaignType = (typeof CampaignType)[keyof typeof CampaignType]
+
+
 export const CampaignStatus: {
   DRAFT: 'DRAFT',
   SCHEDULED: 'SCHEDULED',
@@ -282,6 +305,11 @@ export const PhishingEventType: {
   EMAIL_DELIVERED: 'EMAIL_DELIVERED',
   EMAIL_BOUNCED: 'EMAIL_BOUNCED',
   EMAIL_OPENED: 'EMAIL_OPENED',
+  SMS_QUEUED: 'SMS_QUEUED',
+  SMS_SENT: 'SMS_SENT',
+  SMS_DELIVERED: 'SMS_DELIVERED',
+  SMS_FAILED: 'SMS_FAILED',
+  SMS_CLICKED: 'SMS_CLICKED',
   LINK_CLICKED: 'LINK_CLICKED',
   CREDENTIALS_ENTERED: 'CREDENTIALS_ENTERED',
   PHISHING_REPORTED: 'PHISHING_REPORTED',
@@ -315,6 +343,14 @@ export const RiskLevel: {
 };
 
 export type RiskLevel = (typeof RiskLevel)[keyof typeof RiskLevel]
+
+
+export const TemplateType: {
+  EMAIL: 'EMAIL',
+  SMS: 'SMS'
+};
+
+export type TemplateType = (typeof TemplateType)[keyof typeof TemplateType]
 
 
 export const JobPriority: {
@@ -468,6 +504,26 @@ export const PaymentStatus: {
 
 export type PaymentStatus = (typeof PaymentStatus)[keyof typeof PaymentStatus]
 
+
+export const NotificationType: {
+  EMAIL: 'EMAIL',
+  SMS: 'SMS',
+  PUSH: 'PUSH'
+};
+
+export type NotificationType = (typeof NotificationType)[keyof typeof NotificationType]
+
+
+export const NotificationStatus: {
+  PENDING: 'PENDING',
+  SENT: 'SENT',
+  FAILED: 'FAILED',
+  RETRY: 'RETRY',
+  CANCELLED: 'CANCELLED'
+};
+
+export type NotificationStatus = (typeof NotificationStatus)[keyof typeof NotificationStatus]
+
 }
 
 export type UserRole = $Enums.UserRole
@@ -506,6 +562,10 @@ export type CSITier = $Enums.CSITier
 
 export const CSITier: typeof $Enums.CSITier
 
+export type CampaignType = $Enums.CampaignType
+
+export const CampaignType: typeof $Enums.CampaignType
+
 export type CampaignStatus = $Enums.CampaignStatus
 
 export const CampaignStatus: typeof $Enums.CampaignStatus
@@ -521,6 +581,10 @@ export const TemplateCategory: typeof $Enums.TemplateCategory
 export type RiskLevel = $Enums.RiskLevel
 
 export const RiskLevel: typeof $Enums.RiskLevel
+
+export type TemplateType = $Enums.TemplateType
+
+export const TemplateType: typeof $Enums.TemplateType
 
 export type JobPriority = $Enums.JobPriority
 
@@ -577,6 +641,14 @@ export const PaymentProvider: typeof $Enums.PaymentProvider
 export type PaymentStatus = $Enums.PaymentStatus
 
 export const PaymentStatus: typeof $Enums.PaymentStatus
+
+export type NotificationType = $Enums.NotificationType
+
+export const NotificationType: typeof $Enums.NotificationType
+
+export type NotificationStatus = $Enums.NotificationStatus
+
+export const NotificationStatus: typeof $Enums.NotificationStatus
 
 /**
  * ##  Prisma Client ʲˢ
@@ -980,6 +1052,36 @@ export class PrismaClient<
     * ```
     */
   get benchmarkData(): Prisma.BenchmarkDataDelegate<ExtArgs>;
+
+  /**
+   * `prisma.notificationHistory`: Exposes CRUD operations for the **NotificationHistory** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more NotificationHistories
+    * const notificationHistories = await prisma.notificationHistory.findMany()
+    * ```
+    */
+  get notificationHistory(): Prisma.NotificationHistoryDelegate<ExtArgs>;
+
+  /**
+   * `prisma.emailTemplate`: Exposes CRUD operations for the **EmailTemplate** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more EmailTemplates
+    * const emailTemplates = await prisma.emailTemplate.findMany()
+    * ```
+    */
+  get emailTemplate(): Prisma.EmailTemplateDelegate<ExtArgs>;
+
+  /**
+   * `prisma.notificationPreference`: Exposes CRUD operations for the **NotificationPreference** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more NotificationPreferences
+    * const notificationPreferences = await prisma.notificationPreference.findMany()
+    * ```
+    */
+  get notificationPreference(): Prisma.NotificationPreferenceDelegate<ExtArgs>;
 }
 
 export namespace Prisma {
@@ -1448,7 +1550,10 @@ export namespace Prisma {
     Invoice: 'Invoice',
     Payment: 'Payment',
     AuditLog: 'AuditLog',
-    BenchmarkData: 'BenchmarkData'
+    BenchmarkData: 'BenchmarkData',
+    NotificationHistory: 'NotificationHistory',
+    EmailTemplate: 'EmailTemplate',
+    NotificationPreference: 'NotificationPreference'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1464,7 +1569,7 @@ export namespace Prisma {
 
   export type TypeMap<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, ClientOptions = {}> = {
     meta: {
-      modelProps: "user" | "refreshToken" | "passwordReset" | "organization" | "inviteCode" | "organizationMember" | "assessment" | "questionCategory" | "question" | "questionOption" | "assessmentResponse" | "assessmentResult" | "phishingCampaign" | "phishingTarget" | "phishingEvent" | "phishingTemplate" | "emailJob" | "agent" | "telemetryEvent" | "detectionRule" | "alert" | "scanResult" | "subscriptionPlan" | "subscription" | "invoice" | "payment" | "auditLog" | "benchmarkData"
+      modelProps: "user" | "refreshToken" | "passwordReset" | "organization" | "inviteCode" | "organizationMember" | "assessment" | "questionCategory" | "question" | "questionOption" | "assessmentResponse" | "assessmentResult" | "phishingCampaign" | "phishingTarget" | "phishingEvent" | "phishingTemplate" | "emailJob" | "agent" | "telemetryEvent" | "detectionRule" | "alert" | "scanResult" | "subscriptionPlan" | "subscription" | "invoice" | "payment" | "auditLog" | "benchmarkData" | "notificationHistory" | "emailTemplate" | "notificationPreference"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -3428,6 +3533,216 @@ export namespace Prisma {
           }
         }
       }
+      NotificationHistory: {
+        payload: Prisma.$NotificationHistoryPayload<ExtArgs>
+        fields: Prisma.NotificationHistoryFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.NotificationHistoryFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationHistoryPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.NotificationHistoryFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationHistoryPayload>
+          }
+          findFirst: {
+            args: Prisma.NotificationHistoryFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationHistoryPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.NotificationHistoryFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationHistoryPayload>
+          }
+          findMany: {
+            args: Prisma.NotificationHistoryFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationHistoryPayload>[]
+          }
+          create: {
+            args: Prisma.NotificationHistoryCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationHistoryPayload>
+          }
+          createMany: {
+            args: Prisma.NotificationHistoryCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.NotificationHistoryCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationHistoryPayload>[]
+          }
+          delete: {
+            args: Prisma.NotificationHistoryDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationHistoryPayload>
+          }
+          update: {
+            args: Prisma.NotificationHistoryUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationHistoryPayload>
+          }
+          deleteMany: {
+            args: Prisma.NotificationHistoryDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.NotificationHistoryUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.NotificationHistoryUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationHistoryPayload>
+          }
+          aggregate: {
+            args: Prisma.NotificationHistoryAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateNotificationHistory>
+          }
+          groupBy: {
+            args: Prisma.NotificationHistoryGroupByArgs<ExtArgs>
+            result: $Utils.Optional<NotificationHistoryGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.NotificationHistoryCountArgs<ExtArgs>
+            result: $Utils.Optional<NotificationHistoryCountAggregateOutputType> | number
+          }
+        }
+      }
+      EmailTemplate: {
+        payload: Prisma.$EmailTemplatePayload<ExtArgs>
+        fields: Prisma.EmailTemplateFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.EmailTemplateFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailTemplatePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.EmailTemplateFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailTemplatePayload>
+          }
+          findFirst: {
+            args: Prisma.EmailTemplateFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailTemplatePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.EmailTemplateFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailTemplatePayload>
+          }
+          findMany: {
+            args: Prisma.EmailTemplateFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailTemplatePayload>[]
+          }
+          create: {
+            args: Prisma.EmailTemplateCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailTemplatePayload>
+          }
+          createMany: {
+            args: Prisma.EmailTemplateCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.EmailTemplateCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailTemplatePayload>[]
+          }
+          delete: {
+            args: Prisma.EmailTemplateDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailTemplatePayload>
+          }
+          update: {
+            args: Prisma.EmailTemplateUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailTemplatePayload>
+          }
+          deleteMany: {
+            args: Prisma.EmailTemplateDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.EmailTemplateUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.EmailTemplateUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmailTemplatePayload>
+          }
+          aggregate: {
+            args: Prisma.EmailTemplateAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateEmailTemplate>
+          }
+          groupBy: {
+            args: Prisma.EmailTemplateGroupByArgs<ExtArgs>
+            result: $Utils.Optional<EmailTemplateGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.EmailTemplateCountArgs<ExtArgs>
+            result: $Utils.Optional<EmailTemplateCountAggregateOutputType> | number
+          }
+        }
+      }
+      NotificationPreference: {
+        payload: Prisma.$NotificationPreferencePayload<ExtArgs>
+        fields: Prisma.NotificationPreferenceFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.NotificationPreferenceFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationPreferencePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.NotificationPreferenceFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationPreferencePayload>
+          }
+          findFirst: {
+            args: Prisma.NotificationPreferenceFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationPreferencePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.NotificationPreferenceFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationPreferencePayload>
+          }
+          findMany: {
+            args: Prisma.NotificationPreferenceFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationPreferencePayload>[]
+          }
+          create: {
+            args: Prisma.NotificationPreferenceCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationPreferencePayload>
+          }
+          createMany: {
+            args: Prisma.NotificationPreferenceCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.NotificationPreferenceCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationPreferencePayload>[]
+          }
+          delete: {
+            args: Prisma.NotificationPreferenceDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationPreferencePayload>
+          }
+          update: {
+            args: Prisma.NotificationPreferenceUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationPreferencePayload>
+          }
+          deleteMany: {
+            args: Prisma.NotificationPreferenceDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.NotificationPreferenceUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.NotificationPreferenceUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationPreferencePayload>
+          }
+          aggregate: {
+            args: Prisma.NotificationPreferenceAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateNotificationPreference>
+          }
+          groupBy: {
+            args: Prisma.NotificationPreferenceGroupByArgs<ExtArgs>
+            result: $Utils.Optional<NotificationPreferenceGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.NotificationPreferenceCountArgs<ExtArgs>
+            result: $Utils.Optional<NotificationPreferenceCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -3600,6 +3915,7 @@ export namespace Prisma {
     createdInviteCodes: number
     organizationMemberships: number
     sentInvites: number
+    notificationHistory: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3614,6 +3930,7 @@ export namespace Prisma {
     createdInviteCodes?: boolean | UserCountOutputTypeCountCreatedInviteCodesArgs
     organizationMemberships?: boolean | UserCountOutputTypeCountOrganizationMembershipsArgs
     sentInvites?: boolean | UserCountOutputTypeCountSentInvitesArgs
+    notificationHistory?: boolean | UserCountOutputTypeCountNotificationHistoryArgs
   }
 
   // Custom InputTypes
@@ -3702,6 +4019,13 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountSentInvitesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: OrganizationMemberWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountNotificationHistoryArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: NotificationHistoryWhereInput
   }
 
 
@@ -4398,6 +4722,8 @@ export namespace Prisma {
     createdInviteCodes?: boolean | User$createdInviteCodesArgs<ExtArgs>
     organizationMemberships?: boolean | User$organizationMembershipsArgs<ExtArgs>
     sentInvites?: boolean | User$sentInvitesArgs<ExtArgs>
+    notificationHistory?: boolean | User$notificationHistoryArgs<ExtArgs>
+    notificationPreferences?: boolean | User$notificationPreferencesArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -4447,6 +4773,8 @@ export namespace Prisma {
     createdInviteCodes?: boolean | User$createdInviteCodesArgs<ExtArgs>
     organizationMemberships?: boolean | User$organizationMembershipsArgs<ExtArgs>
     sentInvites?: boolean | User$sentInvitesArgs<ExtArgs>
+    notificationHistory?: boolean | User$notificationHistoryArgs<ExtArgs>
+    notificationPreferences?: boolean | User$notificationPreferencesArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4468,6 +4796,8 @@ export namespace Prisma {
       createdInviteCodes: Prisma.$InviteCodePayload<ExtArgs>[]
       organizationMemberships: Prisma.$OrganizationMemberPayload<ExtArgs>[]
       sentInvites: Prisma.$OrganizationMemberPayload<ExtArgs>[]
+      notificationHistory: Prisma.$NotificationHistoryPayload<ExtArgs>[]
+      notificationPreferences: Prisma.$NotificationPreferencePayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -4859,6 +5189,8 @@ export namespace Prisma {
     createdInviteCodes<T extends User$createdInviteCodesArgs<ExtArgs> = {}>(args?: Subset<T, User$createdInviteCodesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InviteCodePayload<ExtArgs>, T, "findMany"> | Null>
     organizationMemberships<T extends User$organizationMembershipsArgs<ExtArgs> = {}>(args?: Subset<T, User$organizationMembershipsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrganizationMemberPayload<ExtArgs>, T, "findMany"> | Null>
     sentInvites<T extends User$sentInvitesArgs<ExtArgs> = {}>(args?: Subset<T, User$sentInvitesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrganizationMemberPayload<ExtArgs>, T, "findMany"> | Null>
+    notificationHistory<T extends User$notificationHistoryArgs<ExtArgs> = {}>(args?: Subset<T, User$notificationHistoryArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotificationHistoryPayload<ExtArgs>, T, "findMany"> | Null>
+    notificationPreferences<T extends User$notificationPreferencesArgs<ExtArgs> = {}>(args?: Subset<T, User$notificationPreferencesArgs<ExtArgs>>): Prisma__NotificationPreferenceClient<$Result.GetResult<Prisma.$NotificationPreferencePayload<ExtArgs>, T, "findUniqueOrThrow"> | null, null, ExtArgs>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -5451,6 +5783,41 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: OrganizationMemberScalarFieldEnum | OrganizationMemberScalarFieldEnum[]
+  }
+
+  /**
+   * User.notificationHistory
+   */
+  export type User$notificationHistoryArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NotificationHistory
+     */
+    select?: NotificationHistorySelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationHistoryInclude<ExtArgs> | null
+    where?: NotificationHistoryWhereInput
+    orderBy?: NotificationHistoryOrderByWithRelationInput | NotificationHistoryOrderByWithRelationInput[]
+    cursor?: NotificationHistoryWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: NotificationHistoryScalarFieldEnum | NotificationHistoryScalarFieldEnum[]
+  }
+
+  /**
+   * User.notificationPreferences
+   */
+  export type User$notificationPreferencesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NotificationPreference
+     */
+    select?: NotificationPreferenceSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationPreferenceInclude<ExtArgs> | null
+    where?: NotificationPreferenceWhereInput
   }
 
   /**
@@ -17179,23 +17546,31 @@ export namespace Prisma {
 
   export type PhishingCampaignAvgAggregateOutputType = {
     targetCount: number | null
-    emailsSent: number | null
-    emailsDelivered: number | null
-    emailsOpened: number | null
+    messagesSent: number | null
+    messagesDelivered: number | null
+    messagesOpened: number | null
     linksClicked: number | null
     credentialsEntered: number | null
     phishingReported: number | null
+    messagesFailed: number | null
+    emailsSent: number | null
+    emailsDelivered: number | null
+    emailsOpened: number | null
     emailsBounced: number | null
   }
 
   export type PhishingCampaignSumAggregateOutputType = {
     targetCount: number | null
-    emailsSent: number | null
-    emailsDelivered: number | null
-    emailsOpened: number | null
+    messagesSent: number | null
+    messagesDelivered: number | null
+    messagesOpened: number | null
     linksClicked: number | null
     credentialsEntered: number | null
     phishingReported: number | null
+    messagesFailed: number | null
+    emailsSent: number | null
+    emailsDelivered: number | null
+    emailsOpened: number | null
     emailsBounced: number | null
   }
 
@@ -17203,24 +17578,32 @@ export namespace Prisma {
     id: string | null
     name: string | null
     description: string | null
+    campaignType: $Enums.CampaignType | null
     templateId: string | null
     template: string | null
     subject: string | null
     senderName: string | null
     senderEmail: string | null
     landingPageUrl: string | null
+    senderNumber: string | null
+    messageContent: string | null
+    trackingUrl: string | null
     status: $Enums.CampaignStatus | null
     scheduledAt: Date | null
     launchedAt: Date | null
     completedAt: Date | null
     pausedAt: Date | null
     targetCount: number | null
-    emailsSent: number | null
-    emailsDelivered: number | null
-    emailsOpened: number | null
+    messagesSent: number | null
+    messagesDelivered: number | null
+    messagesOpened: number | null
     linksClicked: number | null
     credentialsEntered: number | null
     phishingReported: number | null
+    messagesFailed: number | null
+    emailsSent: number | null
+    emailsDelivered: number | null
+    emailsOpened: number | null
     emailsBounced: number | null
     createdBy: string | null
     organizationId: string | null
@@ -17232,24 +17615,32 @@ export namespace Prisma {
     id: string | null
     name: string | null
     description: string | null
+    campaignType: $Enums.CampaignType | null
     templateId: string | null
     template: string | null
     subject: string | null
     senderName: string | null
     senderEmail: string | null
     landingPageUrl: string | null
+    senderNumber: string | null
+    messageContent: string | null
+    trackingUrl: string | null
     status: $Enums.CampaignStatus | null
     scheduledAt: Date | null
     launchedAt: Date | null
     completedAt: Date | null
     pausedAt: Date | null
     targetCount: number | null
-    emailsSent: number | null
-    emailsDelivered: number | null
-    emailsOpened: number | null
+    messagesSent: number | null
+    messagesDelivered: number | null
+    messagesOpened: number | null
     linksClicked: number | null
     credentialsEntered: number | null
     phishingReported: number | null
+    messagesFailed: number | null
+    emailsSent: number | null
+    emailsDelivered: number | null
+    emailsOpened: number | null
     emailsBounced: number | null
     createdBy: string | null
     organizationId: string | null
@@ -17261,24 +17652,32 @@ export namespace Prisma {
     id: number
     name: number
     description: number
+    campaignType: number
     templateId: number
     template: number
     subject: number
     senderName: number
     senderEmail: number
     landingPageUrl: number
+    senderNumber: number
+    messageContent: number
+    trackingUrl: number
     status: number
     scheduledAt: number
     launchedAt: number
     completedAt: number
     pausedAt: number
     targetCount: number
-    emailsSent: number
-    emailsDelivered: number
-    emailsOpened: number
+    messagesSent: number
+    messagesDelivered: number
+    messagesOpened: number
     linksClicked: number
     credentialsEntered: number
     phishingReported: number
+    messagesFailed: number
+    emailsSent: number
+    emailsDelivered: number
+    emailsOpened: number
     emailsBounced: number
     createdBy: number
     organizationId: number
@@ -17290,23 +17689,31 @@ export namespace Prisma {
 
   export type PhishingCampaignAvgAggregateInputType = {
     targetCount?: true
-    emailsSent?: true
-    emailsDelivered?: true
-    emailsOpened?: true
+    messagesSent?: true
+    messagesDelivered?: true
+    messagesOpened?: true
     linksClicked?: true
     credentialsEntered?: true
     phishingReported?: true
+    messagesFailed?: true
+    emailsSent?: true
+    emailsDelivered?: true
+    emailsOpened?: true
     emailsBounced?: true
   }
 
   export type PhishingCampaignSumAggregateInputType = {
     targetCount?: true
-    emailsSent?: true
-    emailsDelivered?: true
-    emailsOpened?: true
+    messagesSent?: true
+    messagesDelivered?: true
+    messagesOpened?: true
     linksClicked?: true
     credentialsEntered?: true
     phishingReported?: true
+    messagesFailed?: true
+    emailsSent?: true
+    emailsDelivered?: true
+    emailsOpened?: true
     emailsBounced?: true
   }
 
@@ -17314,24 +17721,32 @@ export namespace Prisma {
     id?: true
     name?: true
     description?: true
+    campaignType?: true
     templateId?: true
     template?: true
     subject?: true
     senderName?: true
     senderEmail?: true
     landingPageUrl?: true
+    senderNumber?: true
+    messageContent?: true
+    trackingUrl?: true
     status?: true
     scheduledAt?: true
     launchedAt?: true
     completedAt?: true
     pausedAt?: true
     targetCount?: true
-    emailsSent?: true
-    emailsDelivered?: true
-    emailsOpened?: true
+    messagesSent?: true
+    messagesDelivered?: true
+    messagesOpened?: true
     linksClicked?: true
     credentialsEntered?: true
     phishingReported?: true
+    messagesFailed?: true
+    emailsSent?: true
+    emailsDelivered?: true
+    emailsOpened?: true
     emailsBounced?: true
     createdBy?: true
     organizationId?: true
@@ -17343,24 +17758,32 @@ export namespace Prisma {
     id?: true
     name?: true
     description?: true
+    campaignType?: true
     templateId?: true
     template?: true
     subject?: true
     senderName?: true
     senderEmail?: true
     landingPageUrl?: true
+    senderNumber?: true
+    messageContent?: true
+    trackingUrl?: true
     status?: true
     scheduledAt?: true
     launchedAt?: true
     completedAt?: true
     pausedAt?: true
     targetCount?: true
-    emailsSent?: true
-    emailsDelivered?: true
-    emailsOpened?: true
+    messagesSent?: true
+    messagesDelivered?: true
+    messagesOpened?: true
     linksClicked?: true
     credentialsEntered?: true
     phishingReported?: true
+    messagesFailed?: true
+    emailsSent?: true
+    emailsDelivered?: true
+    emailsOpened?: true
     emailsBounced?: true
     createdBy?: true
     organizationId?: true
@@ -17372,24 +17795,32 @@ export namespace Prisma {
     id?: true
     name?: true
     description?: true
+    campaignType?: true
     templateId?: true
     template?: true
     subject?: true
     senderName?: true
     senderEmail?: true
     landingPageUrl?: true
+    senderNumber?: true
+    messageContent?: true
+    trackingUrl?: true
     status?: true
     scheduledAt?: true
     launchedAt?: true
     completedAt?: true
     pausedAt?: true
     targetCount?: true
-    emailsSent?: true
-    emailsDelivered?: true
-    emailsOpened?: true
+    messagesSent?: true
+    messagesDelivered?: true
+    messagesOpened?: true
     linksClicked?: true
     credentialsEntered?: true
     phishingReported?: true
+    messagesFailed?: true
+    emailsSent?: true
+    emailsDelivered?: true
+    emailsOpened?: true
     emailsBounced?: true
     createdBy?: true
     organizationId?: true
@@ -17488,24 +17919,32 @@ export namespace Prisma {
     id: string
     name: string
     description: string | null
+    campaignType: $Enums.CampaignType
     templateId: string
     template: string
-    subject: string
-    senderName: string
-    senderEmail: string
+    subject: string | null
+    senderName: string | null
+    senderEmail: string | null
     landingPageUrl: string | null
+    senderNumber: string | null
+    messageContent: string | null
+    trackingUrl: string | null
     status: $Enums.CampaignStatus
     scheduledAt: Date | null
     launchedAt: Date | null
     completedAt: Date | null
     pausedAt: Date | null
     targetCount: number
-    emailsSent: number
-    emailsDelivered: number
-    emailsOpened: number
+    messagesSent: number
+    messagesDelivered: number
+    messagesOpened: number
     linksClicked: number
     credentialsEntered: number
     phishingReported: number
+    messagesFailed: number
+    emailsSent: number
+    emailsDelivered: number
+    emailsOpened: number
     emailsBounced: number
     createdBy: string
     organizationId: string
@@ -17536,24 +17975,32 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     description?: boolean
+    campaignType?: boolean
     templateId?: boolean
     template?: boolean
     subject?: boolean
     senderName?: boolean
     senderEmail?: boolean
     landingPageUrl?: boolean
+    senderNumber?: boolean
+    messageContent?: boolean
+    trackingUrl?: boolean
     status?: boolean
     scheduledAt?: boolean
     launchedAt?: boolean
     completedAt?: boolean
     pausedAt?: boolean
     targetCount?: boolean
-    emailsSent?: boolean
-    emailsDelivered?: boolean
-    emailsOpened?: boolean
+    messagesSent?: boolean
+    messagesDelivered?: boolean
+    messagesOpened?: boolean
     linksClicked?: boolean
     credentialsEntered?: boolean
     phishingReported?: boolean
+    messagesFailed?: boolean
+    emailsSent?: boolean
+    emailsDelivered?: boolean
+    emailsOpened?: boolean
     emailsBounced?: boolean
     createdBy?: boolean
     organizationId?: boolean
@@ -17570,24 +18017,32 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     description?: boolean
+    campaignType?: boolean
     templateId?: boolean
     template?: boolean
     subject?: boolean
     senderName?: boolean
     senderEmail?: boolean
     landingPageUrl?: boolean
+    senderNumber?: boolean
+    messageContent?: boolean
+    trackingUrl?: boolean
     status?: boolean
     scheduledAt?: boolean
     launchedAt?: boolean
     completedAt?: boolean
     pausedAt?: boolean
     targetCount?: boolean
-    emailsSent?: boolean
-    emailsDelivered?: boolean
-    emailsOpened?: boolean
+    messagesSent?: boolean
+    messagesDelivered?: boolean
+    messagesOpened?: boolean
     linksClicked?: boolean
     credentialsEntered?: boolean
     phishingReported?: boolean
+    messagesFailed?: boolean
+    emailsSent?: boolean
+    emailsDelivered?: boolean
+    emailsOpened?: boolean
     emailsBounced?: boolean
     createdBy?: boolean
     organizationId?: boolean
@@ -17601,24 +18056,32 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     description?: boolean
+    campaignType?: boolean
     templateId?: boolean
     template?: boolean
     subject?: boolean
     senderName?: boolean
     senderEmail?: boolean
     landingPageUrl?: boolean
+    senderNumber?: boolean
+    messageContent?: boolean
+    trackingUrl?: boolean
     status?: boolean
     scheduledAt?: boolean
     launchedAt?: boolean
     completedAt?: boolean
     pausedAt?: boolean
     targetCount?: boolean
-    emailsSent?: boolean
-    emailsDelivered?: boolean
-    emailsOpened?: boolean
+    messagesSent?: boolean
+    messagesDelivered?: boolean
+    messagesOpened?: boolean
     linksClicked?: boolean
     credentialsEntered?: boolean
     phishingReported?: boolean
+    messagesFailed?: boolean
+    emailsSent?: boolean
+    emailsDelivered?: boolean
+    emailsOpened?: boolean
     emailsBounced?: boolean
     createdBy?: boolean
     organizationId?: boolean
@@ -17650,24 +18113,32 @@ export namespace Prisma {
       id: string
       name: string
       description: string | null
+      campaignType: $Enums.CampaignType
       templateId: string
       template: string
-      subject: string
-      senderName: string
-      senderEmail: string
+      subject: string | null
+      senderName: string | null
+      senderEmail: string | null
       landingPageUrl: string | null
+      senderNumber: string | null
+      messageContent: string | null
+      trackingUrl: string | null
       status: $Enums.CampaignStatus
       scheduledAt: Date | null
       launchedAt: Date | null
       completedAt: Date | null
       pausedAt: Date | null
       targetCount: number
-      emailsSent: number
-      emailsDelivered: number
-      emailsOpened: number
+      messagesSent: number
+      messagesDelivered: number
+      messagesOpened: number
       linksClicked: number
       credentialsEntered: number
       phishingReported: number
+      messagesFailed: number
+      emailsSent: number
+      emailsDelivered: number
+      emailsOpened: number
       emailsBounced: number
       createdBy: string
       organizationId: string
@@ -18073,24 +18544,32 @@ export namespace Prisma {
     readonly id: FieldRef<"PhishingCampaign", 'String'>
     readonly name: FieldRef<"PhishingCampaign", 'String'>
     readonly description: FieldRef<"PhishingCampaign", 'String'>
+    readonly campaignType: FieldRef<"PhishingCampaign", 'CampaignType'>
     readonly templateId: FieldRef<"PhishingCampaign", 'String'>
     readonly template: FieldRef<"PhishingCampaign", 'String'>
     readonly subject: FieldRef<"PhishingCampaign", 'String'>
     readonly senderName: FieldRef<"PhishingCampaign", 'String'>
     readonly senderEmail: FieldRef<"PhishingCampaign", 'String'>
     readonly landingPageUrl: FieldRef<"PhishingCampaign", 'String'>
+    readonly senderNumber: FieldRef<"PhishingCampaign", 'String'>
+    readonly messageContent: FieldRef<"PhishingCampaign", 'String'>
+    readonly trackingUrl: FieldRef<"PhishingCampaign", 'String'>
     readonly status: FieldRef<"PhishingCampaign", 'CampaignStatus'>
     readonly scheduledAt: FieldRef<"PhishingCampaign", 'DateTime'>
     readonly launchedAt: FieldRef<"PhishingCampaign", 'DateTime'>
     readonly completedAt: FieldRef<"PhishingCampaign", 'DateTime'>
     readonly pausedAt: FieldRef<"PhishingCampaign", 'DateTime'>
     readonly targetCount: FieldRef<"PhishingCampaign", 'Int'>
-    readonly emailsSent: FieldRef<"PhishingCampaign", 'Int'>
-    readonly emailsDelivered: FieldRef<"PhishingCampaign", 'Int'>
-    readonly emailsOpened: FieldRef<"PhishingCampaign", 'Int'>
+    readonly messagesSent: FieldRef<"PhishingCampaign", 'Int'>
+    readonly messagesDelivered: FieldRef<"PhishingCampaign", 'Int'>
+    readonly messagesOpened: FieldRef<"PhishingCampaign", 'Int'>
     readonly linksClicked: FieldRef<"PhishingCampaign", 'Int'>
     readonly credentialsEntered: FieldRef<"PhishingCampaign", 'Int'>
     readonly phishingReported: FieldRef<"PhishingCampaign", 'Int'>
+    readonly messagesFailed: FieldRef<"PhishingCampaign", 'Int'>
+    readonly emailsSent: FieldRef<"PhishingCampaign", 'Int'>
+    readonly emailsDelivered: FieldRef<"PhishingCampaign", 'Int'>
+    readonly emailsOpened: FieldRef<"PhishingCampaign", 'Int'>
     readonly emailsBounced: FieldRef<"PhishingCampaign", 'Int'>
     readonly createdBy: FieldRef<"PhishingCampaign", 'String'>
     readonly organizationId: FieldRef<"PhishingCampaign", 'String'>
@@ -18493,16 +18972,21 @@ export namespace Prisma {
   export type PhishingTargetMinAggregateOutputType = {
     id: string | null
     email: string | null
+    phoneNumber: string | null
     firstName: string | null
     lastName: string | null
     department: string | null
     jobTitle: string | null
-    emailSent: boolean | null
-    emailDelivered: boolean | null
-    emailOpened: boolean | null
+    messageSent: boolean | null
+    messageDelivered: boolean | null
+    messageOpened: boolean | null
     linkClicked: boolean | null
     credentialsEntered: boolean | null
     reportedPhishing: boolean | null
+    messageFailed: boolean | null
+    emailSent: boolean | null
+    emailDelivered: boolean | null
+    emailOpened: boolean | null
     emailBounced: boolean | null
     sentAt: Date | null
     deliveredAt: Date | null
@@ -18510,10 +18994,13 @@ export namespace Prisma {
     clickedAt: Date | null
     credentialsAt: Date | null
     reportedAt: Date | null
+    failedAt: Date | null
     bouncedAt: Date | null
     userAgent: string | null
     ipAddress: string | null
     clickCount: number | null
+    smsProvider: string | null
+    messageId: string | null
     riskScore: number | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -18524,16 +19011,21 @@ export namespace Prisma {
   export type PhishingTargetMaxAggregateOutputType = {
     id: string | null
     email: string | null
+    phoneNumber: string | null
     firstName: string | null
     lastName: string | null
     department: string | null
     jobTitle: string | null
-    emailSent: boolean | null
-    emailDelivered: boolean | null
-    emailOpened: boolean | null
+    messageSent: boolean | null
+    messageDelivered: boolean | null
+    messageOpened: boolean | null
     linkClicked: boolean | null
     credentialsEntered: boolean | null
     reportedPhishing: boolean | null
+    messageFailed: boolean | null
+    emailSent: boolean | null
+    emailDelivered: boolean | null
+    emailOpened: boolean | null
     emailBounced: boolean | null
     sentAt: Date | null
     deliveredAt: Date | null
@@ -18541,10 +19033,13 @@ export namespace Prisma {
     clickedAt: Date | null
     credentialsAt: Date | null
     reportedAt: Date | null
+    failedAt: Date | null
     bouncedAt: Date | null
     userAgent: string | null
     ipAddress: string | null
     clickCount: number | null
+    smsProvider: string | null
+    messageId: string | null
     riskScore: number | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -18555,16 +19050,21 @@ export namespace Prisma {
   export type PhishingTargetCountAggregateOutputType = {
     id: number
     email: number
+    phoneNumber: number
     firstName: number
     lastName: number
     department: number
     jobTitle: number
-    emailSent: number
-    emailDelivered: number
-    emailOpened: number
+    messageSent: number
+    messageDelivered: number
+    messageOpened: number
     linkClicked: number
     credentialsEntered: number
     reportedPhishing: number
+    messageFailed: number
+    emailSent: number
+    emailDelivered: number
+    emailOpened: number
     emailBounced: number
     sentAt: number
     deliveredAt: number
@@ -18572,10 +19072,13 @@ export namespace Prisma {
     clickedAt: number
     credentialsAt: number
     reportedAt: number
+    failedAt: number
     bouncedAt: number
     userAgent: number
     ipAddress: number
     clickCount: number
+    smsProvider: number
+    messageId: number
     riskScore: number
     createdAt: number
     updatedAt: number
@@ -18598,16 +19101,21 @@ export namespace Prisma {
   export type PhishingTargetMinAggregateInputType = {
     id?: true
     email?: true
+    phoneNumber?: true
     firstName?: true
     lastName?: true
     department?: true
     jobTitle?: true
-    emailSent?: true
-    emailDelivered?: true
-    emailOpened?: true
+    messageSent?: true
+    messageDelivered?: true
+    messageOpened?: true
     linkClicked?: true
     credentialsEntered?: true
     reportedPhishing?: true
+    messageFailed?: true
+    emailSent?: true
+    emailDelivered?: true
+    emailOpened?: true
     emailBounced?: true
     sentAt?: true
     deliveredAt?: true
@@ -18615,10 +19123,13 @@ export namespace Prisma {
     clickedAt?: true
     credentialsAt?: true
     reportedAt?: true
+    failedAt?: true
     bouncedAt?: true
     userAgent?: true
     ipAddress?: true
     clickCount?: true
+    smsProvider?: true
+    messageId?: true
     riskScore?: true
     createdAt?: true
     updatedAt?: true
@@ -18629,16 +19140,21 @@ export namespace Prisma {
   export type PhishingTargetMaxAggregateInputType = {
     id?: true
     email?: true
+    phoneNumber?: true
     firstName?: true
     lastName?: true
     department?: true
     jobTitle?: true
-    emailSent?: true
-    emailDelivered?: true
-    emailOpened?: true
+    messageSent?: true
+    messageDelivered?: true
+    messageOpened?: true
     linkClicked?: true
     credentialsEntered?: true
     reportedPhishing?: true
+    messageFailed?: true
+    emailSent?: true
+    emailDelivered?: true
+    emailOpened?: true
     emailBounced?: true
     sentAt?: true
     deliveredAt?: true
@@ -18646,10 +19162,13 @@ export namespace Prisma {
     clickedAt?: true
     credentialsAt?: true
     reportedAt?: true
+    failedAt?: true
     bouncedAt?: true
     userAgent?: true
     ipAddress?: true
     clickCount?: true
+    smsProvider?: true
+    messageId?: true
     riskScore?: true
     createdAt?: true
     updatedAt?: true
@@ -18660,16 +19179,21 @@ export namespace Prisma {
   export type PhishingTargetCountAggregateInputType = {
     id?: true
     email?: true
+    phoneNumber?: true
     firstName?: true
     lastName?: true
     department?: true
     jobTitle?: true
-    emailSent?: true
-    emailDelivered?: true
-    emailOpened?: true
+    messageSent?: true
+    messageDelivered?: true
+    messageOpened?: true
     linkClicked?: true
     credentialsEntered?: true
     reportedPhishing?: true
+    messageFailed?: true
+    emailSent?: true
+    emailDelivered?: true
+    emailOpened?: true
     emailBounced?: true
     sentAt?: true
     deliveredAt?: true
@@ -18677,10 +19201,13 @@ export namespace Prisma {
     clickedAt?: true
     credentialsAt?: true
     reportedAt?: true
+    failedAt?: true
     bouncedAt?: true
     userAgent?: true
     ipAddress?: true
     clickCount?: true
+    smsProvider?: true
+    messageId?: true
     riskScore?: true
     createdAt?: true
     updatedAt?: true
@@ -18777,17 +19304,22 @@ export namespace Prisma {
 
   export type PhishingTargetGroupByOutputType = {
     id: string
-    email: string
+    email: string | null
+    phoneNumber: string | null
     firstName: string | null
     lastName: string | null
     department: string | null
     jobTitle: string | null
-    emailSent: boolean
-    emailDelivered: boolean
-    emailOpened: boolean
+    messageSent: boolean
+    messageDelivered: boolean
+    messageOpened: boolean
     linkClicked: boolean
     credentialsEntered: boolean
     reportedPhishing: boolean
+    messageFailed: boolean
+    emailSent: boolean
+    emailDelivered: boolean
+    emailOpened: boolean
     emailBounced: boolean
     sentAt: Date | null
     deliveredAt: Date | null
@@ -18795,10 +19327,13 @@ export namespace Prisma {
     clickedAt: Date | null
     credentialsAt: Date | null
     reportedAt: Date | null
+    failedAt: Date | null
     bouncedAt: Date | null
     userAgent: string | null
     ipAddress: string | null
     clickCount: number
+    smsProvider: string | null
+    messageId: string | null
     riskScore: number | null
     createdAt: Date
     updatedAt: Date
@@ -18828,16 +19363,21 @@ export namespace Prisma {
   export type PhishingTargetSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     email?: boolean
+    phoneNumber?: boolean
     firstName?: boolean
     lastName?: boolean
     department?: boolean
     jobTitle?: boolean
-    emailSent?: boolean
-    emailDelivered?: boolean
-    emailOpened?: boolean
+    messageSent?: boolean
+    messageDelivered?: boolean
+    messageOpened?: boolean
     linkClicked?: boolean
     credentialsEntered?: boolean
     reportedPhishing?: boolean
+    messageFailed?: boolean
+    emailSent?: boolean
+    emailDelivered?: boolean
+    emailOpened?: boolean
     emailBounced?: boolean
     sentAt?: boolean
     deliveredAt?: boolean
@@ -18845,10 +19385,13 @@ export namespace Prisma {
     clickedAt?: boolean
     credentialsAt?: boolean
     reportedAt?: boolean
+    failedAt?: boolean
     bouncedAt?: boolean
     userAgent?: boolean
     ipAddress?: boolean
     clickCount?: boolean
+    smsProvider?: boolean
+    messageId?: boolean
     riskScore?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -18863,16 +19406,21 @@ export namespace Prisma {
   export type PhishingTargetSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     email?: boolean
+    phoneNumber?: boolean
     firstName?: boolean
     lastName?: boolean
     department?: boolean
     jobTitle?: boolean
-    emailSent?: boolean
-    emailDelivered?: boolean
-    emailOpened?: boolean
+    messageSent?: boolean
+    messageDelivered?: boolean
+    messageOpened?: boolean
     linkClicked?: boolean
     credentialsEntered?: boolean
     reportedPhishing?: boolean
+    messageFailed?: boolean
+    emailSent?: boolean
+    emailDelivered?: boolean
+    emailOpened?: boolean
     emailBounced?: boolean
     sentAt?: boolean
     deliveredAt?: boolean
@@ -18880,10 +19428,13 @@ export namespace Prisma {
     clickedAt?: boolean
     credentialsAt?: boolean
     reportedAt?: boolean
+    failedAt?: boolean
     bouncedAt?: boolean
     userAgent?: boolean
     ipAddress?: boolean
     clickCount?: boolean
+    smsProvider?: boolean
+    messageId?: boolean
     riskScore?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -18896,16 +19447,21 @@ export namespace Prisma {
   export type PhishingTargetSelectScalar = {
     id?: boolean
     email?: boolean
+    phoneNumber?: boolean
     firstName?: boolean
     lastName?: boolean
     department?: boolean
     jobTitle?: boolean
-    emailSent?: boolean
-    emailDelivered?: boolean
-    emailOpened?: boolean
+    messageSent?: boolean
+    messageDelivered?: boolean
+    messageOpened?: boolean
     linkClicked?: boolean
     credentialsEntered?: boolean
     reportedPhishing?: boolean
+    messageFailed?: boolean
+    emailSent?: boolean
+    emailDelivered?: boolean
+    emailOpened?: boolean
     emailBounced?: boolean
     sentAt?: boolean
     deliveredAt?: boolean
@@ -18913,10 +19469,13 @@ export namespace Prisma {
     clickedAt?: boolean
     credentialsAt?: boolean
     reportedAt?: boolean
+    failedAt?: boolean
     bouncedAt?: boolean
     userAgent?: boolean
     ipAddress?: boolean
     clickCount?: boolean
+    smsProvider?: boolean
+    messageId?: boolean
     riskScore?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -18944,17 +19503,22 @@ export namespace Prisma {
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
-      email: string
+      email: string | null
+      phoneNumber: string | null
       firstName: string | null
       lastName: string | null
       department: string | null
       jobTitle: string | null
-      emailSent: boolean
-      emailDelivered: boolean
-      emailOpened: boolean
+      messageSent: boolean
+      messageDelivered: boolean
+      messageOpened: boolean
       linkClicked: boolean
       credentialsEntered: boolean
       reportedPhishing: boolean
+      messageFailed: boolean
+      emailSent: boolean
+      emailDelivered: boolean
+      emailOpened: boolean
       emailBounced: boolean
       sentAt: Date | null
       deliveredAt: Date | null
@@ -18962,10 +19526,13 @@ export namespace Prisma {
       clickedAt: Date | null
       credentialsAt: Date | null
       reportedAt: Date | null
+      failedAt: Date | null
       bouncedAt: Date | null
       userAgent: string | null
       ipAddress: string | null
       clickCount: number
+      smsProvider: string | null
+      messageId: string | null
       riskScore: number | null
       createdAt: Date
       updatedAt: Date
@@ -19369,16 +19936,21 @@ export namespace Prisma {
   interface PhishingTargetFieldRefs {
     readonly id: FieldRef<"PhishingTarget", 'String'>
     readonly email: FieldRef<"PhishingTarget", 'String'>
+    readonly phoneNumber: FieldRef<"PhishingTarget", 'String'>
     readonly firstName: FieldRef<"PhishingTarget", 'String'>
     readonly lastName: FieldRef<"PhishingTarget", 'String'>
     readonly department: FieldRef<"PhishingTarget", 'String'>
     readonly jobTitle: FieldRef<"PhishingTarget", 'String'>
-    readonly emailSent: FieldRef<"PhishingTarget", 'Boolean'>
-    readonly emailDelivered: FieldRef<"PhishingTarget", 'Boolean'>
-    readonly emailOpened: FieldRef<"PhishingTarget", 'Boolean'>
+    readonly messageSent: FieldRef<"PhishingTarget", 'Boolean'>
+    readonly messageDelivered: FieldRef<"PhishingTarget", 'Boolean'>
+    readonly messageOpened: FieldRef<"PhishingTarget", 'Boolean'>
     readonly linkClicked: FieldRef<"PhishingTarget", 'Boolean'>
     readonly credentialsEntered: FieldRef<"PhishingTarget", 'Boolean'>
     readonly reportedPhishing: FieldRef<"PhishingTarget", 'Boolean'>
+    readonly messageFailed: FieldRef<"PhishingTarget", 'Boolean'>
+    readonly emailSent: FieldRef<"PhishingTarget", 'Boolean'>
+    readonly emailDelivered: FieldRef<"PhishingTarget", 'Boolean'>
+    readonly emailOpened: FieldRef<"PhishingTarget", 'Boolean'>
     readonly emailBounced: FieldRef<"PhishingTarget", 'Boolean'>
     readonly sentAt: FieldRef<"PhishingTarget", 'DateTime'>
     readonly deliveredAt: FieldRef<"PhishingTarget", 'DateTime'>
@@ -19386,10 +19958,13 @@ export namespace Prisma {
     readonly clickedAt: FieldRef<"PhishingTarget", 'DateTime'>
     readonly credentialsAt: FieldRef<"PhishingTarget", 'DateTime'>
     readonly reportedAt: FieldRef<"PhishingTarget", 'DateTime'>
+    readonly failedAt: FieldRef<"PhishingTarget", 'DateTime'>
     readonly bouncedAt: FieldRef<"PhishingTarget", 'DateTime'>
     readonly userAgent: FieldRef<"PhishingTarget", 'String'>
     readonly ipAddress: FieldRef<"PhishingTarget", 'String'>
     readonly clickCount: FieldRef<"PhishingTarget", 'Int'>
+    readonly smsProvider: FieldRef<"PhishingTarget", 'String'>
+    readonly messageId: FieldRef<"PhishingTarget", 'String'>
     readonly riskScore: FieldRef<"PhishingTarget", 'Float'>
     readonly createdAt: FieldRef<"PhishingTarget", 'DateTime'>
     readonly updatedAt: FieldRef<"PhishingTarget", 'DateTime'>
@@ -20792,10 +21367,14 @@ export namespace Prisma {
     description: string | null
     category: $Enums.TemplateCategory | null
     riskLevel: $Enums.RiskLevel | null
+    templateType: $Enums.TemplateType | null
     defaultSubject: string | null
     defaultSenderName: string | null
     emailBodyHtml: string | null
     emailBodyText: string | null
+    smsContent: string | null
+    defaultSenderNumber: string | null
+    messageContent: string | null
     landingPageHtml: string | null
     captureCredentials: boolean | null
     isActive: boolean | null
@@ -20814,10 +21393,14 @@ export namespace Prisma {
     description: string | null
     category: $Enums.TemplateCategory | null
     riskLevel: $Enums.RiskLevel | null
+    templateType: $Enums.TemplateType | null
     defaultSubject: string | null
     defaultSenderName: string | null
     emailBodyHtml: string | null
     emailBodyText: string | null
+    smsContent: string | null
+    defaultSenderNumber: string | null
+    messageContent: string | null
     landingPageHtml: string | null
     captureCredentials: boolean | null
     isActive: boolean | null
@@ -20836,10 +21419,14 @@ export namespace Prisma {
     description: number
     category: number
     riskLevel: number
+    templateType: number
     defaultSubject: number
     defaultSenderName: number
     emailBodyHtml: number
     emailBodyText: number
+    smsContent: number
+    defaultSenderNumber: number
+    messageContent: number
     landingPageHtml: number
     captureCredentials: number
     isActive: number
@@ -20871,10 +21458,14 @@ export namespace Prisma {
     description?: true
     category?: true
     riskLevel?: true
+    templateType?: true
     defaultSubject?: true
     defaultSenderName?: true
     emailBodyHtml?: true
     emailBodyText?: true
+    smsContent?: true
+    defaultSenderNumber?: true
+    messageContent?: true
     landingPageHtml?: true
     captureCredentials?: true
     isActive?: true
@@ -20893,10 +21484,14 @@ export namespace Prisma {
     description?: true
     category?: true
     riskLevel?: true
+    templateType?: true
     defaultSubject?: true
     defaultSenderName?: true
     emailBodyHtml?: true
     emailBodyText?: true
+    smsContent?: true
+    defaultSenderNumber?: true
+    messageContent?: true
     landingPageHtml?: true
     captureCredentials?: true
     isActive?: true
@@ -20915,10 +21510,14 @@ export namespace Prisma {
     description?: true
     category?: true
     riskLevel?: true
+    templateType?: true
     defaultSubject?: true
     defaultSenderName?: true
     emailBodyHtml?: true
     emailBodyText?: true
+    smsContent?: true
+    defaultSenderNumber?: true
+    messageContent?: true
     landingPageHtml?: true
     captureCredentials?: true
     isActive?: true
@@ -21025,10 +21624,14 @@ export namespace Prisma {
     description: string
     category: $Enums.TemplateCategory
     riskLevel: $Enums.RiskLevel
-    defaultSubject: string
-    defaultSenderName: string
-    emailBodyHtml: string
-    emailBodyText: string
+    templateType: $Enums.TemplateType
+    defaultSubject: string | null
+    defaultSenderName: string | null
+    emailBodyHtml: string | null
+    emailBodyText: string | null
+    smsContent: string | null
+    defaultSenderNumber: string | null
+    messageContent: string | null
     landingPageHtml: string | null
     captureCredentials: boolean
     isActive: boolean
@@ -21067,10 +21670,14 @@ export namespace Prisma {
     description?: boolean
     category?: boolean
     riskLevel?: boolean
+    templateType?: boolean
     defaultSubject?: boolean
     defaultSenderName?: boolean
     emailBodyHtml?: boolean
     emailBodyText?: boolean
+    smsContent?: boolean
+    defaultSenderNumber?: boolean
+    messageContent?: boolean
     landingPageHtml?: boolean
     captureCredentials?: boolean
     isActive?: boolean
@@ -21092,10 +21699,14 @@ export namespace Prisma {
     description?: boolean
     category?: boolean
     riskLevel?: boolean
+    templateType?: boolean
     defaultSubject?: boolean
     defaultSenderName?: boolean
     emailBodyHtml?: boolean
     emailBodyText?: boolean
+    smsContent?: boolean
+    defaultSenderNumber?: boolean
+    messageContent?: boolean
     landingPageHtml?: boolean
     captureCredentials?: boolean
     isActive?: boolean
@@ -21117,10 +21728,14 @@ export namespace Prisma {
     description?: boolean
     category?: boolean
     riskLevel?: boolean
+    templateType?: boolean
     defaultSubject?: boolean
     defaultSenderName?: boolean
     emailBodyHtml?: boolean
     emailBodyText?: boolean
+    smsContent?: boolean
+    defaultSenderNumber?: boolean
+    messageContent?: boolean
     landingPageHtml?: boolean
     captureCredentials?: boolean
     isActive?: boolean
@@ -21155,10 +21770,14 @@ export namespace Prisma {
       description: string
       category: $Enums.TemplateCategory
       riskLevel: $Enums.RiskLevel
-      defaultSubject: string
-      defaultSenderName: string
-      emailBodyHtml: string
-      emailBodyText: string
+      templateType: $Enums.TemplateType
+      defaultSubject: string | null
+      defaultSenderName: string | null
+      emailBodyHtml: string | null
+      emailBodyText: string | null
+      smsContent: string | null
+      defaultSenderNumber: string | null
+      messageContent: string | null
       landingPageHtml: string | null
       captureCredentials: boolean
       isActive: boolean
@@ -21570,10 +22189,14 @@ export namespace Prisma {
     readonly description: FieldRef<"PhishingTemplate", 'String'>
     readonly category: FieldRef<"PhishingTemplate", 'TemplateCategory'>
     readonly riskLevel: FieldRef<"PhishingTemplate", 'RiskLevel'>
+    readonly templateType: FieldRef<"PhishingTemplate", 'TemplateType'>
     readonly defaultSubject: FieldRef<"PhishingTemplate", 'String'>
     readonly defaultSenderName: FieldRef<"PhishingTemplate", 'String'>
     readonly emailBodyHtml: FieldRef<"PhishingTemplate", 'String'>
     readonly emailBodyText: FieldRef<"PhishingTemplate", 'String'>
+    readonly smsContent: FieldRef<"PhishingTemplate", 'String'>
+    readonly defaultSenderNumber: FieldRef<"PhishingTemplate", 'String'>
+    readonly messageContent: FieldRef<"PhishingTemplate", 'String'>
     readonly landingPageHtml: FieldRef<"PhishingTemplate", 'String'>
     readonly captureCredentials: FieldRef<"PhishingTemplate", 'Boolean'>
     readonly isActive: FieldRef<"PhishingTemplate", 'Boolean'>
@@ -34319,6 +34942,3063 @@ export namespace Prisma {
 
 
   /**
+   * Model NotificationHistory
+   */
+
+  export type AggregateNotificationHistory = {
+    _count: NotificationHistoryCountAggregateOutputType | null
+    _avg: NotificationHistoryAvgAggregateOutputType | null
+    _sum: NotificationHistorySumAggregateOutputType | null
+    _min: NotificationHistoryMinAggregateOutputType | null
+    _max: NotificationHistoryMaxAggregateOutputType | null
+  }
+
+  export type NotificationHistoryAvgAggregateOutputType = {
+    attempts: number | null
+  }
+
+  export type NotificationHistorySumAggregateOutputType = {
+    attempts: number | null
+  }
+
+  export type NotificationHistoryMinAggregateOutputType = {
+    id: string | null
+    type: $Enums.NotificationType | null
+    recipient: string | null
+    subject: string | null
+    content: string | null
+    status: $Enums.NotificationStatus | null
+    attempts: number | null
+    lastAttempt: Date | null
+    sentAt: Date | null
+    error: string | null
+    jobId: string | null
+    messageId: string | null
+    metadata: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    userId: string | null
+  }
+
+  export type NotificationHistoryMaxAggregateOutputType = {
+    id: string | null
+    type: $Enums.NotificationType | null
+    recipient: string | null
+    subject: string | null
+    content: string | null
+    status: $Enums.NotificationStatus | null
+    attempts: number | null
+    lastAttempt: Date | null
+    sentAt: Date | null
+    error: string | null
+    jobId: string | null
+    messageId: string | null
+    metadata: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    userId: string | null
+  }
+
+  export type NotificationHistoryCountAggregateOutputType = {
+    id: number
+    type: number
+    recipient: number
+    subject: number
+    content: number
+    status: number
+    attempts: number
+    lastAttempt: number
+    sentAt: number
+    error: number
+    jobId: number
+    messageId: number
+    metadata: number
+    createdAt: number
+    updatedAt: number
+    userId: number
+    _all: number
+  }
+
+
+  export type NotificationHistoryAvgAggregateInputType = {
+    attempts?: true
+  }
+
+  export type NotificationHistorySumAggregateInputType = {
+    attempts?: true
+  }
+
+  export type NotificationHistoryMinAggregateInputType = {
+    id?: true
+    type?: true
+    recipient?: true
+    subject?: true
+    content?: true
+    status?: true
+    attempts?: true
+    lastAttempt?: true
+    sentAt?: true
+    error?: true
+    jobId?: true
+    messageId?: true
+    metadata?: true
+    createdAt?: true
+    updatedAt?: true
+    userId?: true
+  }
+
+  export type NotificationHistoryMaxAggregateInputType = {
+    id?: true
+    type?: true
+    recipient?: true
+    subject?: true
+    content?: true
+    status?: true
+    attempts?: true
+    lastAttempt?: true
+    sentAt?: true
+    error?: true
+    jobId?: true
+    messageId?: true
+    metadata?: true
+    createdAt?: true
+    updatedAt?: true
+    userId?: true
+  }
+
+  export type NotificationHistoryCountAggregateInputType = {
+    id?: true
+    type?: true
+    recipient?: true
+    subject?: true
+    content?: true
+    status?: true
+    attempts?: true
+    lastAttempt?: true
+    sentAt?: true
+    error?: true
+    jobId?: true
+    messageId?: true
+    metadata?: true
+    createdAt?: true
+    updatedAt?: true
+    userId?: true
+    _all?: true
+  }
+
+  export type NotificationHistoryAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which NotificationHistory to aggregate.
+     */
+    where?: NotificationHistoryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of NotificationHistories to fetch.
+     */
+    orderBy?: NotificationHistoryOrderByWithRelationInput | NotificationHistoryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: NotificationHistoryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` NotificationHistories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` NotificationHistories.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned NotificationHistories
+    **/
+    _count?: true | NotificationHistoryCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: NotificationHistoryAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: NotificationHistorySumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: NotificationHistoryMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: NotificationHistoryMaxAggregateInputType
+  }
+
+  export type GetNotificationHistoryAggregateType<T extends NotificationHistoryAggregateArgs> = {
+        [P in keyof T & keyof AggregateNotificationHistory]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateNotificationHistory[P]>
+      : GetScalarType<T[P], AggregateNotificationHistory[P]>
+  }
+
+
+
+
+  export type NotificationHistoryGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: NotificationHistoryWhereInput
+    orderBy?: NotificationHistoryOrderByWithAggregationInput | NotificationHistoryOrderByWithAggregationInput[]
+    by: NotificationHistoryScalarFieldEnum[] | NotificationHistoryScalarFieldEnum
+    having?: NotificationHistoryScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: NotificationHistoryCountAggregateInputType | true
+    _avg?: NotificationHistoryAvgAggregateInputType
+    _sum?: NotificationHistorySumAggregateInputType
+    _min?: NotificationHistoryMinAggregateInputType
+    _max?: NotificationHistoryMaxAggregateInputType
+  }
+
+  export type NotificationHistoryGroupByOutputType = {
+    id: string
+    type: $Enums.NotificationType
+    recipient: string
+    subject: string | null
+    content: string
+    status: $Enums.NotificationStatus
+    attempts: number
+    lastAttempt: Date | null
+    sentAt: Date | null
+    error: string | null
+    jobId: string | null
+    messageId: string | null
+    metadata: string | null
+    createdAt: Date
+    updatedAt: Date
+    userId: string | null
+    _count: NotificationHistoryCountAggregateOutputType | null
+    _avg: NotificationHistoryAvgAggregateOutputType | null
+    _sum: NotificationHistorySumAggregateOutputType | null
+    _min: NotificationHistoryMinAggregateOutputType | null
+    _max: NotificationHistoryMaxAggregateOutputType | null
+  }
+
+  type GetNotificationHistoryGroupByPayload<T extends NotificationHistoryGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<NotificationHistoryGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof NotificationHistoryGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], NotificationHistoryGroupByOutputType[P]>
+            : GetScalarType<T[P], NotificationHistoryGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type NotificationHistorySelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    type?: boolean
+    recipient?: boolean
+    subject?: boolean
+    content?: boolean
+    status?: boolean
+    attempts?: boolean
+    lastAttempt?: boolean
+    sentAt?: boolean
+    error?: boolean
+    jobId?: boolean
+    messageId?: boolean
+    metadata?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    userId?: boolean
+    user?: boolean | NotificationHistory$userArgs<ExtArgs>
+  }, ExtArgs["result"]["notificationHistory"]>
+
+  export type NotificationHistorySelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    type?: boolean
+    recipient?: boolean
+    subject?: boolean
+    content?: boolean
+    status?: boolean
+    attempts?: boolean
+    lastAttempt?: boolean
+    sentAt?: boolean
+    error?: boolean
+    jobId?: boolean
+    messageId?: boolean
+    metadata?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    userId?: boolean
+    user?: boolean | NotificationHistory$userArgs<ExtArgs>
+  }, ExtArgs["result"]["notificationHistory"]>
+
+  export type NotificationHistorySelectScalar = {
+    id?: boolean
+    type?: boolean
+    recipient?: boolean
+    subject?: boolean
+    content?: boolean
+    status?: boolean
+    attempts?: boolean
+    lastAttempt?: boolean
+    sentAt?: boolean
+    error?: boolean
+    jobId?: boolean
+    messageId?: boolean
+    metadata?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    userId?: boolean
+  }
+
+  export type NotificationHistoryInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | NotificationHistory$userArgs<ExtArgs>
+  }
+  export type NotificationHistoryIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | NotificationHistory$userArgs<ExtArgs>
+  }
+
+  export type $NotificationHistoryPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "NotificationHistory"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      type: $Enums.NotificationType
+      recipient: string
+      subject: string | null
+      content: string
+      status: $Enums.NotificationStatus
+      attempts: number
+      lastAttempt: Date | null
+      sentAt: Date | null
+      error: string | null
+      jobId: string | null
+      messageId: string | null
+      metadata: string | null
+      createdAt: Date
+      updatedAt: Date
+      userId: string | null
+    }, ExtArgs["result"]["notificationHistory"]>
+    composites: {}
+  }
+
+  type NotificationHistoryGetPayload<S extends boolean | null | undefined | NotificationHistoryDefaultArgs> = $Result.GetResult<Prisma.$NotificationHistoryPayload, S>
+
+  type NotificationHistoryCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<NotificationHistoryFindManyArgs, 'select' | 'include' | 'distinct'> & {
+      select?: NotificationHistoryCountAggregateInputType | true
+    }
+
+  export interface NotificationHistoryDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['NotificationHistory'], meta: { name: 'NotificationHistory' } }
+    /**
+     * Find zero or one NotificationHistory that matches the filter.
+     * @param {NotificationHistoryFindUniqueArgs} args - Arguments to find a NotificationHistory
+     * @example
+     * // Get one NotificationHistory
+     * const notificationHistory = await prisma.notificationHistory.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends NotificationHistoryFindUniqueArgs>(args: SelectSubset<T, NotificationHistoryFindUniqueArgs<ExtArgs>>): Prisma__NotificationHistoryClient<$Result.GetResult<Prisma.$NotificationHistoryPayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
+
+    /**
+     * Find one NotificationHistory that matches the filter or throw an error with `error.code='P2025'` 
+     * if no matches were found.
+     * @param {NotificationHistoryFindUniqueOrThrowArgs} args - Arguments to find a NotificationHistory
+     * @example
+     * // Get one NotificationHistory
+     * const notificationHistory = await prisma.notificationHistory.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends NotificationHistoryFindUniqueOrThrowArgs>(args: SelectSubset<T, NotificationHistoryFindUniqueOrThrowArgs<ExtArgs>>): Prisma__NotificationHistoryClient<$Result.GetResult<Prisma.$NotificationHistoryPayload<ExtArgs>, T, "findUniqueOrThrow">, never, ExtArgs>
+
+    /**
+     * Find the first NotificationHistory that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NotificationHistoryFindFirstArgs} args - Arguments to find a NotificationHistory
+     * @example
+     * // Get one NotificationHistory
+     * const notificationHistory = await prisma.notificationHistory.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends NotificationHistoryFindFirstArgs>(args?: SelectSubset<T, NotificationHistoryFindFirstArgs<ExtArgs>>): Prisma__NotificationHistoryClient<$Result.GetResult<Prisma.$NotificationHistoryPayload<ExtArgs>, T, "findFirst"> | null, null, ExtArgs>
+
+    /**
+     * Find the first NotificationHistory that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NotificationHistoryFindFirstOrThrowArgs} args - Arguments to find a NotificationHistory
+     * @example
+     * // Get one NotificationHistory
+     * const notificationHistory = await prisma.notificationHistory.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends NotificationHistoryFindFirstOrThrowArgs>(args?: SelectSubset<T, NotificationHistoryFindFirstOrThrowArgs<ExtArgs>>): Prisma__NotificationHistoryClient<$Result.GetResult<Prisma.$NotificationHistoryPayload<ExtArgs>, T, "findFirstOrThrow">, never, ExtArgs>
+
+    /**
+     * Find zero or more NotificationHistories that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NotificationHistoryFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all NotificationHistories
+     * const notificationHistories = await prisma.notificationHistory.findMany()
+     * 
+     * // Get first 10 NotificationHistories
+     * const notificationHistories = await prisma.notificationHistory.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const notificationHistoryWithIdOnly = await prisma.notificationHistory.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends NotificationHistoryFindManyArgs>(args?: SelectSubset<T, NotificationHistoryFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotificationHistoryPayload<ExtArgs>, T, "findMany">>
+
+    /**
+     * Create a NotificationHistory.
+     * @param {NotificationHistoryCreateArgs} args - Arguments to create a NotificationHistory.
+     * @example
+     * // Create one NotificationHistory
+     * const NotificationHistory = await prisma.notificationHistory.create({
+     *   data: {
+     *     // ... data to create a NotificationHistory
+     *   }
+     * })
+     * 
+     */
+    create<T extends NotificationHistoryCreateArgs>(args: SelectSubset<T, NotificationHistoryCreateArgs<ExtArgs>>): Prisma__NotificationHistoryClient<$Result.GetResult<Prisma.$NotificationHistoryPayload<ExtArgs>, T, "create">, never, ExtArgs>
+
+    /**
+     * Create many NotificationHistories.
+     * @param {NotificationHistoryCreateManyArgs} args - Arguments to create many NotificationHistories.
+     * @example
+     * // Create many NotificationHistories
+     * const notificationHistory = await prisma.notificationHistory.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends NotificationHistoryCreateManyArgs>(args?: SelectSubset<T, NotificationHistoryCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many NotificationHistories and returns the data saved in the database.
+     * @param {NotificationHistoryCreateManyAndReturnArgs} args - Arguments to create many NotificationHistories.
+     * @example
+     * // Create many NotificationHistories
+     * const notificationHistory = await prisma.notificationHistory.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many NotificationHistories and only return the `id`
+     * const notificationHistoryWithIdOnly = await prisma.notificationHistory.createManyAndReturn({ 
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends NotificationHistoryCreateManyAndReturnArgs>(args?: SelectSubset<T, NotificationHistoryCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotificationHistoryPayload<ExtArgs>, T, "createManyAndReturn">>
+
+    /**
+     * Delete a NotificationHistory.
+     * @param {NotificationHistoryDeleteArgs} args - Arguments to delete one NotificationHistory.
+     * @example
+     * // Delete one NotificationHistory
+     * const NotificationHistory = await prisma.notificationHistory.delete({
+     *   where: {
+     *     // ... filter to delete one NotificationHistory
+     *   }
+     * })
+     * 
+     */
+    delete<T extends NotificationHistoryDeleteArgs>(args: SelectSubset<T, NotificationHistoryDeleteArgs<ExtArgs>>): Prisma__NotificationHistoryClient<$Result.GetResult<Prisma.$NotificationHistoryPayload<ExtArgs>, T, "delete">, never, ExtArgs>
+
+    /**
+     * Update one NotificationHistory.
+     * @param {NotificationHistoryUpdateArgs} args - Arguments to update one NotificationHistory.
+     * @example
+     * // Update one NotificationHistory
+     * const notificationHistory = await prisma.notificationHistory.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends NotificationHistoryUpdateArgs>(args: SelectSubset<T, NotificationHistoryUpdateArgs<ExtArgs>>): Prisma__NotificationHistoryClient<$Result.GetResult<Prisma.$NotificationHistoryPayload<ExtArgs>, T, "update">, never, ExtArgs>
+
+    /**
+     * Delete zero or more NotificationHistories.
+     * @param {NotificationHistoryDeleteManyArgs} args - Arguments to filter NotificationHistories to delete.
+     * @example
+     * // Delete a few NotificationHistories
+     * const { count } = await prisma.notificationHistory.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends NotificationHistoryDeleteManyArgs>(args?: SelectSubset<T, NotificationHistoryDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more NotificationHistories.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NotificationHistoryUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many NotificationHistories
+     * const notificationHistory = await prisma.notificationHistory.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends NotificationHistoryUpdateManyArgs>(args: SelectSubset<T, NotificationHistoryUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one NotificationHistory.
+     * @param {NotificationHistoryUpsertArgs} args - Arguments to update or create a NotificationHistory.
+     * @example
+     * // Update or create a NotificationHistory
+     * const notificationHistory = await prisma.notificationHistory.upsert({
+     *   create: {
+     *     // ... data to create a NotificationHistory
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the NotificationHistory we want to update
+     *   }
+     * })
+     */
+    upsert<T extends NotificationHistoryUpsertArgs>(args: SelectSubset<T, NotificationHistoryUpsertArgs<ExtArgs>>): Prisma__NotificationHistoryClient<$Result.GetResult<Prisma.$NotificationHistoryPayload<ExtArgs>, T, "upsert">, never, ExtArgs>
+
+
+    /**
+     * Count the number of NotificationHistories.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NotificationHistoryCountArgs} args - Arguments to filter NotificationHistories to count.
+     * @example
+     * // Count the number of NotificationHistories
+     * const count = await prisma.notificationHistory.count({
+     *   where: {
+     *     // ... the filter for the NotificationHistories we want to count
+     *   }
+     * })
+    **/
+    count<T extends NotificationHistoryCountArgs>(
+      args?: Subset<T, NotificationHistoryCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], NotificationHistoryCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a NotificationHistory.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NotificationHistoryAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends NotificationHistoryAggregateArgs>(args: Subset<T, NotificationHistoryAggregateArgs>): Prisma.PrismaPromise<GetNotificationHistoryAggregateType<T>>
+
+    /**
+     * Group by NotificationHistory.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NotificationHistoryGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends NotificationHistoryGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: NotificationHistoryGroupByArgs['orderBy'] }
+        : { orderBy?: NotificationHistoryGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, NotificationHistoryGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetNotificationHistoryGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the NotificationHistory model
+   */
+  readonly fields: NotificationHistoryFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for NotificationHistory.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__NotificationHistoryClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends NotificationHistory$userArgs<ExtArgs> = {}>(args?: Subset<T, NotificationHistory$userArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow"> | null, null, ExtArgs>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the NotificationHistory model
+   */ 
+  interface NotificationHistoryFieldRefs {
+    readonly id: FieldRef<"NotificationHistory", 'String'>
+    readonly type: FieldRef<"NotificationHistory", 'NotificationType'>
+    readonly recipient: FieldRef<"NotificationHistory", 'String'>
+    readonly subject: FieldRef<"NotificationHistory", 'String'>
+    readonly content: FieldRef<"NotificationHistory", 'String'>
+    readonly status: FieldRef<"NotificationHistory", 'NotificationStatus'>
+    readonly attempts: FieldRef<"NotificationHistory", 'Int'>
+    readonly lastAttempt: FieldRef<"NotificationHistory", 'DateTime'>
+    readonly sentAt: FieldRef<"NotificationHistory", 'DateTime'>
+    readonly error: FieldRef<"NotificationHistory", 'String'>
+    readonly jobId: FieldRef<"NotificationHistory", 'String'>
+    readonly messageId: FieldRef<"NotificationHistory", 'String'>
+    readonly metadata: FieldRef<"NotificationHistory", 'String'>
+    readonly createdAt: FieldRef<"NotificationHistory", 'DateTime'>
+    readonly updatedAt: FieldRef<"NotificationHistory", 'DateTime'>
+    readonly userId: FieldRef<"NotificationHistory", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * NotificationHistory findUnique
+   */
+  export type NotificationHistoryFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NotificationHistory
+     */
+    select?: NotificationHistorySelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationHistoryInclude<ExtArgs> | null
+    /**
+     * Filter, which NotificationHistory to fetch.
+     */
+    where: NotificationHistoryWhereUniqueInput
+  }
+
+  /**
+   * NotificationHistory findUniqueOrThrow
+   */
+  export type NotificationHistoryFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NotificationHistory
+     */
+    select?: NotificationHistorySelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationHistoryInclude<ExtArgs> | null
+    /**
+     * Filter, which NotificationHistory to fetch.
+     */
+    where: NotificationHistoryWhereUniqueInput
+  }
+
+  /**
+   * NotificationHistory findFirst
+   */
+  export type NotificationHistoryFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NotificationHistory
+     */
+    select?: NotificationHistorySelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationHistoryInclude<ExtArgs> | null
+    /**
+     * Filter, which NotificationHistory to fetch.
+     */
+    where?: NotificationHistoryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of NotificationHistories to fetch.
+     */
+    orderBy?: NotificationHistoryOrderByWithRelationInput | NotificationHistoryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for NotificationHistories.
+     */
+    cursor?: NotificationHistoryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` NotificationHistories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` NotificationHistories.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of NotificationHistories.
+     */
+    distinct?: NotificationHistoryScalarFieldEnum | NotificationHistoryScalarFieldEnum[]
+  }
+
+  /**
+   * NotificationHistory findFirstOrThrow
+   */
+  export type NotificationHistoryFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NotificationHistory
+     */
+    select?: NotificationHistorySelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationHistoryInclude<ExtArgs> | null
+    /**
+     * Filter, which NotificationHistory to fetch.
+     */
+    where?: NotificationHistoryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of NotificationHistories to fetch.
+     */
+    orderBy?: NotificationHistoryOrderByWithRelationInput | NotificationHistoryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for NotificationHistories.
+     */
+    cursor?: NotificationHistoryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` NotificationHistories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` NotificationHistories.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of NotificationHistories.
+     */
+    distinct?: NotificationHistoryScalarFieldEnum | NotificationHistoryScalarFieldEnum[]
+  }
+
+  /**
+   * NotificationHistory findMany
+   */
+  export type NotificationHistoryFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NotificationHistory
+     */
+    select?: NotificationHistorySelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationHistoryInclude<ExtArgs> | null
+    /**
+     * Filter, which NotificationHistories to fetch.
+     */
+    where?: NotificationHistoryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of NotificationHistories to fetch.
+     */
+    orderBy?: NotificationHistoryOrderByWithRelationInput | NotificationHistoryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing NotificationHistories.
+     */
+    cursor?: NotificationHistoryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` NotificationHistories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` NotificationHistories.
+     */
+    skip?: number
+    distinct?: NotificationHistoryScalarFieldEnum | NotificationHistoryScalarFieldEnum[]
+  }
+
+  /**
+   * NotificationHistory create
+   */
+  export type NotificationHistoryCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NotificationHistory
+     */
+    select?: NotificationHistorySelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationHistoryInclude<ExtArgs> | null
+    /**
+     * The data needed to create a NotificationHistory.
+     */
+    data: XOR<NotificationHistoryCreateInput, NotificationHistoryUncheckedCreateInput>
+  }
+
+  /**
+   * NotificationHistory createMany
+   */
+  export type NotificationHistoryCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many NotificationHistories.
+     */
+    data: NotificationHistoryCreateManyInput | NotificationHistoryCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * NotificationHistory createManyAndReturn
+   */
+  export type NotificationHistoryCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NotificationHistory
+     */
+    select?: NotificationHistorySelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * The data used to create many NotificationHistories.
+     */
+    data: NotificationHistoryCreateManyInput | NotificationHistoryCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationHistoryIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * NotificationHistory update
+   */
+  export type NotificationHistoryUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NotificationHistory
+     */
+    select?: NotificationHistorySelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationHistoryInclude<ExtArgs> | null
+    /**
+     * The data needed to update a NotificationHistory.
+     */
+    data: XOR<NotificationHistoryUpdateInput, NotificationHistoryUncheckedUpdateInput>
+    /**
+     * Choose, which NotificationHistory to update.
+     */
+    where: NotificationHistoryWhereUniqueInput
+  }
+
+  /**
+   * NotificationHistory updateMany
+   */
+  export type NotificationHistoryUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update NotificationHistories.
+     */
+    data: XOR<NotificationHistoryUpdateManyMutationInput, NotificationHistoryUncheckedUpdateManyInput>
+    /**
+     * Filter which NotificationHistories to update
+     */
+    where?: NotificationHistoryWhereInput
+  }
+
+  /**
+   * NotificationHistory upsert
+   */
+  export type NotificationHistoryUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NotificationHistory
+     */
+    select?: NotificationHistorySelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationHistoryInclude<ExtArgs> | null
+    /**
+     * The filter to search for the NotificationHistory to update in case it exists.
+     */
+    where: NotificationHistoryWhereUniqueInput
+    /**
+     * In case the NotificationHistory found by the `where` argument doesn't exist, create a new NotificationHistory with this data.
+     */
+    create: XOR<NotificationHistoryCreateInput, NotificationHistoryUncheckedCreateInput>
+    /**
+     * In case the NotificationHistory was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<NotificationHistoryUpdateInput, NotificationHistoryUncheckedUpdateInput>
+  }
+
+  /**
+   * NotificationHistory delete
+   */
+  export type NotificationHistoryDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NotificationHistory
+     */
+    select?: NotificationHistorySelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationHistoryInclude<ExtArgs> | null
+    /**
+     * Filter which NotificationHistory to delete.
+     */
+    where: NotificationHistoryWhereUniqueInput
+  }
+
+  /**
+   * NotificationHistory deleteMany
+   */
+  export type NotificationHistoryDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which NotificationHistories to delete
+     */
+    where?: NotificationHistoryWhereInput
+  }
+
+  /**
+   * NotificationHistory.user
+   */
+  export type NotificationHistory$userArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
+   * NotificationHistory without action
+   */
+  export type NotificationHistoryDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NotificationHistory
+     */
+    select?: NotificationHistorySelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationHistoryInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model EmailTemplate
+   */
+
+  export type AggregateEmailTemplate = {
+    _count: EmailTemplateCountAggregateOutputType | null
+    _min: EmailTemplateMinAggregateOutputType | null
+    _max: EmailTemplateMaxAggregateOutputType | null
+  }
+
+  export type EmailTemplateMinAggregateOutputType = {
+    id: string | null
+    name: string | null
+    subject: string | null
+    htmlContent: string | null
+    textContent: string | null
+    variables: string | null
+    description: string | null
+    isActive: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type EmailTemplateMaxAggregateOutputType = {
+    id: string | null
+    name: string | null
+    subject: string | null
+    htmlContent: string | null
+    textContent: string | null
+    variables: string | null
+    description: string | null
+    isActive: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type EmailTemplateCountAggregateOutputType = {
+    id: number
+    name: number
+    subject: number
+    htmlContent: number
+    textContent: number
+    variables: number
+    description: number
+    isActive: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type EmailTemplateMinAggregateInputType = {
+    id?: true
+    name?: true
+    subject?: true
+    htmlContent?: true
+    textContent?: true
+    variables?: true
+    description?: true
+    isActive?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type EmailTemplateMaxAggregateInputType = {
+    id?: true
+    name?: true
+    subject?: true
+    htmlContent?: true
+    textContent?: true
+    variables?: true
+    description?: true
+    isActive?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type EmailTemplateCountAggregateInputType = {
+    id?: true
+    name?: true
+    subject?: true
+    htmlContent?: true
+    textContent?: true
+    variables?: true
+    description?: true
+    isActive?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type EmailTemplateAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which EmailTemplate to aggregate.
+     */
+    where?: EmailTemplateWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EmailTemplates to fetch.
+     */
+    orderBy?: EmailTemplateOrderByWithRelationInput | EmailTemplateOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: EmailTemplateWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EmailTemplates from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EmailTemplates.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned EmailTemplates
+    **/
+    _count?: true | EmailTemplateCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: EmailTemplateMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: EmailTemplateMaxAggregateInputType
+  }
+
+  export type GetEmailTemplateAggregateType<T extends EmailTemplateAggregateArgs> = {
+        [P in keyof T & keyof AggregateEmailTemplate]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateEmailTemplate[P]>
+      : GetScalarType<T[P], AggregateEmailTemplate[P]>
+  }
+
+
+
+
+  export type EmailTemplateGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EmailTemplateWhereInput
+    orderBy?: EmailTemplateOrderByWithAggregationInput | EmailTemplateOrderByWithAggregationInput[]
+    by: EmailTemplateScalarFieldEnum[] | EmailTemplateScalarFieldEnum
+    having?: EmailTemplateScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: EmailTemplateCountAggregateInputType | true
+    _min?: EmailTemplateMinAggregateInputType
+    _max?: EmailTemplateMaxAggregateInputType
+  }
+
+  export type EmailTemplateGroupByOutputType = {
+    id: string
+    name: string
+    subject: string
+    htmlContent: string
+    textContent: string | null
+    variables: string | null
+    description: string | null
+    isActive: boolean
+    createdAt: Date
+    updatedAt: Date
+    _count: EmailTemplateCountAggregateOutputType | null
+    _min: EmailTemplateMinAggregateOutputType | null
+    _max: EmailTemplateMaxAggregateOutputType | null
+  }
+
+  type GetEmailTemplateGroupByPayload<T extends EmailTemplateGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<EmailTemplateGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof EmailTemplateGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], EmailTemplateGroupByOutputType[P]>
+            : GetScalarType<T[P], EmailTemplateGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type EmailTemplateSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    subject?: boolean
+    htmlContent?: boolean
+    textContent?: boolean
+    variables?: boolean
+    description?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["emailTemplate"]>
+
+  export type EmailTemplateSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    subject?: boolean
+    htmlContent?: boolean
+    textContent?: boolean
+    variables?: boolean
+    description?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["emailTemplate"]>
+
+  export type EmailTemplateSelectScalar = {
+    id?: boolean
+    name?: boolean
+    subject?: boolean
+    htmlContent?: boolean
+    textContent?: boolean
+    variables?: boolean
+    description?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+
+  export type $EmailTemplatePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "EmailTemplate"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      name: string
+      subject: string
+      htmlContent: string
+      textContent: string | null
+      variables: string | null
+      description: string | null
+      isActive: boolean
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["emailTemplate"]>
+    composites: {}
+  }
+
+  type EmailTemplateGetPayload<S extends boolean | null | undefined | EmailTemplateDefaultArgs> = $Result.GetResult<Prisma.$EmailTemplatePayload, S>
+
+  type EmailTemplateCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<EmailTemplateFindManyArgs, 'select' | 'include' | 'distinct'> & {
+      select?: EmailTemplateCountAggregateInputType | true
+    }
+
+  export interface EmailTemplateDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['EmailTemplate'], meta: { name: 'EmailTemplate' } }
+    /**
+     * Find zero or one EmailTemplate that matches the filter.
+     * @param {EmailTemplateFindUniqueArgs} args - Arguments to find a EmailTemplate
+     * @example
+     * // Get one EmailTemplate
+     * const emailTemplate = await prisma.emailTemplate.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends EmailTemplateFindUniqueArgs>(args: SelectSubset<T, EmailTemplateFindUniqueArgs<ExtArgs>>): Prisma__EmailTemplateClient<$Result.GetResult<Prisma.$EmailTemplatePayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
+
+    /**
+     * Find one EmailTemplate that matches the filter or throw an error with `error.code='P2025'` 
+     * if no matches were found.
+     * @param {EmailTemplateFindUniqueOrThrowArgs} args - Arguments to find a EmailTemplate
+     * @example
+     * // Get one EmailTemplate
+     * const emailTemplate = await prisma.emailTemplate.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends EmailTemplateFindUniqueOrThrowArgs>(args: SelectSubset<T, EmailTemplateFindUniqueOrThrowArgs<ExtArgs>>): Prisma__EmailTemplateClient<$Result.GetResult<Prisma.$EmailTemplatePayload<ExtArgs>, T, "findUniqueOrThrow">, never, ExtArgs>
+
+    /**
+     * Find the first EmailTemplate that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmailTemplateFindFirstArgs} args - Arguments to find a EmailTemplate
+     * @example
+     * // Get one EmailTemplate
+     * const emailTemplate = await prisma.emailTemplate.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends EmailTemplateFindFirstArgs>(args?: SelectSubset<T, EmailTemplateFindFirstArgs<ExtArgs>>): Prisma__EmailTemplateClient<$Result.GetResult<Prisma.$EmailTemplatePayload<ExtArgs>, T, "findFirst"> | null, null, ExtArgs>
+
+    /**
+     * Find the first EmailTemplate that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmailTemplateFindFirstOrThrowArgs} args - Arguments to find a EmailTemplate
+     * @example
+     * // Get one EmailTemplate
+     * const emailTemplate = await prisma.emailTemplate.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends EmailTemplateFindFirstOrThrowArgs>(args?: SelectSubset<T, EmailTemplateFindFirstOrThrowArgs<ExtArgs>>): Prisma__EmailTemplateClient<$Result.GetResult<Prisma.$EmailTemplatePayload<ExtArgs>, T, "findFirstOrThrow">, never, ExtArgs>
+
+    /**
+     * Find zero or more EmailTemplates that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmailTemplateFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all EmailTemplates
+     * const emailTemplates = await prisma.emailTemplate.findMany()
+     * 
+     * // Get first 10 EmailTemplates
+     * const emailTemplates = await prisma.emailTemplate.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const emailTemplateWithIdOnly = await prisma.emailTemplate.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends EmailTemplateFindManyArgs>(args?: SelectSubset<T, EmailTemplateFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmailTemplatePayload<ExtArgs>, T, "findMany">>
+
+    /**
+     * Create a EmailTemplate.
+     * @param {EmailTemplateCreateArgs} args - Arguments to create a EmailTemplate.
+     * @example
+     * // Create one EmailTemplate
+     * const EmailTemplate = await prisma.emailTemplate.create({
+     *   data: {
+     *     // ... data to create a EmailTemplate
+     *   }
+     * })
+     * 
+     */
+    create<T extends EmailTemplateCreateArgs>(args: SelectSubset<T, EmailTemplateCreateArgs<ExtArgs>>): Prisma__EmailTemplateClient<$Result.GetResult<Prisma.$EmailTemplatePayload<ExtArgs>, T, "create">, never, ExtArgs>
+
+    /**
+     * Create many EmailTemplates.
+     * @param {EmailTemplateCreateManyArgs} args - Arguments to create many EmailTemplates.
+     * @example
+     * // Create many EmailTemplates
+     * const emailTemplate = await prisma.emailTemplate.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends EmailTemplateCreateManyArgs>(args?: SelectSubset<T, EmailTemplateCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many EmailTemplates and returns the data saved in the database.
+     * @param {EmailTemplateCreateManyAndReturnArgs} args - Arguments to create many EmailTemplates.
+     * @example
+     * // Create many EmailTemplates
+     * const emailTemplate = await prisma.emailTemplate.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many EmailTemplates and only return the `id`
+     * const emailTemplateWithIdOnly = await prisma.emailTemplate.createManyAndReturn({ 
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends EmailTemplateCreateManyAndReturnArgs>(args?: SelectSubset<T, EmailTemplateCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmailTemplatePayload<ExtArgs>, T, "createManyAndReturn">>
+
+    /**
+     * Delete a EmailTemplate.
+     * @param {EmailTemplateDeleteArgs} args - Arguments to delete one EmailTemplate.
+     * @example
+     * // Delete one EmailTemplate
+     * const EmailTemplate = await prisma.emailTemplate.delete({
+     *   where: {
+     *     // ... filter to delete one EmailTemplate
+     *   }
+     * })
+     * 
+     */
+    delete<T extends EmailTemplateDeleteArgs>(args: SelectSubset<T, EmailTemplateDeleteArgs<ExtArgs>>): Prisma__EmailTemplateClient<$Result.GetResult<Prisma.$EmailTemplatePayload<ExtArgs>, T, "delete">, never, ExtArgs>
+
+    /**
+     * Update one EmailTemplate.
+     * @param {EmailTemplateUpdateArgs} args - Arguments to update one EmailTemplate.
+     * @example
+     * // Update one EmailTemplate
+     * const emailTemplate = await prisma.emailTemplate.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends EmailTemplateUpdateArgs>(args: SelectSubset<T, EmailTemplateUpdateArgs<ExtArgs>>): Prisma__EmailTemplateClient<$Result.GetResult<Prisma.$EmailTemplatePayload<ExtArgs>, T, "update">, never, ExtArgs>
+
+    /**
+     * Delete zero or more EmailTemplates.
+     * @param {EmailTemplateDeleteManyArgs} args - Arguments to filter EmailTemplates to delete.
+     * @example
+     * // Delete a few EmailTemplates
+     * const { count } = await prisma.emailTemplate.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends EmailTemplateDeleteManyArgs>(args?: SelectSubset<T, EmailTemplateDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more EmailTemplates.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmailTemplateUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many EmailTemplates
+     * const emailTemplate = await prisma.emailTemplate.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends EmailTemplateUpdateManyArgs>(args: SelectSubset<T, EmailTemplateUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one EmailTemplate.
+     * @param {EmailTemplateUpsertArgs} args - Arguments to update or create a EmailTemplate.
+     * @example
+     * // Update or create a EmailTemplate
+     * const emailTemplate = await prisma.emailTemplate.upsert({
+     *   create: {
+     *     // ... data to create a EmailTemplate
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the EmailTemplate we want to update
+     *   }
+     * })
+     */
+    upsert<T extends EmailTemplateUpsertArgs>(args: SelectSubset<T, EmailTemplateUpsertArgs<ExtArgs>>): Prisma__EmailTemplateClient<$Result.GetResult<Prisma.$EmailTemplatePayload<ExtArgs>, T, "upsert">, never, ExtArgs>
+
+
+    /**
+     * Count the number of EmailTemplates.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmailTemplateCountArgs} args - Arguments to filter EmailTemplates to count.
+     * @example
+     * // Count the number of EmailTemplates
+     * const count = await prisma.emailTemplate.count({
+     *   where: {
+     *     // ... the filter for the EmailTemplates we want to count
+     *   }
+     * })
+    **/
+    count<T extends EmailTemplateCountArgs>(
+      args?: Subset<T, EmailTemplateCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], EmailTemplateCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a EmailTemplate.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmailTemplateAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends EmailTemplateAggregateArgs>(args: Subset<T, EmailTemplateAggregateArgs>): Prisma.PrismaPromise<GetEmailTemplateAggregateType<T>>
+
+    /**
+     * Group by EmailTemplate.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmailTemplateGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends EmailTemplateGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: EmailTemplateGroupByArgs['orderBy'] }
+        : { orderBy?: EmailTemplateGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, EmailTemplateGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetEmailTemplateGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the EmailTemplate model
+   */
+  readonly fields: EmailTemplateFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for EmailTemplate.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__EmailTemplateClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the EmailTemplate model
+   */ 
+  interface EmailTemplateFieldRefs {
+    readonly id: FieldRef<"EmailTemplate", 'String'>
+    readonly name: FieldRef<"EmailTemplate", 'String'>
+    readonly subject: FieldRef<"EmailTemplate", 'String'>
+    readonly htmlContent: FieldRef<"EmailTemplate", 'String'>
+    readonly textContent: FieldRef<"EmailTemplate", 'String'>
+    readonly variables: FieldRef<"EmailTemplate", 'String'>
+    readonly description: FieldRef<"EmailTemplate", 'String'>
+    readonly isActive: FieldRef<"EmailTemplate", 'Boolean'>
+    readonly createdAt: FieldRef<"EmailTemplate", 'DateTime'>
+    readonly updatedAt: FieldRef<"EmailTemplate", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * EmailTemplate findUnique
+   */
+  export type EmailTemplateFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailTemplate
+     */
+    select?: EmailTemplateSelect<ExtArgs> | null
+    /**
+     * Filter, which EmailTemplate to fetch.
+     */
+    where: EmailTemplateWhereUniqueInput
+  }
+
+  /**
+   * EmailTemplate findUniqueOrThrow
+   */
+  export type EmailTemplateFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailTemplate
+     */
+    select?: EmailTemplateSelect<ExtArgs> | null
+    /**
+     * Filter, which EmailTemplate to fetch.
+     */
+    where: EmailTemplateWhereUniqueInput
+  }
+
+  /**
+   * EmailTemplate findFirst
+   */
+  export type EmailTemplateFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailTemplate
+     */
+    select?: EmailTemplateSelect<ExtArgs> | null
+    /**
+     * Filter, which EmailTemplate to fetch.
+     */
+    where?: EmailTemplateWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EmailTemplates to fetch.
+     */
+    orderBy?: EmailTemplateOrderByWithRelationInput | EmailTemplateOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for EmailTemplates.
+     */
+    cursor?: EmailTemplateWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EmailTemplates from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EmailTemplates.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of EmailTemplates.
+     */
+    distinct?: EmailTemplateScalarFieldEnum | EmailTemplateScalarFieldEnum[]
+  }
+
+  /**
+   * EmailTemplate findFirstOrThrow
+   */
+  export type EmailTemplateFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailTemplate
+     */
+    select?: EmailTemplateSelect<ExtArgs> | null
+    /**
+     * Filter, which EmailTemplate to fetch.
+     */
+    where?: EmailTemplateWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EmailTemplates to fetch.
+     */
+    orderBy?: EmailTemplateOrderByWithRelationInput | EmailTemplateOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for EmailTemplates.
+     */
+    cursor?: EmailTemplateWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EmailTemplates from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EmailTemplates.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of EmailTemplates.
+     */
+    distinct?: EmailTemplateScalarFieldEnum | EmailTemplateScalarFieldEnum[]
+  }
+
+  /**
+   * EmailTemplate findMany
+   */
+  export type EmailTemplateFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailTemplate
+     */
+    select?: EmailTemplateSelect<ExtArgs> | null
+    /**
+     * Filter, which EmailTemplates to fetch.
+     */
+    where?: EmailTemplateWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EmailTemplates to fetch.
+     */
+    orderBy?: EmailTemplateOrderByWithRelationInput | EmailTemplateOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing EmailTemplates.
+     */
+    cursor?: EmailTemplateWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EmailTemplates from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EmailTemplates.
+     */
+    skip?: number
+    distinct?: EmailTemplateScalarFieldEnum | EmailTemplateScalarFieldEnum[]
+  }
+
+  /**
+   * EmailTemplate create
+   */
+  export type EmailTemplateCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailTemplate
+     */
+    select?: EmailTemplateSelect<ExtArgs> | null
+    /**
+     * The data needed to create a EmailTemplate.
+     */
+    data: XOR<EmailTemplateCreateInput, EmailTemplateUncheckedCreateInput>
+  }
+
+  /**
+   * EmailTemplate createMany
+   */
+  export type EmailTemplateCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many EmailTemplates.
+     */
+    data: EmailTemplateCreateManyInput | EmailTemplateCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * EmailTemplate createManyAndReturn
+   */
+  export type EmailTemplateCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailTemplate
+     */
+    select?: EmailTemplateSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * The data used to create many EmailTemplates.
+     */
+    data: EmailTemplateCreateManyInput | EmailTemplateCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * EmailTemplate update
+   */
+  export type EmailTemplateUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailTemplate
+     */
+    select?: EmailTemplateSelect<ExtArgs> | null
+    /**
+     * The data needed to update a EmailTemplate.
+     */
+    data: XOR<EmailTemplateUpdateInput, EmailTemplateUncheckedUpdateInput>
+    /**
+     * Choose, which EmailTemplate to update.
+     */
+    where: EmailTemplateWhereUniqueInput
+  }
+
+  /**
+   * EmailTemplate updateMany
+   */
+  export type EmailTemplateUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update EmailTemplates.
+     */
+    data: XOR<EmailTemplateUpdateManyMutationInput, EmailTemplateUncheckedUpdateManyInput>
+    /**
+     * Filter which EmailTemplates to update
+     */
+    where?: EmailTemplateWhereInput
+  }
+
+  /**
+   * EmailTemplate upsert
+   */
+  export type EmailTemplateUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailTemplate
+     */
+    select?: EmailTemplateSelect<ExtArgs> | null
+    /**
+     * The filter to search for the EmailTemplate to update in case it exists.
+     */
+    where: EmailTemplateWhereUniqueInput
+    /**
+     * In case the EmailTemplate found by the `where` argument doesn't exist, create a new EmailTemplate with this data.
+     */
+    create: XOR<EmailTemplateCreateInput, EmailTemplateUncheckedCreateInput>
+    /**
+     * In case the EmailTemplate was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<EmailTemplateUpdateInput, EmailTemplateUncheckedUpdateInput>
+  }
+
+  /**
+   * EmailTemplate delete
+   */
+  export type EmailTemplateDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailTemplate
+     */
+    select?: EmailTemplateSelect<ExtArgs> | null
+    /**
+     * Filter which EmailTemplate to delete.
+     */
+    where: EmailTemplateWhereUniqueInput
+  }
+
+  /**
+   * EmailTemplate deleteMany
+   */
+  export type EmailTemplateDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which EmailTemplates to delete
+     */
+    where?: EmailTemplateWhereInput
+  }
+
+  /**
+   * EmailTemplate without action
+   */
+  export type EmailTemplateDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmailTemplate
+     */
+    select?: EmailTemplateSelect<ExtArgs> | null
+  }
+
+
+  /**
+   * Model NotificationPreference
+   */
+
+  export type AggregateNotificationPreference = {
+    _count: NotificationPreferenceCountAggregateOutputType | null
+    _min: NotificationPreferenceMinAggregateOutputType | null
+    _max: NotificationPreferenceMaxAggregateOutputType | null
+  }
+
+  export type NotificationPreferenceMinAggregateOutputType = {
+    id: string | null
+    emailEnabled: boolean | null
+    smsEnabled: boolean | null
+    pushEnabled: boolean | null
+    securityAlerts: boolean | null
+    assessmentUpdates: boolean | null
+    systemUpdates: boolean | null
+    marketingEmails: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    userId: string | null
+  }
+
+  export type NotificationPreferenceMaxAggregateOutputType = {
+    id: string | null
+    emailEnabled: boolean | null
+    smsEnabled: boolean | null
+    pushEnabled: boolean | null
+    securityAlerts: boolean | null
+    assessmentUpdates: boolean | null
+    systemUpdates: boolean | null
+    marketingEmails: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    userId: string | null
+  }
+
+  export type NotificationPreferenceCountAggregateOutputType = {
+    id: number
+    emailEnabled: number
+    smsEnabled: number
+    pushEnabled: number
+    securityAlerts: number
+    assessmentUpdates: number
+    systemUpdates: number
+    marketingEmails: number
+    createdAt: number
+    updatedAt: number
+    userId: number
+    _all: number
+  }
+
+
+  export type NotificationPreferenceMinAggregateInputType = {
+    id?: true
+    emailEnabled?: true
+    smsEnabled?: true
+    pushEnabled?: true
+    securityAlerts?: true
+    assessmentUpdates?: true
+    systemUpdates?: true
+    marketingEmails?: true
+    createdAt?: true
+    updatedAt?: true
+    userId?: true
+  }
+
+  export type NotificationPreferenceMaxAggregateInputType = {
+    id?: true
+    emailEnabled?: true
+    smsEnabled?: true
+    pushEnabled?: true
+    securityAlerts?: true
+    assessmentUpdates?: true
+    systemUpdates?: true
+    marketingEmails?: true
+    createdAt?: true
+    updatedAt?: true
+    userId?: true
+  }
+
+  export type NotificationPreferenceCountAggregateInputType = {
+    id?: true
+    emailEnabled?: true
+    smsEnabled?: true
+    pushEnabled?: true
+    securityAlerts?: true
+    assessmentUpdates?: true
+    systemUpdates?: true
+    marketingEmails?: true
+    createdAt?: true
+    updatedAt?: true
+    userId?: true
+    _all?: true
+  }
+
+  export type NotificationPreferenceAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which NotificationPreference to aggregate.
+     */
+    where?: NotificationPreferenceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of NotificationPreferences to fetch.
+     */
+    orderBy?: NotificationPreferenceOrderByWithRelationInput | NotificationPreferenceOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: NotificationPreferenceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` NotificationPreferences from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` NotificationPreferences.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned NotificationPreferences
+    **/
+    _count?: true | NotificationPreferenceCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: NotificationPreferenceMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: NotificationPreferenceMaxAggregateInputType
+  }
+
+  export type GetNotificationPreferenceAggregateType<T extends NotificationPreferenceAggregateArgs> = {
+        [P in keyof T & keyof AggregateNotificationPreference]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateNotificationPreference[P]>
+      : GetScalarType<T[P], AggregateNotificationPreference[P]>
+  }
+
+
+
+
+  export type NotificationPreferenceGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: NotificationPreferenceWhereInput
+    orderBy?: NotificationPreferenceOrderByWithAggregationInput | NotificationPreferenceOrderByWithAggregationInput[]
+    by: NotificationPreferenceScalarFieldEnum[] | NotificationPreferenceScalarFieldEnum
+    having?: NotificationPreferenceScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: NotificationPreferenceCountAggregateInputType | true
+    _min?: NotificationPreferenceMinAggregateInputType
+    _max?: NotificationPreferenceMaxAggregateInputType
+  }
+
+  export type NotificationPreferenceGroupByOutputType = {
+    id: string
+    emailEnabled: boolean
+    smsEnabled: boolean
+    pushEnabled: boolean
+    securityAlerts: boolean
+    assessmentUpdates: boolean
+    systemUpdates: boolean
+    marketingEmails: boolean
+    createdAt: Date
+    updatedAt: Date
+    userId: string
+    _count: NotificationPreferenceCountAggregateOutputType | null
+    _min: NotificationPreferenceMinAggregateOutputType | null
+    _max: NotificationPreferenceMaxAggregateOutputType | null
+  }
+
+  type GetNotificationPreferenceGroupByPayload<T extends NotificationPreferenceGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<NotificationPreferenceGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof NotificationPreferenceGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], NotificationPreferenceGroupByOutputType[P]>
+            : GetScalarType<T[P], NotificationPreferenceGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type NotificationPreferenceSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    emailEnabled?: boolean
+    smsEnabled?: boolean
+    pushEnabled?: boolean
+    securityAlerts?: boolean
+    assessmentUpdates?: boolean
+    systemUpdates?: boolean
+    marketingEmails?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    userId?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["notificationPreference"]>
+
+  export type NotificationPreferenceSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    emailEnabled?: boolean
+    smsEnabled?: boolean
+    pushEnabled?: boolean
+    securityAlerts?: boolean
+    assessmentUpdates?: boolean
+    systemUpdates?: boolean
+    marketingEmails?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    userId?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["notificationPreference"]>
+
+  export type NotificationPreferenceSelectScalar = {
+    id?: boolean
+    emailEnabled?: boolean
+    smsEnabled?: boolean
+    pushEnabled?: boolean
+    securityAlerts?: boolean
+    assessmentUpdates?: boolean
+    systemUpdates?: boolean
+    marketingEmails?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    userId?: boolean
+  }
+
+  export type NotificationPreferenceInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type NotificationPreferenceIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $NotificationPreferencePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "NotificationPreference"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      emailEnabled: boolean
+      smsEnabled: boolean
+      pushEnabled: boolean
+      securityAlerts: boolean
+      assessmentUpdates: boolean
+      systemUpdates: boolean
+      marketingEmails: boolean
+      createdAt: Date
+      updatedAt: Date
+      userId: string
+    }, ExtArgs["result"]["notificationPreference"]>
+    composites: {}
+  }
+
+  type NotificationPreferenceGetPayload<S extends boolean | null | undefined | NotificationPreferenceDefaultArgs> = $Result.GetResult<Prisma.$NotificationPreferencePayload, S>
+
+  type NotificationPreferenceCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<NotificationPreferenceFindManyArgs, 'select' | 'include' | 'distinct'> & {
+      select?: NotificationPreferenceCountAggregateInputType | true
+    }
+
+  export interface NotificationPreferenceDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['NotificationPreference'], meta: { name: 'NotificationPreference' } }
+    /**
+     * Find zero or one NotificationPreference that matches the filter.
+     * @param {NotificationPreferenceFindUniqueArgs} args - Arguments to find a NotificationPreference
+     * @example
+     * // Get one NotificationPreference
+     * const notificationPreference = await prisma.notificationPreference.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends NotificationPreferenceFindUniqueArgs>(args: SelectSubset<T, NotificationPreferenceFindUniqueArgs<ExtArgs>>): Prisma__NotificationPreferenceClient<$Result.GetResult<Prisma.$NotificationPreferencePayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
+
+    /**
+     * Find one NotificationPreference that matches the filter or throw an error with `error.code='P2025'` 
+     * if no matches were found.
+     * @param {NotificationPreferenceFindUniqueOrThrowArgs} args - Arguments to find a NotificationPreference
+     * @example
+     * // Get one NotificationPreference
+     * const notificationPreference = await prisma.notificationPreference.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends NotificationPreferenceFindUniqueOrThrowArgs>(args: SelectSubset<T, NotificationPreferenceFindUniqueOrThrowArgs<ExtArgs>>): Prisma__NotificationPreferenceClient<$Result.GetResult<Prisma.$NotificationPreferencePayload<ExtArgs>, T, "findUniqueOrThrow">, never, ExtArgs>
+
+    /**
+     * Find the first NotificationPreference that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NotificationPreferenceFindFirstArgs} args - Arguments to find a NotificationPreference
+     * @example
+     * // Get one NotificationPreference
+     * const notificationPreference = await prisma.notificationPreference.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends NotificationPreferenceFindFirstArgs>(args?: SelectSubset<T, NotificationPreferenceFindFirstArgs<ExtArgs>>): Prisma__NotificationPreferenceClient<$Result.GetResult<Prisma.$NotificationPreferencePayload<ExtArgs>, T, "findFirst"> | null, null, ExtArgs>
+
+    /**
+     * Find the first NotificationPreference that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NotificationPreferenceFindFirstOrThrowArgs} args - Arguments to find a NotificationPreference
+     * @example
+     * // Get one NotificationPreference
+     * const notificationPreference = await prisma.notificationPreference.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends NotificationPreferenceFindFirstOrThrowArgs>(args?: SelectSubset<T, NotificationPreferenceFindFirstOrThrowArgs<ExtArgs>>): Prisma__NotificationPreferenceClient<$Result.GetResult<Prisma.$NotificationPreferencePayload<ExtArgs>, T, "findFirstOrThrow">, never, ExtArgs>
+
+    /**
+     * Find zero or more NotificationPreferences that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NotificationPreferenceFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all NotificationPreferences
+     * const notificationPreferences = await prisma.notificationPreference.findMany()
+     * 
+     * // Get first 10 NotificationPreferences
+     * const notificationPreferences = await prisma.notificationPreference.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const notificationPreferenceWithIdOnly = await prisma.notificationPreference.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends NotificationPreferenceFindManyArgs>(args?: SelectSubset<T, NotificationPreferenceFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotificationPreferencePayload<ExtArgs>, T, "findMany">>
+
+    /**
+     * Create a NotificationPreference.
+     * @param {NotificationPreferenceCreateArgs} args - Arguments to create a NotificationPreference.
+     * @example
+     * // Create one NotificationPreference
+     * const NotificationPreference = await prisma.notificationPreference.create({
+     *   data: {
+     *     // ... data to create a NotificationPreference
+     *   }
+     * })
+     * 
+     */
+    create<T extends NotificationPreferenceCreateArgs>(args: SelectSubset<T, NotificationPreferenceCreateArgs<ExtArgs>>): Prisma__NotificationPreferenceClient<$Result.GetResult<Prisma.$NotificationPreferencePayload<ExtArgs>, T, "create">, never, ExtArgs>
+
+    /**
+     * Create many NotificationPreferences.
+     * @param {NotificationPreferenceCreateManyArgs} args - Arguments to create many NotificationPreferences.
+     * @example
+     * // Create many NotificationPreferences
+     * const notificationPreference = await prisma.notificationPreference.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends NotificationPreferenceCreateManyArgs>(args?: SelectSubset<T, NotificationPreferenceCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many NotificationPreferences and returns the data saved in the database.
+     * @param {NotificationPreferenceCreateManyAndReturnArgs} args - Arguments to create many NotificationPreferences.
+     * @example
+     * // Create many NotificationPreferences
+     * const notificationPreference = await prisma.notificationPreference.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many NotificationPreferences and only return the `id`
+     * const notificationPreferenceWithIdOnly = await prisma.notificationPreference.createManyAndReturn({ 
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends NotificationPreferenceCreateManyAndReturnArgs>(args?: SelectSubset<T, NotificationPreferenceCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotificationPreferencePayload<ExtArgs>, T, "createManyAndReturn">>
+
+    /**
+     * Delete a NotificationPreference.
+     * @param {NotificationPreferenceDeleteArgs} args - Arguments to delete one NotificationPreference.
+     * @example
+     * // Delete one NotificationPreference
+     * const NotificationPreference = await prisma.notificationPreference.delete({
+     *   where: {
+     *     // ... filter to delete one NotificationPreference
+     *   }
+     * })
+     * 
+     */
+    delete<T extends NotificationPreferenceDeleteArgs>(args: SelectSubset<T, NotificationPreferenceDeleteArgs<ExtArgs>>): Prisma__NotificationPreferenceClient<$Result.GetResult<Prisma.$NotificationPreferencePayload<ExtArgs>, T, "delete">, never, ExtArgs>
+
+    /**
+     * Update one NotificationPreference.
+     * @param {NotificationPreferenceUpdateArgs} args - Arguments to update one NotificationPreference.
+     * @example
+     * // Update one NotificationPreference
+     * const notificationPreference = await prisma.notificationPreference.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends NotificationPreferenceUpdateArgs>(args: SelectSubset<T, NotificationPreferenceUpdateArgs<ExtArgs>>): Prisma__NotificationPreferenceClient<$Result.GetResult<Prisma.$NotificationPreferencePayload<ExtArgs>, T, "update">, never, ExtArgs>
+
+    /**
+     * Delete zero or more NotificationPreferences.
+     * @param {NotificationPreferenceDeleteManyArgs} args - Arguments to filter NotificationPreferences to delete.
+     * @example
+     * // Delete a few NotificationPreferences
+     * const { count } = await prisma.notificationPreference.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends NotificationPreferenceDeleteManyArgs>(args?: SelectSubset<T, NotificationPreferenceDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more NotificationPreferences.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NotificationPreferenceUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many NotificationPreferences
+     * const notificationPreference = await prisma.notificationPreference.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends NotificationPreferenceUpdateManyArgs>(args: SelectSubset<T, NotificationPreferenceUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one NotificationPreference.
+     * @param {NotificationPreferenceUpsertArgs} args - Arguments to update or create a NotificationPreference.
+     * @example
+     * // Update or create a NotificationPreference
+     * const notificationPreference = await prisma.notificationPreference.upsert({
+     *   create: {
+     *     // ... data to create a NotificationPreference
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the NotificationPreference we want to update
+     *   }
+     * })
+     */
+    upsert<T extends NotificationPreferenceUpsertArgs>(args: SelectSubset<T, NotificationPreferenceUpsertArgs<ExtArgs>>): Prisma__NotificationPreferenceClient<$Result.GetResult<Prisma.$NotificationPreferencePayload<ExtArgs>, T, "upsert">, never, ExtArgs>
+
+
+    /**
+     * Count the number of NotificationPreferences.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NotificationPreferenceCountArgs} args - Arguments to filter NotificationPreferences to count.
+     * @example
+     * // Count the number of NotificationPreferences
+     * const count = await prisma.notificationPreference.count({
+     *   where: {
+     *     // ... the filter for the NotificationPreferences we want to count
+     *   }
+     * })
+    **/
+    count<T extends NotificationPreferenceCountArgs>(
+      args?: Subset<T, NotificationPreferenceCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], NotificationPreferenceCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a NotificationPreference.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NotificationPreferenceAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends NotificationPreferenceAggregateArgs>(args: Subset<T, NotificationPreferenceAggregateArgs>): Prisma.PrismaPromise<GetNotificationPreferenceAggregateType<T>>
+
+    /**
+     * Group by NotificationPreference.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NotificationPreferenceGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends NotificationPreferenceGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: NotificationPreferenceGroupByArgs['orderBy'] }
+        : { orderBy?: NotificationPreferenceGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, NotificationPreferenceGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetNotificationPreferenceGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the NotificationPreference model
+   */
+  readonly fields: NotificationPreferenceFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for NotificationPreference.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__NotificationPreferenceClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the NotificationPreference model
+   */ 
+  interface NotificationPreferenceFieldRefs {
+    readonly id: FieldRef<"NotificationPreference", 'String'>
+    readonly emailEnabled: FieldRef<"NotificationPreference", 'Boolean'>
+    readonly smsEnabled: FieldRef<"NotificationPreference", 'Boolean'>
+    readonly pushEnabled: FieldRef<"NotificationPreference", 'Boolean'>
+    readonly securityAlerts: FieldRef<"NotificationPreference", 'Boolean'>
+    readonly assessmentUpdates: FieldRef<"NotificationPreference", 'Boolean'>
+    readonly systemUpdates: FieldRef<"NotificationPreference", 'Boolean'>
+    readonly marketingEmails: FieldRef<"NotificationPreference", 'Boolean'>
+    readonly createdAt: FieldRef<"NotificationPreference", 'DateTime'>
+    readonly updatedAt: FieldRef<"NotificationPreference", 'DateTime'>
+    readonly userId: FieldRef<"NotificationPreference", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * NotificationPreference findUnique
+   */
+  export type NotificationPreferenceFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NotificationPreference
+     */
+    select?: NotificationPreferenceSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationPreferenceInclude<ExtArgs> | null
+    /**
+     * Filter, which NotificationPreference to fetch.
+     */
+    where: NotificationPreferenceWhereUniqueInput
+  }
+
+  /**
+   * NotificationPreference findUniqueOrThrow
+   */
+  export type NotificationPreferenceFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NotificationPreference
+     */
+    select?: NotificationPreferenceSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationPreferenceInclude<ExtArgs> | null
+    /**
+     * Filter, which NotificationPreference to fetch.
+     */
+    where: NotificationPreferenceWhereUniqueInput
+  }
+
+  /**
+   * NotificationPreference findFirst
+   */
+  export type NotificationPreferenceFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NotificationPreference
+     */
+    select?: NotificationPreferenceSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationPreferenceInclude<ExtArgs> | null
+    /**
+     * Filter, which NotificationPreference to fetch.
+     */
+    where?: NotificationPreferenceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of NotificationPreferences to fetch.
+     */
+    orderBy?: NotificationPreferenceOrderByWithRelationInput | NotificationPreferenceOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for NotificationPreferences.
+     */
+    cursor?: NotificationPreferenceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` NotificationPreferences from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` NotificationPreferences.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of NotificationPreferences.
+     */
+    distinct?: NotificationPreferenceScalarFieldEnum | NotificationPreferenceScalarFieldEnum[]
+  }
+
+  /**
+   * NotificationPreference findFirstOrThrow
+   */
+  export type NotificationPreferenceFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NotificationPreference
+     */
+    select?: NotificationPreferenceSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationPreferenceInclude<ExtArgs> | null
+    /**
+     * Filter, which NotificationPreference to fetch.
+     */
+    where?: NotificationPreferenceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of NotificationPreferences to fetch.
+     */
+    orderBy?: NotificationPreferenceOrderByWithRelationInput | NotificationPreferenceOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for NotificationPreferences.
+     */
+    cursor?: NotificationPreferenceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` NotificationPreferences from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` NotificationPreferences.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of NotificationPreferences.
+     */
+    distinct?: NotificationPreferenceScalarFieldEnum | NotificationPreferenceScalarFieldEnum[]
+  }
+
+  /**
+   * NotificationPreference findMany
+   */
+  export type NotificationPreferenceFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NotificationPreference
+     */
+    select?: NotificationPreferenceSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationPreferenceInclude<ExtArgs> | null
+    /**
+     * Filter, which NotificationPreferences to fetch.
+     */
+    where?: NotificationPreferenceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of NotificationPreferences to fetch.
+     */
+    orderBy?: NotificationPreferenceOrderByWithRelationInput | NotificationPreferenceOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing NotificationPreferences.
+     */
+    cursor?: NotificationPreferenceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` NotificationPreferences from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` NotificationPreferences.
+     */
+    skip?: number
+    distinct?: NotificationPreferenceScalarFieldEnum | NotificationPreferenceScalarFieldEnum[]
+  }
+
+  /**
+   * NotificationPreference create
+   */
+  export type NotificationPreferenceCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NotificationPreference
+     */
+    select?: NotificationPreferenceSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationPreferenceInclude<ExtArgs> | null
+    /**
+     * The data needed to create a NotificationPreference.
+     */
+    data: XOR<NotificationPreferenceCreateInput, NotificationPreferenceUncheckedCreateInput>
+  }
+
+  /**
+   * NotificationPreference createMany
+   */
+  export type NotificationPreferenceCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many NotificationPreferences.
+     */
+    data: NotificationPreferenceCreateManyInput | NotificationPreferenceCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * NotificationPreference createManyAndReturn
+   */
+  export type NotificationPreferenceCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NotificationPreference
+     */
+    select?: NotificationPreferenceSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * The data used to create many NotificationPreferences.
+     */
+    data: NotificationPreferenceCreateManyInput | NotificationPreferenceCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationPreferenceIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * NotificationPreference update
+   */
+  export type NotificationPreferenceUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NotificationPreference
+     */
+    select?: NotificationPreferenceSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationPreferenceInclude<ExtArgs> | null
+    /**
+     * The data needed to update a NotificationPreference.
+     */
+    data: XOR<NotificationPreferenceUpdateInput, NotificationPreferenceUncheckedUpdateInput>
+    /**
+     * Choose, which NotificationPreference to update.
+     */
+    where: NotificationPreferenceWhereUniqueInput
+  }
+
+  /**
+   * NotificationPreference updateMany
+   */
+  export type NotificationPreferenceUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update NotificationPreferences.
+     */
+    data: XOR<NotificationPreferenceUpdateManyMutationInput, NotificationPreferenceUncheckedUpdateManyInput>
+    /**
+     * Filter which NotificationPreferences to update
+     */
+    where?: NotificationPreferenceWhereInput
+  }
+
+  /**
+   * NotificationPreference upsert
+   */
+  export type NotificationPreferenceUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NotificationPreference
+     */
+    select?: NotificationPreferenceSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationPreferenceInclude<ExtArgs> | null
+    /**
+     * The filter to search for the NotificationPreference to update in case it exists.
+     */
+    where: NotificationPreferenceWhereUniqueInput
+    /**
+     * In case the NotificationPreference found by the `where` argument doesn't exist, create a new NotificationPreference with this data.
+     */
+    create: XOR<NotificationPreferenceCreateInput, NotificationPreferenceUncheckedCreateInput>
+    /**
+     * In case the NotificationPreference was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<NotificationPreferenceUpdateInput, NotificationPreferenceUncheckedUpdateInput>
+  }
+
+  /**
+   * NotificationPreference delete
+   */
+  export type NotificationPreferenceDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NotificationPreference
+     */
+    select?: NotificationPreferenceSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationPreferenceInclude<ExtArgs> | null
+    /**
+     * Filter which NotificationPreference to delete.
+     */
+    where: NotificationPreferenceWhereUniqueInput
+  }
+
+  /**
+   * NotificationPreference deleteMany
+   */
+  export type NotificationPreferenceDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which NotificationPreferences to delete
+     */
+    where?: NotificationPreferenceWhereInput
+  }
+
+  /**
+   * NotificationPreference without action
+   */
+  export type NotificationPreferenceDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NotificationPreference
+     */
+    select?: NotificationPreferenceSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationPreferenceInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -34537,24 +38217,32 @@ export namespace Prisma {
     id: 'id',
     name: 'name',
     description: 'description',
+    campaignType: 'campaignType',
     templateId: 'templateId',
     template: 'template',
     subject: 'subject',
     senderName: 'senderName',
     senderEmail: 'senderEmail',
     landingPageUrl: 'landingPageUrl',
+    senderNumber: 'senderNumber',
+    messageContent: 'messageContent',
+    trackingUrl: 'trackingUrl',
     status: 'status',
     scheduledAt: 'scheduledAt',
     launchedAt: 'launchedAt',
     completedAt: 'completedAt',
     pausedAt: 'pausedAt',
     targetCount: 'targetCount',
-    emailsSent: 'emailsSent',
-    emailsDelivered: 'emailsDelivered',
-    emailsOpened: 'emailsOpened',
+    messagesSent: 'messagesSent',
+    messagesDelivered: 'messagesDelivered',
+    messagesOpened: 'messagesOpened',
     linksClicked: 'linksClicked',
     credentialsEntered: 'credentialsEntered',
     phishingReported: 'phishingReported',
+    messagesFailed: 'messagesFailed',
+    emailsSent: 'emailsSent',
+    emailsDelivered: 'emailsDelivered',
+    emailsOpened: 'emailsOpened',
     emailsBounced: 'emailsBounced',
     createdBy: 'createdBy',
     organizationId: 'organizationId',
@@ -34568,16 +38256,21 @@ export namespace Prisma {
   export const PhishingTargetScalarFieldEnum: {
     id: 'id',
     email: 'email',
+    phoneNumber: 'phoneNumber',
     firstName: 'firstName',
     lastName: 'lastName',
     department: 'department',
     jobTitle: 'jobTitle',
-    emailSent: 'emailSent',
-    emailDelivered: 'emailDelivered',
-    emailOpened: 'emailOpened',
+    messageSent: 'messageSent',
+    messageDelivered: 'messageDelivered',
+    messageOpened: 'messageOpened',
     linkClicked: 'linkClicked',
     credentialsEntered: 'credentialsEntered',
     reportedPhishing: 'reportedPhishing',
+    messageFailed: 'messageFailed',
+    emailSent: 'emailSent',
+    emailDelivered: 'emailDelivered',
+    emailOpened: 'emailOpened',
     emailBounced: 'emailBounced',
     sentAt: 'sentAt',
     deliveredAt: 'deliveredAt',
@@ -34585,10 +38278,13 @@ export namespace Prisma {
     clickedAt: 'clickedAt',
     credentialsAt: 'credentialsAt',
     reportedAt: 'reportedAt',
+    failedAt: 'failedAt',
     bouncedAt: 'bouncedAt',
     userAgent: 'userAgent',
     ipAddress: 'ipAddress',
     clickCount: 'clickCount',
+    smsProvider: 'smsProvider',
+    messageId: 'messageId',
     riskScore: 'riskScore',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
@@ -34620,10 +38316,14 @@ export namespace Prisma {
     description: 'description',
     category: 'category',
     riskLevel: 'riskLevel',
+    templateType: 'templateType',
     defaultSubject: 'defaultSubject',
     defaultSenderName: 'defaultSenderName',
     emailBodyHtml: 'emailBodyHtml',
     emailBodyText: 'emailBodyText',
+    smsContent: 'smsContent',
+    defaultSenderNumber: 'defaultSenderNumber',
+    messageContent: 'messageContent',
     landingPageHtml: 'landingPageHtml',
     captureCredentials: 'captureCredentials',
     isActive: 'isActive',
@@ -34847,6 +38547,61 @@ export namespace Prisma {
   export type BenchmarkDataScalarFieldEnum = (typeof BenchmarkDataScalarFieldEnum)[keyof typeof BenchmarkDataScalarFieldEnum]
 
 
+  export const NotificationHistoryScalarFieldEnum: {
+    id: 'id',
+    type: 'type',
+    recipient: 'recipient',
+    subject: 'subject',
+    content: 'content',
+    status: 'status',
+    attempts: 'attempts',
+    lastAttempt: 'lastAttempt',
+    sentAt: 'sentAt',
+    error: 'error',
+    jobId: 'jobId',
+    messageId: 'messageId',
+    metadata: 'metadata',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
+    userId: 'userId'
+  };
+
+  export type NotificationHistoryScalarFieldEnum = (typeof NotificationHistoryScalarFieldEnum)[keyof typeof NotificationHistoryScalarFieldEnum]
+
+
+  export const EmailTemplateScalarFieldEnum: {
+    id: 'id',
+    name: 'name',
+    subject: 'subject',
+    htmlContent: 'htmlContent',
+    textContent: 'textContent',
+    variables: 'variables',
+    description: 'description',
+    isActive: 'isActive',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type EmailTemplateScalarFieldEnum = (typeof EmailTemplateScalarFieldEnum)[keyof typeof EmailTemplateScalarFieldEnum]
+
+
+  export const NotificationPreferenceScalarFieldEnum: {
+    id: 'id',
+    emailEnabled: 'emailEnabled',
+    smsEnabled: 'smsEnabled',
+    pushEnabled: 'pushEnabled',
+    securityAlerts: 'securityAlerts',
+    assessmentUpdates: 'assessmentUpdates',
+    systemUpdates: 'systemUpdates',
+    marketingEmails: 'marketingEmails',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
+    userId: 'userId'
+  };
+
+  export type NotificationPreferenceScalarFieldEnum = (typeof NotificationPreferenceScalarFieldEnum)[keyof typeof NotificationPreferenceScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
@@ -35066,6 +38821,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'CampaignType'
+   */
+  export type EnumCampaignTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CampaignType'>
+    
+
+
+  /**
+   * Reference to a field of type 'CampaignType[]'
+   */
+  export type ListEnumCampaignTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CampaignType[]'>
+    
+
+
+  /**
    * Reference to a field of type 'CampaignStatus'
    */
   export type EnumCampaignStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CampaignStatus'>
@@ -35118,6 +38887,20 @@ export namespace Prisma {
    * Reference to a field of type 'RiskLevel[]'
    */
   export type ListEnumRiskLevelFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RiskLevel[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'TemplateType'
+   */
+  export type EnumTemplateTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TemplateType'>
+    
+
+
+  /**
+   * Reference to a field of type 'TemplateType[]'
+   */
+  export type ListEnumTemplateTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TemplateType[]'>
     
 
 
@@ -35315,6 +39098,34 @@ export namespace Prisma {
    */
   export type ListEnumPaymentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentStatus[]'>
     
+
+
+  /**
+   * Reference to a field of type 'NotificationType'
+   */
+  export type EnumNotificationTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'NotificationType'>
+    
+
+
+  /**
+   * Reference to a field of type 'NotificationType[]'
+   */
+  export type ListEnumNotificationTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'NotificationType[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'NotificationStatus'
+   */
+  export type EnumNotificationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'NotificationStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'NotificationStatus[]'
+   */
+  export type ListEnumNotificationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'NotificationStatus[]'>
+    
   /**
    * Deep Input Types
    */
@@ -35349,6 +39160,8 @@ export namespace Prisma {
     createdInviteCodes?: InviteCodeListRelationFilter
     organizationMemberships?: OrganizationMemberListRelationFilter
     sentInvites?: OrganizationMemberListRelationFilter
+    notificationHistory?: NotificationHistoryListRelationFilter
+    notificationPreferences?: XOR<NotificationPreferenceNullableRelationFilter, NotificationPreferenceWhereInput> | null
   }
 
   export type UserOrderByWithRelationInput = {
@@ -35377,6 +39190,8 @@ export namespace Prisma {
     createdInviteCodes?: InviteCodeOrderByRelationAggregateInput
     organizationMemberships?: OrganizationMemberOrderByRelationAggregateInput
     sentInvites?: OrganizationMemberOrderByRelationAggregateInput
+    notificationHistory?: NotificationHistoryOrderByRelationAggregateInput
+    notificationPreferences?: NotificationPreferenceOrderByWithRelationInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -35408,6 +39223,8 @@ export namespace Prisma {
     createdInviteCodes?: InviteCodeListRelationFilter
     organizationMemberships?: OrganizationMemberListRelationFilter
     sentInvites?: OrganizationMemberListRelationFilter
+    notificationHistory?: NotificationHistoryListRelationFilter
+    notificationPreferences?: XOR<NotificationPreferenceNullableRelationFilter, NotificationPreferenceWhereInput> | null
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -36434,24 +40251,32 @@ export namespace Prisma {
     id?: StringFilter<"PhishingCampaign"> | string
     name?: StringFilter<"PhishingCampaign"> | string
     description?: StringNullableFilter<"PhishingCampaign"> | string | null
+    campaignType?: EnumCampaignTypeFilter<"PhishingCampaign"> | $Enums.CampaignType
     templateId?: StringFilter<"PhishingCampaign"> | string
     template?: StringFilter<"PhishingCampaign"> | string
-    subject?: StringFilter<"PhishingCampaign"> | string
-    senderName?: StringFilter<"PhishingCampaign"> | string
-    senderEmail?: StringFilter<"PhishingCampaign"> | string
+    subject?: StringNullableFilter<"PhishingCampaign"> | string | null
+    senderName?: StringNullableFilter<"PhishingCampaign"> | string | null
+    senderEmail?: StringNullableFilter<"PhishingCampaign"> | string | null
     landingPageUrl?: StringNullableFilter<"PhishingCampaign"> | string | null
+    senderNumber?: StringNullableFilter<"PhishingCampaign"> | string | null
+    messageContent?: StringNullableFilter<"PhishingCampaign"> | string | null
+    trackingUrl?: StringNullableFilter<"PhishingCampaign"> | string | null
     status?: EnumCampaignStatusFilter<"PhishingCampaign"> | $Enums.CampaignStatus
     scheduledAt?: DateTimeNullableFilter<"PhishingCampaign"> | Date | string | null
     launchedAt?: DateTimeNullableFilter<"PhishingCampaign"> | Date | string | null
     completedAt?: DateTimeNullableFilter<"PhishingCampaign"> | Date | string | null
     pausedAt?: DateTimeNullableFilter<"PhishingCampaign"> | Date | string | null
     targetCount?: IntFilter<"PhishingCampaign"> | number
-    emailsSent?: IntFilter<"PhishingCampaign"> | number
-    emailsDelivered?: IntFilter<"PhishingCampaign"> | number
-    emailsOpened?: IntFilter<"PhishingCampaign"> | number
+    messagesSent?: IntFilter<"PhishingCampaign"> | number
+    messagesDelivered?: IntFilter<"PhishingCampaign"> | number
+    messagesOpened?: IntFilter<"PhishingCampaign"> | number
     linksClicked?: IntFilter<"PhishingCampaign"> | number
     credentialsEntered?: IntFilter<"PhishingCampaign"> | number
     phishingReported?: IntFilter<"PhishingCampaign"> | number
+    messagesFailed?: IntFilter<"PhishingCampaign"> | number
+    emailsSent?: IntFilter<"PhishingCampaign"> | number
+    emailsDelivered?: IntFilter<"PhishingCampaign"> | number
+    emailsOpened?: IntFilter<"PhishingCampaign"> | number
     emailsBounced?: IntFilter<"PhishingCampaign"> | number
     createdBy?: StringFilter<"PhishingCampaign"> | string
     organizationId?: StringFilter<"PhishingCampaign"> | string
@@ -36467,24 +40292,32 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     description?: SortOrderInput | SortOrder
+    campaignType?: SortOrder
     templateId?: SortOrder
     template?: SortOrder
-    subject?: SortOrder
-    senderName?: SortOrder
-    senderEmail?: SortOrder
+    subject?: SortOrderInput | SortOrder
+    senderName?: SortOrderInput | SortOrder
+    senderEmail?: SortOrderInput | SortOrder
     landingPageUrl?: SortOrderInput | SortOrder
+    senderNumber?: SortOrderInput | SortOrder
+    messageContent?: SortOrderInput | SortOrder
+    trackingUrl?: SortOrderInput | SortOrder
     status?: SortOrder
     scheduledAt?: SortOrderInput | SortOrder
     launchedAt?: SortOrderInput | SortOrder
     completedAt?: SortOrderInput | SortOrder
     pausedAt?: SortOrderInput | SortOrder
     targetCount?: SortOrder
-    emailsSent?: SortOrder
-    emailsDelivered?: SortOrder
-    emailsOpened?: SortOrder
+    messagesSent?: SortOrder
+    messagesDelivered?: SortOrder
+    messagesOpened?: SortOrder
     linksClicked?: SortOrder
     credentialsEntered?: SortOrder
     phishingReported?: SortOrder
+    messagesFailed?: SortOrder
+    emailsSent?: SortOrder
+    emailsDelivered?: SortOrder
+    emailsOpened?: SortOrder
     emailsBounced?: SortOrder
     createdBy?: SortOrder
     organizationId?: SortOrder
@@ -36503,24 +40336,32 @@ export namespace Prisma {
     NOT?: PhishingCampaignWhereInput | PhishingCampaignWhereInput[]
     name?: StringFilter<"PhishingCampaign"> | string
     description?: StringNullableFilter<"PhishingCampaign"> | string | null
+    campaignType?: EnumCampaignTypeFilter<"PhishingCampaign"> | $Enums.CampaignType
     templateId?: StringFilter<"PhishingCampaign"> | string
     template?: StringFilter<"PhishingCampaign"> | string
-    subject?: StringFilter<"PhishingCampaign"> | string
-    senderName?: StringFilter<"PhishingCampaign"> | string
-    senderEmail?: StringFilter<"PhishingCampaign"> | string
+    subject?: StringNullableFilter<"PhishingCampaign"> | string | null
+    senderName?: StringNullableFilter<"PhishingCampaign"> | string | null
+    senderEmail?: StringNullableFilter<"PhishingCampaign"> | string | null
     landingPageUrl?: StringNullableFilter<"PhishingCampaign"> | string | null
+    senderNumber?: StringNullableFilter<"PhishingCampaign"> | string | null
+    messageContent?: StringNullableFilter<"PhishingCampaign"> | string | null
+    trackingUrl?: StringNullableFilter<"PhishingCampaign"> | string | null
     status?: EnumCampaignStatusFilter<"PhishingCampaign"> | $Enums.CampaignStatus
     scheduledAt?: DateTimeNullableFilter<"PhishingCampaign"> | Date | string | null
     launchedAt?: DateTimeNullableFilter<"PhishingCampaign"> | Date | string | null
     completedAt?: DateTimeNullableFilter<"PhishingCampaign"> | Date | string | null
     pausedAt?: DateTimeNullableFilter<"PhishingCampaign"> | Date | string | null
     targetCount?: IntFilter<"PhishingCampaign"> | number
-    emailsSent?: IntFilter<"PhishingCampaign"> | number
-    emailsDelivered?: IntFilter<"PhishingCampaign"> | number
-    emailsOpened?: IntFilter<"PhishingCampaign"> | number
+    messagesSent?: IntFilter<"PhishingCampaign"> | number
+    messagesDelivered?: IntFilter<"PhishingCampaign"> | number
+    messagesOpened?: IntFilter<"PhishingCampaign"> | number
     linksClicked?: IntFilter<"PhishingCampaign"> | number
     credentialsEntered?: IntFilter<"PhishingCampaign"> | number
     phishingReported?: IntFilter<"PhishingCampaign"> | number
+    messagesFailed?: IntFilter<"PhishingCampaign"> | number
+    emailsSent?: IntFilter<"PhishingCampaign"> | number
+    emailsDelivered?: IntFilter<"PhishingCampaign"> | number
+    emailsOpened?: IntFilter<"PhishingCampaign"> | number
     emailsBounced?: IntFilter<"PhishingCampaign"> | number
     createdBy?: StringFilter<"PhishingCampaign"> | string
     organizationId?: StringFilter<"PhishingCampaign"> | string
@@ -36536,24 +40377,32 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     description?: SortOrderInput | SortOrder
+    campaignType?: SortOrder
     templateId?: SortOrder
     template?: SortOrder
-    subject?: SortOrder
-    senderName?: SortOrder
-    senderEmail?: SortOrder
+    subject?: SortOrderInput | SortOrder
+    senderName?: SortOrderInput | SortOrder
+    senderEmail?: SortOrderInput | SortOrder
     landingPageUrl?: SortOrderInput | SortOrder
+    senderNumber?: SortOrderInput | SortOrder
+    messageContent?: SortOrderInput | SortOrder
+    trackingUrl?: SortOrderInput | SortOrder
     status?: SortOrder
     scheduledAt?: SortOrderInput | SortOrder
     launchedAt?: SortOrderInput | SortOrder
     completedAt?: SortOrderInput | SortOrder
     pausedAt?: SortOrderInput | SortOrder
     targetCount?: SortOrder
-    emailsSent?: SortOrder
-    emailsDelivered?: SortOrder
-    emailsOpened?: SortOrder
+    messagesSent?: SortOrder
+    messagesDelivered?: SortOrder
+    messagesOpened?: SortOrder
     linksClicked?: SortOrder
     credentialsEntered?: SortOrder
     phishingReported?: SortOrder
+    messagesFailed?: SortOrder
+    emailsSent?: SortOrder
+    emailsDelivered?: SortOrder
+    emailsOpened?: SortOrder
     emailsBounced?: SortOrder
     createdBy?: SortOrder
     organizationId?: SortOrder
@@ -36573,24 +40422,32 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"PhishingCampaign"> | string
     name?: StringWithAggregatesFilter<"PhishingCampaign"> | string
     description?: StringNullableWithAggregatesFilter<"PhishingCampaign"> | string | null
+    campaignType?: EnumCampaignTypeWithAggregatesFilter<"PhishingCampaign"> | $Enums.CampaignType
     templateId?: StringWithAggregatesFilter<"PhishingCampaign"> | string
     template?: StringWithAggregatesFilter<"PhishingCampaign"> | string
-    subject?: StringWithAggregatesFilter<"PhishingCampaign"> | string
-    senderName?: StringWithAggregatesFilter<"PhishingCampaign"> | string
-    senderEmail?: StringWithAggregatesFilter<"PhishingCampaign"> | string
+    subject?: StringNullableWithAggregatesFilter<"PhishingCampaign"> | string | null
+    senderName?: StringNullableWithAggregatesFilter<"PhishingCampaign"> | string | null
+    senderEmail?: StringNullableWithAggregatesFilter<"PhishingCampaign"> | string | null
     landingPageUrl?: StringNullableWithAggregatesFilter<"PhishingCampaign"> | string | null
+    senderNumber?: StringNullableWithAggregatesFilter<"PhishingCampaign"> | string | null
+    messageContent?: StringNullableWithAggregatesFilter<"PhishingCampaign"> | string | null
+    trackingUrl?: StringNullableWithAggregatesFilter<"PhishingCampaign"> | string | null
     status?: EnumCampaignStatusWithAggregatesFilter<"PhishingCampaign"> | $Enums.CampaignStatus
     scheduledAt?: DateTimeNullableWithAggregatesFilter<"PhishingCampaign"> | Date | string | null
     launchedAt?: DateTimeNullableWithAggregatesFilter<"PhishingCampaign"> | Date | string | null
     completedAt?: DateTimeNullableWithAggregatesFilter<"PhishingCampaign"> | Date | string | null
     pausedAt?: DateTimeNullableWithAggregatesFilter<"PhishingCampaign"> | Date | string | null
     targetCount?: IntWithAggregatesFilter<"PhishingCampaign"> | number
-    emailsSent?: IntWithAggregatesFilter<"PhishingCampaign"> | number
-    emailsDelivered?: IntWithAggregatesFilter<"PhishingCampaign"> | number
-    emailsOpened?: IntWithAggregatesFilter<"PhishingCampaign"> | number
+    messagesSent?: IntWithAggregatesFilter<"PhishingCampaign"> | number
+    messagesDelivered?: IntWithAggregatesFilter<"PhishingCampaign"> | number
+    messagesOpened?: IntWithAggregatesFilter<"PhishingCampaign"> | number
     linksClicked?: IntWithAggregatesFilter<"PhishingCampaign"> | number
     credentialsEntered?: IntWithAggregatesFilter<"PhishingCampaign"> | number
     phishingReported?: IntWithAggregatesFilter<"PhishingCampaign"> | number
+    messagesFailed?: IntWithAggregatesFilter<"PhishingCampaign"> | number
+    emailsSent?: IntWithAggregatesFilter<"PhishingCampaign"> | number
+    emailsDelivered?: IntWithAggregatesFilter<"PhishingCampaign"> | number
+    emailsOpened?: IntWithAggregatesFilter<"PhishingCampaign"> | number
     emailsBounced?: IntWithAggregatesFilter<"PhishingCampaign"> | number
     createdBy?: StringWithAggregatesFilter<"PhishingCampaign"> | string
     organizationId?: StringWithAggregatesFilter<"PhishingCampaign"> | string
@@ -36603,17 +40460,22 @@ export namespace Prisma {
     OR?: PhishingTargetWhereInput[]
     NOT?: PhishingTargetWhereInput | PhishingTargetWhereInput[]
     id?: StringFilter<"PhishingTarget"> | string
-    email?: StringFilter<"PhishingTarget"> | string
+    email?: StringNullableFilter<"PhishingTarget"> | string | null
+    phoneNumber?: StringNullableFilter<"PhishingTarget"> | string | null
     firstName?: StringNullableFilter<"PhishingTarget"> | string | null
     lastName?: StringNullableFilter<"PhishingTarget"> | string | null
     department?: StringNullableFilter<"PhishingTarget"> | string | null
     jobTitle?: StringNullableFilter<"PhishingTarget"> | string | null
-    emailSent?: BoolFilter<"PhishingTarget"> | boolean
-    emailDelivered?: BoolFilter<"PhishingTarget"> | boolean
-    emailOpened?: BoolFilter<"PhishingTarget"> | boolean
+    messageSent?: BoolFilter<"PhishingTarget"> | boolean
+    messageDelivered?: BoolFilter<"PhishingTarget"> | boolean
+    messageOpened?: BoolFilter<"PhishingTarget"> | boolean
     linkClicked?: BoolFilter<"PhishingTarget"> | boolean
     credentialsEntered?: BoolFilter<"PhishingTarget"> | boolean
     reportedPhishing?: BoolFilter<"PhishingTarget"> | boolean
+    messageFailed?: BoolFilter<"PhishingTarget"> | boolean
+    emailSent?: BoolFilter<"PhishingTarget"> | boolean
+    emailDelivered?: BoolFilter<"PhishingTarget"> | boolean
+    emailOpened?: BoolFilter<"PhishingTarget"> | boolean
     emailBounced?: BoolFilter<"PhishingTarget"> | boolean
     sentAt?: DateTimeNullableFilter<"PhishingTarget"> | Date | string | null
     deliveredAt?: DateTimeNullableFilter<"PhishingTarget"> | Date | string | null
@@ -36621,10 +40483,13 @@ export namespace Prisma {
     clickedAt?: DateTimeNullableFilter<"PhishingTarget"> | Date | string | null
     credentialsAt?: DateTimeNullableFilter<"PhishingTarget"> | Date | string | null
     reportedAt?: DateTimeNullableFilter<"PhishingTarget"> | Date | string | null
+    failedAt?: DateTimeNullableFilter<"PhishingTarget"> | Date | string | null
     bouncedAt?: DateTimeNullableFilter<"PhishingTarget"> | Date | string | null
     userAgent?: StringNullableFilter<"PhishingTarget"> | string | null
     ipAddress?: StringNullableFilter<"PhishingTarget"> | string | null
     clickCount?: IntFilter<"PhishingTarget"> | number
+    smsProvider?: StringNullableFilter<"PhishingTarget"> | string | null
+    messageId?: StringNullableFilter<"PhishingTarget"> | string | null
     riskScore?: FloatNullableFilter<"PhishingTarget"> | number | null
     createdAt?: DateTimeFilter<"PhishingTarget"> | Date | string
     updatedAt?: DateTimeFilter<"PhishingTarget"> | Date | string
@@ -36637,17 +40502,22 @@ export namespace Prisma {
 
   export type PhishingTargetOrderByWithRelationInput = {
     id?: SortOrder
-    email?: SortOrder
+    email?: SortOrderInput | SortOrder
+    phoneNumber?: SortOrderInput | SortOrder
     firstName?: SortOrderInput | SortOrder
     lastName?: SortOrderInput | SortOrder
     department?: SortOrderInput | SortOrder
     jobTitle?: SortOrderInput | SortOrder
-    emailSent?: SortOrder
-    emailDelivered?: SortOrder
-    emailOpened?: SortOrder
+    messageSent?: SortOrder
+    messageDelivered?: SortOrder
+    messageOpened?: SortOrder
     linkClicked?: SortOrder
     credentialsEntered?: SortOrder
     reportedPhishing?: SortOrder
+    messageFailed?: SortOrder
+    emailSent?: SortOrder
+    emailDelivered?: SortOrder
+    emailOpened?: SortOrder
     emailBounced?: SortOrder
     sentAt?: SortOrderInput | SortOrder
     deliveredAt?: SortOrderInput | SortOrder
@@ -36655,10 +40525,13 @@ export namespace Prisma {
     clickedAt?: SortOrderInput | SortOrder
     credentialsAt?: SortOrderInput | SortOrder
     reportedAt?: SortOrderInput | SortOrder
+    failedAt?: SortOrderInput | SortOrder
     bouncedAt?: SortOrderInput | SortOrder
     userAgent?: SortOrderInput | SortOrder
     ipAddress?: SortOrderInput | SortOrder
     clickCount?: SortOrder
+    smsProvider?: SortOrderInput | SortOrder
+    messageId?: SortOrderInput | SortOrder
     riskScore?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -36675,17 +40548,22 @@ export namespace Prisma {
     AND?: PhishingTargetWhereInput | PhishingTargetWhereInput[]
     OR?: PhishingTargetWhereInput[]
     NOT?: PhishingTargetWhereInput | PhishingTargetWhereInput[]
-    email?: StringFilter<"PhishingTarget"> | string
+    email?: StringNullableFilter<"PhishingTarget"> | string | null
+    phoneNumber?: StringNullableFilter<"PhishingTarget"> | string | null
     firstName?: StringNullableFilter<"PhishingTarget"> | string | null
     lastName?: StringNullableFilter<"PhishingTarget"> | string | null
     department?: StringNullableFilter<"PhishingTarget"> | string | null
     jobTitle?: StringNullableFilter<"PhishingTarget"> | string | null
-    emailSent?: BoolFilter<"PhishingTarget"> | boolean
-    emailDelivered?: BoolFilter<"PhishingTarget"> | boolean
-    emailOpened?: BoolFilter<"PhishingTarget"> | boolean
+    messageSent?: BoolFilter<"PhishingTarget"> | boolean
+    messageDelivered?: BoolFilter<"PhishingTarget"> | boolean
+    messageOpened?: BoolFilter<"PhishingTarget"> | boolean
     linkClicked?: BoolFilter<"PhishingTarget"> | boolean
     credentialsEntered?: BoolFilter<"PhishingTarget"> | boolean
     reportedPhishing?: BoolFilter<"PhishingTarget"> | boolean
+    messageFailed?: BoolFilter<"PhishingTarget"> | boolean
+    emailSent?: BoolFilter<"PhishingTarget"> | boolean
+    emailDelivered?: BoolFilter<"PhishingTarget"> | boolean
+    emailOpened?: BoolFilter<"PhishingTarget"> | boolean
     emailBounced?: BoolFilter<"PhishingTarget"> | boolean
     sentAt?: DateTimeNullableFilter<"PhishingTarget"> | Date | string | null
     deliveredAt?: DateTimeNullableFilter<"PhishingTarget"> | Date | string | null
@@ -36693,10 +40571,13 @@ export namespace Prisma {
     clickedAt?: DateTimeNullableFilter<"PhishingTarget"> | Date | string | null
     credentialsAt?: DateTimeNullableFilter<"PhishingTarget"> | Date | string | null
     reportedAt?: DateTimeNullableFilter<"PhishingTarget"> | Date | string | null
+    failedAt?: DateTimeNullableFilter<"PhishingTarget"> | Date | string | null
     bouncedAt?: DateTimeNullableFilter<"PhishingTarget"> | Date | string | null
     userAgent?: StringNullableFilter<"PhishingTarget"> | string | null
     ipAddress?: StringNullableFilter<"PhishingTarget"> | string | null
     clickCount?: IntFilter<"PhishingTarget"> | number
+    smsProvider?: StringNullableFilter<"PhishingTarget"> | string | null
+    messageId?: StringNullableFilter<"PhishingTarget"> | string | null
     riskScore?: FloatNullableFilter<"PhishingTarget"> | number | null
     createdAt?: DateTimeFilter<"PhishingTarget"> | Date | string
     updatedAt?: DateTimeFilter<"PhishingTarget"> | Date | string
@@ -36709,17 +40590,22 @@ export namespace Prisma {
 
   export type PhishingTargetOrderByWithAggregationInput = {
     id?: SortOrder
-    email?: SortOrder
+    email?: SortOrderInput | SortOrder
+    phoneNumber?: SortOrderInput | SortOrder
     firstName?: SortOrderInput | SortOrder
     lastName?: SortOrderInput | SortOrder
     department?: SortOrderInput | SortOrder
     jobTitle?: SortOrderInput | SortOrder
-    emailSent?: SortOrder
-    emailDelivered?: SortOrder
-    emailOpened?: SortOrder
+    messageSent?: SortOrder
+    messageDelivered?: SortOrder
+    messageOpened?: SortOrder
     linkClicked?: SortOrder
     credentialsEntered?: SortOrder
     reportedPhishing?: SortOrder
+    messageFailed?: SortOrder
+    emailSent?: SortOrder
+    emailDelivered?: SortOrder
+    emailOpened?: SortOrder
     emailBounced?: SortOrder
     sentAt?: SortOrderInput | SortOrder
     deliveredAt?: SortOrderInput | SortOrder
@@ -36727,10 +40613,13 @@ export namespace Prisma {
     clickedAt?: SortOrderInput | SortOrder
     credentialsAt?: SortOrderInput | SortOrder
     reportedAt?: SortOrderInput | SortOrder
+    failedAt?: SortOrderInput | SortOrder
     bouncedAt?: SortOrderInput | SortOrder
     userAgent?: SortOrderInput | SortOrder
     ipAddress?: SortOrderInput | SortOrder
     clickCount?: SortOrder
+    smsProvider?: SortOrderInput | SortOrder
+    messageId?: SortOrderInput | SortOrder
     riskScore?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -36748,17 +40637,22 @@ export namespace Prisma {
     OR?: PhishingTargetScalarWhereWithAggregatesInput[]
     NOT?: PhishingTargetScalarWhereWithAggregatesInput | PhishingTargetScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"PhishingTarget"> | string
-    email?: StringWithAggregatesFilter<"PhishingTarget"> | string
+    email?: StringNullableWithAggregatesFilter<"PhishingTarget"> | string | null
+    phoneNumber?: StringNullableWithAggregatesFilter<"PhishingTarget"> | string | null
     firstName?: StringNullableWithAggregatesFilter<"PhishingTarget"> | string | null
     lastName?: StringNullableWithAggregatesFilter<"PhishingTarget"> | string | null
     department?: StringNullableWithAggregatesFilter<"PhishingTarget"> | string | null
     jobTitle?: StringNullableWithAggregatesFilter<"PhishingTarget"> | string | null
-    emailSent?: BoolWithAggregatesFilter<"PhishingTarget"> | boolean
-    emailDelivered?: BoolWithAggregatesFilter<"PhishingTarget"> | boolean
-    emailOpened?: BoolWithAggregatesFilter<"PhishingTarget"> | boolean
+    messageSent?: BoolWithAggregatesFilter<"PhishingTarget"> | boolean
+    messageDelivered?: BoolWithAggregatesFilter<"PhishingTarget"> | boolean
+    messageOpened?: BoolWithAggregatesFilter<"PhishingTarget"> | boolean
     linkClicked?: BoolWithAggregatesFilter<"PhishingTarget"> | boolean
     credentialsEntered?: BoolWithAggregatesFilter<"PhishingTarget"> | boolean
     reportedPhishing?: BoolWithAggregatesFilter<"PhishingTarget"> | boolean
+    messageFailed?: BoolWithAggregatesFilter<"PhishingTarget"> | boolean
+    emailSent?: BoolWithAggregatesFilter<"PhishingTarget"> | boolean
+    emailDelivered?: BoolWithAggregatesFilter<"PhishingTarget"> | boolean
+    emailOpened?: BoolWithAggregatesFilter<"PhishingTarget"> | boolean
     emailBounced?: BoolWithAggregatesFilter<"PhishingTarget"> | boolean
     sentAt?: DateTimeNullableWithAggregatesFilter<"PhishingTarget"> | Date | string | null
     deliveredAt?: DateTimeNullableWithAggregatesFilter<"PhishingTarget"> | Date | string | null
@@ -36766,10 +40660,13 @@ export namespace Prisma {
     clickedAt?: DateTimeNullableWithAggregatesFilter<"PhishingTarget"> | Date | string | null
     credentialsAt?: DateTimeNullableWithAggregatesFilter<"PhishingTarget"> | Date | string | null
     reportedAt?: DateTimeNullableWithAggregatesFilter<"PhishingTarget"> | Date | string | null
+    failedAt?: DateTimeNullableWithAggregatesFilter<"PhishingTarget"> | Date | string | null
     bouncedAt?: DateTimeNullableWithAggregatesFilter<"PhishingTarget"> | Date | string | null
     userAgent?: StringNullableWithAggregatesFilter<"PhishingTarget"> | string | null
     ipAddress?: StringNullableWithAggregatesFilter<"PhishingTarget"> | string | null
     clickCount?: IntWithAggregatesFilter<"PhishingTarget"> | number
+    smsProvider?: StringNullableWithAggregatesFilter<"PhishingTarget"> | string | null
+    messageId?: StringNullableWithAggregatesFilter<"PhishingTarget"> | string | null
     riskScore?: FloatNullableWithAggregatesFilter<"PhishingTarget"> | number | null
     createdAt?: DateTimeWithAggregatesFilter<"PhishingTarget"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"PhishingTarget"> | Date | string
@@ -36864,10 +40761,14 @@ export namespace Prisma {
     description?: StringFilter<"PhishingTemplate"> | string
     category?: EnumTemplateCategoryFilter<"PhishingTemplate"> | $Enums.TemplateCategory
     riskLevel?: EnumRiskLevelFilter<"PhishingTemplate"> | $Enums.RiskLevel
-    defaultSubject?: StringFilter<"PhishingTemplate"> | string
-    defaultSenderName?: StringFilter<"PhishingTemplate"> | string
-    emailBodyHtml?: StringFilter<"PhishingTemplate"> | string
-    emailBodyText?: StringFilter<"PhishingTemplate"> | string
+    templateType?: EnumTemplateTypeFilter<"PhishingTemplate"> | $Enums.TemplateType
+    defaultSubject?: StringNullableFilter<"PhishingTemplate"> | string | null
+    defaultSenderName?: StringNullableFilter<"PhishingTemplate"> | string | null
+    emailBodyHtml?: StringNullableFilter<"PhishingTemplate"> | string | null
+    emailBodyText?: StringNullableFilter<"PhishingTemplate"> | string | null
+    smsContent?: StringNullableFilter<"PhishingTemplate"> | string | null
+    defaultSenderNumber?: StringNullableFilter<"PhishingTemplate"> | string | null
+    messageContent?: StringNullableFilter<"PhishingTemplate"> | string | null
     landingPageHtml?: StringNullableFilter<"PhishingTemplate"> | string | null
     captureCredentials?: BoolFilter<"PhishingTemplate"> | boolean
     isActive?: BoolFilter<"PhishingTemplate"> | boolean
@@ -36889,10 +40790,14 @@ export namespace Prisma {
     description?: SortOrder
     category?: SortOrder
     riskLevel?: SortOrder
-    defaultSubject?: SortOrder
-    defaultSenderName?: SortOrder
-    emailBodyHtml?: SortOrder
-    emailBodyText?: SortOrder
+    templateType?: SortOrder
+    defaultSubject?: SortOrderInput | SortOrder
+    defaultSenderName?: SortOrderInput | SortOrder
+    emailBodyHtml?: SortOrderInput | SortOrder
+    emailBodyText?: SortOrderInput | SortOrder
+    smsContent?: SortOrderInput | SortOrder
+    defaultSenderNumber?: SortOrderInput | SortOrder
+    messageContent?: SortOrderInput | SortOrder
     landingPageHtml?: SortOrderInput | SortOrder
     captureCredentials?: SortOrder
     isActive?: SortOrder
@@ -36917,10 +40822,14 @@ export namespace Prisma {
     description?: StringFilter<"PhishingTemplate"> | string
     category?: EnumTemplateCategoryFilter<"PhishingTemplate"> | $Enums.TemplateCategory
     riskLevel?: EnumRiskLevelFilter<"PhishingTemplate"> | $Enums.RiskLevel
-    defaultSubject?: StringFilter<"PhishingTemplate"> | string
-    defaultSenderName?: StringFilter<"PhishingTemplate"> | string
-    emailBodyHtml?: StringFilter<"PhishingTemplate"> | string
-    emailBodyText?: StringFilter<"PhishingTemplate"> | string
+    templateType?: EnumTemplateTypeFilter<"PhishingTemplate"> | $Enums.TemplateType
+    defaultSubject?: StringNullableFilter<"PhishingTemplate"> | string | null
+    defaultSenderName?: StringNullableFilter<"PhishingTemplate"> | string | null
+    emailBodyHtml?: StringNullableFilter<"PhishingTemplate"> | string | null
+    emailBodyText?: StringNullableFilter<"PhishingTemplate"> | string | null
+    smsContent?: StringNullableFilter<"PhishingTemplate"> | string | null
+    defaultSenderNumber?: StringNullableFilter<"PhishingTemplate"> | string | null
+    messageContent?: StringNullableFilter<"PhishingTemplate"> | string | null
     landingPageHtml?: StringNullableFilter<"PhishingTemplate"> | string | null
     captureCredentials?: BoolFilter<"PhishingTemplate"> | boolean
     isActive?: BoolFilter<"PhishingTemplate"> | boolean
@@ -36942,10 +40851,14 @@ export namespace Prisma {
     description?: SortOrder
     category?: SortOrder
     riskLevel?: SortOrder
-    defaultSubject?: SortOrder
-    defaultSenderName?: SortOrder
-    emailBodyHtml?: SortOrder
-    emailBodyText?: SortOrder
+    templateType?: SortOrder
+    defaultSubject?: SortOrderInput | SortOrder
+    defaultSenderName?: SortOrderInput | SortOrder
+    emailBodyHtml?: SortOrderInput | SortOrder
+    emailBodyText?: SortOrderInput | SortOrder
+    smsContent?: SortOrderInput | SortOrder
+    defaultSenderNumber?: SortOrderInput | SortOrder
+    messageContent?: SortOrderInput | SortOrder
     landingPageHtml?: SortOrderInput | SortOrder
     captureCredentials?: SortOrder
     isActive?: SortOrder
@@ -36973,10 +40886,14 @@ export namespace Prisma {
     description?: StringWithAggregatesFilter<"PhishingTemplate"> | string
     category?: EnumTemplateCategoryWithAggregatesFilter<"PhishingTemplate"> | $Enums.TemplateCategory
     riskLevel?: EnumRiskLevelWithAggregatesFilter<"PhishingTemplate"> | $Enums.RiskLevel
-    defaultSubject?: StringWithAggregatesFilter<"PhishingTemplate"> | string
-    defaultSenderName?: StringWithAggregatesFilter<"PhishingTemplate"> | string
-    emailBodyHtml?: StringWithAggregatesFilter<"PhishingTemplate"> | string
-    emailBodyText?: StringWithAggregatesFilter<"PhishingTemplate"> | string
+    templateType?: EnumTemplateTypeWithAggregatesFilter<"PhishingTemplate"> | $Enums.TemplateType
+    defaultSubject?: StringNullableWithAggregatesFilter<"PhishingTemplate"> | string | null
+    defaultSenderName?: StringNullableWithAggregatesFilter<"PhishingTemplate"> | string | null
+    emailBodyHtml?: StringNullableWithAggregatesFilter<"PhishingTemplate"> | string | null
+    emailBodyText?: StringNullableWithAggregatesFilter<"PhishingTemplate"> | string | null
+    smsContent?: StringNullableWithAggregatesFilter<"PhishingTemplate"> | string | null
+    defaultSenderNumber?: StringNullableWithAggregatesFilter<"PhishingTemplate"> | string | null
+    messageContent?: StringNullableWithAggregatesFilter<"PhishingTemplate"> | string | null
     landingPageHtml?: StringNullableWithAggregatesFilter<"PhishingTemplate"> | string | null
     captureCredentials?: BoolWithAggregatesFilter<"PhishingTemplate"> | boolean
     isActive?: BoolWithAggregatesFilter<"PhishingTemplate"> | boolean
@@ -38057,6 +41974,280 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"BenchmarkData"> | Date | string
   }
 
+  export type NotificationHistoryWhereInput = {
+    AND?: NotificationHistoryWhereInput | NotificationHistoryWhereInput[]
+    OR?: NotificationHistoryWhereInput[]
+    NOT?: NotificationHistoryWhereInput | NotificationHistoryWhereInput[]
+    id?: StringFilter<"NotificationHistory"> | string
+    type?: EnumNotificationTypeFilter<"NotificationHistory"> | $Enums.NotificationType
+    recipient?: StringFilter<"NotificationHistory"> | string
+    subject?: StringNullableFilter<"NotificationHistory"> | string | null
+    content?: StringFilter<"NotificationHistory"> | string
+    status?: EnumNotificationStatusFilter<"NotificationHistory"> | $Enums.NotificationStatus
+    attempts?: IntFilter<"NotificationHistory"> | number
+    lastAttempt?: DateTimeNullableFilter<"NotificationHistory"> | Date | string | null
+    sentAt?: DateTimeNullableFilter<"NotificationHistory"> | Date | string | null
+    error?: StringNullableFilter<"NotificationHistory"> | string | null
+    jobId?: StringNullableFilter<"NotificationHistory"> | string | null
+    messageId?: StringNullableFilter<"NotificationHistory"> | string | null
+    metadata?: StringNullableFilter<"NotificationHistory"> | string | null
+    createdAt?: DateTimeFilter<"NotificationHistory"> | Date | string
+    updatedAt?: DateTimeFilter<"NotificationHistory"> | Date | string
+    userId?: StringNullableFilter<"NotificationHistory"> | string | null
+    user?: XOR<UserNullableRelationFilter, UserWhereInput> | null
+  }
+
+  export type NotificationHistoryOrderByWithRelationInput = {
+    id?: SortOrder
+    type?: SortOrder
+    recipient?: SortOrder
+    subject?: SortOrderInput | SortOrder
+    content?: SortOrder
+    status?: SortOrder
+    attempts?: SortOrder
+    lastAttempt?: SortOrderInput | SortOrder
+    sentAt?: SortOrderInput | SortOrder
+    error?: SortOrderInput | SortOrder
+    jobId?: SortOrderInput | SortOrder
+    messageId?: SortOrderInput | SortOrder
+    metadata?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    userId?: SortOrderInput | SortOrder
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type NotificationHistoryWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: NotificationHistoryWhereInput | NotificationHistoryWhereInput[]
+    OR?: NotificationHistoryWhereInput[]
+    NOT?: NotificationHistoryWhereInput | NotificationHistoryWhereInput[]
+    type?: EnumNotificationTypeFilter<"NotificationHistory"> | $Enums.NotificationType
+    recipient?: StringFilter<"NotificationHistory"> | string
+    subject?: StringNullableFilter<"NotificationHistory"> | string | null
+    content?: StringFilter<"NotificationHistory"> | string
+    status?: EnumNotificationStatusFilter<"NotificationHistory"> | $Enums.NotificationStatus
+    attempts?: IntFilter<"NotificationHistory"> | number
+    lastAttempt?: DateTimeNullableFilter<"NotificationHistory"> | Date | string | null
+    sentAt?: DateTimeNullableFilter<"NotificationHistory"> | Date | string | null
+    error?: StringNullableFilter<"NotificationHistory"> | string | null
+    jobId?: StringNullableFilter<"NotificationHistory"> | string | null
+    messageId?: StringNullableFilter<"NotificationHistory"> | string | null
+    metadata?: StringNullableFilter<"NotificationHistory"> | string | null
+    createdAt?: DateTimeFilter<"NotificationHistory"> | Date | string
+    updatedAt?: DateTimeFilter<"NotificationHistory"> | Date | string
+    userId?: StringNullableFilter<"NotificationHistory"> | string | null
+    user?: XOR<UserNullableRelationFilter, UserWhereInput> | null
+  }, "id">
+
+  export type NotificationHistoryOrderByWithAggregationInput = {
+    id?: SortOrder
+    type?: SortOrder
+    recipient?: SortOrder
+    subject?: SortOrderInput | SortOrder
+    content?: SortOrder
+    status?: SortOrder
+    attempts?: SortOrder
+    lastAttempt?: SortOrderInput | SortOrder
+    sentAt?: SortOrderInput | SortOrder
+    error?: SortOrderInput | SortOrder
+    jobId?: SortOrderInput | SortOrder
+    messageId?: SortOrderInput | SortOrder
+    metadata?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    userId?: SortOrderInput | SortOrder
+    _count?: NotificationHistoryCountOrderByAggregateInput
+    _avg?: NotificationHistoryAvgOrderByAggregateInput
+    _max?: NotificationHistoryMaxOrderByAggregateInput
+    _min?: NotificationHistoryMinOrderByAggregateInput
+    _sum?: NotificationHistorySumOrderByAggregateInput
+  }
+
+  export type NotificationHistoryScalarWhereWithAggregatesInput = {
+    AND?: NotificationHistoryScalarWhereWithAggregatesInput | NotificationHistoryScalarWhereWithAggregatesInput[]
+    OR?: NotificationHistoryScalarWhereWithAggregatesInput[]
+    NOT?: NotificationHistoryScalarWhereWithAggregatesInput | NotificationHistoryScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"NotificationHistory"> | string
+    type?: EnumNotificationTypeWithAggregatesFilter<"NotificationHistory"> | $Enums.NotificationType
+    recipient?: StringWithAggregatesFilter<"NotificationHistory"> | string
+    subject?: StringNullableWithAggregatesFilter<"NotificationHistory"> | string | null
+    content?: StringWithAggregatesFilter<"NotificationHistory"> | string
+    status?: EnumNotificationStatusWithAggregatesFilter<"NotificationHistory"> | $Enums.NotificationStatus
+    attempts?: IntWithAggregatesFilter<"NotificationHistory"> | number
+    lastAttempt?: DateTimeNullableWithAggregatesFilter<"NotificationHistory"> | Date | string | null
+    sentAt?: DateTimeNullableWithAggregatesFilter<"NotificationHistory"> | Date | string | null
+    error?: StringNullableWithAggregatesFilter<"NotificationHistory"> | string | null
+    jobId?: StringNullableWithAggregatesFilter<"NotificationHistory"> | string | null
+    messageId?: StringNullableWithAggregatesFilter<"NotificationHistory"> | string | null
+    metadata?: StringNullableWithAggregatesFilter<"NotificationHistory"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"NotificationHistory"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"NotificationHistory"> | Date | string
+    userId?: StringNullableWithAggregatesFilter<"NotificationHistory"> | string | null
+  }
+
+  export type EmailTemplateWhereInput = {
+    AND?: EmailTemplateWhereInput | EmailTemplateWhereInput[]
+    OR?: EmailTemplateWhereInput[]
+    NOT?: EmailTemplateWhereInput | EmailTemplateWhereInput[]
+    id?: StringFilter<"EmailTemplate"> | string
+    name?: StringFilter<"EmailTemplate"> | string
+    subject?: StringFilter<"EmailTemplate"> | string
+    htmlContent?: StringFilter<"EmailTemplate"> | string
+    textContent?: StringNullableFilter<"EmailTemplate"> | string | null
+    variables?: StringNullableFilter<"EmailTemplate"> | string | null
+    description?: StringNullableFilter<"EmailTemplate"> | string | null
+    isActive?: BoolFilter<"EmailTemplate"> | boolean
+    createdAt?: DateTimeFilter<"EmailTemplate"> | Date | string
+    updatedAt?: DateTimeFilter<"EmailTemplate"> | Date | string
+  }
+
+  export type EmailTemplateOrderByWithRelationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    subject?: SortOrder
+    htmlContent?: SortOrder
+    textContent?: SortOrderInput | SortOrder
+    variables?: SortOrderInput | SortOrder
+    description?: SortOrderInput | SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EmailTemplateWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    name?: string
+    AND?: EmailTemplateWhereInput | EmailTemplateWhereInput[]
+    OR?: EmailTemplateWhereInput[]
+    NOT?: EmailTemplateWhereInput | EmailTemplateWhereInput[]
+    subject?: StringFilter<"EmailTemplate"> | string
+    htmlContent?: StringFilter<"EmailTemplate"> | string
+    textContent?: StringNullableFilter<"EmailTemplate"> | string | null
+    variables?: StringNullableFilter<"EmailTemplate"> | string | null
+    description?: StringNullableFilter<"EmailTemplate"> | string | null
+    isActive?: BoolFilter<"EmailTemplate"> | boolean
+    createdAt?: DateTimeFilter<"EmailTemplate"> | Date | string
+    updatedAt?: DateTimeFilter<"EmailTemplate"> | Date | string
+  }, "id" | "name">
+
+  export type EmailTemplateOrderByWithAggregationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    subject?: SortOrder
+    htmlContent?: SortOrder
+    textContent?: SortOrderInput | SortOrder
+    variables?: SortOrderInput | SortOrder
+    description?: SortOrderInput | SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: EmailTemplateCountOrderByAggregateInput
+    _max?: EmailTemplateMaxOrderByAggregateInput
+    _min?: EmailTemplateMinOrderByAggregateInput
+  }
+
+  export type EmailTemplateScalarWhereWithAggregatesInput = {
+    AND?: EmailTemplateScalarWhereWithAggregatesInput | EmailTemplateScalarWhereWithAggregatesInput[]
+    OR?: EmailTemplateScalarWhereWithAggregatesInput[]
+    NOT?: EmailTemplateScalarWhereWithAggregatesInput | EmailTemplateScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"EmailTemplate"> | string
+    name?: StringWithAggregatesFilter<"EmailTemplate"> | string
+    subject?: StringWithAggregatesFilter<"EmailTemplate"> | string
+    htmlContent?: StringWithAggregatesFilter<"EmailTemplate"> | string
+    textContent?: StringNullableWithAggregatesFilter<"EmailTemplate"> | string | null
+    variables?: StringNullableWithAggregatesFilter<"EmailTemplate"> | string | null
+    description?: StringNullableWithAggregatesFilter<"EmailTemplate"> | string | null
+    isActive?: BoolWithAggregatesFilter<"EmailTemplate"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"EmailTemplate"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"EmailTemplate"> | Date | string
+  }
+
+  export type NotificationPreferenceWhereInput = {
+    AND?: NotificationPreferenceWhereInput | NotificationPreferenceWhereInput[]
+    OR?: NotificationPreferenceWhereInput[]
+    NOT?: NotificationPreferenceWhereInput | NotificationPreferenceWhereInput[]
+    id?: StringFilter<"NotificationPreference"> | string
+    emailEnabled?: BoolFilter<"NotificationPreference"> | boolean
+    smsEnabled?: BoolFilter<"NotificationPreference"> | boolean
+    pushEnabled?: BoolFilter<"NotificationPreference"> | boolean
+    securityAlerts?: BoolFilter<"NotificationPreference"> | boolean
+    assessmentUpdates?: BoolFilter<"NotificationPreference"> | boolean
+    systemUpdates?: BoolFilter<"NotificationPreference"> | boolean
+    marketingEmails?: BoolFilter<"NotificationPreference"> | boolean
+    createdAt?: DateTimeFilter<"NotificationPreference"> | Date | string
+    updatedAt?: DateTimeFilter<"NotificationPreference"> | Date | string
+    userId?: StringFilter<"NotificationPreference"> | string
+    user?: XOR<UserRelationFilter, UserWhereInput>
+  }
+
+  export type NotificationPreferenceOrderByWithRelationInput = {
+    id?: SortOrder
+    emailEnabled?: SortOrder
+    smsEnabled?: SortOrder
+    pushEnabled?: SortOrder
+    securityAlerts?: SortOrder
+    assessmentUpdates?: SortOrder
+    systemUpdates?: SortOrder
+    marketingEmails?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    userId?: SortOrder
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type NotificationPreferenceWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    userId?: string
+    AND?: NotificationPreferenceWhereInput | NotificationPreferenceWhereInput[]
+    OR?: NotificationPreferenceWhereInput[]
+    NOT?: NotificationPreferenceWhereInput | NotificationPreferenceWhereInput[]
+    emailEnabled?: BoolFilter<"NotificationPreference"> | boolean
+    smsEnabled?: BoolFilter<"NotificationPreference"> | boolean
+    pushEnabled?: BoolFilter<"NotificationPreference"> | boolean
+    securityAlerts?: BoolFilter<"NotificationPreference"> | boolean
+    assessmentUpdates?: BoolFilter<"NotificationPreference"> | boolean
+    systemUpdates?: BoolFilter<"NotificationPreference"> | boolean
+    marketingEmails?: BoolFilter<"NotificationPreference"> | boolean
+    createdAt?: DateTimeFilter<"NotificationPreference"> | Date | string
+    updatedAt?: DateTimeFilter<"NotificationPreference"> | Date | string
+    user?: XOR<UserRelationFilter, UserWhereInput>
+  }, "id" | "userId">
+
+  export type NotificationPreferenceOrderByWithAggregationInput = {
+    id?: SortOrder
+    emailEnabled?: SortOrder
+    smsEnabled?: SortOrder
+    pushEnabled?: SortOrder
+    securityAlerts?: SortOrder
+    assessmentUpdates?: SortOrder
+    systemUpdates?: SortOrder
+    marketingEmails?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    userId?: SortOrder
+    _count?: NotificationPreferenceCountOrderByAggregateInput
+    _max?: NotificationPreferenceMaxOrderByAggregateInput
+    _min?: NotificationPreferenceMinOrderByAggregateInput
+  }
+
+  export type NotificationPreferenceScalarWhereWithAggregatesInput = {
+    AND?: NotificationPreferenceScalarWhereWithAggregatesInput | NotificationPreferenceScalarWhereWithAggregatesInput[]
+    OR?: NotificationPreferenceScalarWhereWithAggregatesInput[]
+    NOT?: NotificationPreferenceScalarWhereWithAggregatesInput | NotificationPreferenceScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"NotificationPreference"> | string
+    emailEnabled?: BoolWithAggregatesFilter<"NotificationPreference"> | boolean
+    smsEnabled?: BoolWithAggregatesFilter<"NotificationPreference"> | boolean
+    pushEnabled?: BoolWithAggregatesFilter<"NotificationPreference"> | boolean
+    securityAlerts?: BoolWithAggregatesFilter<"NotificationPreference"> | boolean
+    assessmentUpdates?: BoolWithAggregatesFilter<"NotificationPreference"> | boolean
+    systemUpdates?: BoolWithAggregatesFilter<"NotificationPreference"> | boolean
+    marketingEmails?: BoolWithAggregatesFilter<"NotificationPreference"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"NotificationPreference"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"NotificationPreference"> | Date | string
+    userId?: StringWithAggregatesFilter<"NotificationPreference"> | string
+  }
+
   export type UserCreateInput = {
     id?: string
     email: string
@@ -38082,6 +42273,8 @@ export namespace Prisma {
     createdInviteCodes?: InviteCodeCreateNestedManyWithoutCreatorInput
     organizationMemberships?: OrganizationMemberCreateNestedManyWithoutUserInput
     sentInvites?: OrganizationMemberCreateNestedManyWithoutInviterInput
+    notificationHistory?: NotificationHistoryCreateNestedManyWithoutUserInput
+    notificationPreferences?: NotificationPreferenceCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -38109,6 +42302,8 @@ export namespace Prisma {
     createdInviteCodes?: InviteCodeUncheckedCreateNestedManyWithoutCreatorInput
     organizationMemberships?: OrganizationMemberUncheckedCreateNestedManyWithoutUserInput
     sentInvites?: OrganizationMemberUncheckedCreateNestedManyWithoutInviterInput
+    notificationHistory?: NotificationHistoryUncheckedCreateNestedManyWithoutUserInput
+    notificationPreferences?: NotificationPreferenceUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -38136,6 +42331,8 @@ export namespace Prisma {
     createdInviteCodes?: InviteCodeUpdateManyWithoutCreatorNestedInput
     organizationMemberships?: OrganizationMemberUpdateManyWithoutUserNestedInput
     sentInvites?: OrganizationMemberUpdateManyWithoutInviterNestedInput
+    notificationHistory?: NotificationHistoryUpdateManyWithoutUserNestedInput
+    notificationPreferences?: NotificationPreferenceUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -38163,6 +42360,8 @@ export namespace Prisma {
     createdInviteCodes?: InviteCodeUncheckedUpdateManyWithoutCreatorNestedInput
     organizationMemberships?: OrganizationMemberUncheckedUpdateManyWithoutUserNestedInput
     sentInvites?: OrganizationMemberUncheckedUpdateManyWithoutInviterNestedInput
+    notificationHistory?: NotificationHistoryUncheckedUpdateManyWithoutUserNestedInput
+    notificationPreferences?: NotificationPreferenceUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -39301,24 +43500,32 @@ export namespace Prisma {
     id?: string
     name: string
     description?: string | null
+    campaignType?: $Enums.CampaignType
     templateId: string
     template: string
-    subject: string
-    senderName: string
-    senderEmail: string
+    subject?: string | null
+    senderName?: string | null
+    senderEmail?: string | null
     landingPageUrl?: string | null
+    senderNumber?: string | null
+    messageContent?: string | null
+    trackingUrl?: string | null
     status?: $Enums.CampaignStatus
     scheduledAt?: Date | string | null
     launchedAt?: Date | string | null
     completedAt?: Date | string | null
     pausedAt?: Date | string | null
     targetCount?: number
-    emailsSent?: number
-    emailsDelivered?: number
-    emailsOpened?: number
+    messagesSent?: number
+    messagesDelivered?: number
+    messagesOpened?: number
     linksClicked?: number
     credentialsEntered?: number
     phishingReported?: number
+    messagesFailed?: number
+    emailsSent?: number
+    emailsDelivered?: number
+    emailsOpened?: number
     emailsBounced?: number
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -39332,24 +43539,32 @@ export namespace Prisma {
     id?: string
     name: string
     description?: string | null
+    campaignType?: $Enums.CampaignType
     templateId: string
     template: string
-    subject: string
-    senderName: string
-    senderEmail: string
+    subject?: string | null
+    senderName?: string | null
+    senderEmail?: string | null
     landingPageUrl?: string | null
+    senderNumber?: string | null
+    messageContent?: string | null
+    trackingUrl?: string | null
     status?: $Enums.CampaignStatus
     scheduledAt?: Date | string | null
     launchedAt?: Date | string | null
     completedAt?: Date | string | null
     pausedAt?: Date | string | null
     targetCount?: number
-    emailsSent?: number
-    emailsDelivered?: number
-    emailsOpened?: number
+    messagesSent?: number
+    messagesDelivered?: number
+    messagesOpened?: number
     linksClicked?: number
     credentialsEntered?: number
     phishingReported?: number
+    messagesFailed?: number
+    emailsSent?: number
+    emailsDelivered?: number
+    emailsOpened?: number
     emailsBounced?: number
     createdBy: string
     organizationId: string
@@ -39363,24 +43578,32 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    campaignType?: EnumCampaignTypeFieldUpdateOperationsInput | $Enums.CampaignType
     templateId?: StringFieldUpdateOperationsInput | string
     template?: StringFieldUpdateOperationsInput | string
-    subject?: StringFieldUpdateOperationsInput | string
-    senderName?: StringFieldUpdateOperationsInput | string
-    senderEmail?: StringFieldUpdateOperationsInput | string
+    subject?: NullableStringFieldUpdateOperationsInput | string | null
+    senderName?: NullableStringFieldUpdateOperationsInput | string | null
+    senderEmail?: NullableStringFieldUpdateOperationsInput | string | null
     landingPageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    senderNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    messageContent?: NullableStringFieldUpdateOperationsInput | string | null
+    trackingUrl?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumCampaignStatusFieldUpdateOperationsInput | $Enums.CampaignStatus
     scheduledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     launchedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     pausedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     targetCount?: IntFieldUpdateOperationsInput | number
-    emailsSent?: IntFieldUpdateOperationsInput | number
-    emailsDelivered?: IntFieldUpdateOperationsInput | number
-    emailsOpened?: IntFieldUpdateOperationsInput | number
+    messagesSent?: IntFieldUpdateOperationsInput | number
+    messagesDelivered?: IntFieldUpdateOperationsInput | number
+    messagesOpened?: IntFieldUpdateOperationsInput | number
     linksClicked?: IntFieldUpdateOperationsInput | number
     credentialsEntered?: IntFieldUpdateOperationsInput | number
     phishingReported?: IntFieldUpdateOperationsInput | number
+    messagesFailed?: IntFieldUpdateOperationsInput | number
+    emailsSent?: IntFieldUpdateOperationsInput | number
+    emailsDelivered?: IntFieldUpdateOperationsInput | number
+    emailsOpened?: IntFieldUpdateOperationsInput | number
     emailsBounced?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -39394,24 +43617,32 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    campaignType?: EnumCampaignTypeFieldUpdateOperationsInput | $Enums.CampaignType
     templateId?: StringFieldUpdateOperationsInput | string
     template?: StringFieldUpdateOperationsInput | string
-    subject?: StringFieldUpdateOperationsInput | string
-    senderName?: StringFieldUpdateOperationsInput | string
-    senderEmail?: StringFieldUpdateOperationsInput | string
+    subject?: NullableStringFieldUpdateOperationsInput | string | null
+    senderName?: NullableStringFieldUpdateOperationsInput | string | null
+    senderEmail?: NullableStringFieldUpdateOperationsInput | string | null
     landingPageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    senderNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    messageContent?: NullableStringFieldUpdateOperationsInput | string | null
+    trackingUrl?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumCampaignStatusFieldUpdateOperationsInput | $Enums.CampaignStatus
     scheduledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     launchedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     pausedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     targetCount?: IntFieldUpdateOperationsInput | number
-    emailsSent?: IntFieldUpdateOperationsInput | number
-    emailsDelivered?: IntFieldUpdateOperationsInput | number
-    emailsOpened?: IntFieldUpdateOperationsInput | number
+    messagesSent?: IntFieldUpdateOperationsInput | number
+    messagesDelivered?: IntFieldUpdateOperationsInput | number
+    messagesOpened?: IntFieldUpdateOperationsInput | number
     linksClicked?: IntFieldUpdateOperationsInput | number
     credentialsEntered?: IntFieldUpdateOperationsInput | number
     phishingReported?: IntFieldUpdateOperationsInput | number
+    messagesFailed?: IntFieldUpdateOperationsInput | number
+    emailsSent?: IntFieldUpdateOperationsInput | number
+    emailsDelivered?: IntFieldUpdateOperationsInput | number
+    emailsOpened?: IntFieldUpdateOperationsInput | number
     emailsBounced?: IntFieldUpdateOperationsInput | number
     createdBy?: StringFieldUpdateOperationsInput | string
     organizationId?: StringFieldUpdateOperationsInput | string
@@ -39425,24 +43656,32 @@ export namespace Prisma {
     id?: string
     name: string
     description?: string | null
+    campaignType?: $Enums.CampaignType
     templateId: string
     template: string
-    subject: string
-    senderName: string
-    senderEmail: string
+    subject?: string | null
+    senderName?: string | null
+    senderEmail?: string | null
     landingPageUrl?: string | null
+    senderNumber?: string | null
+    messageContent?: string | null
+    trackingUrl?: string | null
     status?: $Enums.CampaignStatus
     scheduledAt?: Date | string | null
     launchedAt?: Date | string | null
     completedAt?: Date | string | null
     pausedAt?: Date | string | null
     targetCount?: number
-    emailsSent?: number
-    emailsDelivered?: number
-    emailsOpened?: number
+    messagesSent?: number
+    messagesDelivered?: number
+    messagesOpened?: number
     linksClicked?: number
     credentialsEntered?: number
     phishingReported?: number
+    messagesFailed?: number
+    emailsSent?: number
+    emailsDelivered?: number
+    emailsOpened?: number
     emailsBounced?: number
     createdBy: string
     organizationId: string
@@ -39454,24 +43693,32 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    campaignType?: EnumCampaignTypeFieldUpdateOperationsInput | $Enums.CampaignType
     templateId?: StringFieldUpdateOperationsInput | string
     template?: StringFieldUpdateOperationsInput | string
-    subject?: StringFieldUpdateOperationsInput | string
-    senderName?: StringFieldUpdateOperationsInput | string
-    senderEmail?: StringFieldUpdateOperationsInput | string
+    subject?: NullableStringFieldUpdateOperationsInput | string | null
+    senderName?: NullableStringFieldUpdateOperationsInput | string | null
+    senderEmail?: NullableStringFieldUpdateOperationsInput | string | null
     landingPageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    senderNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    messageContent?: NullableStringFieldUpdateOperationsInput | string | null
+    trackingUrl?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumCampaignStatusFieldUpdateOperationsInput | $Enums.CampaignStatus
     scheduledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     launchedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     pausedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     targetCount?: IntFieldUpdateOperationsInput | number
-    emailsSent?: IntFieldUpdateOperationsInput | number
-    emailsDelivered?: IntFieldUpdateOperationsInput | number
-    emailsOpened?: IntFieldUpdateOperationsInput | number
+    messagesSent?: IntFieldUpdateOperationsInput | number
+    messagesDelivered?: IntFieldUpdateOperationsInput | number
+    messagesOpened?: IntFieldUpdateOperationsInput | number
     linksClicked?: IntFieldUpdateOperationsInput | number
     credentialsEntered?: IntFieldUpdateOperationsInput | number
     phishingReported?: IntFieldUpdateOperationsInput | number
+    messagesFailed?: IntFieldUpdateOperationsInput | number
+    emailsSent?: IntFieldUpdateOperationsInput | number
+    emailsDelivered?: IntFieldUpdateOperationsInput | number
+    emailsOpened?: IntFieldUpdateOperationsInput | number
     emailsBounced?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -39481,24 +43728,32 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    campaignType?: EnumCampaignTypeFieldUpdateOperationsInput | $Enums.CampaignType
     templateId?: StringFieldUpdateOperationsInput | string
     template?: StringFieldUpdateOperationsInput | string
-    subject?: StringFieldUpdateOperationsInput | string
-    senderName?: StringFieldUpdateOperationsInput | string
-    senderEmail?: StringFieldUpdateOperationsInput | string
+    subject?: NullableStringFieldUpdateOperationsInput | string | null
+    senderName?: NullableStringFieldUpdateOperationsInput | string | null
+    senderEmail?: NullableStringFieldUpdateOperationsInput | string | null
     landingPageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    senderNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    messageContent?: NullableStringFieldUpdateOperationsInput | string | null
+    trackingUrl?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumCampaignStatusFieldUpdateOperationsInput | $Enums.CampaignStatus
     scheduledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     launchedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     pausedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     targetCount?: IntFieldUpdateOperationsInput | number
-    emailsSent?: IntFieldUpdateOperationsInput | number
-    emailsDelivered?: IntFieldUpdateOperationsInput | number
-    emailsOpened?: IntFieldUpdateOperationsInput | number
+    messagesSent?: IntFieldUpdateOperationsInput | number
+    messagesDelivered?: IntFieldUpdateOperationsInput | number
+    messagesOpened?: IntFieldUpdateOperationsInput | number
     linksClicked?: IntFieldUpdateOperationsInput | number
     credentialsEntered?: IntFieldUpdateOperationsInput | number
     phishingReported?: IntFieldUpdateOperationsInput | number
+    messagesFailed?: IntFieldUpdateOperationsInput | number
+    emailsSent?: IntFieldUpdateOperationsInput | number
+    emailsDelivered?: IntFieldUpdateOperationsInput | number
+    emailsOpened?: IntFieldUpdateOperationsInput | number
     emailsBounced?: IntFieldUpdateOperationsInput | number
     createdBy?: StringFieldUpdateOperationsInput | string
     organizationId?: StringFieldUpdateOperationsInput | string
@@ -39508,17 +43763,22 @@ export namespace Prisma {
 
   export type PhishingTargetCreateInput = {
     id?: string
-    email: string
+    email?: string | null
+    phoneNumber?: string | null
     firstName?: string | null
     lastName?: string | null
     department?: string | null
     jobTitle?: string | null
-    emailSent?: boolean
-    emailDelivered?: boolean
-    emailOpened?: boolean
+    messageSent?: boolean
+    messageDelivered?: boolean
+    messageOpened?: boolean
     linkClicked?: boolean
     credentialsEntered?: boolean
     reportedPhishing?: boolean
+    messageFailed?: boolean
+    emailSent?: boolean
+    emailDelivered?: boolean
+    emailOpened?: boolean
     emailBounced?: boolean
     sentAt?: Date | string | null
     deliveredAt?: Date | string | null
@@ -39526,10 +43786,13 @@ export namespace Prisma {
     clickedAt?: Date | string | null
     credentialsAt?: Date | string | null
     reportedAt?: Date | string | null
+    failedAt?: Date | string | null
     bouncedAt?: Date | string | null
     userAgent?: string | null
     ipAddress?: string | null
     clickCount?: number
+    smsProvider?: string | null
+    messageId?: string | null
     riskScore?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -39540,17 +43803,22 @@ export namespace Prisma {
 
   export type PhishingTargetUncheckedCreateInput = {
     id?: string
-    email: string
+    email?: string | null
+    phoneNumber?: string | null
     firstName?: string | null
     lastName?: string | null
     department?: string | null
     jobTitle?: string | null
-    emailSent?: boolean
-    emailDelivered?: boolean
-    emailOpened?: boolean
+    messageSent?: boolean
+    messageDelivered?: boolean
+    messageOpened?: boolean
     linkClicked?: boolean
     credentialsEntered?: boolean
     reportedPhishing?: boolean
+    messageFailed?: boolean
+    emailSent?: boolean
+    emailDelivered?: boolean
+    emailOpened?: boolean
     emailBounced?: boolean
     sentAt?: Date | string | null
     deliveredAt?: Date | string | null
@@ -39558,10 +43826,13 @@ export namespace Prisma {
     clickedAt?: Date | string | null
     credentialsAt?: Date | string | null
     reportedAt?: Date | string | null
+    failedAt?: Date | string | null
     bouncedAt?: Date | string | null
     userAgent?: string | null
     ipAddress?: string | null
     clickCount?: number
+    smsProvider?: string | null
+    messageId?: string | null
     riskScore?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -39572,17 +43843,22 @@ export namespace Prisma {
 
   export type PhishingTargetUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
     firstName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: NullableStringFieldUpdateOperationsInput | string | null
     department?: NullableStringFieldUpdateOperationsInput | string | null
     jobTitle?: NullableStringFieldUpdateOperationsInput | string | null
-    emailSent?: BoolFieldUpdateOperationsInput | boolean
-    emailDelivered?: BoolFieldUpdateOperationsInput | boolean
-    emailOpened?: BoolFieldUpdateOperationsInput | boolean
+    messageSent?: BoolFieldUpdateOperationsInput | boolean
+    messageDelivered?: BoolFieldUpdateOperationsInput | boolean
+    messageOpened?: BoolFieldUpdateOperationsInput | boolean
     linkClicked?: BoolFieldUpdateOperationsInput | boolean
     credentialsEntered?: BoolFieldUpdateOperationsInput | boolean
     reportedPhishing?: BoolFieldUpdateOperationsInput | boolean
+    messageFailed?: BoolFieldUpdateOperationsInput | boolean
+    emailSent?: BoolFieldUpdateOperationsInput | boolean
+    emailDelivered?: BoolFieldUpdateOperationsInput | boolean
+    emailOpened?: BoolFieldUpdateOperationsInput | boolean
     emailBounced?: BoolFieldUpdateOperationsInput | boolean
     sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -39590,10 +43866,13 @@ export namespace Prisma {
     clickedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     credentialsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     reportedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     bouncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     userAgent?: NullableStringFieldUpdateOperationsInput | string | null
     ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
     clickCount?: IntFieldUpdateOperationsInput | number
+    smsProvider?: NullableStringFieldUpdateOperationsInput | string | null
+    messageId?: NullableStringFieldUpdateOperationsInput | string | null
     riskScore?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -39604,17 +43883,22 @@ export namespace Prisma {
 
   export type PhishingTargetUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
     firstName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: NullableStringFieldUpdateOperationsInput | string | null
     department?: NullableStringFieldUpdateOperationsInput | string | null
     jobTitle?: NullableStringFieldUpdateOperationsInput | string | null
-    emailSent?: BoolFieldUpdateOperationsInput | boolean
-    emailDelivered?: BoolFieldUpdateOperationsInput | boolean
-    emailOpened?: BoolFieldUpdateOperationsInput | boolean
+    messageSent?: BoolFieldUpdateOperationsInput | boolean
+    messageDelivered?: BoolFieldUpdateOperationsInput | boolean
+    messageOpened?: BoolFieldUpdateOperationsInput | boolean
     linkClicked?: BoolFieldUpdateOperationsInput | boolean
     credentialsEntered?: BoolFieldUpdateOperationsInput | boolean
     reportedPhishing?: BoolFieldUpdateOperationsInput | boolean
+    messageFailed?: BoolFieldUpdateOperationsInput | boolean
+    emailSent?: BoolFieldUpdateOperationsInput | boolean
+    emailDelivered?: BoolFieldUpdateOperationsInput | boolean
+    emailOpened?: BoolFieldUpdateOperationsInput | boolean
     emailBounced?: BoolFieldUpdateOperationsInput | boolean
     sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -39622,10 +43906,13 @@ export namespace Prisma {
     clickedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     credentialsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     reportedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     bouncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     userAgent?: NullableStringFieldUpdateOperationsInput | string | null
     ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
     clickCount?: IntFieldUpdateOperationsInput | number
+    smsProvider?: NullableStringFieldUpdateOperationsInput | string | null
+    messageId?: NullableStringFieldUpdateOperationsInput | string | null
     riskScore?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -39636,17 +43923,22 @@ export namespace Prisma {
 
   export type PhishingTargetCreateManyInput = {
     id?: string
-    email: string
+    email?: string | null
+    phoneNumber?: string | null
     firstName?: string | null
     lastName?: string | null
     department?: string | null
     jobTitle?: string | null
-    emailSent?: boolean
-    emailDelivered?: boolean
-    emailOpened?: boolean
+    messageSent?: boolean
+    messageDelivered?: boolean
+    messageOpened?: boolean
     linkClicked?: boolean
     credentialsEntered?: boolean
     reportedPhishing?: boolean
+    messageFailed?: boolean
+    emailSent?: boolean
+    emailDelivered?: boolean
+    emailOpened?: boolean
     emailBounced?: boolean
     sentAt?: Date | string | null
     deliveredAt?: Date | string | null
@@ -39654,10 +43946,13 @@ export namespace Prisma {
     clickedAt?: Date | string | null
     credentialsAt?: Date | string | null
     reportedAt?: Date | string | null
+    failedAt?: Date | string | null
     bouncedAt?: Date | string | null
     userAgent?: string | null
     ipAddress?: string | null
     clickCount?: number
+    smsProvider?: string | null
+    messageId?: string | null
     riskScore?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -39667,17 +43962,22 @@ export namespace Prisma {
 
   export type PhishingTargetUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
     firstName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: NullableStringFieldUpdateOperationsInput | string | null
     department?: NullableStringFieldUpdateOperationsInput | string | null
     jobTitle?: NullableStringFieldUpdateOperationsInput | string | null
-    emailSent?: BoolFieldUpdateOperationsInput | boolean
-    emailDelivered?: BoolFieldUpdateOperationsInput | boolean
-    emailOpened?: BoolFieldUpdateOperationsInput | boolean
+    messageSent?: BoolFieldUpdateOperationsInput | boolean
+    messageDelivered?: BoolFieldUpdateOperationsInput | boolean
+    messageOpened?: BoolFieldUpdateOperationsInput | boolean
     linkClicked?: BoolFieldUpdateOperationsInput | boolean
     credentialsEntered?: BoolFieldUpdateOperationsInput | boolean
     reportedPhishing?: BoolFieldUpdateOperationsInput | boolean
+    messageFailed?: BoolFieldUpdateOperationsInput | boolean
+    emailSent?: BoolFieldUpdateOperationsInput | boolean
+    emailDelivered?: BoolFieldUpdateOperationsInput | boolean
+    emailOpened?: BoolFieldUpdateOperationsInput | boolean
     emailBounced?: BoolFieldUpdateOperationsInput | boolean
     sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -39685,10 +43985,13 @@ export namespace Prisma {
     clickedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     credentialsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     reportedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     bouncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     userAgent?: NullableStringFieldUpdateOperationsInput | string | null
     ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
     clickCount?: IntFieldUpdateOperationsInput | number
+    smsProvider?: NullableStringFieldUpdateOperationsInput | string | null
+    messageId?: NullableStringFieldUpdateOperationsInput | string | null
     riskScore?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -39696,17 +43999,22 @@ export namespace Prisma {
 
   export type PhishingTargetUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
     firstName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: NullableStringFieldUpdateOperationsInput | string | null
     department?: NullableStringFieldUpdateOperationsInput | string | null
     jobTitle?: NullableStringFieldUpdateOperationsInput | string | null
-    emailSent?: BoolFieldUpdateOperationsInput | boolean
-    emailDelivered?: BoolFieldUpdateOperationsInput | boolean
-    emailOpened?: BoolFieldUpdateOperationsInput | boolean
+    messageSent?: BoolFieldUpdateOperationsInput | boolean
+    messageDelivered?: BoolFieldUpdateOperationsInput | boolean
+    messageOpened?: BoolFieldUpdateOperationsInput | boolean
     linkClicked?: BoolFieldUpdateOperationsInput | boolean
     credentialsEntered?: BoolFieldUpdateOperationsInput | boolean
     reportedPhishing?: BoolFieldUpdateOperationsInput | boolean
+    messageFailed?: BoolFieldUpdateOperationsInput | boolean
+    emailSent?: BoolFieldUpdateOperationsInput | boolean
+    emailDelivered?: BoolFieldUpdateOperationsInput | boolean
+    emailOpened?: BoolFieldUpdateOperationsInput | boolean
     emailBounced?: BoolFieldUpdateOperationsInput | boolean
     sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -39714,10 +44022,13 @@ export namespace Prisma {
     clickedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     credentialsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     reportedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     bouncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     userAgent?: NullableStringFieldUpdateOperationsInput | string | null
     ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
     clickCount?: IntFieldUpdateOperationsInput | number
+    smsProvider?: NullableStringFieldUpdateOperationsInput | string | null
+    messageId?: NullableStringFieldUpdateOperationsInput | string | null
     riskScore?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -39813,10 +44124,14 @@ export namespace Prisma {
     description: string
     category: $Enums.TemplateCategory
     riskLevel: $Enums.RiskLevel
-    defaultSubject: string
-    defaultSenderName: string
-    emailBodyHtml: string
-    emailBodyText: string
+    templateType?: $Enums.TemplateType
+    defaultSubject?: string | null
+    defaultSenderName?: string | null
+    emailBodyHtml?: string | null
+    emailBodyText?: string | null
+    smsContent?: string | null
+    defaultSenderNumber?: string | null
+    messageContent?: string | null
     landingPageHtml?: string | null
     captureCredentials?: boolean
     isActive?: boolean
@@ -39836,10 +44151,14 @@ export namespace Prisma {
     description: string
     category: $Enums.TemplateCategory
     riskLevel: $Enums.RiskLevel
-    defaultSubject: string
-    defaultSenderName: string
-    emailBodyHtml: string
-    emailBodyText: string
+    templateType?: $Enums.TemplateType
+    defaultSubject?: string | null
+    defaultSenderName?: string | null
+    emailBodyHtml?: string | null
+    emailBodyText?: string | null
+    smsContent?: string | null
+    defaultSenderNumber?: string | null
+    messageContent?: string | null
     landingPageHtml?: string | null
     captureCredentials?: boolean
     isActive?: boolean
@@ -39859,10 +44178,14 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     category?: EnumTemplateCategoryFieldUpdateOperationsInput | $Enums.TemplateCategory
     riskLevel?: EnumRiskLevelFieldUpdateOperationsInput | $Enums.RiskLevel
-    defaultSubject?: StringFieldUpdateOperationsInput | string
-    defaultSenderName?: StringFieldUpdateOperationsInput | string
-    emailBodyHtml?: StringFieldUpdateOperationsInput | string
-    emailBodyText?: StringFieldUpdateOperationsInput | string
+    templateType?: EnumTemplateTypeFieldUpdateOperationsInput | $Enums.TemplateType
+    defaultSubject?: NullableStringFieldUpdateOperationsInput | string | null
+    defaultSenderName?: NullableStringFieldUpdateOperationsInput | string | null
+    emailBodyHtml?: NullableStringFieldUpdateOperationsInput | string | null
+    emailBodyText?: NullableStringFieldUpdateOperationsInput | string | null
+    smsContent?: NullableStringFieldUpdateOperationsInput | string | null
+    defaultSenderNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    messageContent?: NullableStringFieldUpdateOperationsInput | string | null
     landingPageHtml?: NullableStringFieldUpdateOperationsInput | string | null
     captureCredentials?: BoolFieldUpdateOperationsInput | boolean
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -39882,10 +44205,14 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     category?: EnumTemplateCategoryFieldUpdateOperationsInput | $Enums.TemplateCategory
     riskLevel?: EnumRiskLevelFieldUpdateOperationsInput | $Enums.RiskLevel
-    defaultSubject?: StringFieldUpdateOperationsInput | string
-    defaultSenderName?: StringFieldUpdateOperationsInput | string
-    emailBodyHtml?: StringFieldUpdateOperationsInput | string
-    emailBodyText?: StringFieldUpdateOperationsInput | string
+    templateType?: EnumTemplateTypeFieldUpdateOperationsInput | $Enums.TemplateType
+    defaultSubject?: NullableStringFieldUpdateOperationsInput | string | null
+    defaultSenderName?: NullableStringFieldUpdateOperationsInput | string | null
+    emailBodyHtml?: NullableStringFieldUpdateOperationsInput | string | null
+    emailBodyText?: NullableStringFieldUpdateOperationsInput | string | null
+    smsContent?: NullableStringFieldUpdateOperationsInput | string | null
+    defaultSenderNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    messageContent?: NullableStringFieldUpdateOperationsInput | string | null
     landingPageHtml?: NullableStringFieldUpdateOperationsInput | string | null
     captureCredentials?: BoolFieldUpdateOperationsInput | boolean
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -39905,10 +44232,14 @@ export namespace Prisma {
     description: string
     category: $Enums.TemplateCategory
     riskLevel: $Enums.RiskLevel
-    defaultSubject: string
-    defaultSenderName: string
-    emailBodyHtml: string
-    emailBodyText: string
+    templateType?: $Enums.TemplateType
+    defaultSubject?: string | null
+    defaultSenderName?: string | null
+    emailBodyHtml?: string | null
+    emailBodyText?: string | null
+    smsContent?: string | null
+    defaultSenderNumber?: string | null
+    messageContent?: string | null
     landingPageHtml?: string | null
     captureCredentials?: boolean
     isActive?: boolean
@@ -39928,10 +44259,14 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     category?: EnumTemplateCategoryFieldUpdateOperationsInput | $Enums.TemplateCategory
     riskLevel?: EnumRiskLevelFieldUpdateOperationsInput | $Enums.RiskLevel
-    defaultSubject?: StringFieldUpdateOperationsInput | string
-    defaultSenderName?: StringFieldUpdateOperationsInput | string
-    emailBodyHtml?: StringFieldUpdateOperationsInput | string
-    emailBodyText?: StringFieldUpdateOperationsInput | string
+    templateType?: EnumTemplateTypeFieldUpdateOperationsInput | $Enums.TemplateType
+    defaultSubject?: NullableStringFieldUpdateOperationsInput | string | null
+    defaultSenderName?: NullableStringFieldUpdateOperationsInput | string | null
+    emailBodyHtml?: NullableStringFieldUpdateOperationsInput | string | null
+    emailBodyText?: NullableStringFieldUpdateOperationsInput | string | null
+    smsContent?: NullableStringFieldUpdateOperationsInput | string | null
+    defaultSenderNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    messageContent?: NullableStringFieldUpdateOperationsInput | string | null
     landingPageHtml?: NullableStringFieldUpdateOperationsInput | string | null
     captureCredentials?: BoolFieldUpdateOperationsInput | boolean
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -39949,10 +44284,14 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     category?: EnumTemplateCategoryFieldUpdateOperationsInput | $Enums.TemplateCategory
     riskLevel?: EnumRiskLevelFieldUpdateOperationsInput | $Enums.RiskLevel
-    defaultSubject?: StringFieldUpdateOperationsInput | string
-    defaultSenderName?: StringFieldUpdateOperationsInput | string
-    emailBodyHtml?: StringFieldUpdateOperationsInput | string
-    emailBodyText?: StringFieldUpdateOperationsInput | string
+    templateType?: EnumTemplateTypeFieldUpdateOperationsInput | $Enums.TemplateType
+    defaultSubject?: NullableStringFieldUpdateOperationsInput | string | null
+    defaultSenderName?: NullableStringFieldUpdateOperationsInput | string | null
+    emailBodyHtml?: NullableStringFieldUpdateOperationsInput | string | null
+    emailBodyText?: NullableStringFieldUpdateOperationsInput | string | null
+    smsContent?: NullableStringFieldUpdateOperationsInput | string | null
+    defaultSenderNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    messageContent?: NullableStringFieldUpdateOperationsInput | string | null
     landingPageHtml?: NullableStringFieldUpdateOperationsInput | string | null
     captureCredentials?: BoolFieldUpdateOperationsInput | boolean
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -41179,6 +45518,326 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type NotificationHistoryCreateInput = {
+    id?: string
+    type: $Enums.NotificationType
+    recipient: string
+    subject?: string | null
+    content: string
+    status?: $Enums.NotificationStatus
+    attempts?: number
+    lastAttempt?: Date | string | null
+    sentAt?: Date | string | null
+    error?: string | null
+    jobId?: string | null
+    messageId?: string | null
+    metadata?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user?: UserCreateNestedOneWithoutNotificationHistoryInput
+  }
+
+  export type NotificationHistoryUncheckedCreateInput = {
+    id?: string
+    type: $Enums.NotificationType
+    recipient: string
+    subject?: string | null
+    content: string
+    status?: $Enums.NotificationStatus
+    attempts?: number
+    lastAttempt?: Date | string | null
+    sentAt?: Date | string | null
+    error?: string | null
+    jobId?: string | null
+    messageId?: string | null
+    metadata?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    userId?: string | null
+  }
+
+  export type NotificationHistoryUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumNotificationTypeFieldUpdateOperationsInput | $Enums.NotificationType
+    recipient?: StringFieldUpdateOperationsInput | string
+    subject?: NullableStringFieldUpdateOperationsInput | string | null
+    content?: StringFieldUpdateOperationsInput | string
+    status?: EnumNotificationStatusFieldUpdateOperationsInput | $Enums.NotificationStatus
+    attempts?: IntFieldUpdateOperationsInput | number
+    lastAttempt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    error?: NullableStringFieldUpdateOperationsInput | string | null
+    jobId?: NullableStringFieldUpdateOperationsInput | string | null
+    messageId?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneWithoutNotificationHistoryNestedInput
+  }
+
+  export type NotificationHistoryUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumNotificationTypeFieldUpdateOperationsInput | $Enums.NotificationType
+    recipient?: StringFieldUpdateOperationsInput | string
+    subject?: NullableStringFieldUpdateOperationsInput | string | null
+    content?: StringFieldUpdateOperationsInput | string
+    status?: EnumNotificationStatusFieldUpdateOperationsInput | $Enums.NotificationStatus
+    attempts?: IntFieldUpdateOperationsInput | number
+    lastAttempt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    error?: NullableStringFieldUpdateOperationsInput | string | null
+    jobId?: NullableStringFieldUpdateOperationsInput | string | null
+    messageId?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type NotificationHistoryCreateManyInput = {
+    id?: string
+    type: $Enums.NotificationType
+    recipient: string
+    subject?: string | null
+    content: string
+    status?: $Enums.NotificationStatus
+    attempts?: number
+    lastAttempt?: Date | string | null
+    sentAt?: Date | string | null
+    error?: string | null
+    jobId?: string | null
+    messageId?: string | null
+    metadata?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    userId?: string | null
+  }
+
+  export type NotificationHistoryUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumNotificationTypeFieldUpdateOperationsInput | $Enums.NotificationType
+    recipient?: StringFieldUpdateOperationsInput | string
+    subject?: NullableStringFieldUpdateOperationsInput | string | null
+    content?: StringFieldUpdateOperationsInput | string
+    status?: EnumNotificationStatusFieldUpdateOperationsInput | $Enums.NotificationStatus
+    attempts?: IntFieldUpdateOperationsInput | number
+    lastAttempt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    error?: NullableStringFieldUpdateOperationsInput | string | null
+    jobId?: NullableStringFieldUpdateOperationsInput | string | null
+    messageId?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type NotificationHistoryUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumNotificationTypeFieldUpdateOperationsInput | $Enums.NotificationType
+    recipient?: StringFieldUpdateOperationsInput | string
+    subject?: NullableStringFieldUpdateOperationsInput | string | null
+    content?: StringFieldUpdateOperationsInput | string
+    status?: EnumNotificationStatusFieldUpdateOperationsInput | $Enums.NotificationStatus
+    attempts?: IntFieldUpdateOperationsInput | number
+    lastAttempt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    error?: NullableStringFieldUpdateOperationsInput | string | null
+    jobId?: NullableStringFieldUpdateOperationsInput | string | null
+    messageId?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type EmailTemplateCreateInput = {
+    id?: string
+    name: string
+    subject: string
+    htmlContent: string
+    textContent?: string | null
+    variables?: string | null
+    description?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type EmailTemplateUncheckedCreateInput = {
+    id?: string
+    name: string
+    subject: string
+    htmlContent: string
+    textContent?: string | null
+    variables?: string | null
+    description?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type EmailTemplateUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    subject?: StringFieldUpdateOperationsInput | string
+    htmlContent?: StringFieldUpdateOperationsInput | string
+    textContent?: NullableStringFieldUpdateOperationsInput | string | null
+    variables?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EmailTemplateUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    subject?: StringFieldUpdateOperationsInput | string
+    htmlContent?: StringFieldUpdateOperationsInput | string
+    textContent?: NullableStringFieldUpdateOperationsInput | string | null
+    variables?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EmailTemplateCreateManyInput = {
+    id?: string
+    name: string
+    subject: string
+    htmlContent: string
+    textContent?: string | null
+    variables?: string | null
+    description?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type EmailTemplateUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    subject?: StringFieldUpdateOperationsInput | string
+    htmlContent?: StringFieldUpdateOperationsInput | string
+    textContent?: NullableStringFieldUpdateOperationsInput | string | null
+    variables?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EmailTemplateUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    subject?: StringFieldUpdateOperationsInput | string
+    htmlContent?: StringFieldUpdateOperationsInput | string
+    textContent?: NullableStringFieldUpdateOperationsInput | string | null
+    variables?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type NotificationPreferenceCreateInput = {
+    id?: string
+    emailEnabled?: boolean
+    smsEnabled?: boolean
+    pushEnabled?: boolean
+    securityAlerts?: boolean
+    assessmentUpdates?: boolean
+    systemUpdates?: boolean
+    marketingEmails?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutNotificationPreferencesInput
+  }
+
+  export type NotificationPreferenceUncheckedCreateInput = {
+    id?: string
+    emailEnabled?: boolean
+    smsEnabled?: boolean
+    pushEnabled?: boolean
+    securityAlerts?: boolean
+    assessmentUpdates?: boolean
+    systemUpdates?: boolean
+    marketingEmails?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    userId: string
+  }
+
+  export type NotificationPreferenceUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    emailEnabled?: BoolFieldUpdateOperationsInput | boolean
+    smsEnabled?: BoolFieldUpdateOperationsInput | boolean
+    pushEnabled?: BoolFieldUpdateOperationsInput | boolean
+    securityAlerts?: BoolFieldUpdateOperationsInput | boolean
+    assessmentUpdates?: BoolFieldUpdateOperationsInput | boolean
+    systemUpdates?: BoolFieldUpdateOperationsInput | boolean
+    marketingEmails?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutNotificationPreferencesNestedInput
+  }
+
+  export type NotificationPreferenceUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    emailEnabled?: BoolFieldUpdateOperationsInput | boolean
+    smsEnabled?: BoolFieldUpdateOperationsInput | boolean
+    pushEnabled?: BoolFieldUpdateOperationsInput | boolean
+    securityAlerts?: BoolFieldUpdateOperationsInput | boolean
+    assessmentUpdates?: BoolFieldUpdateOperationsInput | boolean
+    systemUpdates?: BoolFieldUpdateOperationsInput | boolean
+    marketingEmails?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type NotificationPreferenceCreateManyInput = {
+    id?: string
+    emailEnabled?: boolean
+    smsEnabled?: boolean
+    pushEnabled?: boolean
+    securityAlerts?: boolean
+    assessmentUpdates?: boolean
+    systemUpdates?: boolean
+    marketingEmails?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    userId: string
+  }
+
+  export type NotificationPreferenceUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    emailEnabled?: BoolFieldUpdateOperationsInput | boolean
+    smsEnabled?: BoolFieldUpdateOperationsInput | boolean
+    pushEnabled?: BoolFieldUpdateOperationsInput | boolean
+    securityAlerts?: BoolFieldUpdateOperationsInput | boolean
+    assessmentUpdates?: BoolFieldUpdateOperationsInput | boolean
+    systemUpdates?: BoolFieldUpdateOperationsInput | boolean
+    marketingEmails?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type NotificationPreferenceUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    emailEnabled?: BoolFieldUpdateOperationsInput | boolean
+    smsEnabled?: BoolFieldUpdateOperationsInput | boolean
+    pushEnabled?: BoolFieldUpdateOperationsInput | boolean
+    securityAlerts?: BoolFieldUpdateOperationsInput | boolean
+    assessmentUpdates?: BoolFieldUpdateOperationsInput | boolean
+    systemUpdates?: BoolFieldUpdateOperationsInput | boolean
+    marketingEmails?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: StringFieldUpdateOperationsInput | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -41297,6 +45956,17 @@ export namespace Prisma {
     none?: OrganizationMemberWhereInput
   }
 
+  export type NotificationHistoryListRelationFilter = {
+    every?: NotificationHistoryWhereInput
+    some?: NotificationHistoryWhereInput
+    none?: NotificationHistoryWhereInput
+  }
+
+  export type NotificationPreferenceNullableRelationFilter = {
+    is?: NotificationPreferenceWhereInput | null
+    isNot?: NotificationPreferenceWhereInput | null
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -41339,6 +46009,10 @@ export namespace Prisma {
   }
 
   export type OrganizationMemberOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type NotificationHistoryOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -42387,6 +47061,13 @@ export namespace Prisma {
     _max?: NestedEnumCSITierFilter<$PrismaModel>
   }
 
+  export type EnumCampaignTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.CampaignType | EnumCampaignTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.CampaignType[] | ListEnumCampaignTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.CampaignType[] | ListEnumCampaignTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumCampaignTypeFilter<$PrismaModel> | $Enums.CampaignType
+  }
+
   export type EnumCampaignStatusFilter<$PrismaModel = never> = {
     equals?: $Enums.CampaignStatus | EnumCampaignStatusFieldRefInput<$PrismaModel>
     in?: $Enums.CampaignStatus[] | ListEnumCampaignStatusFieldRefInput<$PrismaModel>
@@ -42408,24 +47089,32 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     description?: SortOrder
+    campaignType?: SortOrder
     templateId?: SortOrder
     template?: SortOrder
     subject?: SortOrder
     senderName?: SortOrder
     senderEmail?: SortOrder
     landingPageUrl?: SortOrder
+    senderNumber?: SortOrder
+    messageContent?: SortOrder
+    trackingUrl?: SortOrder
     status?: SortOrder
     scheduledAt?: SortOrder
     launchedAt?: SortOrder
     completedAt?: SortOrder
     pausedAt?: SortOrder
     targetCount?: SortOrder
-    emailsSent?: SortOrder
-    emailsDelivered?: SortOrder
-    emailsOpened?: SortOrder
+    messagesSent?: SortOrder
+    messagesDelivered?: SortOrder
+    messagesOpened?: SortOrder
     linksClicked?: SortOrder
     credentialsEntered?: SortOrder
     phishingReported?: SortOrder
+    messagesFailed?: SortOrder
+    emailsSent?: SortOrder
+    emailsDelivered?: SortOrder
+    emailsOpened?: SortOrder
     emailsBounced?: SortOrder
     createdBy?: SortOrder
     organizationId?: SortOrder
@@ -42435,12 +47124,16 @@ export namespace Prisma {
 
   export type PhishingCampaignAvgOrderByAggregateInput = {
     targetCount?: SortOrder
-    emailsSent?: SortOrder
-    emailsDelivered?: SortOrder
-    emailsOpened?: SortOrder
+    messagesSent?: SortOrder
+    messagesDelivered?: SortOrder
+    messagesOpened?: SortOrder
     linksClicked?: SortOrder
     credentialsEntered?: SortOrder
     phishingReported?: SortOrder
+    messagesFailed?: SortOrder
+    emailsSent?: SortOrder
+    emailsDelivered?: SortOrder
+    emailsOpened?: SortOrder
     emailsBounced?: SortOrder
   }
 
@@ -42448,24 +47141,32 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     description?: SortOrder
+    campaignType?: SortOrder
     templateId?: SortOrder
     template?: SortOrder
     subject?: SortOrder
     senderName?: SortOrder
     senderEmail?: SortOrder
     landingPageUrl?: SortOrder
+    senderNumber?: SortOrder
+    messageContent?: SortOrder
+    trackingUrl?: SortOrder
     status?: SortOrder
     scheduledAt?: SortOrder
     launchedAt?: SortOrder
     completedAt?: SortOrder
     pausedAt?: SortOrder
     targetCount?: SortOrder
-    emailsSent?: SortOrder
-    emailsDelivered?: SortOrder
-    emailsOpened?: SortOrder
+    messagesSent?: SortOrder
+    messagesDelivered?: SortOrder
+    messagesOpened?: SortOrder
     linksClicked?: SortOrder
     credentialsEntered?: SortOrder
     phishingReported?: SortOrder
+    messagesFailed?: SortOrder
+    emailsSent?: SortOrder
+    emailsDelivered?: SortOrder
+    emailsOpened?: SortOrder
     emailsBounced?: SortOrder
     createdBy?: SortOrder
     organizationId?: SortOrder
@@ -42477,24 +47178,32 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     description?: SortOrder
+    campaignType?: SortOrder
     templateId?: SortOrder
     template?: SortOrder
     subject?: SortOrder
     senderName?: SortOrder
     senderEmail?: SortOrder
     landingPageUrl?: SortOrder
+    senderNumber?: SortOrder
+    messageContent?: SortOrder
+    trackingUrl?: SortOrder
     status?: SortOrder
     scheduledAt?: SortOrder
     launchedAt?: SortOrder
     completedAt?: SortOrder
     pausedAt?: SortOrder
     targetCount?: SortOrder
-    emailsSent?: SortOrder
-    emailsDelivered?: SortOrder
-    emailsOpened?: SortOrder
+    messagesSent?: SortOrder
+    messagesDelivered?: SortOrder
+    messagesOpened?: SortOrder
     linksClicked?: SortOrder
     credentialsEntered?: SortOrder
     phishingReported?: SortOrder
+    messagesFailed?: SortOrder
+    emailsSent?: SortOrder
+    emailsDelivered?: SortOrder
+    emailsOpened?: SortOrder
     emailsBounced?: SortOrder
     createdBy?: SortOrder
     organizationId?: SortOrder
@@ -42504,13 +47213,27 @@ export namespace Prisma {
 
   export type PhishingCampaignSumOrderByAggregateInput = {
     targetCount?: SortOrder
-    emailsSent?: SortOrder
-    emailsDelivered?: SortOrder
-    emailsOpened?: SortOrder
+    messagesSent?: SortOrder
+    messagesDelivered?: SortOrder
+    messagesOpened?: SortOrder
     linksClicked?: SortOrder
     credentialsEntered?: SortOrder
     phishingReported?: SortOrder
+    messagesFailed?: SortOrder
+    emailsSent?: SortOrder
+    emailsDelivered?: SortOrder
+    emailsOpened?: SortOrder
     emailsBounced?: SortOrder
+  }
+
+  export type EnumCampaignTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.CampaignType | EnumCampaignTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.CampaignType[] | ListEnumCampaignTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.CampaignType[] | ListEnumCampaignTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumCampaignTypeWithAggregatesFilter<$PrismaModel> | $Enums.CampaignType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumCampaignTypeFilter<$PrismaModel>
+    _max?: NestedEnumCampaignTypeFilter<$PrismaModel>
   }
 
   export type EnumCampaignStatusWithAggregatesFilter<$PrismaModel = never> = {
@@ -42536,16 +47259,21 @@ export namespace Prisma {
   export type PhishingTargetCountOrderByAggregateInput = {
     id?: SortOrder
     email?: SortOrder
+    phoneNumber?: SortOrder
     firstName?: SortOrder
     lastName?: SortOrder
     department?: SortOrder
     jobTitle?: SortOrder
-    emailSent?: SortOrder
-    emailDelivered?: SortOrder
-    emailOpened?: SortOrder
+    messageSent?: SortOrder
+    messageDelivered?: SortOrder
+    messageOpened?: SortOrder
     linkClicked?: SortOrder
     credentialsEntered?: SortOrder
     reportedPhishing?: SortOrder
+    messageFailed?: SortOrder
+    emailSent?: SortOrder
+    emailDelivered?: SortOrder
+    emailOpened?: SortOrder
     emailBounced?: SortOrder
     sentAt?: SortOrder
     deliveredAt?: SortOrder
@@ -42553,10 +47281,13 @@ export namespace Prisma {
     clickedAt?: SortOrder
     credentialsAt?: SortOrder
     reportedAt?: SortOrder
+    failedAt?: SortOrder
     bouncedAt?: SortOrder
     userAgent?: SortOrder
     ipAddress?: SortOrder
     clickCount?: SortOrder
+    smsProvider?: SortOrder
+    messageId?: SortOrder
     riskScore?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -42572,16 +47303,21 @@ export namespace Prisma {
   export type PhishingTargetMaxOrderByAggregateInput = {
     id?: SortOrder
     email?: SortOrder
+    phoneNumber?: SortOrder
     firstName?: SortOrder
     lastName?: SortOrder
     department?: SortOrder
     jobTitle?: SortOrder
-    emailSent?: SortOrder
-    emailDelivered?: SortOrder
-    emailOpened?: SortOrder
+    messageSent?: SortOrder
+    messageDelivered?: SortOrder
+    messageOpened?: SortOrder
     linkClicked?: SortOrder
     credentialsEntered?: SortOrder
     reportedPhishing?: SortOrder
+    messageFailed?: SortOrder
+    emailSent?: SortOrder
+    emailDelivered?: SortOrder
+    emailOpened?: SortOrder
     emailBounced?: SortOrder
     sentAt?: SortOrder
     deliveredAt?: SortOrder
@@ -42589,10 +47325,13 @@ export namespace Prisma {
     clickedAt?: SortOrder
     credentialsAt?: SortOrder
     reportedAt?: SortOrder
+    failedAt?: SortOrder
     bouncedAt?: SortOrder
     userAgent?: SortOrder
     ipAddress?: SortOrder
     clickCount?: SortOrder
+    smsProvider?: SortOrder
+    messageId?: SortOrder
     riskScore?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -42603,16 +47342,21 @@ export namespace Prisma {
   export type PhishingTargetMinOrderByAggregateInput = {
     id?: SortOrder
     email?: SortOrder
+    phoneNumber?: SortOrder
     firstName?: SortOrder
     lastName?: SortOrder
     department?: SortOrder
     jobTitle?: SortOrder
-    emailSent?: SortOrder
-    emailDelivered?: SortOrder
-    emailOpened?: SortOrder
+    messageSent?: SortOrder
+    messageDelivered?: SortOrder
+    messageOpened?: SortOrder
     linkClicked?: SortOrder
     credentialsEntered?: SortOrder
     reportedPhishing?: SortOrder
+    messageFailed?: SortOrder
+    emailSent?: SortOrder
+    emailDelivered?: SortOrder
+    emailOpened?: SortOrder
     emailBounced?: SortOrder
     sentAt?: SortOrder
     deliveredAt?: SortOrder
@@ -42620,10 +47364,13 @@ export namespace Prisma {
     clickedAt?: SortOrder
     credentialsAt?: SortOrder
     reportedAt?: SortOrder
+    failedAt?: SortOrder
     bouncedAt?: SortOrder
     userAgent?: SortOrder
     ipAddress?: SortOrder
     clickCount?: SortOrder
+    smsProvider?: SortOrder
+    messageId?: SortOrder
     riskScore?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -42708,6 +47455,13 @@ export namespace Prisma {
     not?: NestedEnumRiskLevelFilter<$PrismaModel> | $Enums.RiskLevel
   }
 
+  export type EnumTemplateTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.TemplateType | EnumTemplateTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.TemplateType[] | ListEnumTemplateTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.TemplateType[] | ListEnumTemplateTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumTemplateTypeFilter<$PrismaModel> | $Enums.TemplateType
+  }
+
   export type StringNullableListFilter<$PrismaModel = never> = {
     equals?: string[] | ListStringFieldRefInput<$PrismaModel> | null
     has?: string | StringFieldRefInput<$PrismaModel> | null
@@ -42722,10 +47476,14 @@ export namespace Prisma {
     description?: SortOrder
     category?: SortOrder
     riskLevel?: SortOrder
+    templateType?: SortOrder
     defaultSubject?: SortOrder
     defaultSenderName?: SortOrder
     emailBodyHtml?: SortOrder
     emailBodyText?: SortOrder
+    smsContent?: SortOrder
+    defaultSenderNumber?: SortOrder
+    messageContent?: SortOrder
     landingPageHtml?: SortOrder
     captureCredentials?: SortOrder
     isActive?: SortOrder
@@ -42750,10 +47508,14 @@ export namespace Prisma {
     description?: SortOrder
     category?: SortOrder
     riskLevel?: SortOrder
+    templateType?: SortOrder
     defaultSubject?: SortOrder
     defaultSenderName?: SortOrder
     emailBodyHtml?: SortOrder
     emailBodyText?: SortOrder
+    smsContent?: SortOrder
+    defaultSenderNumber?: SortOrder
+    messageContent?: SortOrder
     landingPageHtml?: SortOrder
     captureCredentials?: SortOrder
     isActive?: SortOrder
@@ -42772,10 +47534,14 @@ export namespace Prisma {
     description?: SortOrder
     category?: SortOrder
     riskLevel?: SortOrder
+    templateType?: SortOrder
     defaultSubject?: SortOrder
     defaultSenderName?: SortOrder
     emailBodyHtml?: SortOrder
     emailBodyText?: SortOrder
+    smsContent?: SortOrder
+    defaultSenderNumber?: SortOrder
+    messageContent?: SortOrder
     landingPageHtml?: SortOrder
     captureCredentials?: SortOrder
     isActive?: SortOrder
@@ -42811,6 +47577,16 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumRiskLevelFilter<$PrismaModel>
     _max?: NestedEnumRiskLevelFilter<$PrismaModel>
+  }
+
+  export type EnumTemplateTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.TemplateType | EnumTemplateTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.TemplateType[] | ListEnumTemplateTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.TemplateType[] | ListEnumTemplateTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumTemplateTypeWithAggregatesFilter<$PrismaModel> | $Enums.TemplateType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumTemplateTypeFilter<$PrismaModel>
+    _max?: NestedEnumTemplateTypeFilter<$PrismaModel>
   }
 
   export type EnumJobPriorityFilter<$PrismaModel = never> = {
@@ -43676,6 +48452,186 @@ export namespace Prisma {
     totalOrgs?: SortOrder
   }
 
+  export type EnumNotificationTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.NotificationType | EnumNotificationTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.NotificationType[] | ListEnumNotificationTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.NotificationType[] | ListEnumNotificationTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumNotificationTypeFilter<$PrismaModel> | $Enums.NotificationType
+  }
+
+  export type EnumNotificationStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.NotificationStatus | EnumNotificationStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.NotificationStatus[] | ListEnumNotificationStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.NotificationStatus[] | ListEnumNotificationStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumNotificationStatusFilter<$PrismaModel> | $Enums.NotificationStatus
+  }
+
+  export type NotificationHistoryCountOrderByAggregateInput = {
+    id?: SortOrder
+    type?: SortOrder
+    recipient?: SortOrder
+    subject?: SortOrder
+    content?: SortOrder
+    status?: SortOrder
+    attempts?: SortOrder
+    lastAttempt?: SortOrder
+    sentAt?: SortOrder
+    error?: SortOrder
+    jobId?: SortOrder
+    messageId?: SortOrder
+    metadata?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    userId?: SortOrder
+  }
+
+  export type NotificationHistoryAvgOrderByAggregateInput = {
+    attempts?: SortOrder
+  }
+
+  export type NotificationHistoryMaxOrderByAggregateInput = {
+    id?: SortOrder
+    type?: SortOrder
+    recipient?: SortOrder
+    subject?: SortOrder
+    content?: SortOrder
+    status?: SortOrder
+    attempts?: SortOrder
+    lastAttempt?: SortOrder
+    sentAt?: SortOrder
+    error?: SortOrder
+    jobId?: SortOrder
+    messageId?: SortOrder
+    metadata?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    userId?: SortOrder
+  }
+
+  export type NotificationHistoryMinOrderByAggregateInput = {
+    id?: SortOrder
+    type?: SortOrder
+    recipient?: SortOrder
+    subject?: SortOrder
+    content?: SortOrder
+    status?: SortOrder
+    attempts?: SortOrder
+    lastAttempt?: SortOrder
+    sentAt?: SortOrder
+    error?: SortOrder
+    jobId?: SortOrder
+    messageId?: SortOrder
+    metadata?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    userId?: SortOrder
+  }
+
+  export type NotificationHistorySumOrderByAggregateInput = {
+    attempts?: SortOrder
+  }
+
+  export type EnumNotificationTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.NotificationType | EnumNotificationTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.NotificationType[] | ListEnumNotificationTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.NotificationType[] | ListEnumNotificationTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumNotificationTypeWithAggregatesFilter<$PrismaModel> | $Enums.NotificationType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumNotificationTypeFilter<$PrismaModel>
+    _max?: NestedEnumNotificationTypeFilter<$PrismaModel>
+  }
+
+  export type EnumNotificationStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.NotificationStatus | EnumNotificationStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.NotificationStatus[] | ListEnumNotificationStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.NotificationStatus[] | ListEnumNotificationStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumNotificationStatusWithAggregatesFilter<$PrismaModel> | $Enums.NotificationStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumNotificationStatusFilter<$PrismaModel>
+    _max?: NestedEnumNotificationStatusFilter<$PrismaModel>
+  }
+
+  export type EmailTemplateCountOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    subject?: SortOrder
+    htmlContent?: SortOrder
+    textContent?: SortOrder
+    variables?: SortOrder
+    description?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EmailTemplateMaxOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    subject?: SortOrder
+    htmlContent?: SortOrder
+    textContent?: SortOrder
+    variables?: SortOrder
+    description?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EmailTemplateMinOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    subject?: SortOrder
+    htmlContent?: SortOrder
+    textContent?: SortOrder
+    variables?: SortOrder
+    description?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type NotificationPreferenceCountOrderByAggregateInput = {
+    id?: SortOrder
+    emailEnabled?: SortOrder
+    smsEnabled?: SortOrder
+    pushEnabled?: SortOrder
+    securityAlerts?: SortOrder
+    assessmentUpdates?: SortOrder
+    systemUpdates?: SortOrder
+    marketingEmails?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    userId?: SortOrder
+  }
+
+  export type NotificationPreferenceMaxOrderByAggregateInput = {
+    id?: SortOrder
+    emailEnabled?: SortOrder
+    smsEnabled?: SortOrder
+    pushEnabled?: SortOrder
+    securityAlerts?: SortOrder
+    assessmentUpdates?: SortOrder
+    systemUpdates?: SortOrder
+    marketingEmails?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    userId?: SortOrder
+  }
+
+  export type NotificationPreferenceMinOrderByAggregateInput = {
+    id?: SortOrder
+    emailEnabled?: SortOrder
+    smsEnabled?: SortOrder
+    pushEnabled?: SortOrder
+    securityAlerts?: SortOrder
+    assessmentUpdates?: SortOrder
+    systemUpdates?: SortOrder
+    marketingEmails?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    userId?: SortOrder
+  }
+
   export type OrganizationCreateNestedOneWithoutUsersInput = {
     create?: XOR<OrganizationCreateWithoutUsersInput, OrganizationUncheckedCreateWithoutUsersInput>
     connectOrCreate?: OrganizationCreateOrConnectWithoutUsersInput
@@ -43759,6 +48715,19 @@ export namespace Prisma {
     connect?: OrganizationMemberWhereUniqueInput | OrganizationMemberWhereUniqueInput[]
   }
 
+  export type NotificationHistoryCreateNestedManyWithoutUserInput = {
+    create?: XOR<NotificationHistoryCreateWithoutUserInput, NotificationHistoryUncheckedCreateWithoutUserInput> | NotificationHistoryCreateWithoutUserInput[] | NotificationHistoryUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: NotificationHistoryCreateOrConnectWithoutUserInput | NotificationHistoryCreateOrConnectWithoutUserInput[]
+    createMany?: NotificationHistoryCreateManyUserInputEnvelope
+    connect?: NotificationHistoryWhereUniqueInput | NotificationHistoryWhereUniqueInput[]
+  }
+
+  export type NotificationPreferenceCreateNestedOneWithoutUserInput = {
+    create?: XOR<NotificationPreferenceCreateWithoutUserInput, NotificationPreferenceUncheckedCreateWithoutUserInput>
+    connectOrCreate?: NotificationPreferenceCreateOrConnectWithoutUserInput
+    connect?: NotificationPreferenceWhereUniqueInput
+  }
+
   export type AssessmentUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<AssessmentCreateWithoutUserInput, AssessmentUncheckedCreateWithoutUserInput> | AssessmentCreateWithoutUserInput[] | AssessmentUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AssessmentCreateOrConnectWithoutUserInput | AssessmentCreateOrConnectWithoutUserInput[]
@@ -43834,6 +48803,19 @@ export namespace Prisma {
     connectOrCreate?: OrganizationMemberCreateOrConnectWithoutInviterInput | OrganizationMemberCreateOrConnectWithoutInviterInput[]
     createMany?: OrganizationMemberCreateManyInviterInputEnvelope
     connect?: OrganizationMemberWhereUniqueInput | OrganizationMemberWhereUniqueInput[]
+  }
+
+  export type NotificationHistoryUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<NotificationHistoryCreateWithoutUserInput, NotificationHistoryUncheckedCreateWithoutUserInput> | NotificationHistoryCreateWithoutUserInput[] | NotificationHistoryUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: NotificationHistoryCreateOrConnectWithoutUserInput | NotificationHistoryCreateOrConnectWithoutUserInput[]
+    createMany?: NotificationHistoryCreateManyUserInputEnvelope
+    connect?: NotificationHistoryWhereUniqueInput | NotificationHistoryWhereUniqueInput[]
+  }
+
+  export type NotificationPreferenceUncheckedCreateNestedOneWithoutUserInput = {
+    create?: XOR<NotificationPreferenceCreateWithoutUserInput, NotificationPreferenceUncheckedCreateWithoutUserInput>
+    connectOrCreate?: NotificationPreferenceCreateOrConnectWithoutUserInput
+    connect?: NotificationPreferenceWhereUniqueInput
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -44020,6 +49002,30 @@ export namespace Prisma {
     deleteMany?: OrganizationMemberScalarWhereInput | OrganizationMemberScalarWhereInput[]
   }
 
+  export type NotificationHistoryUpdateManyWithoutUserNestedInput = {
+    create?: XOR<NotificationHistoryCreateWithoutUserInput, NotificationHistoryUncheckedCreateWithoutUserInput> | NotificationHistoryCreateWithoutUserInput[] | NotificationHistoryUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: NotificationHistoryCreateOrConnectWithoutUserInput | NotificationHistoryCreateOrConnectWithoutUserInput[]
+    upsert?: NotificationHistoryUpsertWithWhereUniqueWithoutUserInput | NotificationHistoryUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: NotificationHistoryCreateManyUserInputEnvelope
+    set?: NotificationHistoryWhereUniqueInput | NotificationHistoryWhereUniqueInput[]
+    disconnect?: NotificationHistoryWhereUniqueInput | NotificationHistoryWhereUniqueInput[]
+    delete?: NotificationHistoryWhereUniqueInput | NotificationHistoryWhereUniqueInput[]
+    connect?: NotificationHistoryWhereUniqueInput | NotificationHistoryWhereUniqueInput[]
+    update?: NotificationHistoryUpdateWithWhereUniqueWithoutUserInput | NotificationHistoryUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: NotificationHistoryUpdateManyWithWhereWithoutUserInput | NotificationHistoryUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: NotificationHistoryScalarWhereInput | NotificationHistoryScalarWhereInput[]
+  }
+
+  export type NotificationPreferenceUpdateOneWithoutUserNestedInput = {
+    create?: XOR<NotificationPreferenceCreateWithoutUserInput, NotificationPreferenceUncheckedCreateWithoutUserInput>
+    connectOrCreate?: NotificationPreferenceCreateOrConnectWithoutUserInput
+    upsert?: NotificationPreferenceUpsertWithoutUserInput
+    disconnect?: NotificationPreferenceWhereInput | boolean
+    delete?: NotificationPreferenceWhereInput | boolean
+    connect?: NotificationPreferenceWhereUniqueInput
+    update?: XOR<XOR<NotificationPreferenceUpdateToOneWithWhereWithoutUserInput, NotificationPreferenceUpdateWithoutUserInput>, NotificationPreferenceUncheckedUpdateWithoutUserInput>
+  }
+
   export type AssessmentUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<AssessmentCreateWithoutUserInput, AssessmentUncheckedCreateWithoutUserInput> | AssessmentCreateWithoutUserInput[] | AssessmentUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AssessmentCreateOrConnectWithoutUserInput | AssessmentCreateOrConnectWithoutUserInput[]
@@ -44172,6 +49178,30 @@ export namespace Prisma {
     update?: OrganizationMemberUpdateWithWhereUniqueWithoutInviterInput | OrganizationMemberUpdateWithWhereUniqueWithoutInviterInput[]
     updateMany?: OrganizationMemberUpdateManyWithWhereWithoutInviterInput | OrganizationMemberUpdateManyWithWhereWithoutInviterInput[]
     deleteMany?: OrganizationMemberScalarWhereInput | OrganizationMemberScalarWhereInput[]
+  }
+
+  export type NotificationHistoryUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<NotificationHistoryCreateWithoutUserInput, NotificationHistoryUncheckedCreateWithoutUserInput> | NotificationHistoryCreateWithoutUserInput[] | NotificationHistoryUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: NotificationHistoryCreateOrConnectWithoutUserInput | NotificationHistoryCreateOrConnectWithoutUserInput[]
+    upsert?: NotificationHistoryUpsertWithWhereUniqueWithoutUserInput | NotificationHistoryUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: NotificationHistoryCreateManyUserInputEnvelope
+    set?: NotificationHistoryWhereUniqueInput | NotificationHistoryWhereUniqueInput[]
+    disconnect?: NotificationHistoryWhereUniqueInput | NotificationHistoryWhereUniqueInput[]
+    delete?: NotificationHistoryWhereUniqueInput | NotificationHistoryWhereUniqueInput[]
+    connect?: NotificationHistoryWhereUniqueInput | NotificationHistoryWhereUniqueInput[]
+    update?: NotificationHistoryUpdateWithWhereUniqueWithoutUserInput | NotificationHistoryUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: NotificationHistoryUpdateManyWithWhereWithoutUserInput | NotificationHistoryUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: NotificationHistoryScalarWhereInput | NotificationHistoryScalarWhereInput[]
+  }
+
+  export type NotificationPreferenceUncheckedUpdateOneWithoutUserNestedInput = {
+    create?: XOR<NotificationPreferenceCreateWithoutUserInput, NotificationPreferenceUncheckedCreateWithoutUserInput>
+    connectOrCreate?: NotificationPreferenceCreateOrConnectWithoutUserInput
+    upsert?: NotificationPreferenceUpsertWithoutUserInput
+    disconnect?: NotificationPreferenceWhereInput | boolean
+    delete?: NotificationPreferenceWhereInput | boolean
+    connect?: NotificationPreferenceWhereUniqueInput
+    update?: XOR<XOR<NotificationPreferenceUpdateToOneWithWhereWithoutUserInput, NotificationPreferenceUpdateWithoutUserInput>, NotificationPreferenceUncheckedUpdateWithoutUserInput>
   }
 
   export type UserCreateNestedOneWithoutRefreshTokensInput = {
@@ -45058,6 +50088,10 @@ export namespace Prisma {
     connect?: PhishingEventWhereUniqueInput | PhishingEventWhereUniqueInput[]
   }
 
+  export type EnumCampaignTypeFieldUpdateOperationsInput = {
+    set?: $Enums.CampaignType
+  }
+
   export type EnumCampaignStatusFieldUpdateOperationsInput = {
     set?: $Enums.CampaignStatus
   }
@@ -45262,6 +50296,10 @@ export namespace Prisma {
 
   export type EnumRiskLevelFieldUpdateOperationsInput = {
     set?: $Enums.RiskLevel
+  }
+
+  export type EnumTemplateTypeFieldUpdateOperationsInput = {
+    set?: $Enums.TemplateType
   }
 
   export type PhishingTemplateUpdatetagsInput = {
@@ -45809,6 +50847,44 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutAuditLogsInput, UserUpdateWithoutAuditLogsInput>, UserUncheckedUpdateWithoutAuditLogsInput>
   }
 
+  export type UserCreateNestedOneWithoutNotificationHistoryInput = {
+    create?: XOR<UserCreateWithoutNotificationHistoryInput, UserUncheckedCreateWithoutNotificationHistoryInput>
+    connectOrCreate?: UserCreateOrConnectWithoutNotificationHistoryInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type EnumNotificationTypeFieldUpdateOperationsInput = {
+    set?: $Enums.NotificationType
+  }
+
+  export type EnumNotificationStatusFieldUpdateOperationsInput = {
+    set?: $Enums.NotificationStatus
+  }
+
+  export type UserUpdateOneWithoutNotificationHistoryNestedInput = {
+    create?: XOR<UserCreateWithoutNotificationHistoryInput, UserUncheckedCreateWithoutNotificationHistoryInput>
+    connectOrCreate?: UserCreateOrConnectWithoutNotificationHistoryInput
+    upsert?: UserUpsertWithoutNotificationHistoryInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutNotificationHistoryInput, UserUpdateWithoutNotificationHistoryInput>, UserUncheckedUpdateWithoutNotificationHistoryInput>
+  }
+
+  export type UserCreateNestedOneWithoutNotificationPreferencesInput = {
+    create?: XOR<UserCreateWithoutNotificationPreferencesInput, UserUncheckedCreateWithoutNotificationPreferencesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutNotificationPreferencesInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserUpdateOneRequiredWithoutNotificationPreferencesNestedInput = {
+    create?: XOR<UserCreateWithoutNotificationPreferencesInput, UserUncheckedCreateWithoutNotificationPreferencesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutNotificationPreferencesInput
+    upsert?: UserUpsertWithoutNotificationPreferencesInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutNotificationPreferencesInput, UserUpdateWithoutNotificationPreferencesInput>, UserUncheckedUpdateWithoutNotificationPreferencesInput>
+  }
+
   export type NestedStringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -46195,11 +51271,28 @@ export namespace Prisma {
     _max?: NestedEnumCSITierFilter<$PrismaModel>
   }
 
+  export type NestedEnumCampaignTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.CampaignType | EnumCampaignTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.CampaignType[] | ListEnumCampaignTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.CampaignType[] | ListEnumCampaignTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumCampaignTypeFilter<$PrismaModel> | $Enums.CampaignType
+  }
+
   export type NestedEnumCampaignStatusFilter<$PrismaModel = never> = {
     equals?: $Enums.CampaignStatus | EnumCampaignStatusFieldRefInput<$PrismaModel>
     in?: $Enums.CampaignStatus[] | ListEnumCampaignStatusFieldRefInput<$PrismaModel>
     notIn?: $Enums.CampaignStatus[] | ListEnumCampaignStatusFieldRefInput<$PrismaModel>
     not?: NestedEnumCampaignStatusFilter<$PrismaModel> | $Enums.CampaignStatus
+  }
+
+  export type NestedEnumCampaignTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.CampaignType | EnumCampaignTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.CampaignType[] | ListEnumCampaignTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.CampaignType[] | ListEnumCampaignTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumCampaignTypeWithAggregatesFilter<$PrismaModel> | $Enums.CampaignType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumCampaignTypeFilter<$PrismaModel>
+    _max?: NestedEnumCampaignTypeFilter<$PrismaModel>
   }
 
   export type NestedEnumCampaignStatusWithAggregatesFilter<$PrismaModel = never> = {
@@ -46243,6 +51336,13 @@ export namespace Prisma {
     not?: NestedEnumRiskLevelFilter<$PrismaModel> | $Enums.RiskLevel
   }
 
+  export type NestedEnumTemplateTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.TemplateType | EnumTemplateTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.TemplateType[] | ListEnumTemplateTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.TemplateType[] | ListEnumTemplateTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumTemplateTypeFilter<$PrismaModel> | $Enums.TemplateType
+  }
+
   export type NestedEnumTemplateCategoryWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.TemplateCategory | EnumTemplateCategoryFieldRefInput<$PrismaModel>
     in?: $Enums.TemplateCategory[] | ListEnumTemplateCategoryFieldRefInput<$PrismaModel>
@@ -46261,6 +51361,16 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumRiskLevelFilter<$PrismaModel>
     _max?: NestedEnumRiskLevelFilter<$PrismaModel>
+  }
+
+  export type NestedEnumTemplateTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.TemplateType | EnumTemplateTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.TemplateType[] | ListEnumTemplateTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.TemplateType[] | ListEnumTemplateTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumTemplateTypeWithAggregatesFilter<$PrismaModel> | $Enums.TemplateType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumTemplateTypeFilter<$PrismaModel>
+    _max?: NestedEnumTemplateTypeFilter<$PrismaModel>
   }
 
   export type NestedEnumJobPriorityFilter<$PrismaModel = never> = {
@@ -46501,6 +51611,40 @@ export namespace Prisma {
     _max?: NestedEnumPaymentStatusFilter<$PrismaModel>
   }
 
+  export type NestedEnumNotificationTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.NotificationType | EnumNotificationTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.NotificationType[] | ListEnumNotificationTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.NotificationType[] | ListEnumNotificationTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumNotificationTypeFilter<$PrismaModel> | $Enums.NotificationType
+  }
+
+  export type NestedEnumNotificationStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.NotificationStatus | EnumNotificationStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.NotificationStatus[] | ListEnumNotificationStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.NotificationStatus[] | ListEnumNotificationStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumNotificationStatusFilter<$PrismaModel> | $Enums.NotificationStatus
+  }
+
+  export type NestedEnumNotificationTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.NotificationType | EnumNotificationTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.NotificationType[] | ListEnumNotificationTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.NotificationType[] | ListEnumNotificationTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumNotificationTypeWithAggregatesFilter<$PrismaModel> | $Enums.NotificationType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumNotificationTypeFilter<$PrismaModel>
+    _max?: NestedEnumNotificationTypeFilter<$PrismaModel>
+  }
+
+  export type NestedEnumNotificationStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.NotificationStatus | EnumNotificationStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.NotificationStatus[] | ListEnumNotificationStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.NotificationStatus[] | ListEnumNotificationStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumNotificationStatusWithAggregatesFilter<$PrismaModel> | $Enums.NotificationStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumNotificationStatusFilter<$PrismaModel>
+    _max?: NestedEnumNotificationStatusFilter<$PrismaModel>
+  }
+
   export type OrganizationCreateWithoutUsersInput = {
     id?: string
     name: string
@@ -46624,17 +51768,22 @@ export namespace Prisma {
 
   export type PhishingTargetCreateWithoutUserInput = {
     id?: string
-    email: string
+    email?: string | null
+    phoneNumber?: string | null
     firstName?: string | null
     lastName?: string | null
     department?: string | null
     jobTitle?: string | null
-    emailSent?: boolean
-    emailDelivered?: boolean
-    emailOpened?: boolean
+    messageSent?: boolean
+    messageDelivered?: boolean
+    messageOpened?: boolean
     linkClicked?: boolean
     credentialsEntered?: boolean
     reportedPhishing?: boolean
+    messageFailed?: boolean
+    emailSent?: boolean
+    emailDelivered?: boolean
+    emailOpened?: boolean
     emailBounced?: boolean
     sentAt?: Date | string | null
     deliveredAt?: Date | string | null
@@ -46642,10 +51791,13 @@ export namespace Prisma {
     clickedAt?: Date | string | null
     credentialsAt?: Date | string | null
     reportedAt?: Date | string | null
+    failedAt?: Date | string | null
     bouncedAt?: Date | string | null
     userAgent?: string | null
     ipAddress?: string | null
     clickCount?: number
+    smsProvider?: string | null
+    messageId?: string | null
     riskScore?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -46655,17 +51807,22 @@ export namespace Prisma {
 
   export type PhishingTargetUncheckedCreateWithoutUserInput = {
     id?: string
-    email: string
+    email?: string | null
+    phoneNumber?: string | null
     firstName?: string | null
     lastName?: string | null
     department?: string | null
     jobTitle?: string | null
-    emailSent?: boolean
-    emailDelivered?: boolean
-    emailOpened?: boolean
+    messageSent?: boolean
+    messageDelivered?: boolean
+    messageOpened?: boolean
     linkClicked?: boolean
     credentialsEntered?: boolean
     reportedPhishing?: boolean
+    messageFailed?: boolean
+    emailSent?: boolean
+    emailDelivered?: boolean
+    emailOpened?: boolean
     emailBounced?: boolean
     sentAt?: Date | string | null
     deliveredAt?: Date | string | null
@@ -46673,10 +51830,13 @@ export namespace Prisma {
     clickedAt?: Date | string | null
     credentialsAt?: Date | string | null
     reportedAt?: Date | string | null
+    failedAt?: Date | string | null
     bouncedAt?: Date | string | null
     userAgent?: string | null
     ipAddress?: string | null
     clickCount?: number
+    smsProvider?: string | null
+    messageId?: string | null
     riskScore?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -46698,24 +51858,32 @@ export namespace Prisma {
     id?: string
     name: string
     description?: string | null
+    campaignType?: $Enums.CampaignType
     templateId: string
     template: string
-    subject: string
-    senderName: string
-    senderEmail: string
+    subject?: string | null
+    senderName?: string | null
+    senderEmail?: string | null
     landingPageUrl?: string | null
+    senderNumber?: string | null
+    messageContent?: string | null
+    trackingUrl?: string | null
     status?: $Enums.CampaignStatus
     scheduledAt?: Date | string | null
     launchedAt?: Date | string | null
     completedAt?: Date | string | null
     pausedAt?: Date | string | null
     targetCount?: number
-    emailsSent?: number
-    emailsDelivered?: number
-    emailsOpened?: number
+    messagesSent?: number
+    messagesDelivered?: number
+    messagesOpened?: number
     linksClicked?: number
     credentialsEntered?: number
     phishingReported?: number
+    messagesFailed?: number
+    emailsSent?: number
+    emailsDelivered?: number
+    emailsOpened?: number
     emailsBounced?: number
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -46728,24 +51896,32 @@ export namespace Prisma {
     id?: string
     name: string
     description?: string | null
+    campaignType?: $Enums.CampaignType
     templateId: string
     template: string
-    subject: string
-    senderName: string
-    senderEmail: string
+    subject?: string | null
+    senderName?: string | null
+    senderEmail?: string | null
     landingPageUrl?: string | null
+    senderNumber?: string | null
+    messageContent?: string | null
+    trackingUrl?: string | null
     status?: $Enums.CampaignStatus
     scheduledAt?: Date | string | null
     launchedAt?: Date | string | null
     completedAt?: Date | string | null
     pausedAt?: Date | string | null
     targetCount?: number
-    emailsSent?: number
-    emailsDelivered?: number
-    emailsOpened?: number
+    messagesSent?: number
+    messagesDelivered?: number
+    messagesOpened?: number
     linksClicked?: number
     credentialsEntered?: number
     phishingReported?: number
+    messagesFailed?: number
+    emailsSent?: number
+    emailsDelivered?: number
+    emailsOpened?: number
     emailsBounced?: number
     organizationId: string
     createdAt?: Date | string
@@ -46770,10 +51946,14 @@ export namespace Prisma {
     description: string
     category: $Enums.TemplateCategory
     riskLevel: $Enums.RiskLevel
-    defaultSubject: string
-    defaultSenderName: string
-    emailBodyHtml: string
-    emailBodyText: string
+    templateType?: $Enums.TemplateType
+    defaultSubject?: string | null
+    defaultSenderName?: string | null
+    emailBodyHtml?: string | null
+    emailBodyText?: string | null
+    smsContent?: string | null
+    defaultSenderNumber?: string | null
+    messageContent?: string | null
     landingPageHtml?: string | null
     captureCredentials?: boolean
     isActive?: boolean
@@ -46792,10 +51972,14 @@ export namespace Prisma {
     description: string
     category: $Enums.TemplateCategory
     riskLevel: $Enums.RiskLevel
-    defaultSubject: string
-    defaultSenderName: string
-    emailBodyHtml: string
-    emailBodyText: string
+    templateType?: $Enums.TemplateType
+    defaultSubject?: string | null
+    defaultSenderName?: string | null
+    emailBodyHtml?: string | null
+    emailBodyText?: string | null
+    smsContent?: string | null
+    defaultSenderNumber?: string | null
+    messageContent?: string | null
     landingPageHtml?: string | null
     captureCredentials?: boolean
     isActive?: boolean
@@ -47024,6 +52208,83 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type NotificationHistoryCreateWithoutUserInput = {
+    id?: string
+    type: $Enums.NotificationType
+    recipient: string
+    subject?: string | null
+    content: string
+    status?: $Enums.NotificationStatus
+    attempts?: number
+    lastAttempt?: Date | string | null
+    sentAt?: Date | string | null
+    error?: string | null
+    jobId?: string | null
+    messageId?: string | null
+    metadata?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type NotificationHistoryUncheckedCreateWithoutUserInput = {
+    id?: string
+    type: $Enums.NotificationType
+    recipient: string
+    subject?: string | null
+    content: string
+    status?: $Enums.NotificationStatus
+    attempts?: number
+    lastAttempt?: Date | string | null
+    sentAt?: Date | string | null
+    error?: string | null
+    jobId?: string | null
+    messageId?: string | null
+    metadata?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type NotificationHistoryCreateOrConnectWithoutUserInput = {
+    where: NotificationHistoryWhereUniqueInput
+    create: XOR<NotificationHistoryCreateWithoutUserInput, NotificationHistoryUncheckedCreateWithoutUserInput>
+  }
+
+  export type NotificationHistoryCreateManyUserInputEnvelope = {
+    data: NotificationHistoryCreateManyUserInput | NotificationHistoryCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type NotificationPreferenceCreateWithoutUserInput = {
+    id?: string
+    emailEnabled?: boolean
+    smsEnabled?: boolean
+    pushEnabled?: boolean
+    securityAlerts?: boolean
+    assessmentUpdates?: boolean
+    systemUpdates?: boolean
+    marketingEmails?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type NotificationPreferenceUncheckedCreateWithoutUserInput = {
+    id?: string
+    emailEnabled?: boolean
+    smsEnabled?: boolean
+    pushEnabled?: boolean
+    securityAlerts?: boolean
+    assessmentUpdates?: boolean
+    systemUpdates?: boolean
+    marketingEmails?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type NotificationPreferenceCreateOrConnectWithoutUserInput = {
+    where: NotificationPreferenceWhereUniqueInput
+    create: XOR<NotificationPreferenceCreateWithoutUserInput, NotificationPreferenceUncheckedCreateWithoutUserInput>
+  }
+
   export type OrganizationUpsertWithoutUsersInput = {
     update: XOR<OrganizationUpdateWithoutUsersInput, OrganizationUncheckedUpdateWithoutUsersInput>
     create: XOR<OrganizationCreateWithoutUsersInput, OrganizationUncheckedCreateWithoutUsersInput>
@@ -47158,17 +52419,22 @@ export namespace Prisma {
     OR?: PhishingTargetScalarWhereInput[]
     NOT?: PhishingTargetScalarWhereInput | PhishingTargetScalarWhereInput[]
     id?: StringFilter<"PhishingTarget"> | string
-    email?: StringFilter<"PhishingTarget"> | string
+    email?: StringNullableFilter<"PhishingTarget"> | string | null
+    phoneNumber?: StringNullableFilter<"PhishingTarget"> | string | null
     firstName?: StringNullableFilter<"PhishingTarget"> | string | null
     lastName?: StringNullableFilter<"PhishingTarget"> | string | null
     department?: StringNullableFilter<"PhishingTarget"> | string | null
     jobTitle?: StringNullableFilter<"PhishingTarget"> | string | null
-    emailSent?: BoolFilter<"PhishingTarget"> | boolean
-    emailDelivered?: BoolFilter<"PhishingTarget"> | boolean
-    emailOpened?: BoolFilter<"PhishingTarget"> | boolean
+    messageSent?: BoolFilter<"PhishingTarget"> | boolean
+    messageDelivered?: BoolFilter<"PhishingTarget"> | boolean
+    messageOpened?: BoolFilter<"PhishingTarget"> | boolean
     linkClicked?: BoolFilter<"PhishingTarget"> | boolean
     credentialsEntered?: BoolFilter<"PhishingTarget"> | boolean
     reportedPhishing?: BoolFilter<"PhishingTarget"> | boolean
+    messageFailed?: BoolFilter<"PhishingTarget"> | boolean
+    emailSent?: BoolFilter<"PhishingTarget"> | boolean
+    emailDelivered?: BoolFilter<"PhishingTarget"> | boolean
+    emailOpened?: BoolFilter<"PhishingTarget"> | boolean
     emailBounced?: BoolFilter<"PhishingTarget"> | boolean
     sentAt?: DateTimeNullableFilter<"PhishingTarget"> | Date | string | null
     deliveredAt?: DateTimeNullableFilter<"PhishingTarget"> | Date | string | null
@@ -47176,10 +52442,13 @@ export namespace Prisma {
     clickedAt?: DateTimeNullableFilter<"PhishingTarget"> | Date | string | null
     credentialsAt?: DateTimeNullableFilter<"PhishingTarget"> | Date | string | null
     reportedAt?: DateTimeNullableFilter<"PhishingTarget"> | Date | string | null
+    failedAt?: DateTimeNullableFilter<"PhishingTarget"> | Date | string | null
     bouncedAt?: DateTimeNullableFilter<"PhishingTarget"> | Date | string | null
     userAgent?: StringNullableFilter<"PhishingTarget"> | string | null
     ipAddress?: StringNullableFilter<"PhishingTarget"> | string | null
     clickCount?: IntFilter<"PhishingTarget"> | number
+    smsProvider?: StringNullableFilter<"PhishingTarget"> | string | null
+    messageId?: StringNullableFilter<"PhishingTarget"> | string | null
     riskScore?: FloatNullableFilter<"PhishingTarget"> | number | null
     createdAt?: DateTimeFilter<"PhishingTarget"> | Date | string
     updatedAt?: DateTimeFilter<"PhishingTarget"> | Date | string
@@ -47210,24 +52479,32 @@ export namespace Prisma {
     id?: StringFilter<"PhishingCampaign"> | string
     name?: StringFilter<"PhishingCampaign"> | string
     description?: StringNullableFilter<"PhishingCampaign"> | string | null
+    campaignType?: EnumCampaignTypeFilter<"PhishingCampaign"> | $Enums.CampaignType
     templateId?: StringFilter<"PhishingCampaign"> | string
     template?: StringFilter<"PhishingCampaign"> | string
-    subject?: StringFilter<"PhishingCampaign"> | string
-    senderName?: StringFilter<"PhishingCampaign"> | string
-    senderEmail?: StringFilter<"PhishingCampaign"> | string
+    subject?: StringNullableFilter<"PhishingCampaign"> | string | null
+    senderName?: StringNullableFilter<"PhishingCampaign"> | string | null
+    senderEmail?: StringNullableFilter<"PhishingCampaign"> | string | null
     landingPageUrl?: StringNullableFilter<"PhishingCampaign"> | string | null
+    senderNumber?: StringNullableFilter<"PhishingCampaign"> | string | null
+    messageContent?: StringNullableFilter<"PhishingCampaign"> | string | null
+    trackingUrl?: StringNullableFilter<"PhishingCampaign"> | string | null
     status?: EnumCampaignStatusFilter<"PhishingCampaign"> | $Enums.CampaignStatus
     scheduledAt?: DateTimeNullableFilter<"PhishingCampaign"> | Date | string | null
     launchedAt?: DateTimeNullableFilter<"PhishingCampaign"> | Date | string | null
     completedAt?: DateTimeNullableFilter<"PhishingCampaign"> | Date | string | null
     pausedAt?: DateTimeNullableFilter<"PhishingCampaign"> | Date | string | null
     targetCount?: IntFilter<"PhishingCampaign"> | number
-    emailsSent?: IntFilter<"PhishingCampaign"> | number
-    emailsDelivered?: IntFilter<"PhishingCampaign"> | number
-    emailsOpened?: IntFilter<"PhishingCampaign"> | number
+    messagesSent?: IntFilter<"PhishingCampaign"> | number
+    messagesDelivered?: IntFilter<"PhishingCampaign"> | number
+    messagesOpened?: IntFilter<"PhishingCampaign"> | number
     linksClicked?: IntFilter<"PhishingCampaign"> | number
     credentialsEntered?: IntFilter<"PhishingCampaign"> | number
     phishingReported?: IntFilter<"PhishingCampaign"> | number
+    messagesFailed?: IntFilter<"PhishingCampaign"> | number
+    emailsSent?: IntFilter<"PhishingCampaign"> | number
+    emailsDelivered?: IntFilter<"PhishingCampaign"> | number
+    emailsOpened?: IntFilter<"PhishingCampaign"> | number
     emailsBounced?: IntFilter<"PhishingCampaign"> | number
     createdBy?: StringFilter<"PhishingCampaign"> | string
     organizationId?: StringFilter<"PhishingCampaign"> | string
@@ -47260,10 +52537,14 @@ export namespace Prisma {
     description?: StringFilter<"PhishingTemplate"> | string
     category?: EnumTemplateCategoryFilter<"PhishingTemplate"> | $Enums.TemplateCategory
     riskLevel?: EnumRiskLevelFilter<"PhishingTemplate"> | $Enums.RiskLevel
-    defaultSubject?: StringFilter<"PhishingTemplate"> | string
-    defaultSenderName?: StringFilter<"PhishingTemplate"> | string
-    emailBodyHtml?: StringFilter<"PhishingTemplate"> | string
-    emailBodyText?: StringFilter<"PhishingTemplate"> | string
+    templateType?: EnumTemplateTypeFilter<"PhishingTemplate"> | $Enums.TemplateType
+    defaultSubject?: StringNullableFilter<"PhishingTemplate"> | string | null
+    defaultSenderName?: StringNullableFilter<"PhishingTemplate"> | string | null
+    emailBodyHtml?: StringNullableFilter<"PhishingTemplate"> | string | null
+    emailBodyText?: StringNullableFilter<"PhishingTemplate"> | string | null
+    smsContent?: StringNullableFilter<"PhishingTemplate"> | string | null
+    defaultSenderNumber?: StringNullableFilter<"PhishingTemplate"> | string | null
+    messageContent?: StringNullableFilter<"PhishingTemplate"> | string | null
     landingPageHtml?: StringNullableFilter<"PhishingTemplate"> | string | null
     captureCredentials?: BoolFilter<"PhishingTemplate"> | boolean
     isActive?: BoolFilter<"PhishingTemplate"> | boolean
@@ -47471,6 +52752,81 @@ export namespace Prisma {
     data: XOR<OrganizationMemberUpdateManyMutationInput, OrganizationMemberUncheckedUpdateManyWithoutInviterInput>
   }
 
+  export type NotificationHistoryUpsertWithWhereUniqueWithoutUserInput = {
+    where: NotificationHistoryWhereUniqueInput
+    update: XOR<NotificationHistoryUpdateWithoutUserInput, NotificationHistoryUncheckedUpdateWithoutUserInput>
+    create: XOR<NotificationHistoryCreateWithoutUserInput, NotificationHistoryUncheckedCreateWithoutUserInput>
+  }
+
+  export type NotificationHistoryUpdateWithWhereUniqueWithoutUserInput = {
+    where: NotificationHistoryWhereUniqueInput
+    data: XOR<NotificationHistoryUpdateWithoutUserInput, NotificationHistoryUncheckedUpdateWithoutUserInput>
+  }
+
+  export type NotificationHistoryUpdateManyWithWhereWithoutUserInput = {
+    where: NotificationHistoryScalarWhereInput
+    data: XOR<NotificationHistoryUpdateManyMutationInput, NotificationHistoryUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type NotificationHistoryScalarWhereInput = {
+    AND?: NotificationHistoryScalarWhereInput | NotificationHistoryScalarWhereInput[]
+    OR?: NotificationHistoryScalarWhereInput[]
+    NOT?: NotificationHistoryScalarWhereInput | NotificationHistoryScalarWhereInput[]
+    id?: StringFilter<"NotificationHistory"> | string
+    type?: EnumNotificationTypeFilter<"NotificationHistory"> | $Enums.NotificationType
+    recipient?: StringFilter<"NotificationHistory"> | string
+    subject?: StringNullableFilter<"NotificationHistory"> | string | null
+    content?: StringFilter<"NotificationHistory"> | string
+    status?: EnumNotificationStatusFilter<"NotificationHistory"> | $Enums.NotificationStatus
+    attempts?: IntFilter<"NotificationHistory"> | number
+    lastAttempt?: DateTimeNullableFilter<"NotificationHistory"> | Date | string | null
+    sentAt?: DateTimeNullableFilter<"NotificationHistory"> | Date | string | null
+    error?: StringNullableFilter<"NotificationHistory"> | string | null
+    jobId?: StringNullableFilter<"NotificationHistory"> | string | null
+    messageId?: StringNullableFilter<"NotificationHistory"> | string | null
+    metadata?: StringNullableFilter<"NotificationHistory"> | string | null
+    createdAt?: DateTimeFilter<"NotificationHistory"> | Date | string
+    updatedAt?: DateTimeFilter<"NotificationHistory"> | Date | string
+    userId?: StringNullableFilter<"NotificationHistory"> | string | null
+  }
+
+  export type NotificationPreferenceUpsertWithoutUserInput = {
+    update: XOR<NotificationPreferenceUpdateWithoutUserInput, NotificationPreferenceUncheckedUpdateWithoutUserInput>
+    create: XOR<NotificationPreferenceCreateWithoutUserInput, NotificationPreferenceUncheckedCreateWithoutUserInput>
+    where?: NotificationPreferenceWhereInput
+  }
+
+  export type NotificationPreferenceUpdateToOneWithWhereWithoutUserInput = {
+    where?: NotificationPreferenceWhereInput
+    data: XOR<NotificationPreferenceUpdateWithoutUserInput, NotificationPreferenceUncheckedUpdateWithoutUserInput>
+  }
+
+  export type NotificationPreferenceUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    emailEnabled?: BoolFieldUpdateOperationsInput | boolean
+    smsEnabled?: BoolFieldUpdateOperationsInput | boolean
+    pushEnabled?: BoolFieldUpdateOperationsInput | boolean
+    securityAlerts?: BoolFieldUpdateOperationsInput | boolean
+    assessmentUpdates?: BoolFieldUpdateOperationsInput | boolean
+    systemUpdates?: BoolFieldUpdateOperationsInput | boolean
+    marketingEmails?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type NotificationPreferenceUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    emailEnabled?: BoolFieldUpdateOperationsInput | boolean
+    smsEnabled?: BoolFieldUpdateOperationsInput | boolean
+    pushEnabled?: BoolFieldUpdateOperationsInput | boolean
+    securityAlerts?: BoolFieldUpdateOperationsInput | boolean
+    assessmentUpdates?: BoolFieldUpdateOperationsInput | boolean
+    systemUpdates?: BoolFieldUpdateOperationsInput | boolean
+    marketingEmails?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type UserCreateWithoutRefreshTokensInput = {
     id?: string
     email: string
@@ -47495,6 +52851,8 @@ export namespace Prisma {
     createdInviteCodes?: InviteCodeCreateNestedManyWithoutCreatorInput
     organizationMemberships?: OrganizationMemberCreateNestedManyWithoutUserInput
     sentInvites?: OrganizationMemberCreateNestedManyWithoutInviterInput
+    notificationHistory?: NotificationHistoryCreateNestedManyWithoutUserInput
+    notificationPreferences?: NotificationPreferenceCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutRefreshTokensInput = {
@@ -47521,6 +52879,8 @@ export namespace Prisma {
     createdInviteCodes?: InviteCodeUncheckedCreateNestedManyWithoutCreatorInput
     organizationMemberships?: OrganizationMemberUncheckedCreateNestedManyWithoutUserInput
     sentInvites?: OrganizationMemberUncheckedCreateNestedManyWithoutInviterInput
+    notificationHistory?: NotificationHistoryUncheckedCreateNestedManyWithoutUserInput
+    notificationPreferences?: NotificationPreferenceUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutRefreshTokensInput = {
@@ -47563,6 +52923,8 @@ export namespace Prisma {
     createdInviteCodes?: InviteCodeUpdateManyWithoutCreatorNestedInput
     organizationMemberships?: OrganizationMemberUpdateManyWithoutUserNestedInput
     sentInvites?: OrganizationMemberUpdateManyWithoutInviterNestedInput
+    notificationHistory?: NotificationHistoryUpdateManyWithoutUserNestedInput
+    notificationPreferences?: NotificationPreferenceUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutRefreshTokensInput = {
@@ -47589,6 +52951,8 @@ export namespace Prisma {
     createdInviteCodes?: InviteCodeUncheckedUpdateManyWithoutCreatorNestedInput
     organizationMemberships?: OrganizationMemberUncheckedUpdateManyWithoutUserNestedInput
     sentInvites?: OrganizationMemberUncheckedUpdateManyWithoutInviterNestedInput
+    notificationHistory?: NotificationHistoryUncheckedUpdateManyWithoutUserNestedInput
+    notificationPreferences?: NotificationPreferenceUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type UserCreateWithoutPasswordResetsInput = {
@@ -47615,6 +52979,8 @@ export namespace Prisma {
     createdInviteCodes?: InviteCodeCreateNestedManyWithoutCreatorInput
     organizationMemberships?: OrganizationMemberCreateNestedManyWithoutUserInput
     sentInvites?: OrganizationMemberCreateNestedManyWithoutInviterInput
+    notificationHistory?: NotificationHistoryCreateNestedManyWithoutUserInput
+    notificationPreferences?: NotificationPreferenceCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutPasswordResetsInput = {
@@ -47641,6 +53007,8 @@ export namespace Prisma {
     createdInviteCodes?: InviteCodeUncheckedCreateNestedManyWithoutCreatorInput
     organizationMemberships?: OrganizationMemberUncheckedCreateNestedManyWithoutUserInput
     sentInvites?: OrganizationMemberUncheckedCreateNestedManyWithoutInviterInput
+    notificationHistory?: NotificationHistoryUncheckedCreateNestedManyWithoutUserInput
+    notificationPreferences?: NotificationPreferenceUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutPasswordResetsInput = {
@@ -47683,6 +53051,8 @@ export namespace Prisma {
     createdInviteCodes?: InviteCodeUpdateManyWithoutCreatorNestedInput
     organizationMemberships?: OrganizationMemberUpdateManyWithoutUserNestedInput
     sentInvites?: OrganizationMemberUpdateManyWithoutInviterNestedInput
+    notificationHistory?: NotificationHistoryUpdateManyWithoutUserNestedInput
+    notificationPreferences?: NotificationPreferenceUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPasswordResetsInput = {
@@ -47709,6 +53079,8 @@ export namespace Prisma {
     createdInviteCodes?: InviteCodeUncheckedUpdateManyWithoutCreatorNestedInput
     organizationMemberships?: OrganizationMemberUncheckedUpdateManyWithoutUserNestedInput
     sentInvites?: OrganizationMemberUncheckedUpdateManyWithoutInviterNestedInput
+    notificationHistory?: NotificationHistoryUncheckedUpdateManyWithoutUserNestedInput
+    notificationPreferences?: NotificationPreferenceUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type UserCreateWithoutOrganizationInput = {
@@ -47735,6 +53107,8 @@ export namespace Prisma {
     createdInviteCodes?: InviteCodeCreateNestedManyWithoutCreatorInput
     organizationMemberships?: OrganizationMemberCreateNestedManyWithoutUserInput
     sentInvites?: OrganizationMemberCreateNestedManyWithoutInviterInput
+    notificationHistory?: NotificationHistoryCreateNestedManyWithoutUserInput
+    notificationPreferences?: NotificationPreferenceCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutOrganizationInput = {
@@ -47761,6 +53135,8 @@ export namespace Prisma {
     createdInviteCodes?: InviteCodeUncheckedCreateNestedManyWithoutCreatorInput
     organizationMemberships?: OrganizationMemberUncheckedCreateNestedManyWithoutUserInput
     sentInvites?: OrganizationMemberUncheckedCreateNestedManyWithoutInviterInput
+    notificationHistory?: NotificationHistoryUncheckedCreateNestedManyWithoutUserInput
+    notificationPreferences?: NotificationPreferenceUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutOrganizationInput = {
@@ -47871,24 +53247,32 @@ export namespace Prisma {
     id?: string
     name: string
     description?: string | null
+    campaignType?: $Enums.CampaignType
     templateId: string
     template: string
-    subject: string
-    senderName: string
-    senderEmail: string
+    subject?: string | null
+    senderName?: string | null
+    senderEmail?: string | null
     landingPageUrl?: string | null
+    senderNumber?: string | null
+    messageContent?: string | null
+    trackingUrl?: string | null
     status?: $Enums.CampaignStatus
     scheduledAt?: Date | string | null
     launchedAt?: Date | string | null
     completedAt?: Date | string | null
     pausedAt?: Date | string | null
     targetCount?: number
-    emailsSent?: number
-    emailsDelivered?: number
-    emailsOpened?: number
+    messagesSent?: number
+    messagesDelivered?: number
+    messagesOpened?: number
     linksClicked?: number
     credentialsEntered?: number
     phishingReported?: number
+    messagesFailed?: number
+    emailsSent?: number
+    emailsDelivered?: number
+    emailsOpened?: number
     emailsBounced?: number
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -47901,24 +53285,32 @@ export namespace Prisma {
     id?: string
     name: string
     description?: string | null
+    campaignType?: $Enums.CampaignType
     templateId: string
     template: string
-    subject: string
-    senderName: string
-    senderEmail: string
+    subject?: string | null
+    senderName?: string | null
+    senderEmail?: string | null
     landingPageUrl?: string | null
+    senderNumber?: string | null
+    messageContent?: string | null
+    trackingUrl?: string | null
     status?: $Enums.CampaignStatus
     scheduledAt?: Date | string | null
     launchedAt?: Date | string | null
     completedAt?: Date | string | null
     pausedAt?: Date | string | null
     targetCount?: number
-    emailsSent?: number
-    emailsDelivered?: number
-    emailsOpened?: number
+    messagesSent?: number
+    messagesDelivered?: number
+    messagesOpened?: number
     linksClicked?: number
     credentialsEntered?: number
     phishingReported?: number
+    messagesFailed?: number
+    emailsSent?: number
+    emailsDelivered?: number
+    emailsOpened?: number
     emailsBounced?: number
     createdBy: string
     createdAt?: Date | string
@@ -47943,10 +53335,14 @@ export namespace Prisma {
     description: string
     category: $Enums.TemplateCategory
     riskLevel: $Enums.RiskLevel
-    defaultSubject: string
-    defaultSenderName: string
-    emailBodyHtml: string
-    emailBodyText: string
+    templateType?: $Enums.TemplateType
+    defaultSubject?: string | null
+    defaultSenderName?: string | null
+    emailBodyHtml?: string | null
+    emailBodyText?: string | null
+    smsContent?: string | null
+    defaultSenderNumber?: string | null
+    messageContent?: string | null
     landingPageHtml?: string | null
     captureCredentials?: boolean
     isActive?: boolean
@@ -47965,10 +53361,14 @@ export namespace Prisma {
     description: string
     category: $Enums.TemplateCategory
     riskLevel: $Enums.RiskLevel
-    defaultSubject: string
-    defaultSenderName: string
-    emailBodyHtml: string
-    emailBodyText: string
+    templateType?: $Enums.TemplateType
+    defaultSubject?: string | null
+    defaultSenderName?: string | null
+    emailBodyHtml?: string | null
+    emailBodyText?: string | null
+    smsContent?: string | null
+    defaultSenderNumber?: string | null
+    messageContent?: string | null
     landingPageHtml?: string | null
     captureCredentials?: boolean
     isActive?: boolean
@@ -48457,6 +53857,8 @@ export namespace Prisma {
     passwordResets?: PasswordResetCreateNestedManyWithoutUserInput
     organizationMemberships?: OrganizationMemberCreateNestedManyWithoutUserInput
     sentInvites?: OrganizationMemberCreateNestedManyWithoutInviterInput
+    notificationHistory?: NotificationHistoryCreateNestedManyWithoutUserInput
+    notificationPreferences?: NotificationPreferenceCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutCreatedInviteCodesInput = {
@@ -48483,6 +53885,8 @@ export namespace Prisma {
     passwordResets?: PasswordResetUncheckedCreateNestedManyWithoutUserInput
     organizationMemberships?: OrganizationMemberUncheckedCreateNestedManyWithoutUserInput
     sentInvites?: OrganizationMemberUncheckedCreateNestedManyWithoutInviterInput
+    notificationHistory?: NotificationHistoryUncheckedCreateNestedManyWithoutUserInput
+    notificationPreferences?: NotificationPreferenceUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutCreatedInviteCodesInput = {
@@ -48598,6 +54002,8 @@ export namespace Prisma {
     passwordResets?: PasswordResetUpdateManyWithoutUserNestedInput
     organizationMemberships?: OrganizationMemberUpdateManyWithoutUserNestedInput
     sentInvites?: OrganizationMemberUpdateManyWithoutInviterNestedInput
+    notificationHistory?: NotificationHistoryUpdateManyWithoutUserNestedInput
+    notificationPreferences?: NotificationPreferenceUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCreatedInviteCodesInput = {
@@ -48624,6 +54030,8 @@ export namespace Prisma {
     passwordResets?: PasswordResetUncheckedUpdateManyWithoutUserNestedInput
     organizationMemberships?: OrganizationMemberUncheckedUpdateManyWithoutUserNestedInput
     sentInvites?: OrganizationMemberUncheckedUpdateManyWithoutInviterNestedInput
+    notificationHistory?: NotificationHistoryUncheckedUpdateManyWithoutUserNestedInput
+    notificationPreferences?: NotificationPreferenceUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type UserCreateWithoutOrganizationMembershipsInput = {
@@ -48650,6 +54058,8 @@ export namespace Prisma {
     passwordResets?: PasswordResetCreateNestedManyWithoutUserInput
     createdInviteCodes?: InviteCodeCreateNestedManyWithoutCreatorInput
     sentInvites?: OrganizationMemberCreateNestedManyWithoutInviterInput
+    notificationHistory?: NotificationHistoryCreateNestedManyWithoutUserInput
+    notificationPreferences?: NotificationPreferenceCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutOrganizationMembershipsInput = {
@@ -48676,6 +54086,8 @@ export namespace Prisma {
     passwordResets?: PasswordResetUncheckedCreateNestedManyWithoutUserInput
     createdInviteCodes?: InviteCodeUncheckedCreateNestedManyWithoutCreatorInput
     sentInvites?: OrganizationMemberUncheckedCreateNestedManyWithoutInviterInput
+    notificationHistory?: NotificationHistoryUncheckedCreateNestedManyWithoutUserInput
+    notificationPreferences?: NotificationPreferenceUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutOrganizationMembershipsInput = {
@@ -48774,6 +54186,8 @@ export namespace Prisma {
     passwordResets?: PasswordResetCreateNestedManyWithoutUserInput
     createdInviteCodes?: InviteCodeCreateNestedManyWithoutCreatorInput
     organizationMemberships?: OrganizationMemberCreateNestedManyWithoutUserInput
+    notificationHistory?: NotificationHistoryCreateNestedManyWithoutUserInput
+    notificationPreferences?: NotificationPreferenceCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSentInvitesInput = {
@@ -48800,6 +54214,8 @@ export namespace Prisma {
     passwordResets?: PasswordResetUncheckedCreateNestedManyWithoutUserInput
     createdInviteCodes?: InviteCodeUncheckedCreateNestedManyWithoutCreatorInput
     organizationMemberships?: OrganizationMemberUncheckedCreateNestedManyWithoutUserInput
+    notificationHistory?: NotificationHistoryUncheckedCreateNestedManyWithoutUserInput
+    notificationPreferences?: NotificationPreferenceUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSentInvitesInput = {
@@ -48842,6 +54258,8 @@ export namespace Prisma {
     passwordResets?: PasswordResetUpdateManyWithoutUserNestedInput
     createdInviteCodes?: InviteCodeUpdateManyWithoutCreatorNestedInput
     sentInvites?: OrganizationMemberUpdateManyWithoutInviterNestedInput
+    notificationHistory?: NotificationHistoryUpdateManyWithoutUserNestedInput
+    notificationPreferences?: NotificationPreferenceUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutOrganizationMembershipsInput = {
@@ -48868,6 +54286,8 @@ export namespace Prisma {
     passwordResets?: PasswordResetUncheckedUpdateManyWithoutUserNestedInput
     createdInviteCodes?: InviteCodeUncheckedUpdateManyWithoutCreatorNestedInput
     sentInvites?: OrganizationMemberUncheckedUpdateManyWithoutInviterNestedInput
+    notificationHistory?: NotificationHistoryUncheckedUpdateManyWithoutUserNestedInput
+    notificationPreferences?: NotificationPreferenceUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type OrganizationUpsertWithoutMembersInput = {
@@ -48978,6 +54398,8 @@ export namespace Prisma {
     passwordResets?: PasswordResetUpdateManyWithoutUserNestedInput
     createdInviteCodes?: InviteCodeUpdateManyWithoutCreatorNestedInput
     organizationMemberships?: OrganizationMemberUpdateManyWithoutUserNestedInput
+    notificationHistory?: NotificationHistoryUpdateManyWithoutUserNestedInput
+    notificationPreferences?: NotificationPreferenceUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSentInvitesInput = {
@@ -49004,6 +54426,8 @@ export namespace Prisma {
     passwordResets?: PasswordResetUncheckedUpdateManyWithoutUserNestedInput
     createdInviteCodes?: InviteCodeUncheckedUpdateManyWithoutCreatorNestedInput
     organizationMemberships?: OrganizationMemberUncheckedUpdateManyWithoutUserNestedInput
+    notificationHistory?: NotificationHistoryUncheckedUpdateManyWithoutUserNestedInput
+    notificationPreferences?: NotificationPreferenceUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type OrganizationCreateWithoutAssessmentsInput = {
@@ -49097,6 +54521,8 @@ export namespace Prisma {
     createdInviteCodes?: InviteCodeCreateNestedManyWithoutCreatorInput
     organizationMemberships?: OrganizationMemberCreateNestedManyWithoutUserInput
     sentInvites?: OrganizationMemberCreateNestedManyWithoutInviterInput
+    notificationHistory?: NotificationHistoryCreateNestedManyWithoutUserInput
+    notificationPreferences?: NotificationPreferenceCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAssessmentsInput = {
@@ -49123,6 +54549,8 @@ export namespace Prisma {
     createdInviteCodes?: InviteCodeUncheckedCreateNestedManyWithoutCreatorInput
     organizationMemberships?: OrganizationMemberUncheckedCreateNestedManyWithoutUserInput
     sentInvites?: OrganizationMemberUncheckedCreateNestedManyWithoutInviterInput
+    notificationHistory?: NotificationHistoryUncheckedCreateNestedManyWithoutUserInput
+    notificationPreferences?: NotificationPreferenceUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAssessmentsInput = {
@@ -49305,6 +54733,8 @@ export namespace Prisma {
     createdInviteCodes?: InviteCodeUpdateManyWithoutCreatorNestedInput
     organizationMemberships?: OrganizationMemberUpdateManyWithoutUserNestedInput
     sentInvites?: OrganizationMemberUpdateManyWithoutInviterNestedInput
+    notificationHistory?: NotificationHistoryUpdateManyWithoutUserNestedInput
+    notificationPreferences?: NotificationPreferenceUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAssessmentsInput = {
@@ -49331,6 +54761,8 @@ export namespace Prisma {
     createdInviteCodes?: InviteCodeUncheckedUpdateManyWithoutCreatorNestedInput
     organizationMemberships?: OrganizationMemberUncheckedUpdateManyWithoutUserNestedInput
     sentInvites?: OrganizationMemberUncheckedUpdateManyWithoutInviterNestedInput
+    notificationHistory?: NotificationHistoryUncheckedUpdateManyWithoutUserNestedInput
+    notificationPreferences?: NotificationPreferenceUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type AssessmentResponseUpsertWithWhereUniqueWithoutAssessmentInput = {
@@ -50114,6 +55546,8 @@ export namespace Prisma {
     createdInviteCodes?: InviteCodeCreateNestedManyWithoutCreatorInput
     organizationMemberships?: OrganizationMemberCreateNestedManyWithoutUserInput
     sentInvites?: OrganizationMemberCreateNestedManyWithoutInviterInput
+    notificationHistory?: NotificationHistoryCreateNestedManyWithoutUserInput
+    notificationPreferences?: NotificationPreferenceCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutPhishingCampaignsInput = {
@@ -50140,6 +55574,8 @@ export namespace Prisma {
     createdInviteCodes?: InviteCodeUncheckedCreateNestedManyWithoutCreatorInput
     organizationMemberships?: OrganizationMemberUncheckedCreateNestedManyWithoutUserInput
     sentInvites?: OrganizationMemberUncheckedCreateNestedManyWithoutInviterInput
+    notificationHistory?: NotificationHistoryUncheckedCreateNestedManyWithoutUserInput
+    notificationPreferences?: NotificationPreferenceUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutPhishingCampaignsInput = {
@@ -50149,17 +55585,22 @@ export namespace Prisma {
 
   export type PhishingTargetCreateWithoutCampaignInput = {
     id?: string
-    email: string
+    email?: string | null
+    phoneNumber?: string | null
     firstName?: string | null
     lastName?: string | null
     department?: string | null
     jobTitle?: string | null
-    emailSent?: boolean
-    emailDelivered?: boolean
-    emailOpened?: boolean
+    messageSent?: boolean
+    messageDelivered?: boolean
+    messageOpened?: boolean
     linkClicked?: boolean
     credentialsEntered?: boolean
     reportedPhishing?: boolean
+    messageFailed?: boolean
+    emailSent?: boolean
+    emailDelivered?: boolean
+    emailOpened?: boolean
     emailBounced?: boolean
     sentAt?: Date | string | null
     deliveredAt?: Date | string | null
@@ -50167,10 +55608,13 @@ export namespace Prisma {
     clickedAt?: Date | string | null
     credentialsAt?: Date | string | null
     reportedAt?: Date | string | null
+    failedAt?: Date | string | null
     bouncedAt?: Date | string | null
     userAgent?: string | null
     ipAddress?: string | null
     clickCount?: number
+    smsProvider?: string | null
+    messageId?: string | null
     riskScore?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -50180,17 +55624,22 @@ export namespace Prisma {
 
   export type PhishingTargetUncheckedCreateWithoutCampaignInput = {
     id?: string
-    email: string
+    email?: string | null
+    phoneNumber?: string | null
     firstName?: string | null
     lastName?: string | null
     department?: string | null
     jobTitle?: string | null
-    emailSent?: boolean
-    emailDelivered?: boolean
-    emailOpened?: boolean
+    messageSent?: boolean
+    messageDelivered?: boolean
+    messageOpened?: boolean
     linkClicked?: boolean
     credentialsEntered?: boolean
     reportedPhishing?: boolean
+    messageFailed?: boolean
+    emailSent?: boolean
+    emailDelivered?: boolean
+    emailOpened?: boolean
     emailBounced?: boolean
     sentAt?: Date | string | null
     deliveredAt?: Date | string | null
@@ -50198,10 +55647,13 @@ export namespace Prisma {
     clickedAt?: Date | string | null
     credentialsAt?: Date | string | null
     reportedAt?: Date | string | null
+    failedAt?: Date | string | null
     bouncedAt?: Date | string | null
     userAgent?: string | null
     ipAddress?: string | null
     clickCount?: number
+    smsProvider?: string | null
+    messageId?: string | null
     riskScore?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -50359,6 +55811,8 @@ export namespace Prisma {
     createdInviteCodes?: InviteCodeUpdateManyWithoutCreatorNestedInput
     organizationMemberships?: OrganizationMemberUpdateManyWithoutUserNestedInput
     sentInvites?: OrganizationMemberUpdateManyWithoutInviterNestedInput
+    notificationHistory?: NotificationHistoryUpdateManyWithoutUserNestedInput
+    notificationPreferences?: NotificationPreferenceUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPhishingCampaignsInput = {
@@ -50385,6 +55839,8 @@ export namespace Prisma {
     createdInviteCodes?: InviteCodeUncheckedUpdateManyWithoutCreatorNestedInput
     organizationMemberships?: OrganizationMemberUncheckedUpdateManyWithoutUserNestedInput
     sentInvites?: OrganizationMemberUncheckedUpdateManyWithoutInviterNestedInput
+    notificationHistory?: NotificationHistoryUncheckedUpdateManyWithoutUserNestedInput
+    notificationPreferences?: NotificationPreferenceUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type PhishingTargetUpsertWithWhereUniqueWithoutCampaignInput = {
@@ -50438,24 +55894,32 @@ export namespace Prisma {
     id?: string
     name: string
     description?: string | null
+    campaignType?: $Enums.CampaignType
     templateId: string
     template: string
-    subject: string
-    senderName: string
-    senderEmail: string
+    subject?: string | null
+    senderName?: string | null
+    senderEmail?: string | null
     landingPageUrl?: string | null
+    senderNumber?: string | null
+    messageContent?: string | null
+    trackingUrl?: string | null
     status?: $Enums.CampaignStatus
     scheduledAt?: Date | string | null
     launchedAt?: Date | string | null
     completedAt?: Date | string | null
     pausedAt?: Date | string | null
     targetCount?: number
-    emailsSent?: number
-    emailsDelivered?: number
-    emailsOpened?: number
+    messagesSent?: number
+    messagesDelivered?: number
+    messagesOpened?: number
     linksClicked?: number
     credentialsEntered?: number
     phishingReported?: number
+    messagesFailed?: number
+    emailsSent?: number
+    emailsDelivered?: number
+    emailsOpened?: number
     emailsBounced?: number
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -50468,24 +55932,32 @@ export namespace Prisma {
     id?: string
     name: string
     description?: string | null
+    campaignType?: $Enums.CampaignType
     templateId: string
     template: string
-    subject: string
-    senderName: string
-    senderEmail: string
+    subject?: string | null
+    senderName?: string | null
+    senderEmail?: string | null
     landingPageUrl?: string | null
+    senderNumber?: string | null
+    messageContent?: string | null
+    trackingUrl?: string | null
     status?: $Enums.CampaignStatus
     scheduledAt?: Date | string | null
     launchedAt?: Date | string | null
     completedAt?: Date | string | null
     pausedAt?: Date | string | null
     targetCount?: number
-    emailsSent?: number
-    emailsDelivered?: number
-    emailsOpened?: number
+    messagesSent?: number
+    messagesDelivered?: number
+    messagesOpened?: number
     linksClicked?: number
     credentialsEntered?: number
     phishingReported?: number
+    messagesFailed?: number
+    emailsSent?: number
+    emailsDelivered?: number
+    emailsOpened?: number
     emailsBounced?: number
     createdBy: string
     organizationId: string
@@ -50523,6 +55995,8 @@ export namespace Prisma {
     createdInviteCodes?: InviteCodeCreateNestedManyWithoutCreatorInput
     organizationMemberships?: OrganizationMemberCreateNestedManyWithoutUserInput
     sentInvites?: OrganizationMemberCreateNestedManyWithoutInviterInput
+    notificationHistory?: NotificationHistoryCreateNestedManyWithoutUserInput
+    notificationPreferences?: NotificationPreferenceCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutPhishingTargetsInput = {
@@ -50549,6 +56023,8 @@ export namespace Prisma {
     createdInviteCodes?: InviteCodeUncheckedCreateNestedManyWithoutCreatorInput
     organizationMemberships?: OrganizationMemberUncheckedCreateNestedManyWithoutUserInput
     sentInvites?: OrganizationMemberUncheckedCreateNestedManyWithoutInviterInput
+    notificationHistory?: NotificationHistoryUncheckedCreateNestedManyWithoutUserInput
+    notificationPreferences?: NotificationPreferenceUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutPhishingTargetsInput = {
@@ -50603,24 +56079,32 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    campaignType?: EnumCampaignTypeFieldUpdateOperationsInput | $Enums.CampaignType
     templateId?: StringFieldUpdateOperationsInput | string
     template?: StringFieldUpdateOperationsInput | string
-    subject?: StringFieldUpdateOperationsInput | string
-    senderName?: StringFieldUpdateOperationsInput | string
-    senderEmail?: StringFieldUpdateOperationsInput | string
+    subject?: NullableStringFieldUpdateOperationsInput | string | null
+    senderName?: NullableStringFieldUpdateOperationsInput | string | null
+    senderEmail?: NullableStringFieldUpdateOperationsInput | string | null
     landingPageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    senderNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    messageContent?: NullableStringFieldUpdateOperationsInput | string | null
+    trackingUrl?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumCampaignStatusFieldUpdateOperationsInput | $Enums.CampaignStatus
     scheduledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     launchedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     pausedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     targetCount?: IntFieldUpdateOperationsInput | number
-    emailsSent?: IntFieldUpdateOperationsInput | number
-    emailsDelivered?: IntFieldUpdateOperationsInput | number
-    emailsOpened?: IntFieldUpdateOperationsInput | number
+    messagesSent?: IntFieldUpdateOperationsInput | number
+    messagesDelivered?: IntFieldUpdateOperationsInput | number
+    messagesOpened?: IntFieldUpdateOperationsInput | number
     linksClicked?: IntFieldUpdateOperationsInput | number
     credentialsEntered?: IntFieldUpdateOperationsInput | number
     phishingReported?: IntFieldUpdateOperationsInput | number
+    messagesFailed?: IntFieldUpdateOperationsInput | number
+    emailsSent?: IntFieldUpdateOperationsInput | number
+    emailsDelivered?: IntFieldUpdateOperationsInput | number
+    emailsOpened?: IntFieldUpdateOperationsInput | number
     emailsBounced?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -50633,24 +56117,32 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    campaignType?: EnumCampaignTypeFieldUpdateOperationsInput | $Enums.CampaignType
     templateId?: StringFieldUpdateOperationsInput | string
     template?: StringFieldUpdateOperationsInput | string
-    subject?: StringFieldUpdateOperationsInput | string
-    senderName?: StringFieldUpdateOperationsInput | string
-    senderEmail?: StringFieldUpdateOperationsInput | string
+    subject?: NullableStringFieldUpdateOperationsInput | string | null
+    senderName?: NullableStringFieldUpdateOperationsInput | string | null
+    senderEmail?: NullableStringFieldUpdateOperationsInput | string | null
     landingPageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    senderNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    messageContent?: NullableStringFieldUpdateOperationsInput | string | null
+    trackingUrl?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumCampaignStatusFieldUpdateOperationsInput | $Enums.CampaignStatus
     scheduledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     launchedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     pausedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     targetCount?: IntFieldUpdateOperationsInput | number
-    emailsSent?: IntFieldUpdateOperationsInput | number
-    emailsDelivered?: IntFieldUpdateOperationsInput | number
-    emailsOpened?: IntFieldUpdateOperationsInput | number
+    messagesSent?: IntFieldUpdateOperationsInput | number
+    messagesDelivered?: IntFieldUpdateOperationsInput | number
+    messagesOpened?: IntFieldUpdateOperationsInput | number
     linksClicked?: IntFieldUpdateOperationsInput | number
     credentialsEntered?: IntFieldUpdateOperationsInput | number
     phishingReported?: IntFieldUpdateOperationsInput | number
+    messagesFailed?: IntFieldUpdateOperationsInput | number
+    emailsSent?: IntFieldUpdateOperationsInput | number
+    emailsDelivered?: IntFieldUpdateOperationsInput | number
+    emailsOpened?: IntFieldUpdateOperationsInput | number
     emailsBounced?: IntFieldUpdateOperationsInput | number
     createdBy?: StringFieldUpdateOperationsInput | string
     organizationId?: StringFieldUpdateOperationsInput | string
@@ -50694,6 +56186,8 @@ export namespace Prisma {
     createdInviteCodes?: InviteCodeUpdateManyWithoutCreatorNestedInput
     organizationMemberships?: OrganizationMemberUpdateManyWithoutUserNestedInput
     sentInvites?: OrganizationMemberUpdateManyWithoutInviterNestedInput
+    notificationHistory?: NotificationHistoryUpdateManyWithoutUserNestedInput
+    notificationPreferences?: NotificationPreferenceUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPhishingTargetsInput = {
@@ -50720,6 +56214,8 @@ export namespace Prisma {
     createdInviteCodes?: InviteCodeUncheckedUpdateManyWithoutCreatorNestedInput
     organizationMemberships?: OrganizationMemberUncheckedUpdateManyWithoutUserNestedInput
     sentInvites?: OrganizationMemberUncheckedUpdateManyWithoutInviterNestedInput
+    notificationHistory?: NotificationHistoryUncheckedUpdateManyWithoutUserNestedInput
+    notificationPreferences?: NotificationPreferenceUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type PhishingEventUpsertWithWhereUniqueWithoutTargetInput = {
@@ -50742,24 +56238,32 @@ export namespace Prisma {
     id?: string
     name: string
     description?: string | null
+    campaignType?: $Enums.CampaignType
     templateId: string
     template: string
-    subject: string
-    senderName: string
-    senderEmail: string
+    subject?: string | null
+    senderName?: string | null
+    senderEmail?: string | null
     landingPageUrl?: string | null
+    senderNumber?: string | null
+    messageContent?: string | null
+    trackingUrl?: string | null
     status?: $Enums.CampaignStatus
     scheduledAt?: Date | string | null
     launchedAt?: Date | string | null
     completedAt?: Date | string | null
     pausedAt?: Date | string | null
     targetCount?: number
-    emailsSent?: number
-    emailsDelivered?: number
-    emailsOpened?: number
+    messagesSent?: number
+    messagesDelivered?: number
+    messagesOpened?: number
     linksClicked?: number
     credentialsEntered?: number
     phishingReported?: number
+    messagesFailed?: number
+    emailsSent?: number
+    emailsDelivered?: number
+    emailsOpened?: number
     emailsBounced?: number
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -50772,24 +56276,32 @@ export namespace Prisma {
     id?: string
     name: string
     description?: string | null
+    campaignType?: $Enums.CampaignType
     templateId: string
     template: string
-    subject: string
-    senderName: string
-    senderEmail: string
+    subject?: string | null
+    senderName?: string | null
+    senderEmail?: string | null
     landingPageUrl?: string | null
+    senderNumber?: string | null
+    messageContent?: string | null
+    trackingUrl?: string | null
     status?: $Enums.CampaignStatus
     scheduledAt?: Date | string | null
     launchedAt?: Date | string | null
     completedAt?: Date | string | null
     pausedAt?: Date | string | null
     targetCount?: number
-    emailsSent?: number
-    emailsDelivered?: number
-    emailsOpened?: number
+    messagesSent?: number
+    messagesDelivered?: number
+    messagesOpened?: number
     linksClicked?: number
     credentialsEntered?: number
     phishingReported?: number
+    messagesFailed?: number
+    emailsSent?: number
+    emailsDelivered?: number
+    emailsOpened?: number
     emailsBounced?: number
     createdBy: string
     organizationId: string
@@ -50805,17 +56317,22 @@ export namespace Prisma {
 
   export type PhishingTargetCreateWithoutEventsInput = {
     id?: string
-    email: string
+    email?: string | null
+    phoneNumber?: string | null
     firstName?: string | null
     lastName?: string | null
     department?: string | null
     jobTitle?: string | null
-    emailSent?: boolean
-    emailDelivered?: boolean
-    emailOpened?: boolean
+    messageSent?: boolean
+    messageDelivered?: boolean
+    messageOpened?: boolean
     linkClicked?: boolean
     credentialsEntered?: boolean
     reportedPhishing?: boolean
+    messageFailed?: boolean
+    emailSent?: boolean
+    emailDelivered?: boolean
+    emailOpened?: boolean
     emailBounced?: boolean
     sentAt?: Date | string | null
     deliveredAt?: Date | string | null
@@ -50823,10 +56340,13 @@ export namespace Prisma {
     clickedAt?: Date | string | null
     credentialsAt?: Date | string | null
     reportedAt?: Date | string | null
+    failedAt?: Date | string | null
     bouncedAt?: Date | string | null
     userAgent?: string | null
     ipAddress?: string | null
     clickCount?: number
+    smsProvider?: string | null
+    messageId?: string | null
     riskScore?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -50836,17 +56356,22 @@ export namespace Prisma {
 
   export type PhishingTargetUncheckedCreateWithoutEventsInput = {
     id?: string
-    email: string
+    email?: string | null
+    phoneNumber?: string | null
     firstName?: string | null
     lastName?: string | null
     department?: string | null
     jobTitle?: string | null
-    emailSent?: boolean
-    emailDelivered?: boolean
-    emailOpened?: boolean
+    messageSent?: boolean
+    messageDelivered?: boolean
+    messageOpened?: boolean
     linkClicked?: boolean
     credentialsEntered?: boolean
     reportedPhishing?: boolean
+    messageFailed?: boolean
+    emailSent?: boolean
+    emailDelivered?: boolean
+    emailOpened?: boolean
     emailBounced?: boolean
     sentAt?: Date | string | null
     deliveredAt?: Date | string | null
@@ -50854,10 +56379,13 @@ export namespace Prisma {
     clickedAt?: Date | string | null
     credentialsAt?: Date | string | null
     reportedAt?: Date | string | null
+    failedAt?: Date | string | null
     bouncedAt?: Date | string | null
     userAgent?: string | null
     ipAddress?: string | null
     clickCount?: number
+    smsProvider?: string | null
+    messageId?: string | null
     riskScore?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -50885,24 +56413,32 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    campaignType?: EnumCampaignTypeFieldUpdateOperationsInput | $Enums.CampaignType
     templateId?: StringFieldUpdateOperationsInput | string
     template?: StringFieldUpdateOperationsInput | string
-    subject?: StringFieldUpdateOperationsInput | string
-    senderName?: StringFieldUpdateOperationsInput | string
-    senderEmail?: StringFieldUpdateOperationsInput | string
+    subject?: NullableStringFieldUpdateOperationsInput | string | null
+    senderName?: NullableStringFieldUpdateOperationsInput | string | null
+    senderEmail?: NullableStringFieldUpdateOperationsInput | string | null
     landingPageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    senderNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    messageContent?: NullableStringFieldUpdateOperationsInput | string | null
+    trackingUrl?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumCampaignStatusFieldUpdateOperationsInput | $Enums.CampaignStatus
     scheduledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     launchedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     pausedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     targetCount?: IntFieldUpdateOperationsInput | number
-    emailsSent?: IntFieldUpdateOperationsInput | number
-    emailsDelivered?: IntFieldUpdateOperationsInput | number
-    emailsOpened?: IntFieldUpdateOperationsInput | number
+    messagesSent?: IntFieldUpdateOperationsInput | number
+    messagesDelivered?: IntFieldUpdateOperationsInput | number
+    messagesOpened?: IntFieldUpdateOperationsInput | number
     linksClicked?: IntFieldUpdateOperationsInput | number
     credentialsEntered?: IntFieldUpdateOperationsInput | number
     phishingReported?: IntFieldUpdateOperationsInput | number
+    messagesFailed?: IntFieldUpdateOperationsInput | number
+    emailsSent?: IntFieldUpdateOperationsInput | number
+    emailsDelivered?: IntFieldUpdateOperationsInput | number
+    emailsOpened?: IntFieldUpdateOperationsInput | number
     emailsBounced?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -50915,24 +56451,32 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    campaignType?: EnumCampaignTypeFieldUpdateOperationsInput | $Enums.CampaignType
     templateId?: StringFieldUpdateOperationsInput | string
     template?: StringFieldUpdateOperationsInput | string
-    subject?: StringFieldUpdateOperationsInput | string
-    senderName?: StringFieldUpdateOperationsInput | string
-    senderEmail?: StringFieldUpdateOperationsInput | string
+    subject?: NullableStringFieldUpdateOperationsInput | string | null
+    senderName?: NullableStringFieldUpdateOperationsInput | string | null
+    senderEmail?: NullableStringFieldUpdateOperationsInput | string | null
     landingPageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    senderNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    messageContent?: NullableStringFieldUpdateOperationsInput | string | null
+    trackingUrl?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumCampaignStatusFieldUpdateOperationsInput | $Enums.CampaignStatus
     scheduledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     launchedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     pausedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     targetCount?: IntFieldUpdateOperationsInput | number
-    emailsSent?: IntFieldUpdateOperationsInput | number
-    emailsDelivered?: IntFieldUpdateOperationsInput | number
-    emailsOpened?: IntFieldUpdateOperationsInput | number
+    messagesSent?: IntFieldUpdateOperationsInput | number
+    messagesDelivered?: IntFieldUpdateOperationsInput | number
+    messagesOpened?: IntFieldUpdateOperationsInput | number
     linksClicked?: IntFieldUpdateOperationsInput | number
     credentialsEntered?: IntFieldUpdateOperationsInput | number
     phishingReported?: IntFieldUpdateOperationsInput | number
+    messagesFailed?: IntFieldUpdateOperationsInput | number
+    emailsSent?: IntFieldUpdateOperationsInput | number
+    emailsDelivered?: IntFieldUpdateOperationsInput | number
+    emailsOpened?: IntFieldUpdateOperationsInput | number
     emailsBounced?: IntFieldUpdateOperationsInput | number
     createdBy?: StringFieldUpdateOperationsInput | string
     organizationId?: StringFieldUpdateOperationsInput | string
@@ -50954,17 +56498,22 @@ export namespace Prisma {
 
   export type PhishingTargetUpdateWithoutEventsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
     firstName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: NullableStringFieldUpdateOperationsInput | string | null
     department?: NullableStringFieldUpdateOperationsInput | string | null
     jobTitle?: NullableStringFieldUpdateOperationsInput | string | null
-    emailSent?: BoolFieldUpdateOperationsInput | boolean
-    emailDelivered?: BoolFieldUpdateOperationsInput | boolean
-    emailOpened?: BoolFieldUpdateOperationsInput | boolean
+    messageSent?: BoolFieldUpdateOperationsInput | boolean
+    messageDelivered?: BoolFieldUpdateOperationsInput | boolean
+    messageOpened?: BoolFieldUpdateOperationsInput | boolean
     linkClicked?: BoolFieldUpdateOperationsInput | boolean
     credentialsEntered?: BoolFieldUpdateOperationsInput | boolean
     reportedPhishing?: BoolFieldUpdateOperationsInput | boolean
+    messageFailed?: BoolFieldUpdateOperationsInput | boolean
+    emailSent?: BoolFieldUpdateOperationsInput | boolean
+    emailDelivered?: BoolFieldUpdateOperationsInput | boolean
+    emailOpened?: BoolFieldUpdateOperationsInput | boolean
     emailBounced?: BoolFieldUpdateOperationsInput | boolean
     sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -50972,10 +56521,13 @@ export namespace Prisma {
     clickedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     credentialsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     reportedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     bouncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     userAgent?: NullableStringFieldUpdateOperationsInput | string | null
     ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
     clickCount?: IntFieldUpdateOperationsInput | number
+    smsProvider?: NullableStringFieldUpdateOperationsInput | string | null
+    messageId?: NullableStringFieldUpdateOperationsInput | string | null
     riskScore?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -50985,17 +56537,22 @@ export namespace Prisma {
 
   export type PhishingTargetUncheckedUpdateWithoutEventsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
     firstName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: NullableStringFieldUpdateOperationsInput | string | null
     department?: NullableStringFieldUpdateOperationsInput | string | null
     jobTitle?: NullableStringFieldUpdateOperationsInput | string | null
-    emailSent?: BoolFieldUpdateOperationsInput | boolean
-    emailDelivered?: BoolFieldUpdateOperationsInput | boolean
-    emailOpened?: BoolFieldUpdateOperationsInput | boolean
+    messageSent?: BoolFieldUpdateOperationsInput | boolean
+    messageDelivered?: BoolFieldUpdateOperationsInput | boolean
+    messageOpened?: BoolFieldUpdateOperationsInput | boolean
     linkClicked?: BoolFieldUpdateOperationsInput | boolean
     credentialsEntered?: BoolFieldUpdateOperationsInput | boolean
     reportedPhishing?: BoolFieldUpdateOperationsInput | boolean
+    messageFailed?: BoolFieldUpdateOperationsInput | boolean
+    emailSent?: BoolFieldUpdateOperationsInput | boolean
+    emailDelivered?: BoolFieldUpdateOperationsInput | boolean
+    emailOpened?: BoolFieldUpdateOperationsInput | boolean
     emailBounced?: BoolFieldUpdateOperationsInput | boolean
     sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -51003,10 +56560,13 @@ export namespace Prisma {
     clickedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     credentialsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     reportedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     bouncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     userAgent?: NullableStringFieldUpdateOperationsInput | string | null
     ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
     clickCount?: IntFieldUpdateOperationsInput | number
+    smsProvider?: NullableStringFieldUpdateOperationsInput | string | null
+    messageId?: NullableStringFieldUpdateOperationsInput | string | null
     riskScore?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -51105,6 +56665,8 @@ export namespace Prisma {
     createdInviteCodes?: InviteCodeCreateNestedManyWithoutCreatorInput
     organizationMemberships?: OrganizationMemberCreateNestedManyWithoutUserInput
     sentInvites?: OrganizationMemberCreateNestedManyWithoutInviterInput
+    notificationHistory?: NotificationHistoryCreateNestedManyWithoutUserInput
+    notificationPreferences?: NotificationPreferenceCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutPhishingTemplatesInput = {
@@ -51131,6 +56693,8 @@ export namespace Prisma {
     createdInviteCodes?: InviteCodeUncheckedCreateNestedManyWithoutCreatorInput
     organizationMemberships?: OrganizationMemberUncheckedCreateNestedManyWithoutUserInput
     sentInvites?: OrganizationMemberUncheckedCreateNestedManyWithoutInviterInput
+    notificationHistory?: NotificationHistoryUncheckedCreateNestedManyWithoutUserInput
+    notificationPreferences?: NotificationPreferenceUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutPhishingTemplatesInput = {
@@ -51246,6 +56810,8 @@ export namespace Prisma {
     createdInviteCodes?: InviteCodeUpdateManyWithoutCreatorNestedInput
     organizationMemberships?: OrganizationMemberUpdateManyWithoutUserNestedInput
     sentInvites?: OrganizationMemberUpdateManyWithoutInviterNestedInput
+    notificationHistory?: NotificationHistoryUpdateManyWithoutUserNestedInput
+    notificationPreferences?: NotificationPreferenceUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPhishingTemplatesInput = {
@@ -51272,6 +56838,8 @@ export namespace Prisma {
     createdInviteCodes?: InviteCodeUncheckedUpdateManyWithoutCreatorNestedInput
     organizationMemberships?: OrganizationMemberUncheckedUpdateManyWithoutUserNestedInput
     sentInvites?: OrganizationMemberUncheckedUpdateManyWithoutInviterNestedInput
+    notificationHistory?: NotificationHistoryUncheckedUpdateManyWithoutUserNestedInput
+    notificationPreferences?: NotificationPreferenceUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type OrganizationCreateWithoutAgentsInput = {
@@ -51668,6 +57236,8 @@ export namespace Prisma {
     createdInviteCodes?: InviteCodeCreateNestedManyWithoutCreatorInput
     organizationMemberships?: OrganizationMemberCreateNestedManyWithoutUserInput
     sentInvites?: OrganizationMemberCreateNestedManyWithoutInviterInput
+    notificationHistory?: NotificationHistoryCreateNestedManyWithoutUserInput
+    notificationPreferences?: NotificationPreferenceCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutTelemetryEventsInput = {
@@ -51694,6 +57264,8 @@ export namespace Prisma {
     createdInviteCodes?: InviteCodeUncheckedCreateNestedManyWithoutCreatorInput
     organizationMemberships?: OrganizationMemberUncheckedCreateNestedManyWithoutUserInput
     sentInvites?: OrganizationMemberUncheckedCreateNestedManyWithoutInviterInput
+    notificationHistory?: NotificationHistoryUncheckedCreateNestedManyWithoutUserInput
+    notificationPreferences?: NotificationPreferenceUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutTelemetryEventsInput = {
@@ -51785,6 +57357,8 @@ export namespace Prisma {
     createdInviteCodes?: InviteCodeUpdateManyWithoutCreatorNestedInput
     organizationMemberships?: OrganizationMemberUpdateManyWithoutUserNestedInput
     sentInvites?: OrganizationMemberUpdateManyWithoutInviterNestedInput
+    notificationHistory?: NotificationHistoryUpdateManyWithoutUserNestedInput
+    notificationPreferences?: NotificationPreferenceUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTelemetryEventsInput = {
@@ -51811,6 +57385,8 @@ export namespace Prisma {
     createdInviteCodes?: InviteCodeUncheckedUpdateManyWithoutCreatorNestedInput
     organizationMemberships?: OrganizationMemberUncheckedUpdateManyWithoutUserNestedInput
     sentInvites?: OrganizationMemberUncheckedUpdateManyWithoutInviterNestedInput
+    notificationHistory?: NotificationHistoryUncheckedUpdateManyWithoutUserNestedInput
+    notificationPreferences?: NotificationPreferenceUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type AlertCreateWithoutRuleInput = {
@@ -52846,6 +58422,8 @@ export namespace Prisma {
     createdInviteCodes?: InviteCodeCreateNestedManyWithoutCreatorInput
     organizationMemberships?: OrganizationMemberCreateNestedManyWithoutUserInput
     sentInvites?: OrganizationMemberCreateNestedManyWithoutInviterInput
+    notificationHistory?: NotificationHistoryCreateNestedManyWithoutUserInput
+    notificationPreferences?: NotificationPreferenceCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAuditLogsInput = {
@@ -52872,6 +58450,8 @@ export namespace Prisma {
     createdInviteCodes?: InviteCodeUncheckedCreateNestedManyWithoutCreatorInput
     organizationMemberships?: OrganizationMemberUncheckedCreateNestedManyWithoutUserInput
     sentInvites?: OrganizationMemberUncheckedCreateNestedManyWithoutInviterInput
+    notificationHistory?: NotificationHistoryUncheckedCreateNestedManyWithoutUserInput
+    notificationPreferences?: NotificationPreferenceUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAuditLogsInput = {
@@ -52914,6 +58494,8 @@ export namespace Prisma {
     createdInviteCodes?: InviteCodeUpdateManyWithoutCreatorNestedInput
     organizationMemberships?: OrganizationMemberUpdateManyWithoutUserNestedInput
     sentInvites?: OrganizationMemberUpdateManyWithoutInviterNestedInput
+    notificationHistory?: NotificationHistoryUpdateManyWithoutUserNestedInput
+    notificationPreferences?: NotificationPreferenceUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAuditLogsInput = {
@@ -52940,6 +58522,264 @@ export namespace Prisma {
     createdInviteCodes?: InviteCodeUncheckedUpdateManyWithoutCreatorNestedInput
     organizationMemberships?: OrganizationMemberUncheckedUpdateManyWithoutUserNestedInput
     sentInvites?: OrganizationMemberUncheckedUpdateManyWithoutInviterNestedInput
+    notificationHistory?: NotificationHistoryUncheckedUpdateManyWithoutUserNestedInput
+    notificationPreferences?: NotificationPreferenceUncheckedUpdateOneWithoutUserNestedInput
+  }
+
+  export type UserCreateWithoutNotificationHistoryInput = {
+    id?: string
+    email: string
+    password: string
+    firstName: string
+    lastName: string
+    phone?: string | null
+    avatar?: string | null
+    emailVerified?: boolean
+    isActive?: boolean
+    role?: $Enums.UserRole
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    organization?: OrganizationCreateNestedOneWithoutUsersInput
+    assessments?: AssessmentCreateNestedManyWithoutUserInput
+    phishingTargets?: PhishingTargetCreateNestedManyWithoutUserInput
+    phishingCampaigns?: PhishingCampaignCreateNestedManyWithoutCreatorInput
+    phishingTemplates?: PhishingTemplateCreateNestedManyWithoutCreatorInput
+    telemetryEvents?: TelemetryEventCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUserInput
+    passwordResets?: PasswordResetCreateNestedManyWithoutUserInput
+    createdInviteCodes?: InviteCodeCreateNestedManyWithoutCreatorInput
+    organizationMemberships?: OrganizationMemberCreateNestedManyWithoutUserInput
+    sentInvites?: OrganizationMemberCreateNestedManyWithoutInviterInput
+    notificationPreferences?: NotificationPreferenceCreateNestedOneWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutNotificationHistoryInput = {
+    id?: string
+    email: string
+    password: string
+    firstName: string
+    lastName: string
+    phone?: string | null
+    avatar?: string | null
+    emailVerified?: boolean
+    isActive?: boolean
+    role?: $Enums.UserRole
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    organizationId?: string | null
+    assessments?: AssessmentUncheckedCreateNestedManyWithoutUserInput
+    phishingTargets?: PhishingTargetUncheckedCreateNestedManyWithoutUserInput
+    phishingCampaigns?: PhishingCampaignUncheckedCreateNestedManyWithoutCreatorInput
+    phishingTemplates?: PhishingTemplateUncheckedCreateNestedManyWithoutCreatorInput
+    telemetryEvents?: TelemetryEventUncheckedCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+    passwordResets?: PasswordResetUncheckedCreateNestedManyWithoutUserInput
+    createdInviteCodes?: InviteCodeUncheckedCreateNestedManyWithoutCreatorInput
+    organizationMemberships?: OrganizationMemberUncheckedCreateNestedManyWithoutUserInput
+    sentInvites?: OrganizationMemberUncheckedCreateNestedManyWithoutInviterInput
+    notificationPreferences?: NotificationPreferenceUncheckedCreateNestedOneWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutNotificationHistoryInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutNotificationHistoryInput, UserUncheckedCreateWithoutNotificationHistoryInput>
+  }
+
+  export type UserUpsertWithoutNotificationHistoryInput = {
+    update: XOR<UserUpdateWithoutNotificationHistoryInput, UserUncheckedUpdateWithoutNotificationHistoryInput>
+    create: XOR<UserCreateWithoutNotificationHistoryInput, UserUncheckedCreateWithoutNotificationHistoryInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutNotificationHistoryInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutNotificationHistoryInput, UserUncheckedUpdateWithoutNotificationHistoryInput>
+  }
+
+  export type UserUpdateWithoutNotificationHistoryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organization?: OrganizationUpdateOneWithoutUsersNestedInput
+    assessments?: AssessmentUpdateManyWithoutUserNestedInput
+    phishingTargets?: PhishingTargetUpdateManyWithoutUserNestedInput
+    phishingCampaigns?: PhishingCampaignUpdateManyWithoutCreatorNestedInput
+    phishingTemplates?: PhishingTemplateUpdateManyWithoutCreatorNestedInput
+    telemetryEvents?: TelemetryEventUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUserNestedInput
+    passwordResets?: PasswordResetUpdateManyWithoutUserNestedInput
+    createdInviteCodes?: InviteCodeUpdateManyWithoutCreatorNestedInput
+    organizationMemberships?: OrganizationMemberUpdateManyWithoutUserNestedInput
+    sentInvites?: OrganizationMemberUpdateManyWithoutInviterNestedInput
+    notificationPreferences?: NotificationPreferenceUpdateOneWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutNotificationHistoryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organizationId?: NullableStringFieldUpdateOperationsInput | string | null
+    assessments?: AssessmentUncheckedUpdateManyWithoutUserNestedInput
+    phishingTargets?: PhishingTargetUncheckedUpdateManyWithoutUserNestedInput
+    phishingCampaigns?: PhishingCampaignUncheckedUpdateManyWithoutCreatorNestedInput
+    phishingTemplates?: PhishingTemplateUncheckedUpdateManyWithoutCreatorNestedInput
+    telemetryEvents?: TelemetryEventUncheckedUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+    passwordResets?: PasswordResetUncheckedUpdateManyWithoutUserNestedInput
+    createdInviteCodes?: InviteCodeUncheckedUpdateManyWithoutCreatorNestedInput
+    organizationMemberships?: OrganizationMemberUncheckedUpdateManyWithoutUserNestedInput
+    sentInvites?: OrganizationMemberUncheckedUpdateManyWithoutInviterNestedInput
+    notificationPreferences?: NotificationPreferenceUncheckedUpdateOneWithoutUserNestedInput
+  }
+
+  export type UserCreateWithoutNotificationPreferencesInput = {
+    id?: string
+    email: string
+    password: string
+    firstName: string
+    lastName: string
+    phone?: string | null
+    avatar?: string | null
+    emailVerified?: boolean
+    isActive?: boolean
+    role?: $Enums.UserRole
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    organization?: OrganizationCreateNestedOneWithoutUsersInput
+    assessments?: AssessmentCreateNestedManyWithoutUserInput
+    phishingTargets?: PhishingTargetCreateNestedManyWithoutUserInput
+    phishingCampaigns?: PhishingCampaignCreateNestedManyWithoutCreatorInput
+    phishingTemplates?: PhishingTemplateCreateNestedManyWithoutCreatorInput
+    telemetryEvents?: TelemetryEventCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
+    refreshTokens?: RefreshTokenCreateNestedManyWithoutUserInput
+    passwordResets?: PasswordResetCreateNestedManyWithoutUserInput
+    createdInviteCodes?: InviteCodeCreateNestedManyWithoutCreatorInput
+    organizationMemberships?: OrganizationMemberCreateNestedManyWithoutUserInput
+    sentInvites?: OrganizationMemberCreateNestedManyWithoutInviterInput
+    notificationHistory?: NotificationHistoryCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutNotificationPreferencesInput = {
+    id?: string
+    email: string
+    password: string
+    firstName: string
+    lastName: string
+    phone?: string | null
+    avatar?: string | null
+    emailVerified?: boolean
+    isActive?: boolean
+    role?: $Enums.UserRole
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    organizationId?: string | null
+    assessments?: AssessmentUncheckedCreateNestedManyWithoutUserInput
+    phishingTargets?: PhishingTargetUncheckedCreateNestedManyWithoutUserInput
+    phishingCampaigns?: PhishingCampaignUncheckedCreateNestedManyWithoutCreatorInput
+    phishingTemplates?: PhishingTemplateUncheckedCreateNestedManyWithoutCreatorInput
+    telemetryEvents?: TelemetryEventUncheckedCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+    passwordResets?: PasswordResetUncheckedCreateNestedManyWithoutUserInput
+    createdInviteCodes?: InviteCodeUncheckedCreateNestedManyWithoutCreatorInput
+    organizationMemberships?: OrganizationMemberUncheckedCreateNestedManyWithoutUserInput
+    sentInvites?: OrganizationMemberUncheckedCreateNestedManyWithoutInviterInput
+    notificationHistory?: NotificationHistoryUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutNotificationPreferencesInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutNotificationPreferencesInput, UserUncheckedCreateWithoutNotificationPreferencesInput>
+  }
+
+  export type UserUpsertWithoutNotificationPreferencesInput = {
+    update: XOR<UserUpdateWithoutNotificationPreferencesInput, UserUncheckedUpdateWithoutNotificationPreferencesInput>
+    create: XOR<UserCreateWithoutNotificationPreferencesInput, UserUncheckedCreateWithoutNotificationPreferencesInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutNotificationPreferencesInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutNotificationPreferencesInput, UserUncheckedUpdateWithoutNotificationPreferencesInput>
+  }
+
+  export type UserUpdateWithoutNotificationPreferencesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organization?: OrganizationUpdateOneWithoutUsersNestedInput
+    assessments?: AssessmentUpdateManyWithoutUserNestedInput
+    phishingTargets?: PhishingTargetUpdateManyWithoutUserNestedInput
+    phishingCampaigns?: PhishingCampaignUpdateManyWithoutCreatorNestedInput
+    phishingTemplates?: PhishingTemplateUpdateManyWithoutCreatorNestedInput
+    telemetryEvents?: TelemetryEventUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
+    refreshTokens?: RefreshTokenUpdateManyWithoutUserNestedInput
+    passwordResets?: PasswordResetUpdateManyWithoutUserNestedInput
+    createdInviteCodes?: InviteCodeUpdateManyWithoutCreatorNestedInput
+    organizationMemberships?: OrganizationMemberUpdateManyWithoutUserNestedInput
+    sentInvites?: OrganizationMemberUpdateManyWithoutInviterNestedInput
+    notificationHistory?: NotificationHistoryUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutNotificationPreferencesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organizationId?: NullableStringFieldUpdateOperationsInput | string | null
+    assessments?: AssessmentUncheckedUpdateManyWithoutUserNestedInput
+    phishingTargets?: PhishingTargetUncheckedUpdateManyWithoutUserNestedInput
+    phishingCampaigns?: PhishingCampaignUncheckedUpdateManyWithoutCreatorNestedInput
+    phishingTemplates?: PhishingTemplateUncheckedUpdateManyWithoutCreatorNestedInput
+    telemetryEvents?: TelemetryEventUncheckedUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+    refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+    passwordResets?: PasswordResetUncheckedUpdateManyWithoutUserNestedInput
+    createdInviteCodes?: InviteCodeUncheckedUpdateManyWithoutCreatorNestedInput
+    organizationMemberships?: OrganizationMemberUncheckedUpdateManyWithoutUserNestedInput
+    sentInvites?: OrganizationMemberUncheckedUpdateManyWithoutInviterNestedInput
+    notificationHistory?: NotificationHistoryUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type AssessmentCreateManyUserInput = {
@@ -52964,17 +58804,22 @@ export namespace Prisma {
 
   export type PhishingTargetCreateManyUserInput = {
     id?: string
-    email: string
+    email?: string | null
+    phoneNumber?: string | null
     firstName?: string | null
     lastName?: string | null
     department?: string | null
     jobTitle?: string | null
-    emailSent?: boolean
-    emailDelivered?: boolean
-    emailOpened?: boolean
+    messageSent?: boolean
+    messageDelivered?: boolean
+    messageOpened?: boolean
     linkClicked?: boolean
     credentialsEntered?: boolean
     reportedPhishing?: boolean
+    messageFailed?: boolean
+    emailSent?: boolean
+    emailDelivered?: boolean
+    emailOpened?: boolean
     emailBounced?: boolean
     sentAt?: Date | string | null
     deliveredAt?: Date | string | null
@@ -52982,10 +58827,13 @@ export namespace Prisma {
     clickedAt?: Date | string | null
     credentialsAt?: Date | string | null
     reportedAt?: Date | string | null
+    failedAt?: Date | string | null
     bouncedAt?: Date | string | null
     userAgent?: string | null
     ipAddress?: string | null
     clickCount?: number
+    smsProvider?: string | null
+    messageId?: string | null
     riskScore?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -52996,24 +58844,32 @@ export namespace Prisma {
     id?: string
     name: string
     description?: string | null
+    campaignType?: $Enums.CampaignType
     templateId: string
     template: string
-    subject: string
-    senderName: string
-    senderEmail: string
+    subject?: string | null
+    senderName?: string | null
+    senderEmail?: string | null
     landingPageUrl?: string | null
+    senderNumber?: string | null
+    messageContent?: string | null
+    trackingUrl?: string | null
     status?: $Enums.CampaignStatus
     scheduledAt?: Date | string | null
     launchedAt?: Date | string | null
     completedAt?: Date | string | null
     pausedAt?: Date | string | null
     targetCount?: number
-    emailsSent?: number
-    emailsDelivered?: number
-    emailsOpened?: number
+    messagesSent?: number
+    messagesDelivered?: number
+    messagesOpened?: number
     linksClicked?: number
     credentialsEntered?: number
     phishingReported?: number
+    messagesFailed?: number
+    emailsSent?: number
+    emailsDelivered?: number
+    emailsOpened?: number
     emailsBounced?: number
     organizationId: string
     createdAt?: Date | string
@@ -53026,10 +58882,14 @@ export namespace Prisma {
     description: string
     category: $Enums.TemplateCategory
     riskLevel: $Enums.RiskLevel
-    defaultSubject: string
-    defaultSenderName: string
-    emailBodyHtml: string
-    emailBodyText: string
+    templateType?: $Enums.TemplateType
+    defaultSubject?: string | null
+    defaultSenderName?: string | null
+    emailBodyHtml?: string | null
+    emailBodyText?: string | null
+    smsContent?: string | null
+    defaultSenderNumber?: string | null
+    messageContent?: string | null
     landingPageHtml?: string | null
     captureCredentials?: boolean
     isActive?: boolean
@@ -53110,6 +58970,24 @@ export namespace Prisma {
     inviteCode?: string | null
   }
 
+  export type NotificationHistoryCreateManyUserInput = {
+    id?: string
+    type: $Enums.NotificationType
+    recipient: string
+    subject?: string | null
+    content: string
+    status?: $Enums.NotificationStatus
+    attempts?: number
+    lastAttempt?: Date | string | null
+    sentAt?: Date | string | null
+    error?: string | null
+    jobId?: string | null
+    messageId?: string | null
+    metadata?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type AssessmentUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
@@ -53176,17 +59054,22 @@ export namespace Prisma {
 
   export type PhishingTargetUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
     firstName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: NullableStringFieldUpdateOperationsInput | string | null
     department?: NullableStringFieldUpdateOperationsInput | string | null
     jobTitle?: NullableStringFieldUpdateOperationsInput | string | null
-    emailSent?: BoolFieldUpdateOperationsInput | boolean
-    emailDelivered?: BoolFieldUpdateOperationsInput | boolean
-    emailOpened?: BoolFieldUpdateOperationsInput | boolean
+    messageSent?: BoolFieldUpdateOperationsInput | boolean
+    messageDelivered?: BoolFieldUpdateOperationsInput | boolean
+    messageOpened?: BoolFieldUpdateOperationsInput | boolean
     linkClicked?: BoolFieldUpdateOperationsInput | boolean
     credentialsEntered?: BoolFieldUpdateOperationsInput | boolean
     reportedPhishing?: BoolFieldUpdateOperationsInput | boolean
+    messageFailed?: BoolFieldUpdateOperationsInput | boolean
+    emailSent?: BoolFieldUpdateOperationsInput | boolean
+    emailDelivered?: BoolFieldUpdateOperationsInput | boolean
+    emailOpened?: BoolFieldUpdateOperationsInput | boolean
     emailBounced?: BoolFieldUpdateOperationsInput | boolean
     sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -53194,10 +59077,13 @@ export namespace Prisma {
     clickedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     credentialsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     reportedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     bouncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     userAgent?: NullableStringFieldUpdateOperationsInput | string | null
     ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
     clickCount?: IntFieldUpdateOperationsInput | number
+    smsProvider?: NullableStringFieldUpdateOperationsInput | string | null
+    messageId?: NullableStringFieldUpdateOperationsInput | string | null
     riskScore?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -53207,17 +59093,22 @@ export namespace Prisma {
 
   export type PhishingTargetUncheckedUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
     firstName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: NullableStringFieldUpdateOperationsInput | string | null
     department?: NullableStringFieldUpdateOperationsInput | string | null
     jobTitle?: NullableStringFieldUpdateOperationsInput | string | null
-    emailSent?: BoolFieldUpdateOperationsInput | boolean
-    emailDelivered?: BoolFieldUpdateOperationsInput | boolean
-    emailOpened?: BoolFieldUpdateOperationsInput | boolean
+    messageSent?: BoolFieldUpdateOperationsInput | boolean
+    messageDelivered?: BoolFieldUpdateOperationsInput | boolean
+    messageOpened?: BoolFieldUpdateOperationsInput | boolean
     linkClicked?: BoolFieldUpdateOperationsInput | boolean
     credentialsEntered?: BoolFieldUpdateOperationsInput | boolean
     reportedPhishing?: BoolFieldUpdateOperationsInput | boolean
+    messageFailed?: BoolFieldUpdateOperationsInput | boolean
+    emailSent?: BoolFieldUpdateOperationsInput | boolean
+    emailDelivered?: BoolFieldUpdateOperationsInput | boolean
+    emailOpened?: BoolFieldUpdateOperationsInput | boolean
     emailBounced?: BoolFieldUpdateOperationsInput | boolean
     sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -53225,10 +59116,13 @@ export namespace Prisma {
     clickedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     credentialsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     reportedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     bouncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     userAgent?: NullableStringFieldUpdateOperationsInput | string | null
     ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
     clickCount?: IntFieldUpdateOperationsInput | number
+    smsProvider?: NullableStringFieldUpdateOperationsInput | string | null
+    messageId?: NullableStringFieldUpdateOperationsInput | string | null
     riskScore?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -53238,17 +59132,22 @@ export namespace Prisma {
 
   export type PhishingTargetUncheckedUpdateManyWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
     firstName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: NullableStringFieldUpdateOperationsInput | string | null
     department?: NullableStringFieldUpdateOperationsInput | string | null
     jobTitle?: NullableStringFieldUpdateOperationsInput | string | null
-    emailSent?: BoolFieldUpdateOperationsInput | boolean
-    emailDelivered?: BoolFieldUpdateOperationsInput | boolean
-    emailOpened?: BoolFieldUpdateOperationsInput | boolean
+    messageSent?: BoolFieldUpdateOperationsInput | boolean
+    messageDelivered?: BoolFieldUpdateOperationsInput | boolean
+    messageOpened?: BoolFieldUpdateOperationsInput | boolean
     linkClicked?: BoolFieldUpdateOperationsInput | boolean
     credentialsEntered?: BoolFieldUpdateOperationsInput | boolean
     reportedPhishing?: BoolFieldUpdateOperationsInput | boolean
+    messageFailed?: BoolFieldUpdateOperationsInput | boolean
+    emailSent?: BoolFieldUpdateOperationsInput | boolean
+    emailDelivered?: BoolFieldUpdateOperationsInput | boolean
+    emailOpened?: BoolFieldUpdateOperationsInput | boolean
     emailBounced?: BoolFieldUpdateOperationsInput | boolean
     sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -53256,10 +59155,13 @@ export namespace Prisma {
     clickedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     credentialsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     reportedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     bouncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     userAgent?: NullableStringFieldUpdateOperationsInput | string | null
     ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
     clickCount?: IntFieldUpdateOperationsInput | number
+    smsProvider?: NullableStringFieldUpdateOperationsInput | string | null
+    messageId?: NullableStringFieldUpdateOperationsInput | string | null
     riskScore?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -53270,24 +59172,32 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    campaignType?: EnumCampaignTypeFieldUpdateOperationsInput | $Enums.CampaignType
     templateId?: StringFieldUpdateOperationsInput | string
     template?: StringFieldUpdateOperationsInput | string
-    subject?: StringFieldUpdateOperationsInput | string
-    senderName?: StringFieldUpdateOperationsInput | string
-    senderEmail?: StringFieldUpdateOperationsInput | string
+    subject?: NullableStringFieldUpdateOperationsInput | string | null
+    senderName?: NullableStringFieldUpdateOperationsInput | string | null
+    senderEmail?: NullableStringFieldUpdateOperationsInput | string | null
     landingPageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    senderNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    messageContent?: NullableStringFieldUpdateOperationsInput | string | null
+    trackingUrl?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumCampaignStatusFieldUpdateOperationsInput | $Enums.CampaignStatus
     scheduledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     launchedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     pausedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     targetCount?: IntFieldUpdateOperationsInput | number
-    emailsSent?: IntFieldUpdateOperationsInput | number
-    emailsDelivered?: IntFieldUpdateOperationsInput | number
-    emailsOpened?: IntFieldUpdateOperationsInput | number
+    messagesSent?: IntFieldUpdateOperationsInput | number
+    messagesDelivered?: IntFieldUpdateOperationsInput | number
+    messagesOpened?: IntFieldUpdateOperationsInput | number
     linksClicked?: IntFieldUpdateOperationsInput | number
     credentialsEntered?: IntFieldUpdateOperationsInput | number
     phishingReported?: IntFieldUpdateOperationsInput | number
+    messagesFailed?: IntFieldUpdateOperationsInput | number
+    emailsSent?: IntFieldUpdateOperationsInput | number
+    emailsDelivered?: IntFieldUpdateOperationsInput | number
+    emailsOpened?: IntFieldUpdateOperationsInput | number
     emailsBounced?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -53300,24 +59210,32 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    campaignType?: EnumCampaignTypeFieldUpdateOperationsInput | $Enums.CampaignType
     templateId?: StringFieldUpdateOperationsInput | string
     template?: StringFieldUpdateOperationsInput | string
-    subject?: StringFieldUpdateOperationsInput | string
-    senderName?: StringFieldUpdateOperationsInput | string
-    senderEmail?: StringFieldUpdateOperationsInput | string
+    subject?: NullableStringFieldUpdateOperationsInput | string | null
+    senderName?: NullableStringFieldUpdateOperationsInput | string | null
+    senderEmail?: NullableStringFieldUpdateOperationsInput | string | null
     landingPageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    senderNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    messageContent?: NullableStringFieldUpdateOperationsInput | string | null
+    trackingUrl?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumCampaignStatusFieldUpdateOperationsInput | $Enums.CampaignStatus
     scheduledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     launchedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     pausedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     targetCount?: IntFieldUpdateOperationsInput | number
-    emailsSent?: IntFieldUpdateOperationsInput | number
-    emailsDelivered?: IntFieldUpdateOperationsInput | number
-    emailsOpened?: IntFieldUpdateOperationsInput | number
+    messagesSent?: IntFieldUpdateOperationsInput | number
+    messagesDelivered?: IntFieldUpdateOperationsInput | number
+    messagesOpened?: IntFieldUpdateOperationsInput | number
     linksClicked?: IntFieldUpdateOperationsInput | number
     credentialsEntered?: IntFieldUpdateOperationsInput | number
     phishingReported?: IntFieldUpdateOperationsInput | number
+    messagesFailed?: IntFieldUpdateOperationsInput | number
+    emailsSent?: IntFieldUpdateOperationsInput | number
+    emailsDelivered?: IntFieldUpdateOperationsInput | number
+    emailsOpened?: IntFieldUpdateOperationsInput | number
     emailsBounced?: IntFieldUpdateOperationsInput | number
     organizationId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -53330,24 +59248,32 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    campaignType?: EnumCampaignTypeFieldUpdateOperationsInput | $Enums.CampaignType
     templateId?: StringFieldUpdateOperationsInput | string
     template?: StringFieldUpdateOperationsInput | string
-    subject?: StringFieldUpdateOperationsInput | string
-    senderName?: StringFieldUpdateOperationsInput | string
-    senderEmail?: StringFieldUpdateOperationsInput | string
+    subject?: NullableStringFieldUpdateOperationsInput | string | null
+    senderName?: NullableStringFieldUpdateOperationsInput | string | null
+    senderEmail?: NullableStringFieldUpdateOperationsInput | string | null
     landingPageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    senderNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    messageContent?: NullableStringFieldUpdateOperationsInput | string | null
+    trackingUrl?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumCampaignStatusFieldUpdateOperationsInput | $Enums.CampaignStatus
     scheduledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     launchedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     pausedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     targetCount?: IntFieldUpdateOperationsInput | number
-    emailsSent?: IntFieldUpdateOperationsInput | number
-    emailsDelivered?: IntFieldUpdateOperationsInput | number
-    emailsOpened?: IntFieldUpdateOperationsInput | number
+    messagesSent?: IntFieldUpdateOperationsInput | number
+    messagesDelivered?: IntFieldUpdateOperationsInput | number
+    messagesOpened?: IntFieldUpdateOperationsInput | number
     linksClicked?: IntFieldUpdateOperationsInput | number
     credentialsEntered?: IntFieldUpdateOperationsInput | number
     phishingReported?: IntFieldUpdateOperationsInput | number
+    messagesFailed?: IntFieldUpdateOperationsInput | number
+    emailsSent?: IntFieldUpdateOperationsInput | number
+    emailsDelivered?: IntFieldUpdateOperationsInput | number
+    emailsOpened?: IntFieldUpdateOperationsInput | number
     emailsBounced?: IntFieldUpdateOperationsInput | number
     organizationId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -53360,10 +59286,14 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     category?: EnumTemplateCategoryFieldUpdateOperationsInput | $Enums.TemplateCategory
     riskLevel?: EnumRiskLevelFieldUpdateOperationsInput | $Enums.RiskLevel
-    defaultSubject?: StringFieldUpdateOperationsInput | string
-    defaultSenderName?: StringFieldUpdateOperationsInput | string
-    emailBodyHtml?: StringFieldUpdateOperationsInput | string
-    emailBodyText?: StringFieldUpdateOperationsInput | string
+    templateType?: EnumTemplateTypeFieldUpdateOperationsInput | $Enums.TemplateType
+    defaultSubject?: NullableStringFieldUpdateOperationsInput | string | null
+    defaultSenderName?: NullableStringFieldUpdateOperationsInput | string | null
+    emailBodyHtml?: NullableStringFieldUpdateOperationsInput | string | null
+    emailBodyText?: NullableStringFieldUpdateOperationsInput | string | null
+    smsContent?: NullableStringFieldUpdateOperationsInput | string | null
+    defaultSenderNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    messageContent?: NullableStringFieldUpdateOperationsInput | string | null
     landingPageHtml?: NullableStringFieldUpdateOperationsInput | string | null
     captureCredentials?: BoolFieldUpdateOperationsInput | boolean
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -53382,10 +59312,14 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     category?: EnumTemplateCategoryFieldUpdateOperationsInput | $Enums.TemplateCategory
     riskLevel?: EnumRiskLevelFieldUpdateOperationsInput | $Enums.RiskLevel
-    defaultSubject?: StringFieldUpdateOperationsInput | string
-    defaultSenderName?: StringFieldUpdateOperationsInput | string
-    emailBodyHtml?: StringFieldUpdateOperationsInput | string
-    emailBodyText?: StringFieldUpdateOperationsInput | string
+    templateType?: EnumTemplateTypeFieldUpdateOperationsInput | $Enums.TemplateType
+    defaultSubject?: NullableStringFieldUpdateOperationsInput | string | null
+    defaultSenderName?: NullableStringFieldUpdateOperationsInput | string | null
+    emailBodyHtml?: NullableStringFieldUpdateOperationsInput | string | null
+    emailBodyText?: NullableStringFieldUpdateOperationsInput | string | null
+    smsContent?: NullableStringFieldUpdateOperationsInput | string | null
+    defaultSenderNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    messageContent?: NullableStringFieldUpdateOperationsInput | string | null
     landingPageHtml?: NullableStringFieldUpdateOperationsInput | string | null
     captureCredentials?: BoolFieldUpdateOperationsInput | boolean
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -53404,10 +59338,14 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     category?: EnumTemplateCategoryFieldUpdateOperationsInput | $Enums.TemplateCategory
     riskLevel?: EnumRiskLevelFieldUpdateOperationsInput | $Enums.RiskLevel
-    defaultSubject?: StringFieldUpdateOperationsInput | string
-    defaultSenderName?: StringFieldUpdateOperationsInput | string
-    emailBodyHtml?: StringFieldUpdateOperationsInput | string
-    emailBodyText?: StringFieldUpdateOperationsInput | string
+    templateType?: EnumTemplateTypeFieldUpdateOperationsInput | $Enums.TemplateType
+    defaultSubject?: NullableStringFieldUpdateOperationsInput | string | null
+    defaultSenderName?: NullableStringFieldUpdateOperationsInput | string | null
+    emailBodyHtml?: NullableStringFieldUpdateOperationsInput | string | null
+    emailBodyText?: NullableStringFieldUpdateOperationsInput | string | null
+    smsContent?: NullableStringFieldUpdateOperationsInput | string | null
+    defaultSenderNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    messageContent?: NullableStringFieldUpdateOperationsInput | string | null
     landingPageHtml?: NullableStringFieldUpdateOperationsInput | string | null
     captureCredentials?: BoolFieldUpdateOperationsInput | boolean
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -53624,6 +59562,60 @@ export namespace Prisma {
     inviteCode?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
+  export type NotificationHistoryUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumNotificationTypeFieldUpdateOperationsInput | $Enums.NotificationType
+    recipient?: StringFieldUpdateOperationsInput | string
+    subject?: NullableStringFieldUpdateOperationsInput | string | null
+    content?: StringFieldUpdateOperationsInput | string
+    status?: EnumNotificationStatusFieldUpdateOperationsInput | $Enums.NotificationStatus
+    attempts?: IntFieldUpdateOperationsInput | number
+    lastAttempt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    error?: NullableStringFieldUpdateOperationsInput | string | null
+    jobId?: NullableStringFieldUpdateOperationsInput | string | null
+    messageId?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type NotificationHistoryUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumNotificationTypeFieldUpdateOperationsInput | $Enums.NotificationType
+    recipient?: StringFieldUpdateOperationsInput | string
+    subject?: NullableStringFieldUpdateOperationsInput | string | null
+    content?: StringFieldUpdateOperationsInput | string
+    status?: EnumNotificationStatusFieldUpdateOperationsInput | $Enums.NotificationStatus
+    attempts?: IntFieldUpdateOperationsInput | number
+    lastAttempt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    error?: NullableStringFieldUpdateOperationsInput | string | null
+    jobId?: NullableStringFieldUpdateOperationsInput | string | null
+    messageId?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type NotificationHistoryUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumNotificationTypeFieldUpdateOperationsInput | $Enums.NotificationType
+    recipient?: StringFieldUpdateOperationsInput | string
+    subject?: NullableStringFieldUpdateOperationsInput | string | null
+    content?: StringFieldUpdateOperationsInput | string
+    status?: EnumNotificationStatusFieldUpdateOperationsInput | $Enums.NotificationStatus
+    attempts?: IntFieldUpdateOperationsInput | number
+    lastAttempt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    error?: NullableStringFieldUpdateOperationsInput | string | null
+    jobId?: NullableStringFieldUpdateOperationsInput | string | null
+    messageId?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type UserCreateManyOrganizationInput = {
     id?: string
     email: string
@@ -53677,24 +59669,32 @@ export namespace Prisma {
     id?: string
     name: string
     description?: string | null
+    campaignType?: $Enums.CampaignType
     templateId: string
     template: string
-    subject: string
-    senderName: string
-    senderEmail: string
+    subject?: string | null
+    senderName?: string | null
+    senderEmail?: string | null
     landingPageUrl?: string | null
+    senderNumber?: string | null
+    messageContent?: string | null
+    trackingUrl?: string | null
     status?: $Enums.CampaignStatus
     scheduledAt?: Date | string | null
     launchedAt?: Date | string | null
     completedAt?: Date | string | null
     pausedAt?: Date | string | null
     targetCount?: number
-    emailsSent?: number
-    emailsDelivered?: number
-    emailsOpened?: number
+    messagesSent?: number
+    messagesDelivered?: number
+    messagesOpened?: number
     linksClicked?: number
     credentialsEntered?: number
     phishingReported?: number
+    messagesFailed?: number
+    emailsSent?: number
+    emailsDelivered?: number
+    emailsOpened?: number
     emailsBounced?: number
     createdBy: string
     createdAt?: Date | string
@@ -53707,10 +59707,14 @@ export namespace Prisma {
     description: string
     category: $Enums.TemplateCategory
     riskLevel: $Enums.RiskLevel
-    defaultSubject: string
-    defaultSenderName: string
-    emailBodyHtml: string
-    emailBodyText: string
+    templateType?: $Enums.TemplateType
+    defaultSubject?: string | null
+    defaultSenderName?: string | null
+    emailBodyHtml?: string | null
+    emailBodyText?: string | null
+    smsContent?: string | null
+    defaultSenderNumber?: string | null
+    messageContent?: string | null
     landingPageHtml?: string | null
     captureCredentials?: boolean
     isActive?: boolean
@@ -53800,6 +59804,8 @@ export namespace Prisma {
     createdInviteCodes?: InviteCodeUpdateManyWithoutCreatorNestedInput
     organizationMemberships?: OrganizationMemberUpdateManyWithoutUserNestedInput
     sentInvites?: OrganizationMemberUpdateManyWithoutInviterNestedInput
+    notificationHistory?: NotificationHistoryUpdateManyWithoutUserNestedInput
+    notificationPreferences?: NotificationPreferenceUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutOrganizationInput = {
@@ -53826,6 +59832,8 @@ export namespace Prisma {
     createdInviteCodes?: InviteCodeUncheckedUpdateManyWithoutCreatorNestedInput
     organizationMemberships?: OrganizationMemberUncheckedUpdateManyWithoutUserNestedInput
     sentInvites?: OrganizationMemberUncheckedUpdateManyWithoutInviterNestedInput
+    notificationHistory?: NotificationHistoryUncheckedUpdateManyWithoutUserNestedInput
+    notificationPreferences?: NotificationPreferenceUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutOrganizationInput = {
@@ -53955,24 +59963,32 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    campaignType?: EnumCampaignTypeFieldUpdateOperationsInput | $Enums.CampaignType
     templateId?: StringFieldUpdateOperationsInput | string
     template?: StringFieldUpdateOperationsInput | string
-    subject?: StringFieldUpdateOperationsInput | string
-    senderName?: StringFieldUpdateOperationsInput | string
-    senderEmail?: StringFieldUpdateOperationsInput | string
+    subject?: NullableStringFieldUpdateOperationsInput | string | null
+    senderName?: NullableStringFieldUpdateOperationsInput | string | null
+    senderEmail?: NullableStringFieldUpdateOperationsInput | string | null
     landingPageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    senderNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    messageContent?: NullableStringFieldUpdateOperationsInput | string | null
+    trackingUrl?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumCampaignStatusFieldUpdateOperationsInput | $Enums.CampaignStatus
     scheduledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     launchedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     pausedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     targetCount?: IntFieldUpdateOperationsInput | number
-    emailsSent?: IntFieldUpdateOperationsInput | number
-    emailsDelivered?: IntFieldUpdateOperationsInput | number
-    emailsOpened?: IntFieldUpdateOperationsInput | number
+    messagesSent?: IntFieldUpdateOperationsInput | number
+    messagesDelivered?: IntFieldUpdateOperationsInput | number
+    messagesOpened?: IntFieldUpdateOperationsInput | number
     linksClicked?: IntFieldUpdateOperationsInput | number
     credentialsEntered?: IntFieldUpdateOperationsInput | number
     phishingReported?: IntFieldUpdateOperationsInput | number
+    messagesFailed?: IntFieldUpdateOperationsInput | number
+    emailsSent?: IntFieldUpdateOperationsInput | number
+    emailsDelivered?: IntFieldUpdateOperationsInput | number
+    emailsOpened?: IntFieldUpdateOperationsInput | number
     emailsBounced?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -53985,24 +60001,32 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    campaignType?: EnumCampaignTypeFieldUpdateOperationsInput | $Enums.CampaignType
     templateId?: StringFieldUpdateOperationsInput | string
     template?: StringFieldUpdateOperationsInput | string
-    subject?: StringFieldUpdateOperationsInput | string
-    senderName?: StringFieldUpdateOperationsInput | string
-    senderEmail?: StringFieldUpdateOperationsInput | string
+    subject?: NullableStringFieldUpdateOperationsInput | string | null
+    senderName?: NullableStringFieldUpdateOperationsInput | string | null
+    senderEmail?: NullableStringFieldUpdateOperationsInput | string | null
     landingPageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    senderNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    messageContent?: NullableStringFieldUpdateOperationsInput | string | null
+    trackingUrl?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumCampaignStatusFieldUpdateOperationsInput | $Enums.CampaignStatus
     scheduledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     launchedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     pausedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     targetCount?: IntFieldUpdateOperationsInput | number
-    emailsSent?: IntFieldUpdateOperationsInput | number
-    emailsDelivered?: IntFieldUpdateOperationsInput | number
-    emailsOpened?: IntFieldUpdateOperationsInput | number
+    messagesSent?: IntFieldUpdateOperationsInput | number
+    messagesDelivered?: IntFieldUpdateOperationsInput | number
+    messagesOpened?: IntFieldUpdateOperationsInput | number
     linksClicked?: IntFieldUpdateOperationsInput | number
     credentialsEntered?: IntFieldUpdateOperationsInput | number
     phishingReported?: IntFieldUpdateOperationsInput | number
+    messagesFailed?: IntFieldUpdateOperationsInput | number
+    emailsSent?: IntFieldUpdateOperationsInput | number
+    emailsDelivered?: IntFieldUpdateOperationsInput | number
+    emailsOpened?: IntFieldUpdateOperationsInput | number
     emailsBounced?: IntFieldUpdateOperationsInput | number
     createdBy?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -54015,24 +60039,32 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    campaignType?: EnumCampaignTypeFieldUpdateOperationsInput | $Enums.CampaignType
     templateId?: StringFieldUpdateOperationsInput | string
     template?: StringFieldUpdateOperationsInput | string
-    subject?: StringFieldUpdateOperationsInput | string
-    senderName?: StringFieldUpdateOperationsInput | string
-    senderEmail?: StringFieldUpdateOperationsInput | string
+    subject?: NullableStringFieldUpdateOperationsInput | string | null
+    senderName?: NullableStringFieldUpdateOperationsInput | string | null
+    senderEmail?: NullableStringFieldUpdateOperationsInput | string | null
     landingPageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    senderNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    messageContent?: NullableStringFieldUpdateOperationsInput | string | null
+    trackingUrl?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumCampaignStatusFieldUpdateOperationsInput | $Enums.CampaignStatus
     scheduledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     launchedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     pausedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     targetCount?: IntFieldUpdateOperationsInput | number
-    emailsSent?: IntFieldUpdateOperationsInput | number
-    emailsDelivered?: IntFieldUpdateOperationsInput | number
-    emailsOpened?: IntFieldUpdateOperationsInput | number
+    messagesSent?: IntFieldUpdateOperationsInput | number
+    messagesDelivered?: IntFieldUpdateOperationsInput | number
+    messagesOpened?: IntFieldUpdateOperationsInput | number
     linksClicked?: IntFieldUpdateOperationsInput | number
     credentialsEntered?: IntFieldUpdateOperationsInput | number
     phishingReported?: IntFieldUpdateOperationsInput | number
+    messagesFailed?: IntFieldUpdateOperationsInput | number
+    emailsSent?: IntFieldUpdateOperationsInput | number
+    emailsDelivered?: IntFieldUpdateOperationsInput | number
+    emailsOpened?: IntFieldUpdateOperationsInput | number
     emailsBounced?: IntFieldUpdateOperationsInput | number
     createdBy?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -54045,10 +60077,14 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     category?: EnumTemplateCategoryFieldUpdateOperationsInput | $Enums.TemplateCategory
     riskLevel?: EnumRiskLevelFieldUpdateOperationsInput | $Enums.RiskLevel
-    defaultSubject?: StringFieldUpdateOperationsInput | string
-    defaultSenderName?: StringFieldUpdateOperationsInput | string
-    emailBodyHtml?: StringFieldUpdateOperationsInput | string
-    emailBodyText?: StringFieldUpdateOperationsInput | string
+    templateType?: EnumTemplateTypeFieldUpdateOperationsInput | $Enums.TemplateType
+    defaultSubject?: NullableStringFieldUpdateOperationsInput | string | null
+    defaultSenderName?: NullableStringFieldUpdateOperationsInput | string | null
+    emailBodyHtml?: NullableStringFieldUpdateOperationsInput | string | null
+    emailBodyText?: NullableStringFieldUpdateOperationsInput | string | null
+    smsContent?: NullableStringFieldUpdateOperationsInput | string | null
+    defaultSenderNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    messageContent?: NullableStringFieldUpdateOperationsInput | string | null
     landingPageHtml?: NullableStringFieldUpdateOperationsInput | string | null
     captureCredentials?: BoolFieldUpdateOperationsInput | boolean
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -54067,10 +60103,14 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     category?: EnumTemplateCategoryFieldUpdateOperationsInput | $Enums.TemplateCategory
     riskLevel?: EnumRiskLevelFieldUpdateOperationsInput | $Enums.RiskLevel
-    defaultSubject?: StringFieldUpdateOperationsInput | string
-    defaultSenderName?: StringFieldUpdateOperationsInput | string
-    emailBodyHtml?: StringFieldUpdateOperationsInput | string
-    emailBodyText?: StringFieldUpdateOperationsInput | string
+    templateType?: EnumTemplateTypeFieldUpdateOperationsInput | $Enums.TemplateType
+    defaultSubject?: NullableStringFieldUpdateOperationsInput | string | null
+    defaultSenderName?: NullableStringFieldUpdateOperationsInput | string | null
+    emailBodyHtml?: NullableStringFieldUpdateOperationsInput | string | null
+    emailBodyText?: NullableStringFieldUpdateOperationsInput | string | null
+    smsContent?: NullableStringFieldUpdateOperationsInput | string | null
+    defaultSenderNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    messageContent?: NullableStringFieldUpdateOperationsInput | string | null
     landingPageHtml?: NullableStringFieldUpdateOperationsInput | string | null
     captureCredentials?: BoolFieldUpdateOperationsInput | boolean
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -54089,10 +60129,14 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     category?: EnumTemplateCategoryFieldUpdateOperationsInput | $Enums.TemplateCategory
     riskLevel?: EnumRiskLevelFieldUpdateOperationsInput | $Enums.RiskLevel
-    defaultSubject?: StringFieldUpdateOperationsInput | string
-    defaultSenderName?: StringFieldUpdateOperationsInput | string
-    emailBodyHtml?: StringFieldUpdateOperationsInput | string
-    emailBodyText?: StringFieldUpdateOperationsInput | string
+    templateType?: EnumTemplateTypeFieldUpdateOperationsInput | $Enums.TemplateType
+    defaultSubject?: NullableStringFieldUpdateOperationsInput | string | null
+    defaultSenderName?: NullableStringFieldUpdateOperationsInput | string | null
+    emailBodyHtml?: NullableStringFieldUpdateOperationsInput | string | null
+    emailBodyText?: NullableStringFieldUpdateOperationsInput | string | null
+    smsContent?: NullableStringFieldUpdateOperationsInput | string | null
+    defaultSenderNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    messageContent?: NullableStringFieldUpdateOperationsInput | string | null
     landingPageHtml?: NullableStringFieldUpdateOperationsInput | string | null
     captureCredentials?: BoolFieldUpdateOperationsInput | boolean
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -54446,17 +60490,22 @@ export namespace Prisma {
 
   export type PhishingTargetCreateManyCampaignInput = {
     id?: string
-    email: string
+    email?: string | null
+    phoneNumber?: string | null
     firstName?: string | null
     lastName?: string | null
     department?: string | null
     jobTitle?: string | null
-    emailSent?: boolean
-    emailDelivered?: boolean
-    emailOpened?: boolean
+    messageSent?: boolean
+    messageDelivered?: boolean
+    messageOpened?: boolean
     linkClicked?: boolean
     credentialsEntered?: boolean
     reportedPhishing?: boolean
+    messageFailed?: boolean
+    emailSent?: boolean
+    emailDelivered?: boolean
+    emailOpened?: boolean
     emailBounced?: boolean
     sentAt?: Date | string | null
     deliveredAt?: Date | string | null
@@ -54464,10 +60513,13 @@ export namespace Prisma {
     clickedAt?: Date | string | null
     credentialsAt?: Date | string | null
     reportedAt?: Date | string | null
+    failedAt?: Date | string | null
     bouncedAt?: Date | string | null
     userAgent?: string | null
     ipAddress?: string | null
     clickCount?: number
+    smsProvider?: string | null
+    messageId?: string | null
     riskScore?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -54487,17 +60539,22 @@ export namespace Prisma {
 
   export type PhishingTargetUpdateWithoutCampaignInput = {
     id?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
     firstName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: NullableStringFieldUpdateOperationsInput | string | null
     department?: NullableStringFieldUpdateOperationsInput | string | null
     jobTitle?: NullableStringFieldUpdateOperationsInput | string | null
-    emailSent?: BoolFieldUpdateOperationsInput | boolean
-    emailDelivered?: BoolFieldUpdateOperationsInput | boolean
-    emailOpened?: BoolFieldUpdateOperationsInput | boolean
+    messageSent?: BoolFieldUpdateOperationsInput | boolean
+    messageDelivered?: BoolFieldUpdateOperationsInput | boolean
+    messageOpened?: BoolFieldUpdateOperationsInput | boolean
     linkClicked?: BoolFieldUpdateOperationsInput | boolean
     credentialsEntered?: BoolFieldUpdateOperationsInput | boolean
     reportedPhishing?: BoolFieldUpdateOperationsInput | boolean
+    messageFailed?: BoolFieldUpdateOperationsInput | boolean
+    emailSent?: BoolFieldUpdateOperationsInput | boolean
+    emailDelivered?: BoolFieldUpdateOperationsInput | boolean
+    emailOpened?: BoolFieldUpdateOperationsInput | boolean
     emailBounced?: BoolFieldUpdateOperationsInput | boolean
     sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -54505,10 +60562,13 @@ export namespace Prisma {
     clickedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     credentialsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     reportedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     bouncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     userAgent?: NullableStringFieldUpdateOperationsInput | string | null
     ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
     clickCount?: IntFieldUpdateOperationsInput | number
+    smsProvider?: NullableStringFieldUpdateOperationsInput | string | null
+    messageId?: NullableStringFieldUpdateOperationsInput | string | null
     riskScore?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -54518,17 +60578,22 @@ export namespace Prisma {
 
   export type PhishingTargetUncheckedUpdateWithoutCampaignInput = {
     id?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
     firstName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: NullableStringFieldUpdateOperationsInput | string | null
     department?: NullableStringFieldUpdateOperationsInput | string | null
     jobTitle?: NullableStringFieldUpdateOperationsInput | string | null
-    emailSent?: BoolFieldUpdateOperationsInput | boolean
-    emailDelivered?: BoolFieldUpdateOperationsInput | boolean
-    emailOpened?: BoolFieldUpdateOperationsInput | boolean
+    messageSent?: BoolFieldUpdateOperationsInput | boolean
+    messageDelivered?: BoolFieldUpdateOperationsInput | boolean
+    messageOpened?: BoolFieldUpdateOperationsInput | boolean
     linkClicked?: BoolFieldUpdateOperationsInput | boolean
     credentialsEntered?: BoolFieldUpdateOperationsInput | boolean
     reportedPhishing?: BoolFieldUpdateOperationsInput | boolean
+    messageFailed?: BoolFieldUpdateOperationsInput | boolean
+    emailSent?: BoolFieldUpdateOperationsInput | boolean
+    emailDelivered?: BoolFieldUpdateOperationsInput | boolean
+    emailOpened?: BoolFieldUpdateOperationsInput | boolean
     emailBounced?: BoolFieldUpdateOperationsInput | boolean
     sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -54536,10 +60601,13 @@ export namespace Prisma {
     clickedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     credentialsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     reportedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     bouncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     userAgent?: NullableStringFieldUpdateOperationsInput | string | null
     ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
     clickCount?: IntFieldUpdateOperationsInput | number
+    smsProvider?: NullableStringFieldUpdateOperationsInput | string | null
+    messageId?: NullableStringFieldUpdateOperationsInput | string | null
     riskScore?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -54549,17 +60617,22 @@ export namespace Prisma {
 
   export type PhishingTargetUncheckedUpdateManyWithoutCampaignInput = {
     id?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
     firstName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: NullableStringFieldUpdateOperationsInput | string | null
     department?: NullableStringFieldUpdateOperationsInput | string | null
     jobTitle?: NullableStringFieldUpdateOperationsInput | string | null
-    emailSent?: BoolFieldUpdateOperationsInput | boolean
-    emailDelivered?: BoolFieldUpdateOperationsInput | boolean
-    emailOpened?: BoolFieldUpdateOperationsInput | boolean
+    messageSent?: BoolFieldUpdateOperationsInput | boolean
+    messageDelivered?: BoolFieldUpdateOperationsInput | boolean
+    messageOpened?: BoolFieldUpdateOperationsInput | boolean
     linkClicked?: BoolFieldUpdateOperationsInput | boolean
     credentialsEntered?: BoolFieldUpdateOperationsInput | boolean
     reportedPhishing?: BoolFieldUpdateOperationsInput | boolean
+    messageFailed?: BoolFieldUpdateOperationsInput | boolean
+    emailSent?: BoolFieldUpdateOperationsInput | boolean
+    emailDelivered?: BoolFieldUpdateOperationsInput | boolean
+    emailOpened?: BoolFieldUpdateOperationsInput | boolean
     emailBounced?: BoolFieldUpdateOperationsInput | boolean
     sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -54567,10 +60640,13 @@ export namespace Prisma {
     clickedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     credentialsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     reportedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     bouncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     userAgent?: NullableStringFieldUpdateOperationsInput | string | null
     ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
     clickCount?: IntFieldUpdateOperationsInput | number
+    smsProvider?: NullableStringFieldUpdateOperationsInput | string | null
+    messageId?: NullableStringFieldUpdateOperationsInput | string | null
     riskScore?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -55203,6 +61279,18 @@ export namespace Prisma {
      * @deprecated Use BenchmarkDataDefaultArgs instead
      */
     export type BenchmarkDataArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = BenchmarkDataDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use NotificationHistoryDefaultArgs instead
+     */
+    export type NotificationHistoryArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = NotificationHistoryDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use EmailTemplateDefaultArgs instead
+     */
+    export type EmailTemplateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = EmailTemplateDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use NotificationPreferenceDefaultArgs instead
+     */
+    export type NotificationPreferenceArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = NotificationPreferenceDefaultArgs<ExtArgs>
 
   /**
    * Batch Payload for updateMany & deleteMany & createMany

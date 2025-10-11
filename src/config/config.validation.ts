@@ -29,12 +29,22 @@ export const configValidation = Joi.object({
   AWS_REGION: Joi.string().default('us-east-1'),
   AWS_S3_BUCKET: Joi.string().required(),
   
-  // Email
+  // Email (Legacy - keeping for backward compatibility)
   SMTP_HOST: Joi.string().required(),
   SMTP_PORT: Joi.number().default(587),
   SMTP_USER: Joi.string().required(),
   SMTP_PASS: Joi.string().required(),
   FROM_EMAIL: Joi.string().email().required(),
+  
+  // Mailtrap (Notification System)
+  MAILTRAP_API_TOKEN: Joi.string().required(),
+  MAILTRAP_FROM_EMAIL: Joi.string().email().default('noreply@cyberdefend.com'),
+  MAILTRAP_FROM_NAME: Joi.string().default('CyberDefend'),
+  
+  // Arkesel SMS
+  ARKESEL_API_KEY: Joi.string().required(),
+  ARKESEL_SENDER_ID: Joi.string().default('CyberDefend'),
+  ARKESEL_BASE_URL: Joi.string().default('https://sms.arkesel.com/api/v2'),
   
   // Payment Gateways
   PAYSTACK_SECRET_KEY: Joi.string().required(),

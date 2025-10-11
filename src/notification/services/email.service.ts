@@ -1,0 +1,304 @@
+import { Injectable, Logger } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import * as nodemailer from 'nodemailer';
+import { Transporter } from 'nodemailer';
+import { EmailData, NotificationResult } from '../interfaces/notification.interface';
+
+@Injectable()
+export class EmailService {
+  private readonly logger = new Logger(EmailService.name);
+  private bulkTransport: Transporter;
+  private liveTransport: Transporter;
+  private defaultSender: { email: string; name: string };
+
+  constructor(private configService: ConfigService) {
+    this.initializeTransports();
+  }
+
+  private initializeMailtrapClient() {
+    // Deprecated: kept for backward compatibility. Real initialization happens in initializeTransports().
+  }
+
+  private initializeTransports() {
+    const smtpUser = this.configService.get<string>('MAILTRAP_SMTP_USER') || 'api';
+    const smtpPass = this.configService.get<string>('MAILTRAP_SMTP_PASS') || this.configService.get<string>('MAILTRAP_API_TOKEN') || '';
+
+    // Bulk transport - used for bulk/phishing sends
+    this.bulkTransport = nodemailer.createTransport({
+      host: this.configService.get<string>('MAILTRAP_BULK_HOST') || 'bulk.smtp.mailtrap.io',
+      port: this.configService.get<number>('MAILTRAP_SMTP_PORT') || 587,
+      auth: {
+        user: smtpUser,
+        pass: smtpPass,
+      },
+    });
+
+    // Live transport - used for single sends
+    this.liveTransport = nodemailer.createTransport({
+      host: this.configService.get<string>('MAILTRAP_LIVE_HOST') || 'live.smtp.mailtrap.io',
+      port: this.configService.get<number>('MAILTRAP_SMTP_PORT') || 587,
+      auth: {
+        user: smtpUser,
+        pass: smtpPass,
+      },
+    });
+
+    this.defaultSender = {
+      email: this.configService.get<string>('MAILTRAP_FROM_EMAIL') || 'noreply@cyberdefend.com',
+      name: this.configService.get<string>('MAILTRAP_FROM_NAME') || 'CyberDefend',
+    };
+
+    this.logger.log('Nodemailer transports initialized (bulk + live)');
+  }
+
+  async sendEmail(emailData: EmailData): Promise<NotificationResult> {
+    const startTime = Date.now();
+    const result: NotificationResult = {
+      success: false,
+      timestamp: new Date(),
+      attempts: 1,
+    };
+
+    try {
+      if (!this.liveTransport) {
+        throw new Error('Live SMTP transport not initialized');
+      }
+
+      // Prepare recipients
+      const recipients = Array.isArray(emailData.to) 
+        ? emailData.to.map(email => ({ email }))
+        : [{ email: emailData.to }];
+
+      // Use custom sender if provided, otherwise use default
+      const sender = {
+        email: emailData.fromEmail || this.defaultSender.email,
+        name: emailData.fromName || this.defaultSender.name,
+      };
+
+      // Prepare nodemailer message
+      const mailOptions = {
+        from: `${sender.name} <${sender.email}>`,
+        to: recipients.map(r => r.email).join(', '),
+        subject: emailData.subject,
+        text: emailData.textContent || '',
+        html: emailData.htmlContent || emailData.textContent || '',
+      } as any;
+
+      // Use live transport for single sends
+      const info = await this.liveTransport.sendMail(mailOptions);
+
+      result.success = true;
+      result.messageId = info.messageId || `smtp_${Date.now()}`;
+      
+      const duration = Date.now() - startTime;
+      this.logger.log(`Email sent successfully to ${recipients.length} recipients from ${sender.email} in ${duration}ms. MessageId: ${result.messageId}`);
+      
+      return result;
+    } catch (error) {
+      result.error = error.message;
+      const duration = Date.now() - startTime;
+      
+      this.logger.error(`Failed to send email to ${emailData.to} after ${duration}ms:`, error);
+      
+      return result;
+    }
+  }
+
+  async sendBulkEmails(emails: EmailData[]): Promise<NotificationResult[]> {
+    const results: NotificationResult[] = [];
+    const batchSize = 100; // Mailtrap can handle larger batches
+
+    for (let i = 0; i < emails.length; i += batchSize) {
+      const batch = emails.slice(i, i + batchSize);
+      
+      // Process batch in parallel
+      // For bulk batches use bulk transport directly to send messages in parallel
+      const batchPromises = batch.map(async (email) => {
+        // reuse sendBulkEmail for multi-recipient bulk formatting
+        return this.sendEmailUsingTransport(email, this.bulkTransport);
+      });
+      const batchResults = await Promise.all(batchPromises);
+      results.push(...batchResults);
+
+      // Small delay between batches
+      if (i + batchSize < emails.length) {
+        await new Promise(resolve => setTimeout(resolve, 100));
+      }
+    }
+
+    return results;
+  }
+
+  private async sendEmailUsingTransport(emailData: EmailData, transport: Transporter): Promise<NotificationResult> {
+    const startTime = Date.now();
+    const result: NotificationResult = {
+      success: false,
+      timestamp: new Date(),
+      attempts: 1,
+    };
+
+    try {
+      if (!transport) {
+        throw new Error('SMTP transport not initialized');
+      }
+
+      const recipients = Array.isArray(emailData.to)
+        ? emailData.to.map(email => ({ email }))
+        : [{ email: emailData.to }];
+
+      const sender = {
+        email: emailData.fromEmail || this.defaultSender.email,
+        name: emailData.fromName || this.defaultSender.name,
+      };
+
+      const mailOptions = {
+        from: `${sender.name} <${sender.email}>`,
+        to: recipients.map(r => r.email).join(', '),
+        subject: emailData.subject,
+        text: emailData.textContent || '',
+        html: emailData.htmlContent || emailData.textContent || '',
+      } as any;
+
+      const info = await transport.sendMail(mailOptions);
+
+      result.success = true;
+      result.messageId = info.messageId || `smtp_${Date.now()}`;
+
+      const duration = Date.now() - startTime;
+      this.logger.log(`Email sent successfully to ${recipients.length} recipients from ${sender.email} in ${duration}ms. MessageId: ${result.messageId}`);
+
+      return result;
+    } catch (error) {
+      result.error = error.message;
+      const duration = Date.now() - startTime;
+
+      this.logger.error(`Failed to send email to ${emailData.to} after ${duration}ms:`, error);
+
+      return result;
+    }
+  }
+
+  async testConnection(): Promise<boolean> {
+    try {
+      if (!this.liveTransport || !this.bulkTransport) {
+        return false;
+      }
+
+      // Send a simple test message via live transport
+      const info = await this.liveTransport.sendMail({
+        from: `${this.defaultSender.name} <${this.defaultSender.email}>`,
+        to: this.defaultSender.email,
+        subject: 'SMTP Connection Test',
+        text: 'This is a test email to verify SMTP connection.',
+      });
+
+      this.logger.log('SMTP connection test successful', info.messageId);
+      return true;
+    } catch (error) {
+      this.logger.error('Mailtrap connection test failed:', error);
+      return false;
+    }
+  }
+
+  // Method for sending single bulk operation with multiple recipients
+  async sendBulkEmail(
+    subject: string,
+    content: string,
+    recipients: string[],
+    isHtml: boolean = false,
+    category: string = 'Bulk Email',
+    fromEmail?: string,
+    fromName?: string
+  ): Promise<NotificationResult> {
+    const startTime = Date.now();
+    const result: NotificationResult = {
+      success: false,
+      timestamp: new Date(),
+      attempts: 1,
+    };
+
+    try {
+      if (!this.bulkTransport) {
+        throw new Error('Bulk SMTP transport not initialized');
+      }
+
+      const recipientList = recipients;
+
+      const sender = {
+        email: fromEmail || this.defaultSender.email,
+        name: fromName || this.defaultSender.name,
+      };
+
+      const mailOptions = {
+        from: `${sender.name} <${sender.email}>`,
+        to: recipientList.join(', '),
+        subject,
+        text: isHtml ? this.stripHtml(content) : content,
+        html: isHtml ? content : this.createHtmlFromText(content),
+      } as any;
+
+      const info = await this.bulkTransport.sendMail(mailOptions);
+
+      result.success = true;
+      result.messageId = info.messageId || `smtp_bulk_${Date.now()}`;
+
+      const duration = Date.now() - startTime;
+      this.logger.log(`Bulk email sent successfully to ${recipients.length} recipients from ${sender.email} in ${duration}ms. MessageId: ${result.messageId}`);
+
+      return result;
+    } catch (error) {
+      result.error = error.message;
+      const duration = Date.now() - startTime;
+
+      this.logger.error(`Failed to send bulk email to ${recipients.length} recipients after ${duration}ms:`, error);
+
+      return result;
+    }
+  }
+
+  private stripHtml(html: string): string {
+    return html
+      .replace(/<[^>]*>/g, '') // Remove HTML tags
+      .replace(/&nbsp;/g, ' ') // Replace non-breaking spaces
+      .replace(/&amp;/g, '&') // Replace HTML entities
+      .replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>')
+      .replace(/&quot;/g, '"')
+      .replace(/&#39;/g, "'")
+      .replace(/\s+/g, ' ') // Normalize whitespace
+      .trim();
+  }
+
+  private createHtmlFromText(text: string): string {
+    return `
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <meta charset="utf-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>CyberDefend Notification</title>
+          <style>
+            body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+            .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+            .header { background-color: #f8f9fa; padding: 20px; text-align: center; }
+            .content { padding: 20px; }
+            .footer { background-color: #f8f9fa; padding: 20px; text-align: center; font-size: 12px; color: #666; }
+          </style>
+        </head>
+        <body>
+          <div class="container">
+            <div class="header">
+              <h2>CyberDefend</h2>
+            </div>
+            <div class="content">
+              ${text.replace(/\n/g, '<br>')}
+            </div>
+            <div class="footer">
+              <p>This email was sent by CyberDefend 360 Platform</p>
+            </div>
+          </div>
+        </body>
+      </html>
+    `;
+  }
+}

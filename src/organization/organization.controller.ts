@@ -27,6 +27,15 @@ import { QueryOrganizationsDto } from './dto/query-organizations.dto';
 import { JoinOrganizationDto } from './dto/join-organization.dto';
 import { CreateInviteCodeDto } from './dto/invite-code.dto';
 import { UpdateMemberRoleDto, InviteMemberDto } from './dto/member.dto';
+import { 
+  UpdateOrganizationSettingsDto, 
+  InviteMemberDto as InviteDto, 
+  UpdateMemberRoleDto as UpdateRoleDto,
+  RemoveMemberDto,
+  ResendInvitationDto,
+  OrganizationSettingsResponseDto,
+  OrganizationMemberResponseDto
+} from './dto/organization.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from '../auth/decorators/roles.decorator';
@@ -398,47 +407,6 @@ export class OrganizationController {
       }
     }
   })
-  @ApiResponse({ status: 400, description: 'Cannot demote the only organization admin' })
-  @ApiResponse({ status: 403, description: 'Not authorized to update member roles' })
-  @ApiResponse({ status: 404, description: 'Member not found in this organization' })
-  updateMemberRole(
-    @Param('id') id: string,
-    @Param('memberId') memberId: string,
-    @Body() updateMemberRoleDto: UpdateMemberRoleDto,
-    @GetUser('id') userId: string,
-  ) {
-    return this.organizationService.updateMemberRole(id, memberId, userId, updateMemberRoleDto);
-  }
-
-  @Delete(':id/members/:memberId')
-  @ApiBearerAuth()
-  @Roles('ORG_ADMIN')
-  @ApiOperation({ 
-    summary: 'Remove member',
-    description: 'Remove a member from the organization. Only available to organization admins.'
-  })
-  @ApiParam({ name: 'id', description: 'Organization ID' })
-  @ApiParam({ name: 'memberId', description: 'Member User ID' })
-  @ApiResponse({ 
-    status: 200, 
-    description: 'Member removed successfully',
-    schema: {
-      example: {
-        message: 'Member removed successfully'
-      }
-    }
-  })
-  @ApiResponse({ status: 400, description: 'Cannot remove the only organization admin' })
-  @ApiResponse({ status: 403, description: 'Not authorized to remove members' })
-  @ApiResponse({ status: 404, description: 'Member not found in this organization' })
-  removeMember(
-    @Param('id') id: string,
-    @Param('memberId') memberId: string,
-    @GetUser('id') userId: string,
-  ) {
-    return this.organizationService.removeMember(id, memberId, userId);
-  }
-
   @Post(':id/invite-codes')
   @Roles('ORG_ADMIN', 'ORG_MANAGER')
   @ApiOperation({ 
@@ -470,5 +438,228 @@ export class OrganizationController {
     @GetUser('id') userId: string,
   ) {
     return this.organizationService.createInviteCode(orgId, createInviteDto, userId);
+  }
+
+  // Organization Settings Endpoints
+  @Get(':id/settings')
+  @Roles('ORG_ADMIN', 'ORG_MANAGER')
+  @ApiOperation({
+    summary: 'Get organization settings',
+    description: 'Retrieve detailed organization settings and configuration'
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Organization settings retrieved successfully',
+    type: OrganizationSettingsResponseDto,
+  })
+  @ApiResponse({ status: 403, description: 'Insufficient permissions' })
+  @ApiResponse({ status: 404, description: 'Organization not found' })
+  @ApiParam({ name: 'id', description: 'Organization ID' })
+  @ApiBearerAuth()
+  getOrganizationSettings(
+    @Param('id') orgId: string,
+    @GetUser('id') userId: string,
+  ) {
+    return this.organizationService.getOrganizationSettings(orgId, userId);
+  }
+
+  @Patch(':id/settings')
+  @Roles('ORG_ADMIN')
+  @ApiOperation({
+    summary: 'Update organization settings',
+    description: 'Update organization details and configuration (Admin only)'
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Organization settings updated successfully',
+    type: OrganizationSettingsResponseDto,
+  })
+  @ApiResponse({ status: 400, description: 'Invalid organization data' })
+  @ApiResponse({ status: 403, description: 'Insufficient permissions' })
+  @ApiResponse({ status: 404, description: 'Organization not found' })
+  @ApiParam({ name: 'id', description: 'Organization ID' })
+  @ApiBearerAuth()
+  updateOrganizationSettings(
+    @Param('id') orgId: string,
+    @Body() updateDto: UpdateOrganizationSettingsDto,
+    @GetUser('id') userId: string,
+  ) {
+    return this.organizationService.updateOrganizationSettings(orgId, updateDto, userId);
+  }
+
+  @Get(':id/members')
+  @Roles('ORG_ADMIN', 'ORG_MANAGER', 'END_USER')
+  @ApiOperation({
+    summary: 'Get organization members',
+    description: 'Retrieve list of all organization members with their roles'
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Organization members retrieved successfully',
+    type: [OrganizationMemberResponseDto],
+  })
+  @ApiResponse({ status: 403, description: 'Insufficient permissions' })
+  @ApiResponse({ status: 404, description: 'Organization not found' })
+  @ApiParam({ name: 'id', description: 'Organization ID' })
+  @ApiBearerAuth()
+  getOrganizationMembers(
+    @Param('id') orgId: string,
+    @GetUser('id') userId: string,
+  ) {
+    return this.organizationService.getOrganizationMembers(orgId, userId);
+  }
+
+  @Post(':id/members/invite')
+  @Roles('ORG_ADMIN', 'ORG_MANAGER')
+  @ApiOperation({
+    summary: 'Invite new member to organization',
+    description: 'Send email invitation to a new member to join the organization'
+  })
+  @ApiResponse({
+    status: 201,
+    description: 'Invitation sent successfully',
+    schema: {
+      example: {
+        success: true,
+        message: 'Invitation sent to john.doe@example.com',
+        invitationId: 'uuid-invitation-id'
+      }
+    }
+  })
+  @ApiResponse({ status: 400, description: 'Invalid invitation data or user already exists' })
+  @ApiResponse({ status: 403, description: 'Insufficient permissions' })
+  @ApiResponse({ status: 404, description: 'Organization not found' })
+  @ApiParam({ name: 'id', description: 'Organization ID' })
+  @ApiBearerAuth()
+  inviteMember(
+    @Param('id') orgId: string,
+    @Body() inviteDto: InviteDto,
+    @GetUser('id') userId: string,
+  ) {
+    return this.organizationService.inviteMember(orgId, inviteDto, userId);
+  }
+
+  @Patch(':id/members/:memberId/role')
+  @Roles('ORG_ADMIN')
+  @ApiOperation({
+    summary: 'Update member role',
+    description: 'Update the role of an organization member (Admin only)'
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Member role updated successfully',
+    schema: {
+      example: {
+        success: true,
+        message: 'Member role updated to ORG_MANAGER',
+        member: {
+          id: 'member-id',
+          role: 'ORG_MANAGER'
+        }
+      }
+    }
+  })
+  @ApiResponse({ status: 400, description: 'Invalid role or member data' })
+  @ApiResponse({ status: 403, description: 'Insufficient permissions' })
+  @ApiResponse({ status: 404, description: 'Organization or member not found' })
+  @ApiParam({ name: 'id', description: 'Organization ID' })
+  @ApiParam({ name: 'memberId', description: 'Member ID' })
+  @ApiBearerAuth()
+  updateMemberRole(
+    @Param('id') orgId: string,
+    @Param('memberId') memberId: string,
+    @Body() updateDto: UpdateRoleDto,
+    @GetUser('id') userId: string,
+  ) {
+    return this.organizationService.updateMemberRole(orgId, memberId, updateDto, userId);
+  }
+
+  @Delete(':id/members/:memberId')
+  @Roles('ORG_ADMIN')
+  @ApiOperation({
+    summary: 'Remove member from organization',
+    description: 'Remove a member from the organization (Admin only)'
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Member removed successfully',
+    schema: {
+      example: {
+        success: true,
+        message: 'Member removed from organization'
+      }
+    }
+  })
+  @ApiResponse({ status: 403, description: 'Insufficient permissions' })
+  @ApiResponse({ status: 404, description: 'Organization or member not found' })
+  @ApiParam({ name: 'id', description: 'Organization ID' })
+  @ApiParam({ name: 'memberId', description: 'Member ID' })
+  @ApiBearerAuth()
+  removeMember(
+    @Param('id') orgId: string,
+    @Param('memberId') memberId: string,
+    @Body() removeDto: RemoveMemberDto,
+    @GetUser('id') userId: string,
+  ) {
+    return this.organizationService.removeMember(orgId, memberId, removeDto, userId);
+  }
+
+  @Post(':id/invitations/:invitationId/resend')
+  @Roles('ORG_ADMIN', 'ORG_MANAGER')
+  @ApiOperation({
+    summary: 'Resend invitation',
+    description: 'Resend an existing invitation to a pending member'
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Invitation resent successfully',
+    schema: {
+      example: {
+        success: true,
+        message: 'Invitation resent to john.doe@example.com'
+      }
+    }
+  })
+  @ApiResponse({ status: 403, description: 'Insufficient permissions' })
+  @ApiResponse({ status: 404, description: 'Organization or invitation not found' })
+  @ApiParam({ name: 'id', description: 'Organization ID' })
+  @ApiParam({ name: 'invitationId', description: 'Invitation ID' })
+  @ApiBearerAuth()
+  resendInvitation(
+    @Param('id') orgId: string,
+    @Param('invitationId') invitationId: string,
+    @Body() resendDto: ResendInvitationDto,
+    @GetUser('id') userId: string,
+  ) {
+    return this.organizationService.resendInvitation(orgId, invitationId, resendDto, userId);
+  }
+
+  @Delete(':id/invitations/:invitationId')
+  @Roles('ORG_ADMIN')
+  @ApiOperation({
+    summary: 'Cancel invitation',
+    description: 'Cancel a pending invitation (Admin only)'
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Invitation cancelled successfully',
+    schema: {
+      example: {
+        success: true,
+        message: 'Invitation cancelled'
+      }
+    }
+  })
+  @ApiResponse({ status: 403, description: 'Insufficient permissions' })
+  @ApiResponse({ status: 404, description: 'Organization or invitation not found' })
+  @ApiParam({ name: 'id', description: 'Organization ID' })
+  @ApiParam({ name: 'invitationId', description: 'Invitation ID' })
+  @ApiBearerAuth()
+  cancelInvitation(
+    @Param('id') orgId: string,
+    @Param('invitationId') invitationId: string,
+    @GetUser('id') userId: string,
+  ) {
+    return this.organizationService.cancelInvitation(orgId, invitationId, userId);
   }
 }

@@ -10,9 +10,11 @@ export enum AssessmentType {
 }
 
 export enum AssessmentStatus {
-  IN_PROGRESS = 'in_progress',
-  COMPLETED = 'completed',
-  CANCELLED = 'cancelled',
+  DRAFT = 'DRAFT',
+  IN_PROGRESS = 'IN_PROGRESS',
+  COMPLETED = 'COMPLETED',
+  EXPIRED = 'EXPIRED',
+  CANCELLED = 'CANCELLED',
 }
 
 export enum QuestionType {
