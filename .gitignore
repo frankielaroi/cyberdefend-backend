@@ -60,6 +60,7 @@ Thumbs.db
 
 # Prisma
 prisma/migrations/*/migration.sql
+generated/
 
 # Temporary files
 *.tmp
