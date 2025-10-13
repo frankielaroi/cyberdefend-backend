@@ -5,6 +5,7 @@ import * as bcrypt from 'bcrypt';
 import { v4 as uuidv4 } from 'uuid';
 
 import { PrismaService } from '../database/prisma.service';
+import { EmailService } from '../notification/services/email.service';
 import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
 import { ChangePasswordDto } from './dto/change-password.dto';
@@ -17,6 +18,7 @@ export class AuthService {
     private prisma: PrismaService,
     private jwtService: JwtService,
     private configService: ConfigService,
+    private emailService: EmailService,
   ) {}
 
   async validateUser(email: string, password: string): Promise<any> {
@@ -197,8 +199,17 @@ export class AuthService {
     // Generate email verification token
     const verificationToken = uuidv4();
     
-    // TODO: Send verification email
-    // await this.emailService.sendVerificationEmail(user.email, verificationToken);
+    // Send verification email
+    try {
+      await this.sendVerificationEmail(user.email, verificationToken, `${user.firstName} ${user.lastName}`);
+      await this.prisma.user.update({
+        where: { id: user.id },
+        data: { verificationToken },
+      });
+    } catch (emailError) {
+      console.error('Failed to send verification email:', emailError);
+      // Continue with registration even if email fails
+    }
 
     // Generate JWT tokens for immediate login
     const payload = { 
@@ -413,7 +424,26 @@ export class AuthService {
   }
 
   async verifyEmail(token: string) {
-    // TODO: Verify email token and activate user
+    const user = await this.prisma.user.findFirst({
+      where: { verificationToken: token }
+    });
+
+    if (!user) {
+      throw new UnauthorizedException('Invalid or expired verification token');
+    }
+
+    if (user.emailVerified) {
+      return { message: 'Email is already verified' };
+    }
+
+    // Mark email as verified and clear the verification token
+    await this.prisma.user.update({
+      where: { id: user.id },
+      data: { 
+        emailVerified: true,
+        verificationToken: null
+      }
+    });
     
     return { message: 'Email verified successfully' };
   }
@@ -490,5 +520,78 @@ export class AuthService {
     }
 
     return user;
+  }
+
+  // Email Verification Methods
+  private async sendVerificationEmail(email: string, token: string, userName: string): Promise<void> {
+    const verificationUrl = `${this.configService.get('FRONTEND_URL')}/verify-email?token=${token}`;
+    
+    const emailData = {
+      to: email,
+      subject: 'Verify Your Email - CyberDefend 360',
+      htmlContent: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+          <h2 style="color: #333;">Welcome to CyberDefend 360!</h2>
+          <p>Hi ${userName},</p>
+          <p>Thank you for registering with CyberDefend 360. To complete your account setup, please verify your email address by clicking the button below:</p>
+          <div style="text-align: center; margin: 30px 0;">
+            <a href="${verificationUrl}" 
+               style="background-color: #007bff; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px; display: inline-block;">
+              Verify Email Address
+            </a>
+          </div>
+          <p>If the button doesn't work, you can also copy and paste this link into your browser:</p>
+          <p style="word-break: break-all; color: #666;">${verificationUrl}</p>
+          <p>This verification link will expire in 24 hours.</p>
+          <hr style="margin: 30px 0; border: none; border-top: 1px solid #eee;">
+          <p style="color: #666; font-size: 12px;">
+            If you didn't create an account with CyberDefend 360, please ignore this email.
+          </p>
+        </div>
+      `,
+      textContent: `
+        Welcome to CyberDefend 360!
+        
+        Hi ${userName},
+        
+        Thank you for registering with CyberDefend 360. To complete your account setup, please verify your email address by visiting:
+        
+        ${verificationUrl}
+        
+        This verification link will expire in 24 hours.
+        
+        If you didn't create an account with CyberDefend 360, please ignore this email.
+      `,
+      category: 'verification'
+    };
+
+    await this.emailService.sendEmail(emailData);
+  }
+
+  async resendVerificationEmail(email: string): Promise<{ message: string }> {
+    const user = await this.prisma.user.findUnique({
+      where: { email },
+      select: { id: true, firstName: true, lastName: true, emailVerified: true, verificationToken: true }
+    });
+
+    if (!user) {
+      throw new UnauthorizedException('User not found');
+    }
+
+    if (user.emailVerified) {
+      return { message: 'Email is already verified' };
+    }
+
+    // Generate new verification token
+    const verificationToken = uuidv4();
+    
+    await this.prisma.user.update({
+      where: { id: user.id },
+      data: { verificationToken }
+    });
+
+    await this.sendVerificationEmail(email, verificationToken, `${user.firstName} ${user.lastName}`);
+
+    return { message: 'Verification email sent successfully' };
   }
 }

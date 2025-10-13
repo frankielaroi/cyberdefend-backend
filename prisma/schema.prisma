@@ -13,18 +13,19 @@ datasource db {
 
 // User Management
 model User {
-  id            String   @id @default(uuid())
-  email         String   @unique
-  password      String
-  firstName     String
-  lastName      String
-  phone         String?
-  avatar        String?
-  emailVerified Boolean  @default(true)
-  isActive      Boolean  @default(true)
-  role          UserRole @default(END_USER)
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  id                String   @id @default(uuid())
+  email             String   @unique
+  password          String
+  firstName         String
+  lastName          String
+  phone             String?
+  avatar            String?
+  emailVerified     Boolean  @default(false)
+  verificationToken String?
+  isActive          Boolean  @default(true)
+  role              UserRole @default(END_USER)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
 
   // Relationships
   organization   Organization? @relation(fields: [organizationId], references: [id])

@@ -279,14 +279,6 @@ export const CSITier: {
 export type CSITier = (typeof CSITier)[keyof typeof CSITier]
 
 
-export const CampaignType: {
-  EMAIL: 'EMAIL',
-  SMS: 'SMS'
-};
-
-export type CampaignType = (typeof CampaignType)[keyof typeof CampaignType]
-
-
 export const CampaignStatus: {
   DRAFT: 'DRAFT',
   SCHEDULED: 'SCHEDULED',
@@ -305,11 +297,6 @@ export const PhishingEventType: {
   EMAIL_DELIVERED: 'EMAIL_DELIVERED',
   EMAIL_BOUNCED: 'EMAIL_BOUNCED',
   EMAIL_OPENED: 'EMAIL_OPENED',
-  SMS_QUEUED: 'SMS_QUEUED',
-  SMS_SENT: 'SMS_SENT',
-  SMS_DELIVERED: 'SMS_DELIVERED',
-  SMS_FAILED: 'SMS_FAILED',
-  SMS_CLICKED: 'SMS_CLICKED',
   LINK_CLICKED: 'LINK_CLICKED',
   CREDENTIALS_ENTERED: 'CREDENTIALS_ENTERED',
   PHISHING_REPORTED: 'PHISHING_REPORTED',
@@ -343,14 +330,6 @@ export const RiskLevel: {
 };
 
 export type RiskLevel = (typeof RiskLevel)[keyof typeof RiskLevel]
-
-
-export const TemplateType: {
-  EMAIL: 'EMAIL',
-  SMS: 'SMS'
-};
-
-export type TemplateType = (typeof TemplateType)[keyof typeof TemplateType]
 
 
 export const JobPriority: {
@@ -562,10 +541,6 @@ export type CSITier = $Enums.CSITier
 
 export const CSITier: typeof $Enums.CSITier
 
-export type CampaignType = $Enums.CampaignType
-
-export const CampaignType: typeof $Enums.CampaignType
-
 export type CampaignStatus = $Enums.CampaignStatus
 
 export const CampaignStatus: typeof $Enums.CampaignStatus
@@ -581,10 +556,6 @@ export const TemplateCategory: typeof $Enums.TemplateCategory
 export type RiskLevel = $Enums.RiskLevel
 
 export const RiskLevel: typeof $Enums.RiskLevel
-
-export type TemplateType = $Enums.TemplateType
-
-export const TemplateType: typeof $Enums.TemplateType
 
 export type JobPriority = $Enums.JobPriority
 
@@ -4501,6 +4472,7 @@ export namespace Prisma {
     phone: string | null
     avatar: string | null
     emailVerified: boolean | null
+    verificationToken: string | null
     isActive: boolean | null
     role: $Enums.UserRole | null
     createdAt: Date | null
@@ -4517,6 +4489,7 @@ export namespace Prisma {
     phone: string | null
     avatar: string | null
     emailVerified: boolean | null
+    verificationToken: string | null
     isActive: boolean | null
     role: $Enums.UserRole | null
     createdAt: Date | null
@@ -4533,6 +4506,7 @@ export namespace Prisma {
     phone: number
     avatar: number
     emailVerified: number
+    verificationToken: number
     isActive: number
     role: number
     createdAt: number
@@ -4551,6 +4525,7 @@ export namespace Prisma {
     phone?: true
     avatar?: true
     emailVerified?: true
+    verificationToken?: true
     isActive?: true
     role?: true
     createdAt?: true
@@ -4567,6 +4542,7 @@ export namespace Prisma {
     phone?: true
     avatar?: true
     emailVerified?: true
+    verificationToken?: true
     isActive?: true
     role?: true
     createdAt?: true
@@ -4583,6 +4559,7 @@ export namespace Prisma {
     phone?: true
     avatar?: true
     emailVerified?: true
+    verificationToken?: true
     isActive?: true
     role?: true
     createdAt?: true
@@ -4672,6 +4649,7 @@ export namespace Prisma {
     phone: string | null
     avatar: string | null
     emailVerified: boolean
+    verificationToken: string | null
     isActive: boolean
     role: $Enums.UserRole
     createdAt: Date
@@ -4705,6 +4683,7 @@ export namespace Prisma {
     phone?: boolean
     avatar?: boolean
     emailVerified?: boolean
+    verificationToken?: boolean
     isActive?: boolean
     role?: boolean
     createdAt?: boolean
@@ -4736,6 +4715,7 @@ export namespace Prisma {
     phone?: boolean
     avatar?: boolean
     emailVerified?: boolean
+    verificationToken?: boolean
     isActive?: boolean
     role?: boolean
     createdAt?: boolean
@@ -4753,6 +4733,7 @@ export namespace Prisma {
     phone?: boolean
     avatar?: boolean
     emailVerified?: boolean
+    verificationToken?: boolean
     isActive?: boolean
     role?: boolean
     createdAt?: boolean
@@ -4808,6 +4789,7 @@ export namespace Prisma {
       phone: string | null
       avatar: string | null
       emailVerified: boolean
+      verificationToken: string | null
       isActive: boolean
       role: $Enums.UserRole
       createdAt: Date
@@ -5228,6 +5210,7 @@ export namespace Prisma {
     readonly phone: FieldRef<"User", 'String'>
     readonly avatar: FieldRef<"User", 'String'>
     readonly emailVerified: FieldRef<"User", 'Boolean'>
+    readonly verificationToken: FieldRef<"User", 'String'>
     readonly isActive: FieldRef<"User", 'Boolean'>
     readonly role: FieldRef<"User", 'UserRole'>
     readonly createdAt: FieldRef<"User", 'DateTime'>
@@ -17546,31 +17529,23 @@ export namespace Prisma {
 
   export type PhishingCampaignAvgAggregateOutputType = {
     targetCount: number | null
-    messagesSent: number | null
-    messagesDelivered: number | null
-    messagesOpened: number | null
-    linksClicked: number | null
-    credentialsEntered: number | null
-    phishingReported: number | null
-    messagesFailed: number | null
     emailsSent: number | null
     emailsDelivered: number | null
     emailsOpened: number | null
+    linksClicked: number | null
+    credentialsEntered: number | null
+    phishingReported: number | null
     emailsBounced: number | null
   }
 
   export type PhishingCampaignSumAggregateOutputType = {
     targetCount: number | null
-    messagesSent: number | null
-    messagesDelivered: number | null
-    messagesOpened: number | null
-    linksClicked: number | null
-    credentialsEntered: number | null
-    phishingReported: number | null
-    messagesFailed: number | null
     emailsSent: number | null
     emailsDelivered: number | null
     emailsOpened: number | null
+    linksClicked: number | null
+    credentialsEntered: number | null
+    phishingReported: number | null
     emailsBounced: number | null
   }
 
@@ -17578,32 +17553,24 @@ export namespace Prisma {
     id: string | null
     name: string | null
     description: string | null
-    campaignType: $Enums.CampaignType | null
     templateId: string | null
     template: string | null
     subject: string | null
     senderName: string | null
     senderEmail: string | null
     landingPageUrl: string | null
-    senderNumber: string | null
-    messageContent: string | null
-    trackingUrl: string | null
     status: $Enums.CampaignStatus | null
     scheduledAt: Date | null
     launchedAt: Date | null
     completedAt: Date | null
     pausedAt: Date | null
     targetCount: number | null
-    messagesSent: number | null
-    messagesDelivered: number | null
-    messagesOpened: number | null
-    linksClicked: number | null
-    credentialsEntered: number | null
-    phishingReported: number | null
-    messagesFailed: number | null
     emailsSent: number | null
     emailsDelivered: number | null
     emailsOpened: number | null
+    linksClicked: number | null
+    credentialsEntered: number | null
+    phishingReported: number | null
     emailsBounced: number | null
     createdBy: string | null
     organizationId: string | null
@@ -17615,32 +17582,24 @@ export namespace Prisma {
     id: string | null
     name: string | null
     description: string | null
-    campaignType: $Enums.CampaignType | null
     templateId: string | null
     template: string | null
     subject: string | null
     senderName: string | null
     senderEmail: string | null
     landingPageUrl: string | null
-    senderNumber: string | null
-    messageContent: string | null
-    trackingUrl: string | null
     status: $Enums.CampaignStatus | null
     scheduledAt: Date | null
     launchedAt: Date | null
     completedAt: Date | null
     pausedAt: Date | null
     targetCount: number | null
-    messagesSent: number | null
-    messagesDelivered: number | null
-    messagesOpened: number | null
-    linksClicked: number | null
-    credentialsEntered: number | null
-    phishingReported: number | null
-    messagesFailed: number | null
     emailsSent: number | null
     emailsDelivered: number | null
     emailsOpened: number | null
+    linksClicked: number | null
+    credentialsEntered: number | null
+    phishingReported: number | null
     emailsBounced: number | null
     createdBy: string | null
     organizationId: string | null
@@ -17652,32 +17611,24 @@ export namespace Prisma {
     id: number
     name: number
     description: number
-    campaignType: number
     templateId: number
     template: number
     subject: number
     senderName: number
     senderEmail: number
     landingPageUrl: number
-    senderNumber: number
-    messageContent: number
-    trackingUrl: number
     status: number
     scheduledAt: number
     launchedAt: number
     completedAt: number
     pausedAt: number
     targetCount: number
-    messagesSent: number
-    messagesDelivered: number
-    messagesOpened: number
-    linksClicked: number
-    credentialsEntered: number
-    phishingReported: number
-    messagesFailed: number
     emailsSent: number
     emailsDelivered: number
     emailsOpened: number
+    linksClicked: number
+    credentialsEntered: number
+    phishingReported: number
     emailsBounced: number
     createdBy: number
     organizationId: number
@@ -17689,31 +17640,23 @@ export namespace Prisma {
 
   export type PhishingCampaignAvgAggregateInputType = {
     targetCount?: true
-    messagesSent?: true
-    messagesDelivered?: true
-    messagesOpened?: true
-    linksClicked?: true
-    credentialsEntered?: true
-    phishingReported?: true
-    messagesFailed?: true
     emailsSent?: true
     emailsDelivered?: true
     emailsOpened?: true
+    linksClicked?: true
+    credentialsEntered?: true
+    phishingReported?: true
     emailsBounced?: true
   }
 
   export type PhishingCampaignSumAggregateInputType = {
     targetCount?: true
-    messagesSent?: true
-    messagesDelivered?: true
-    messagesOpened?: true
-    linksClicked?: true
-    credentialsEntered?: true
-    phishingReported?: true
-    messagesFailed?: true
     emailsSent?: true
     emailsDelivered?: true
     emailsOpened?: true
+    linksClicked?: true
+    credentialsEntered?: true
+    phishingReported?: true
     emailsBounced?: true
   }
 
@@ -17721,32 +17664,24 @@ export namespace Prisma {
     id?: true
     name?: true
     description?: true
-    campaignType?: true
     templateId?: true
     template?: true
     subject?: true
     senderName?: true
     senderEmail?: true
     landingPageUrl?: true
-    senderNumber?: true
-    messageContent?: true
-    trackingUrl?: true
     status?: true
     scheduledAt?: true
     launchedAt?: true
     completedAt?: true
     pausedAt?: true
     targetCount?: true
-    messagesSent?: true
-    messagesDelivered?: true
-    messagesOpened?: true
-    linksClicked?: true
-    credentialsEntered?: true
-    phishingReported?: true
-    messagesFailed?: true
     emailsSent?: true
     emailsDelivered?: true
     emailsOpened?: true
+    linksClicked?: true
+    credentialsEntered?: true
+    phishingReported?: true
     emailsBounced?: true
     createdBy?: true
     organizationId?: true
@@ -17758,32 +17693,24 @@ export namespace Prisma {
     id?: true
     name?: true
     description?: true
-    campaignType?: true
     templateId?: true
     template?: true
     subject?: true
     senderName?: true
     senderEmail?: true
     landingPageUrl?: true
-    senderNumber?: true
-    messageContent?: true
-    trackingUrl?: true
     status?: true
     scheduledAt?: true
     launchedAt?: true
     completedAt?: true
     pausedAt?: true
     targetCount?: true
-    messagesSent?: true
-    messagesDelivered?: true
-    messagesOpened?: true
-    linksClicked?: true
-    credentialsEntered?: true
-    phishingReported?: true
-    messagesFailed?: true
     emailsSent?: true
     emailsDelivered?: true
     emailsOpened?: true
+    linksClicked?: true
+    credentialsEntered?: true
+    phishingReported?: true
     emailsBounced?: true
     createdBy?: true
     organizationId?: true
@@ -17795,32 +17722,24 @@ export namespace Prisma {
     id?: true
     name?: true
     description?: true
-    campaignType?: true
     templateId?: true
     template?: true
     subject?: true
     senderName?: true
     senderEmail?: true
     landingPageUrl?: true
-    senderNumber?: true
-    messageContent?: true
-    trackingUrl?: true
     status?: true
     scheduledAt?: true
     launchedAt?: true
     completedAt?: true
     pausedAt?: true
     targetCount?: true
-    messagesSent?: true
-    messagesDelivered?: true
-    messagesOpened?: true
-    linksClicked?: true
-    credentialsEntered?: true
-    phishingReported?: true
-    messagesFailed?: true
     emailsSent?: true
     emailsDelivered?: true
     emailsOpened?: true
+    linksClicked?: true
+    credentialsEntered?: true
+    phishingReported?: true
     emailsBounced?: true
     createdBy?: true
     organizationId?: true
@@ -17919,32 +17838,24 @@ export namespace Prisma {
     id: string
     name: string
     description: string | null
-    campaignType: $Enums.CampaignType
     templateId: string
     template: string
-    subject: string | null
-    senderName: string | null
-    senderEmail: string | null
+    subject: string
+    senderName: string
+    senderEmail: string
     landingPageUrl: string | null
-    senderNumber: string | null
-    messageContent: string | null
-    trackingUrl: string | null
     status: $Enums.CampaignStatus
     scheduledAt: Date | null
     launchedAt: Date | null
     completedAt: Date | null
     pausedAt: Date | null
     targetCount: number
-    messagesSent: number
-    messagesDelivered: number
-    messagesOpened: number
-    linksClicked: number
-    credentialsEntered: number
-    phishingReported: number
-    messagesFailed: number
     emailsSent: number
     emailsDelivered: number
     emailsOpened: number
+    linksClicked: number
+    credentialsEntered: number
+    phishingReported: number
     emailsBounced: number
     createdBy: string
     organizationId: string
@@ -17975,32 +17886,24 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     description?: boolean
-    campaignType?: boolean
     templateId?: boolean
     template?: boolean
     subject?: boolean
     senderName?: boolean
     senderEmail?: boolean
     landingPageUrl?: boolean
-    senderNumber?: boolean
-    messageContent?: boolean
-    trackingUrl?: boolean
     status?: boolean
     scheduledAt?: boolean
     launchedAt?: boolean
     completedAt?: boolean
     pausedAt?: boolean
     targetCount?: boolean
-    messagesSent?: boolean
-    messagesDelivered?: boolean
-    messagesOpened?: boolean
-    linksClicked?: boolean
-    credentialsEntered?: boolean
-    phishingReported?: boolean
-    messagesFailed?: boolean
     emailsSent?: boolean
     emailsDelivered?: boolean
     emailsOpened?: boolean
+    linksClicked?: boolean
+    credentialsEntered?: boolean
+    phishingReported?: boolean
     emailsBounced?: boolean
     createdBy?: boolean
     organizationId?: boolean
@@ -18017,32 +17920,24 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     description?: boolean
-    campaignType?: boolean
     templateId?: boolean
     template?: boolean
     subject?: boolean
     senderName?: boolean
     senderEmail?: boolean
     landingPageUrl?: boolean
-    senderNumber?: boolean
-    messageContent?: boolean
-    trackingUrl?: boolean
     status?: boolean
     scheduledAt?: boolean
     launchedAt?: boolean
     completedAt?: boolean
     pausedAt?: boolean
     targetCount?: boolean
-    messagesSent?: boolean
-    messagesDelivered?: boolean
-    messagesOpened?: boolean
-    linksClicked?: boolean
-    credentialsEntered?: boolean
-    phishingReported?: boolean
-    messagesFailed?: boolean
     emailsSent?: boolean
     emailsDelivered?: boolean
     emailsOpened?: boolean
+    linksClicked?: boolean
+    credentialsEntered?: boolean
+    phishingReported?: boolean
     emailsBounced?: boolean
     createdBy?: boolean
     organizationId?: boolean
@@ -18056,32 +17951,24 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     description?: boolean
-    campaignType?: boolean
     templateId?: boolean
     template?: boolean
     subject?: boolean
     senderName?: boolean
     senderEmail?: boolean
     landingPageUrl?: boolean
-    senderNumber?: boolean
-    messageContent?: boolean
-    trackingUrl?: boolean
     status?: boolean
     scheduledAt?: boolean
     launchedAt?: boolean
     completedAt?: boolean
     pausedAt?: boolean
     targetCount?: boolean
-    messagesSent?: boolean
-    messagesDelivered?: boolean
-    messagesOpened?: boolean
-    linksClicked?: boolean
-    credentialsEntered?: boolean
-    phishingReported?: boolean
-    messagesFailed?: boolean
     emailsSent?: boolean
     emailsDelivered?: boolean
     emailsOpened?: boolean
+    linksClicked?: boolean
+    credentialsEntered?: boolean
+    phishingReported?: boolean
     emailsBounced?: boolean
     createdBy?: boolean
     organizationId?: boolean
@@ -18113,32 +18000,24 @@ export namespace Prisma {
       id: string
       name: string
       description: string | null
-      campaignType: $Enums.CampaignType
       templateId: string
       template: string
-      subject: string | null
-      senderName: string | null
-      senderEmail: string | null
+      subject: string
+      senderName: string
+      senderEmail: string
       landingPageUrl: string | null
-      senderNumber: string | null
-      messageContent: string | null
-      trackingUrl: string | null
       status: $Enums.CampaignStatus
       scheduledAt: Date | null
       launchedAt: Date | null
       completedAt: Date | null
       pausedAt: Date | null
       targetCount: number
-      messagesSent: number
-      messagesDelivered: number
-      messagesOpened: number
-      linksClicked: number
-      credentialsEntered: number
-      phishingReported: number
-      messagesFailed: number
       emailsSent: number
       emailsDelivered: number
       emailsOpened: number
+      linksClicked: number
+      credentialsEntered: number
+      phishingReported: number
       emailsBounced: number
       createdBy: string
       organizationId: string
@@ -18544,32 +18423,24 @@ export namespace Prisma {
     readonly id: FieldRef<"PhishingCampaign", 'String'>
     readonly name: FieldRef<"PhishingCampaign", 'String'>
     readonly description: FieldRef<"PhishingCampaign", 'String'>
-    readonly campaignType: FieldRef<"PhishingCampaign", 'CampaignType'>
     readonly templateId: FieldRef<"PhishingCampaign", 'String'>
     readonly template: FieldRef<"PhishingCampaign", 'String'>
     readonly subject: FieldRef<"PhishingCampaign", 'String'>
     readonly senderName: FieldRef<"PhishingCampaign", 'String'>
     readonly senderEmail: FieldRef<"PhishingCampaign", 'String'>
     readonly landingPageUrl: FieldRef<"PhishingCampaign", 'String'>
-    readonly senderNumber: FieldRef<"PhishingCampaign", 'String'>
-    readonly messageContent: FieldRef<"PhishingCampaign", 'String'>
-    readonly trackingUrl: FieldRef<"PhishingCampaign", 'String'>
     readonly status: FieldRef<"PhishingCampaign", 'CampaignStatus'>
     readonly scheduledAt: FieldRef<"PhishingCampaign", 'DateTime'>
     readonly launchedAt: FieldRef<"PhishingCampaign", 'DateTime'>
     readonly completedAt: FieldRef<"PhishingCampaign", 'DateTime'>
     readonly pausedAt: FieldRef<"PhishingCampaign", 'DateTime'>
     readonly targetCount: FieldRef<"PhishingCampaign", 'Int'>
-    readonly messagesSent: FieldRef<"PhishingCampaign", 'Int'>
-    readonly messagesDelivered: FieldRef<"PhishingCampaign", 'Int'>
-    readonly messagesOpened: FieldRef<"PhishingCampaign", 'Int'>
-    readonly linksClicked: FieldRef<"PhishingCampaign", 'Int'>
-    readonly credentialsEntered: FieldRef<"PhishingCampaign", 'Int'>
-    readonly phishingReported: FieldRef<"PhishingCampaign", 'Int'>
-    readonly messagesFailed: FieldRef<"PhishingCampaign", 'Int'>
     readonly emailsSent: FieldRef<"PhishingCampaign", 'Int'>
     readonly emailsDelivered: FieldRef<"PhishingCampaign", 'Int'>
     readonly emailsOpened: FieldRef<"PhishingCampaign", 'Int'>
+    readonly linksClicked: FieldRef<"PhishingCampaign", 'Int'>
+    readonly credentialsEntered: FieldRef<"PhishingCampaign", 'Int'>
+    readonly phishingReported: FieldRef<"PhishingCampaign", 'Int'>
     readonly emailsBounced: FieldRef<"PhishingCampaign", 'Int'>
     readonly createdBy: FieldRef<"PhishingCampaign", 'String'>
     readonly organizationId: FieldRef<"PhishingCampaign", 'String'>
@@ -18972,21 +18843,16 @@ export namespace Prisma {
   export type PhishingTargetMinAggregateOutputType = {
     id: string | null
     email: string | null
-    phoneNumber: string | null
     firstName: string | null
     lastName: string | null
     department: string | null
     jobTitle: string | null
-    messageSent: boolean | null
-    messageDelivered: boolean | null
-    messageOpened: boolean | null
-    linkClicked: boolean | null
-    credentialsEntered: boolean | null
-    reportedPhishing: boolean | null
-    messageFailed: boolean | null
     emailSent: boolean | null
     emailDelivered: boolean | null
     emailOpened: boolean | null
+    linkClicked: boolean | null
+    credentialsEntered: boolean | null
+    reportedPhishing: boolean | null
     emailBounced: boolean | null
     sentAt: Date | null
     deliveredAt: Date | null
@@ -18994,13 +18860,10 @@ export namespace Prisma {
     clickedAt: Date | null
     credentialsAt: Date | null
     reportedAt: Date | null
-    failedAt: Date | null
     bouncedAt: Date | null
     userAgent: string | null
     ipAddress: string | null
     clickCount: number | null
-    smsProvider: string | null
-    messageId: string | null
     riskScore: number | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -19011,21 +18874,16 @@ export namespace Prisma {
   export type PhishingTargetMaxAggregateOutputType = {
     id: string | null
     email: string | null
-    phoneNumber: string | null
     firstName: string | null
     lastName: string | null
     department: string | null
     jobTitle: string | null
-    messageSent: boolean | null
-    messageDelivered: boolean | null
-    messageOpened: boolean | null
-    linkClicked: boolean | null
-    credentialsEntered: boolean | null
-    reportedPhishing: boolean | null
-    messageFailed: boolean | null
     emailSent: boolean | null
     emailDelivered: boolean | null
     emailOpened: boolean | null
+    linkClicked: boolean | null
+    credentialsEntered: boolean | null
+    reportedPhishing: boolean | null
     emailBounced: boolean | null
     sentAt: Date | null
     deliveredAt: Date | null
@@ -19033,13 +18891,10 @@ export namespace Prisma {
     clickedAt: Date | null
     credentialsAt: Date | null
     reportedAt: Date | null
-    failedAt: Date | null
     bouncedAt: Date | null
     userAgent: string | null
     ipAddress: string | null
     clickCount: number | null
-    smsProvider: string | null
-    messageId: string | null
     riskScore: number | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -19050,21 +18905,16 @@ export namespace Prisma {
   export type PhishingTargetCountAggregateOutputType = {
     id: number
     email: number
-    phoneNumber: number
     firstName: number
     lastName: number
     department: number
     jobTitle: number
-    messageSent: number
-    messageDelivered: number
-    messageOpened: number
-    linkClicked: number
-    credentialsEntered: number
-    reportedPhishing: number
-    messageFailed: number
     emailSent: number
     emailDelivered: number
     emailOpened: number
+    linkClicked: number
+    credentialsEntered: number
+    reportedPhishing: number
     emailBounced: number
     sentAt: number
     deliveredAt: number
@@ -19072,13 +18922,10 @@ export namespace Prisma {
     clickedAt: number
     credentialsAt: number
     reportedAt: number
-    failedAt: number
     bouncedAt: number
     userAgent: number
     ipAddress: number
     clickCount: number
-    smsProvider: number
-    messageId: number
     riskScore: number
     createdAt: number
     updatedAt: number
@@ -19101,21 +18948,16 @@ export namespace Prisma {
   export type PhishingTargetMinAggregateInputType = {
     id?: true
     email?: true
-    phoneNumber?: true
     firstName?: true
     lastName?: true
     department?: true
     jobTitle?: true
-    messageSent?: true
-    messageDelivered?: true
-    messageOpened?: true
-    linkClicked?: true
-    credentialsEntered?: true
-    reportedPhishing?: true
-    messageFailed?: true
     emailSent?: true
     emailDelivered?: true
     emailOpened?: true
+    linkClicked?: true
+    credentialsEntered?: true
+    reportedPhishing?: true
     emailBounced?: true
     sentAt?: true
     deliveredAt?: true
@@ -19123,13 +18965,10 @@ export namespace Prisma {
     clickedAt?: true
     credentialsAt?: true
     reportedAt?: true
-    failedAt?: true
     bouncedAt?: true
     userAgent?: true
     ipAddress?: true
     clickCount?: true
-    smsProvider?: true
-    messageId?: true
     riskScore?: true
     createdAt?: true
     updatedAt?: true
@@ -19140,21 +18979,16 @@ export namespace Prisma {
   export type PhishingTargetMaxAggregateInputType = {
     id?: true
     email?: true
-    phoneNumber?: true
     firstName?: true
     lastName?: true
     department?: true
     jobTitle?: true
-    messageSent?: true
-    messageDelivered?: true
-    messageOpened?: true
-    linkClicked?: true
-    credentialsEntered?: true
-    reportedPhishing?: true
-    messageFailed?: true
     emailSent?: true
     emailDelivered?: true
     emailOpened?: true
+    linkClicked?: true
+    credentialsEntered?: true
+    reportedPhishing?: true
     emailBounced?: true
     sentAt?: true
     deliveredAt?: true
@@ -19162,13 +18996,10 @@ export namespace Prisma {
     clickedAt?: true
     credentialsAt?: true
     reportedAt?: true
-    failedAt?: true
     bouncedAt?: true
     userAgent?: true
     ipAddress?: true
     clickCount?: true
-    smsProvider?: true
-    messageId?: true
     riskScore?: true
     createdAt?: true
     updatedAt?: true
@@ -19179,21 +19010,16 @@ export namespace Prisma {
   export type PhishingTargetCountAggregateInputType = {
     id?: true
     email?: true
-    phoneNumber?: true
     firstName?: true
     lastName?: true
     department?: true
     jobTitle?: true
-    messageSent?: true
-    messageDelivered?: true
-    messageOpened?: true
-    linkClicked?: true
-    credentialsEntered?: true
-    reportedPhishing?: true
-    messageFailed?: true
     emailSent?: true
     emailDelivered?: true
     emailOpened?: true
+    linkClicked?: true
+    credentialsEntered?: true
+    reportedPhishing?: true
     emailBounced?: true
     sentAt?: true
     deliveredAt?: true
@@ -19201,13 +19027,10 @@ export namespace Prisma {
     clickedAt?: true
     credentialsAt?: true
     reportedAt?: true
-    failedAt?: true
     bouncedAt?: true
     userAgent?: true
     ipAddress?: true
     clickCount?: true
-    smsProvider?: true
-    messageId?: true
     riskScore?: true
     createdAt?: true
     updatedAt?: true
@@ -19304,22 +19127,17 @@ export namespace Prisma {
 
   export type PhishingTargetGroupByOutputType = {
     id: string
-    email: string | null
-    phoneNumber: string | null
+    email: string
     firstName: string | null
     lastName: string | null
     department: string | null
     jobTitle: string | null
-    messageSent: boolean
-    messageDelivered: boolean
-    messageOpened: boolean
-    linkClicked: boolean
-    credentialsEntered: boolean
-    reportedPhishing: boolean
-    messageFailed: boolean
     emailSent: boolean
     emailDelivered: boolean
     emailOpened: boolean
+    linkClicked: boolean
+    credentialsEntered: boolean
+    reportedPhishing: boolean
     emailBounced: boolean
     sentAt: Date | null
     deliveredAt: Date | null
@@ -19327,13 +19145,10 @@ export namespace Prisma {
     clickedAt: Date | null
     credentialsAt: Date | null
     reportedAt: Date | null
-    failedAt: Date | null
     bouncedAt: Date | null
     userAgent: string | null
     ipAddress: string | null
     clickCount: number
-    smsProvider: string | null
-    messageId: string | null
     riskScore: number | null
     createdAt: Date
     updatedAt: Date
@@ -19363,21 +19178,16 @@ export namespace Prisma {
   export type PhishingTargetSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     email?: boolean
-    phoneNumber?: boolean
     firstName?: boolean
     lastName?: boolean
     department?: boolean
     jobTitle?: boolean
-    messageSent?: boolean
-    messageDelivered?: boolean
-    messageOpened?: boolean
-    linkClicked?: boolean
-    credentialsEntered?: boolean
-    reportedPhishing?: boolean
-    messageFailed?: boolean
     emailSent?: boolean
     emailDelivered?: boolean
     emailOpened?: boolean
+    linkClicked?: boolean
+    credentialsEntered?: boolean
+    reportedPhishing?: boolean
     emailBounced?: boolean
     sentAt?: boolean
     deliveredAt?: boolean
@@ -19385,13 +19195,10 @@ export namespace Prisma {
     clickedAt?: boolean
     credentialsAt?: boolean
     reportedAt?: boolean
-    failedAt?: boolean
     bouncedAt?: boolean
     userAgent?: boolean
     ipAddress?: boolean
     clickCount?: boolean
-    smsProvider?: boolean
-    messageId?: boolean
     riskScore?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -19406,21 +19213,16 @@ export namespace Prisma {
   export type PhishingTargetSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     email?: boolean
-    phoneNumber?: boolean
     firstName?: boolean
     lastName?: boolean
     department?: boolean
     jobTitle?: boolean
-    messageSent?: boolean
-    messageDelivered?: boolean
-    messageOpened?: boolean
-    linkClicked?: boolean
-    credentialsEntered?: boolean
-    reportedPhishing?: boolean
-    messageFailed?: boolean
     emailSent?: boolean
     emailDelivered?: boolean
     emailOpened?: boolean
+    linkClicked?: boolean
+    credentialsEntered?: boolean
+    reportedPhishing?: boolean
     emailBounced?: boolean
     sentAt?: boolean
     deliveredAt?: boolean
@@ -19428,13 +19230,10 @@ export namespace Prisma {
     clickedAt?: boolean
     credentialsAt?: boolean
     reportedAt?: boolean
-    failedAt?: boolean
     bouncedAt?: boolean
     userAgent?: boolean
     ipAddress?: boolean
     clickCount?: boolean
-    smsProvider?: boolean
-    messageId?: boolean
     riskScore?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -19447,21 +19246,16 @@ export namespace Prisma {
   export type PhishingTargetSelectScalar = {
     id?: boolean
     email?: boolean
-    phoneNumber?: boolean
     firstName?: boolean
     lastName?: boolean
     department?: boolean
     jobTitle?: boolean
-    messageSent?: boolean
-    messageDelivered?: boolean
-    messageOpened?: boolean
-    linkClicked?: boolean
-    credentialsEntered?: boolean
-    reportedPhishing?: boolean
-    messageFailed?: boolean
     emailSent?: boolean
     emailDelivered?: boolean
     emailOpened?: boolean
+    linkClicked?: boolean
+    credentialsEntered?: boolean
+    reportedPhishing?: boolean
     emailBounced?: boolean
     sentAt?: boolean
     deliveredAt?: boolean
@@ -19469,13 +19263,10 @@ export namespace Prisma {
     clickedAt?: boolean
     credentialsAt?: boolean
     reportedAt?: boolean
-    failedAt?: boolean
     bouncedAt?: boolean
     userAgent?: boolean
     ipAddress?: boolean
     clickCount?: boolean
-    smsProvider?: boolean
-    messageId?: boolean
     riskScore?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -19503,22 +19294,17 @@ export namespace Prisma {
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
-      email: string | null
-      phoneNumber: string | null
+      email: string
       firstName: string | null
       lastName: string | null
       department: string | null
       jobTitle: string | null
-      messageSent: boolean
-      messageDelivered: boolean
-      messageOpened: boolean
-      linkClicked: boolean
-      credentialsEntered: boolean
-      reportedPhishing: boolean
-      messageFailed: boolean
       emailSent: boolean
       emailDelivered: boolean
       emailOpened: boolean
+      linkClicked: boolean
+      credentialsEntered: boolean
+      reportedPhishing: boolean
       emailBounced: boolean
       sentAt: Date | null
       deliveredAt: Date | null
@@ -19526,13 +19312,10 @@ export namespace Prisma {
       clickedAt: Date | null
       credentialsAt: Date | null
       reportedAt: Date | null
-      failedAt: Date | null
       bouncedAt: Date | null
       userAgent: string | null
       ipAddress: string | null
       clickCount: number
-      smsProvider: string | null
-      messageId: string | null
       riskScore: number | null
       createdAt: Date
       updatedAt: Date
@@ -19936,21 +19719,16 @@ export namespace Prisma {
   interface PhishingTargetFieldRefs {
     readonly id: FieldRef<"PhishingTarget", 'String'>
     readonly email: FieldRef<"PhishingTarget", 'String'>
-    readonly phoneNumber: FieldRef<"PhishingTarget", 'String'>
     readonly firstName: FieldRef<"PhishingTarget", 'String'>
     readonly lastName: FieldRef<"PhishingTarget", 'String'>
     readonly department: FieldRef<"PhishingTarget", 'String'>
     readonly jobTitle: FieldRef<"PhishingTarget", 'String'>
-    readonly messageSent: FieldRef<"PhishingTarget", 'Boolean'>
-    readonly messageDelivered: FieldRef<"PhishingTarget", 'Boolean'>
-    readonly messageOpened: FieldRef<"PhishingTarget", 'Boolean'>
-    readonly linkClicked: FieldRef<"PhishingTarget", 'Boolean'>
-    readonly credentialsEntered: FieldRef<"PhishingTarget", 'Boolean'>
-    readonly reportedPhishing: FieldRef<"PhishingTarget", 'Boolean'>
-    readonly messageFailed: FieldRef<"PhishingTarget", 'Boolean'>
     readonly emailSent: FieldRef<"PhishingTarget", 'Boolean'>
     readonly emailDelivered: FieldRef<"PhishingTarget", 'Boolean'>
     readonly emailOpened: FieldRef<"PhishingTarget", 'Boolean'>
+    readonly linkClicked: FieldRef<"PhishingTarget", 'Boolean'>
+    readonly credentialsEntered: FieldRef<"PhishingTarget", 'Boolean'>
+    readonly reportedPhishing: FieldRef<"PhishingTarget", 'Boolean'>
     readonly emailBounced: FieldRef<"PhishingTarget", 'Boolean'>
     readonly sentAt: FieldRef<"PhishingTarget", 'DateTime'>
     readonly deliveredAt: FieldRef<"PhishingTarget", 'DateTime'>
@@ -19958,13 +19736,10 @@ export namespace Prisma {
     readonly clickedAt: FieldRef<"PhishingTarget", 'DateTime'>
     readonly credentialsAt: FieldRef<"PhishingTarget", 'DateTime'>
     readonly reportedAt: FieldRef<"PhishingTarget", 'DateTime'>
-    readonly failedAt: FieldRef<"PhishingTarget", 'DateTime'>
     readonly bouncedAt: FieldRef<"PhishingTarget", 'DateTime'>
     readonly userAgent: FieldRef<"PhishingTarget", 'String'>
     readonly ipAddress: FieldRef<"PhishingTarget", 'String'>
     readonly clickCount: FieldRef<"PhishingTarget", 'Int'>
-    readonly smsProvider: FieldRef<"PhishingTarget", 'String'>
-    readonly messageId: FieldRef<"PhishingTarget", 'String'>
     readonly riskScore: FieldRef<"PhishingTarget", 'Float'>
     readonly createdAt: FieldRef<"PhishingTarget", 'DateTime'>
     readonly updatedAt: FieldRef<"PhishingTarget", 'DateTime'>
@@ -21367,14 +21142,10 @@ export namespace Prisma {
     description: string | null
     category: $Enums.TemplateCategory | null
     riskLevel: $Enums.RiskLevel | null
-    templateType: $Enums.TemplateType | null
     defaultSubject: string | null
     defaultSenderName: string | null
     emailBodyHtml: string | null
     emailBodyText: string | null
-    smsContent: string | null
-    defaultSenderNumber: string | null
-    messageContent: string | null
     landingPageHtml: string | null
     captureCredentials: boolean | null
     isActive: boolean | null
@@ -21393,14 +21164,10 @@ export namespace Prisma {
     description: string | null
     category: $Enums.TemplateCategory | null
     riskLevel: $Enums.RiskLevel | null
-    templateType: $Enums.TemplateType | null
     defaultSubject: string | null
     defaultSenderName: string | null
     emailBodyHtml: string | null
     emailBodyText: string | null
-    smsContent: string | null
-    defaultSenderNumber: string | null
-    messageContent: string | null
     landingPageHtml: string | null
     captureCredentials: boolean | null
     isActive: boolean | null
@@ -21419,14 +21186,10 @@ export namespace Prisma {
     description: number
     category: number
     riskLevel: number
-    templateType: number
     defaultSubject: number
     defaultSenderName: number
     emailBodyHtml: number
     emailBodyText: number
-    smsContent: number
-    defaultSenderNumber: number
-    messageContent: number
     landingPageHtml: number
     captureCredentials: number
     isActive: number
@@ -21458,14 +21221,10 @@ export namespace Prisma {
     description?: true
     category?: true
     riskLevel?: true
-    templateType?: true
     defaultSubject?: true
     defaultSenderName?: true
     emailBodyHtml?: true
     emailBodyText?: true
-    smsContent?: true
-    defaultSenderNumber?: true
-    messageContent?: true
     landingPageHtml?: true
     captureCredentials?: true
     isActive?: true
@@ -21484,14 +21243,10 @@ export namespace Prisma {
     description?: true
     category?: true
     riskLevel?: true
-    templateType?: true
     defaultSubject?: true
     defaultSenderName?: true
     emailBodyHtml?: true
     emailBodyText?: true
-    smsContent?: true
-    defaultSenderNumber?: true
-    messageContent?: true
     landingPageHtml?: true
     captureCredentials?: true
     isActive?: true
@@ -21510,14 +21265,10 @@ export namespace Prisma {
     description?: true
     category?: true
     riskLevel?: true
-    templateType?: true
     defaultSubject?: true
     defaultSenderName?: true
     emailBodyHtml?: true
     emailBodyText?: true
-    smsContent?: true
-    defaultSenderNumber?: true
-    messageContent?: true
     landingPageHtml?: true
     captureCredentials?: true
     isActive?: true
@@ -21624,14 +21375,10 @@ export namespace Prisma {
     description: string
     category: $Enums.TemplateCategory
     riskLevel: $Enums.RiskLevel
-    templateType: $Enums.TemplateType
-    defaultSubject: string | null
-    defaultSenderName: string | null
-    emailBodyHtml: string | null
-    emailBodyText: string | null
-    smsContent: string | null
-    defaultSenderNumber: string | null
-    messageContent: string | null
+    defaultSubject: string
+    defaultSenderName: string
+    emailBodyHtml: string
+    emailBodyText: string
     landingPageHtml: string | null
     captureCredentials: boolean
     isActive: boolean
@@ -21670,14 +21417,10 @@ export namespace Prisma {
     description?: boolean
     category?: boolean
     riskLevel?: boolean
-    templateType?: boolean
     defaultSubject?: boolean
     defaultSenderName?: boolean
     emailBodyHtml?: boolean
     emailBodyText?: boolean
-    smsContent?: boolean
-    defaultSenderNumber?: boolean
-    messageContent?: boolean
     landingPageHtml?: boolean
     captureCredentials?: boolean
     isActive?: boolean
@@ -21699,14 +21442,10 @@ export namespace Prisma {
     description?: boolean
     category?: boolean
     riskLevel?: boolean
-    templateType?: boolean
     defaultSubject?: boolean
     defaultSenderName?: boolean
     emailBodyHtml?: boolean
     emailBodyText?: boolean
-    smsContent?: boolean
-    defaultSenderNumber?: boolean
-    messageContent?: boolean
     landingPageHtml?: boolean
     captureCredentials?: boolean
     isActive?: boolean
@@ -21728,14 +21467,10 @@ export namespace Prisma {
     description?: boolean
     category?: boolean
     riskLevel?: boolean
-    templateType?: boolean
     defaultSubject?: boolean
     defaultSenderName?: boolean
     emailBodyHtml?: boolean
     emailBodyText?: boolean
-    smsContent?: boolean
-    defaultSenderNumber?: boolean
-    messageContent?: boolean
     landingPageHtml?: boolean
     captureCredentials?: boolean
     isActive?: boolean
@@ -21770,14 +21505,10 @@ export namespace Prisma {
       description: string
       category: $Enums.TemplateCategory
       riskLevel: $Enums.RiskLevel
-      templateType: $Enums.TemplateType
-      defaultSubject: string | null
-      defaultSenderName: string | null
-      emailBodyHtml: string | null
-      emailBodyText: string | null
-      smsContent: string | null
-      defaultSenderNumber: string | null
-      messageContent: string | null
+      defaultSubject: string
+      defaultSenderName: string
+      emailBodyHtml: string
+      emailBodyText: string
       landingPageHtml: string | null
       captureCredentials: boolean
       isActive: boolean
@@ -22189,14 +21920,10 @@ export namespace Prisma {
     readonly description: FieldRef<"PhishingTemplate", 'String'>
     readonly category: FieldRef<"PhishingTemplate", 'TemplateCategory'>
     readonly riskLevel: FieldRef<"PhishingTemplate", 'RiskLevel'>
-    readonly templateType: FieldRef<"PhishingTemplate", 'TemplateType'>
     readonly defaultSubject: FieldRef<"PhishingTemplate", 'String'>
     readonly defaultSenderName: FieldRef<"PhishingTemplate", 'String'>
     readonly emailBodyHtml: FieldRef<"PhishingTemplate", 'String'>
     readonly emailBodyText: FieldRef<"PhishingTemplate", 'String'>
-    readonly smsContent: FieldRef<"PhishingTemplate", 'String'>
-    readonly defaultSenderNumber: FieldRef<"PhishingTemplate", 'String'>
-    readonly messageContent: FieldRef<"PhishingTemplate", 'String'>
     readonly landingPageHtml: FieldRef<"PhishingTemplate", 'String'>
     readonly captureCredentials: FieldRef<"PhishingTemplate", 'Boolean'>
     readonly isActive: FieldRef<"PhishingTemplate", 'Boolean'>
@@ -38021,6 +37748,7 @@ export namespace Prisma {
     phone: 'phone',
     avatar: 'avatar',
     emailVerified: 'emailVerified',
+    verificationToken: 'verificationToken',
     isActive: 'isActive',
     role: 'role',
     createdAt: 'createdAt',
@@ -38217,32 +37945,24 @@ export namespace Prisma {
     id: 'id',
     name: 'name',
     description: 'description',
-    campaignType: 'campaignType',
     templateId: 'templateId',
     template: 'template',
     subject: 'subject',
     senderName: 'senderName',
     senderEmail: 'senderEmail',
     landingPageUrl: 'landingPageUrl',
-    senderNumber: 'senderNumber',
-    messageContent: 'messageContent',
-    trackingUrl: 'trackingUrl',
     status: 'status',
     scheduledAt: 'scheduledAt',
     launchedAt: 'launchedAt',
     completedAt: 'completedAt',
     pausedAt: 'pausedAt',
     targetCount: 'targetCount',
-    messagesSent: 'messagesSent',
-    messagesDelivered: 'messagesDelivered',
-    messagesOpened: 'messagesOpened',
-    linksClicked: 'linksClicked',
-    credentialsEntered: 'credentialsEntered',
-    phishingReported: 'phishingReported',
-    messagesFailed: 'messagesFailed',
     emailsSent: 'emailsSent',
     emailsDelivered: 'emailsDelivered',
     emailsOpened: 'emailsOpened',
+    linksClicked: 'linksClicked',
+    credentialsEntered: 'credentialsEntered',
+    phishingReported: 'phishingReported',
     emailsBounced: 'emailsBounced',
     createdBy: 'createdBy',
     organizationId: 'organizationId',
@@ -38256,21 +37976,16 @@ export namespace Prisma {
   export const PhishingTargetScalarFieldEnum: {
     id: 'id',
     email: 'email',
-    phoneNumber: 'phoneNumber',
     firstName: 'firstName',
     lastName: 'lastName',
     department: 'department',
     jobTitle: 'jobTitle',
-    messageSent: 'messageSent',
-    messageDelivered: 'messageDelivered',
-    messageOpened: 'messageOpened',
-    linkClicked: 'linkClicked',
-    credentialsEntered: 'credentialsEntered',
-    reportedPhishing: 'reportedPhishing',
-    messageFailed: 'messageFailed',
     emailSent: 'emailSent',
     emailDelivered: 'emailDelivered',
     emailOpened: 'emailOpened',
+    linkClicked: 'linkClicked',
+    credentialsEntered: 'credentialsEntered',
+    reportedPhishing: 'reportedPhishing',
     emailBounced: 'emailBounced',
     sentAt: 'sentAt',
     deliveredAt: 'deliveredAt',
@@ -38278,13 +37993,10 @@ export namespace Prisma {
     clickedAt: 'clickedAt',
     credentialsAt: 'credentialsAt',
     reportedAt: 'reportedAt',
-    failedAt: 'failedAt',
     bouncedAt: 'bouncedAt',
     userAgent: 'userAgent',
     ipAddress: 'ipAddress',
     clickCount: 'clickCount',
-    smsProvider: 'smsProvider',
-    messageId: 'messageId',
     riskScore: 'riskScore',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
@@ -38316,14 +38028,10 @@ export namespace Prisma {
     description: 'description',
     category: 'category',
     riskLevel: 'riskLevel',
-    templateType: 'templateType',
     defaultSubject: 'defaultSubject',
     defaultSenderName: 'defaultSenderName',
     emailBodyHtml: 'emailBodyHtml',
     emailBodyText: 'emailBodyText',
-    smsContent: 'smsContent',
-    defaultSenderNumber: 'defaultSenderNumber',
-    messageContent: 'messageContent',
     landingPageHtml: 'landingPageHtml',
     captureCredentials: 'captureCredentials',
     isActive: 'isActive',
@@ -38821,20 +38529,6 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'CampaignType'
-   */
-  export type EnumCampaignTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CampaignType'>
-    
-
-
-  /**
-   * Reference to a field of type 'CampaignType[]'
-   */
-  export type ListEnumCampaignTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CampaignType[]'>
-    
-
-
-  /**
    * Reference to a field of type 'CampaignStatus'
    */
   export type EnumCampaignStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CampaignStatus'>
@@ -38887,20 +38581,6 @@ export namespace Prisma {
    * Reference to a field of type 'RiskLevel[]'
    */
   export type ListEnumRiskLevelFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RiskLevel[]'>
-    
-
-
-  /**
-   * Reference to a field of type 'TemplateType'
-   */
-  export type EnumTemplateTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TemplateType'>
-    
-
-
-  /**
-   * Reference to a field of type 'TemplateType[]'
-   */
-  export type ListEnumTemplateTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TemplateType[]'>
     
 
 
@@ -39143,6 +38823,7 @@ export namespace Prisma {
     phone?: StringNullableFilter<"User"> | string | null
     avatar?: StringNullableFilter<"User"> | string | null
     emailVerified?: BoolFilter<"User"> | boolean
+    verificationToken?: StringNullableFilter<"User"> | string | null
     isActive?: BoolFilter<"User"> | boolean
     role?: EnumUserRoleFilter<"User"> | $Enums.UserRole
     createdAt?: DateTimeFilter<"User"> | Date | string
@@ -39173,6 +38854,7 @@ export namespace Prisma {
     phone?: SortOrderInput | SortOrder
     avatar?: SortOrderInput | SortOrder
     emailVerified?: SortOrder
+    verificationToken?: SortOrderInput | SortOrder
     isActive?: SortOrder
     role?: SortOrder
     createdAt?: SortOrder
@@ -39206,6 +38888,7 @@ export namespace Prisma {
     phone?: StringNullableFilter<"User"> | string | null
     avatar?: StringNullableFilter<"User"> | string | null
     emailVerified?: BoolFilter<"User"> | boolean
+    verificationToken?: StringNullableFilter<"User"> | string | null
     isActive?: BoolFilter<"User"> | boolean
     role?: EnumUserRoleFilter<"User"> | $Enums.UserRole
     createdAt?: DateTimeFilter<"User"> | Date | string
@@ -39236,6 +38919,7 @@ export namespace Prisma {
     phone?: SortOrderInput | SortOrder
     avatar?: SortOrderInput | SortOrder
     emailVerified?: SortOrder
+    verificationToken?: SortOrderInput | SortOrder
     isActive?: SortOrder
     role?: SortOrder
     createdAt?: SortOrder
@@ -39258,6 +38942,7 @@ export namespace Prisma {
     phone?: StringNullableWithAggregatesFilter<"User"> | string | null
     avatar?: StringNullableWithAggregatesFilter<"User"> | string | null
     emailVerified?: BoolWithAggregatesFilter<"User"> | boolean
+    verificationToken?: StringNullableWithAggregatesFilter<"User"> | string | null
     isActive?: BoolWithAggregatesFilter<"User"> | boolean
     role?: EnumUserRoleWithAggregatesFilter<"User"> | $Enums.UserRole
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
@@ -40251,32 +39936,24 @@ export namespace Prisma {
     id?: StringFilter<"PhishingCampaign"> | string
     name?: StringFilter<"PhishingCampaign"> | string
     description?: StringNullableFilter<"PhishingCampaign"> | string | null
-    campaignType?: EnumCampaignTypeFilter<"PhishingCampaign"> | $Enums.CampaignType
     templateId?: StringFilter<"PhishingCampaign"> | string
     template?: StringFilter<"PhishingCampaign"> | string
-    subject?: StringNullableFilter<"PhishingCampaign"> | string | null
-    senderName?: StringNullableFilter<"PhishingCampaign"> | string | null
-    senderEmail?: StringNullableFilter<"PhishingCampaign"> | string | null
+    subject?: StringFilter<"PhishingCampaign"> | string
+    senderName?: StringFilter<"PhishingCampaign"> | string
+    senderEmail?: StringFilter<"PhishingCampaign"> | string
     landingPageUrl?: StringNullableFilter<"PhishingCampaign"> | string | null
-    senderNumber?: StringNullableFilter<"PhishingCampaign"> | string | null
-    messageContent?: StringNullableFilter<"PhishingCampaign"> | string | null
-    trackingUrl?: StringNullableFilter<"PhishingCampaign"> | string | null
     status?: EnumCampaignStatusFilter<"PhishingCampaign"> | $Enums.CampaignStatus
     scheduledAt?: DateTimeNullableFilter<"PhishingCampaign"> | Date | string | null
     launchedAt?: DateTimeNullableFilter<"PhishingCampaign"> | Date | string | null
     completedAt?: DateTimeNullableFilter<"PhishingCampaign"> | Date | string | null
     pausedAt?: DateTimeNullableFilter<"PhishingCampaign"> | Date | string | null
     targetCount?: IntFilter<"PhishingCampaign"> | number
-    messagesSent?: IntFilter<"PhishingCampaign"> | number
-    messagesDelivered?: IntFilter<"PhishingCampaign"> | number
-    messagesOpened?: IntFilter<"PhishingCampaign"> | number
-    linksClicked?: IntFilter<"PhishingCampaign"> | number
-    credentialsEntered?: IntFilter<"PhishingCampaign"> | number
-    phishingReported?: IntFilter<"PhishingCampaign"> | number
-    messagesFailed?: IntFilter<"PhishingCampaign"> | number
     emailsSent?: IntFilter<"PhishingCampaign"> | number
     emailsDelivered?: IntFilter<"PhishingCampaign"> | number
     emailsOpened?: IntFilter<"PhishingCampaign"> | number
+    linksClicked?: IntFilter<"PhishingCampaign"> | number
+    credentialsEntered?: IntFilter<"PhishingCampaign"> | number
+    phishingReported?: IntFilter<"PhishingCampaign"> | number
     emailsBounced?: IntFilter<"PhishingCampaign"> | number
     createdBy?: StringFilter<"PhishingCampaign"> | string
     organizationId?: StringFilter<"PhishingCampaign"> | string
@@ -40292,32 +39969,24 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     description?: SortOrderInput | SortOrder
-    campaignType?: SortOrder
     templateId?: SortOrder
     template?: SortOrder
-    subject?: SortOrderInput | SortOrder
-    senderName?: SortOrderInput | SortOrder
-    senderEmail?: SortOrderInput | SortOrder
+    subject?: SortOrder
+    senderName?: SortOrder
+    senderEmail?: SortOrder
     landingPageUrl?: SortOrderInput | SortOrder
-    senderNumber?: SortOrderInput | SortOrder
-    messageContent?: SortOrderInput | SortOrder
-    trackingUrl?: SortOrderInput | SortOrder
     status?: SortOrder
     scheduledAt?: SortOrderInput | SortOrder
     launchedAt?: SortOrderInput | SortOrder
     completedAt?: SortOrderInput | SortOrder
     pausedAt?: SortOrderInput | SortOrder
     targetCount?: SortOrder
-    messagesSent?: SortOrder
-    messagesDelivered?: SortOrder
-    messagesOpened?: SortOrder
-    linksClicked?: SortOrder
-    credentialsEntered?: SortOrder
-    phishingReported?: SortOrder
-    messagesFailed?: SortOrder
     emailsSent?: SortOrder
     emailsDelivered?: SortOrder
     emailsOpened?: SortOrder
+    linksClicked?: SortOrder
+    credentialsEntered?: SortOrder
+    phishingReported?: SortOrder
     emailsBounced?: SortOrder
     createdBy?: SortOrder
     organizationId?: SortOrder
@@ -40336,32 +40005,24 @@ export namespace Prisma {
     NOT?: PhishingCampaignWhereInput | PhishingCampaignWhereInput[]
     name?: StringFilter<"PhishingCampaign"> | string
     description?: StringNullableFilter<"PhishingCampaign"> | string | null
-    campaignType?: EnumCampaignTypeFilter<"PhishingCampaign"> | $Enums.CampaignType
     templateId?: StringFilter<"PhishingCampaign"> | string
     template?: StringFilter<"PhishingCampaign"> | string
-    subject?: StringNullableFilter<"PhishingCampaign"> | string | null
-    senderName?: StringNullableFilter<"PhishingCampaign"> | string | null
-    senderEmail?: StringNullableFilter<"PhishingCampaign"> | string | null
+    subject?: StringFilter<"PhishingCampaign"> | string
+    senderName?: StringFilter<"PhishingCampaign"> | string
+    senderEmail?: StringFilter<"PhishingCampaign"> | string
     landingPageUrl?: StringNullableFilter<"PhishingCampaign"> | string | null
-    senderNumber?: StringNullableFilter<"PhishingCampaign"> | string | null
-    messageContent?: StringNullableFilter<"PhishingCampaign"> | string | null
-    trackingUrl?: StringNullableFilter<"PhishingCampaign"> | string | null
     status?: EnumCampaignStatusFilter<"PhishingCampaign"> | $Enums.CampaignStatus
     scheduledAt?: DateTimeNullableFilter<"PhishingCampaign"> | Date | string | null
     launchedAt?: DateTimeNullableFilter<"PhishingCampaign"> | Date | string | null
     completedAt?: DateTimeNullableFilter<"PhishingCampaign"> | Date | string | null
     pausedAt?: DateTimeNullableFilter<"PhishingCampaign"> | Date | string | null
     targetCount?: IntFilter<"PhishingCampaign"> | number
-    messagesSent?: IntFilter<"PhishingCampaign"> | number
-    messagesDelivered?: IntFilter<"PhishingCampaign"> | number
-    messagesOpened?: IntFilter<"PhishingCampaign"> | number
-    linksClicked?: IntFilter<"PhishingCampaign"> | number
-    credentialsEntered?: IntFilter<"PhishingCampaign"> | number
-    phishingReported?: IntFilter<"PhishingCampaign"> | number
-    messagesFailed?: IntFilter<"PhishingCampaign"> | number
     emailsSent?: IntFilter<"PhishingCampaign"> | number
     emailsDelivered?: IntFilter<"PhishingCampaign"> | number
     emailsOpened?: IntFilter<"PhishingCampaign"> | number
+    linksClicked?: IntFilter<"PhishingCampaign"> | number
+    credentialsEntered?: IntFilter<"PhishingCampaign"> | number
+    phishingReported?: IntFilter<"PhishingCampaign"> | number
     emailsBounced?: IntFilter<"PhishingCampaign"> | number
     createdBy?: StringFilter<"PhishingCampaign"> | string
     organizationId?: StringFilter<"PhishingCampaign"> | string
@@ -40377,32 +40038,24 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     description?: SortOrderInput | SortOrder
-    campaignType?: SortOrder
     templateId?: SortOrder
     template?: SortOrder
-    subject?: SortOrderInput | SortOrder
-    senderName?: SortOrderInput | SortOrder
-    senderEmail?: SortOrderInput | SortOrder
+    subject?: SortOrder
+    senderName?: SortOrder
+    senderEmail?: SortOrder
     landingPageUrl?: SortOrderInput | SortOrder
-    senderNumber?: SortOrderInput | SortOrder
-    messageContent?: SortOrderInput | SortOrder
-    trackingUrl?: SortOrderInput | SortOrder
     status?: SortOrder
     scheduledAt?: SortOrderInput | SortOrder
     launchedAt?: SortOrderInput | SortOrder
     completedAt?: SortOrderInput | SortOrder
     pausedAt?: SortOrderInput | SortOrder
     targetCount?: SortOrder
-    messagesSent?: SortOrder
-    messagesDelivered?: SortOrder
-    messagesOpened?: SortOrder
-    linksClicked?: SortOrder
-    credentialsEntered?: SortOrder
-    phishingReported?: SortOrder
-    messagesFailed?: SortOrder
     emailsSent?: SortOrder
     emailsDelivered?: SortOrder
     emailsOpened?: SortOrder
+    linksClicked?: SortOrder
+    credentialsEntered?: SortOrder
+    phishingReported?: SortOrder
     emailsBounced?: SortOrder
     createdBy?: SortOrder
     organizationId?: SortOrder
@@ -40422,32 +40075,24 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"PhishingCampaign"> | string
     name?: StringWithAggregatesFilter<"PhishingCampaign"> | string
     description?: StringNullableWithAggregatesFilter<"PhishingCampaign"> | string | null
-    campaignType?: EnumCampaignTypeWithAggregatesFilter<"PhishingCampaign"> | $Enums.CampaignType
     templateId?: StringWithAggregatesFilter<"PhishingCampaign"> | string
     template?: StringWithAggregatesFilter<"PhishingCampaign"> | string
-    subject?: StringNullableWithAggregatesFilter<"PhishingCampaign"> | string | null
-    senderName?: StringNullableWithAggregatesFilter<"PhishingCampaign"> | string | null
-    senderEmail?: StringNullableWithAggregatesFilter<"PhishingCampaign"> | string | null
+    subject?: StringWithAggregatesFilter<"PhishingCampaign"> | string
+    senderName?: StringWithAggregatesFilter<"PhishingCampaign"> | string
+    senderEmail?: StringWithAggregatesFilter<"PhishingCampaign"> | string
     landingPageUrl?: StringNullableWithAggregatesFilter<"PhishingCampaign"> | string | null
-    senderNumber?: StringNullableWithAggregatesFilter<"PhishingCampaign"> | string | null
-    messageContent?: StringNullableWithAggregatesFilter<"PhishingCampaign"> | string | null
-    trackingUrl?: StringNullableWithAggregatesFilter<"PhishingCampaign"> | string | null
     status?: EnumCampaignStatusWithAggregatesFilter<"PhishingCampaign"> | $Enums.CampaignStatus
     scheduledAt?: DateTimeNullableWithAggregatesFilter<"PhishingCampaign"> | Date | string | null
     launchedAt?: DateTimeNullableWithAggregatesFilter<"PhishingCampaign"> | Date | string | null
     completedAt?: DateTimeNullableWithAggregatesFilter<"PhishingCampaign"> | Date | string | null
     pausedAt?: DateTimeNullableWithAggregatesFilter<"PhishingCampaign"> | Date | string | null
     targetCount?: IntWithAggregatesFilter<"PhishingCampaign"> | number
-    messagesSent?: IntWithAggregatesFilter<"PhishingCampaign"> | number
-    messagesDelivered?: IntWithAggregatesFilter<"PhishingCampaign"> | number
-    messagesOpened?: IntWithAggregatesFilter<"PhishingCampaign"> | number
-    linksClicked?: IntWithAggregatesFilter<"PhishingCampaign"> | number
-    credentialsEntered?: IntWithAggregatesFilter<"PhishingCampaign"> | number
-    phishingReported?: IntWithAggregatesFilter<"PhishingCampaign"> | number
-    messagesFailed?: IntWithAggregatesFilter<"PhishingCampaign"> | number
     emailsSent?: IntWithAggregatesFilter<"PhishingCampaign"> | number
     emailsDelivered?: IntWithAggregatesFilter<"PhishingCampaign"> | number
     emailsOpened?: IntWithAggregatesFilter<"PhishingCampaign"> | number
+    linksClicked?: IntWithAggregatesFilter<"PhishingCampaign"> | number
+    credentialsEntered?: IntWithAggregatesFilter<"PhishingCampaign"> | number
+    phishingReported?: IntWithAggregatesFilter<"PhishingCampaign"> | number
     emailsBounced?: IntWithAggregatesFilter<"PhishingCampaign"> | number
     createdBy?: StringWithAggregatesFilter<"PhishingCampaign"> | string
     organizationId?: StringWithAggregatesFilter<"PhishingCampaign"> | string
@@ -40460,22 +40105,17 @@ export namespace Prisma {
     OR?: PhishingTargetWhereInput[]
     NOT?: PhishingTargetWhereInput | PhishingTargetWhereInput[]
     id?: StringFilter<"PhishingTarget"> | string
-    email?: StringNullableFilter<"PhishingTarget"> | string | null
-    phoneNumber?: StringNullableFilter<"PhishingTarget"> | string | null
+    email?: StringFilter<"PhishingTarget"> | string
     firstName?: StringNullableFilter<"PhishingTarget"> | string | null
     lastName?: StringNullableFilter<"PhishingTarget"> | string | null
     department?: StringNullableFilter<"PhishingTarget"> | string | null
     jobTitle?: StringNullableFilter<"PhishingTarget"> | string | null
-    messageSent?: BoolFilter<"PhishingTarget"> | boolean
-    messageDelivered?: BoolFilter<"PhishingTarget"> | boolean
-    messageOpened?: BoolFilter<"PhishingTarget"> | boolean
-    linkClicked?: BoolFilter<"PhishingTarget"> | boolean
-    credentialsEntered?: BoolFilter<"PhishingTarget"> | boolean
-    reportedPhishing?: BoolFilter<"PhishingTarget"> | boolean
-    messageFailed?: BoolFilter<"PhishingTarget"> | boolean
     emailSent?: BoolFilter<"PhishingTarget"> | boolean
     emailDelivered?: BoolFilter<"PhishingTarget"> | boolean
     emailOpened?: BoolFilter<"PhishingTarget"> | boolean
+    linkClicked?: BoolFilter<"PhishingTarget"> | boolean
+    credentialsEntered?: BoolFilter<"PhishingTarget"> | boolean
+    reportedPhishing?: BoolFilter<"PhishingTarget"> | boolean
     emailBounced?: BoolFilter<"PhishingTarget"> | boolean
     sentAt?: DateTimeNullableFilter<"PhishingTarget"> | Date | string | null
     deliveredAt?: DateTimeNullableFilter<"PhishingTarget"> | Date | string | null
@@ -40483,13 +40123,10 @@ export namespace Prisma {
     clickedAt?: DateTimeNullableFilter<"PhishingTarget"> | Date | string | null
     credentialsAt?: DateTimeNullableFilter<"PhishingTarget"> | Date | string | null
     reportedAt?: DateTimeNullableFilter<"PhishingTarget"> | Date | string | null
-    failedAt?: DateTimeNullableFilter<"PhishingTarget"> | Date | string | null
     bouncedAt?: DateTimeNullableFilter<"PhishingTarget"> | Date | string | null
     userAgent?: StringNullableFilter<"PhishingTarget"> | string | null
     ipAddress?: StringNullableFilter<"PhishingTarget"> | string | null
     clickCount?: IntFilter<"PhishingTarget"> | number
-    smsProvider?: StringNullableFilter<"PhishingTarget"> | string | null
-    messageId?: StringNullableFilter<"PhishingTarget"> | string | null
     riskScore?: FloatNullableFilter<"PhishingTarget"> | number | null
     createdAt?: DateTimeFilter<"PhishingTarget"> | Date | string
     updatedAt?: DateTimeFilter<"PhishingTarget"> | Date | string
@@ -40502,22 +40139,17 @@ export namespace Prisma {
 
   export type PhishingTargetOrderByWithRelationInput = {
     id?: SortOrder
-    email?: SortOrderInput | SortOrder
-    phoneNumber?: SortOrderInput | SortOrder
+    email?: SortOrder
     firstName?: SortOrderInput | SortOrder
     lastName?: SortOrderInput | SortOrder
     department?: SortOrderInput | SortOrder
     jobTitle?: SortOrderInput | SortOrder
-    messageSent?: SortOrder
-    messageDelivered?: SortOrder
-    messageOpened?: SortOrder
-    linkClicked?: SortOrder
-    credentialsEntered?: SortOrder
-    reportedPhishing?: SortOrder
-    messageFailed?: SortOrder
     emailSent?: SortOrder
     emailDelivered?: SortOrder
     emailOpened?: SortOrder
+    linkClicked?: SortOrder
+    credentialsEntered?: SortOrder
+    reportedPhishing?: SortOrder
     emailBounced?: SortOrder
     sentAt?: SortOrderInput | SortOrder
     deliveredAt?: SortOrderInput | SortOrder
@@ -40525,13 +40157,10 @@ export namespace Prisma {
     clickedAt?: SortOrderInput | SortOrder
     credentialsAt?: SortOrderInput | SortOrder
     reportedAt?: SortOrderInput | SortOrder
-    failedAt?: SortOrderInput | SortOrder
     bouncedAt?: SortOrderInput | SortOrder
     userAgent?: SortOrderInput | SortOrder
     ipAddress?: SortOrderInput | SortOrder
     clickCount?: SortOrder
-    smsProvider?: SortOrderInput | SortOrder
-    messageId?: SortOrderInput | SortOrder
     riskScore?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -40548,22 +40177,17 @@ export namespace Prisma {
     AND?: PhishingTargetWhereInput | PhishingTargetWhereInput[]
     OR?: PhishingTargetWhereInput[]
     NOT?: PhishingTargetWhereInput | PhishingTargetWhereInput[]
-    email?: StringNullableFilter<"PhishingTarget"> | string | null
-    phoneNumber?: StringNullableFilter<"PhishingTarget"> | string | null
+    email?: StringFilter<"PhishingTarget"> | string
     firstName?: StringNullableFilter<"PhishingTarget"> | string | null
     lastName?: StringNullableFilter<"PhishingTarget"> | string | null
     department?: StringNullableFilter<"PhishingTarget"> | string | null
     jobTitle?: StringNullableFilter<"PhishingTarget"> | string | null
-    messageSent?: BoolFilter<"PhishingTarget"> | boolean
-    messageDelivered?: BoolFilter<"PhishingTarget"> | boolean
-    messageOpened?: BoolFilter<"PhishingTarget"> | boolean
-    linkClicked?: BoolFilter<"PhishingTarget"> | boolean
-    credentialsEntered?: BoolFilter<"PhishingTarget"> | boolean
-    reportedPhishing?: BoolFilter<"PhishingTarget"> | boolean
-    messageFailed?: BoolFilter<"PhishingTarget"> | boolean
     emailSent?: BoolFilter<"PhishingTarget"> | boolean
     emailDelivered?: BoolFilter<"PhishingTarget"> | boolean
     emailOpened?: BoolFilter<"PhishingTarget"> | boolean
+    linkClicked?: BoolFilter<"PhishingTarget"> | boolean
+    credentialsEntered?: BoolFilter<"PhishingTarget"> | boolean
+    reportedPhishing?: BoolFilter<"PhishingTarget"> | boolean
     emailBounced?: BoolFilter<"PhishingTarget"> | boolean
     sentAt?: DateTimeNullableFilter<"PhishingTarget"> | Date | string | null
     deliveredAt?: DateTimeNullableFilter<"PhishingTarget"> | Date | string | null
@@ -40571,13 +40195,10 @@ export namespace Prisma {
     clickedAt?: DateTimeNullableFilter<"PhishingTarget"> | Date | string | null
     credentialsAt?: DateTimeNullableFilter<"PhishingTarget"> | Date | string | null
     reportedAt?: DateTimeNullableFilter<"PhishingTarget"> | Date | string | null
-    failedAt?: DateTimeNullableFilter<"PhishingTarget"> | Date | string | null
     bouncedAt?: DateTimeNullableFilter<"PhishingTarget"> | Date | string | null
     userAgent?: StringNullableFilter<"PhishingTarget"> | string | null
     ipAddress?: StringNullableFilter<"PhishingTarget"> | string | null
     clickCount?: IntFilter<"PhishingTarget"> | number
-    smsProvider?: StringNullableFilter<"PhishingTarget"> | string | null
-    messageId?: StringNullableFilter<"PhishingTarget"> | string | null
     riskScore?: FloatNullableFilter<"PhishingTarget"> | number | null
     createdAt?: DateTimeFilter<"PhishingTarget"> | Date | string
     updatedAt?: DateTimeFilter<"PhishingTarget"> | Date | string
@@ -40590,22 +40211,17 @@ export namespace Prisma {
 
   export type PhishingTargetOrderByWithAggregationInput = {
     id?: SortOrder
-    email?: SortOrderInput | SortOrder
-    phoneNumber?: SortOrderInput | SortOrder
+    email?: SortOrder
     firstName?: SortOrderInput | SortOrder
     lastName?: SortOrderInput | SortOrder
     department?: SortOrderInput | SortOrder
     jobTitle?: SortOrderInput | SortOrder
-    messageSent?: SortOrder
-    messageDelivered?: SortOrder
-    messageOpened?: SortOrder
-    linkClicked?: SortOrder
-    credentialsEntered?: SortOrder
-    reportedPhishing?: SortOrder
-    messageFailed?: SortOrder
     emailSent?: SortOrder
     emailDelivered?: SortOrder
     emailOpened?: SortOrder
+    linkClicked?: SortOrder
+    credentialsEntered?: SortOrder
+    reportedPhishing?: SortOrder
     emailBounced?: SortOrder
     sentAt?: SortOrderInput | SortOrder
     deliveredAt?: SortOrderInput | SortOrder
@@ -40613,13 +40229,10 @@ export namespace Prisma {
     clickedAt?: SortOrderInput | SortOrder
     credentialsAt?: SortOrderInput | SortOrder
     reportedAt?: SortOrderInput | SortOrder
-    failedAt?: SortOrderInput | SortOrder
     bouncedAt?: SortOrderInput | SortOrder
     userAgent?: SortOrderInput | SortOrder
     ipAddress?: SortOrderInput | SortOrder
     clickCount?: SortOrder
-    smsProvider?: SortOrderInput | SortOrder
-    messageId?: SortOrderInput | SortOrder
     riskScore?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -40637,22 +40250,17 @@ export namespace Prisma {
     OR?: PhishingTargetScalarWhereWithAggregatesInput[]
     NOT?: PhishingTargetScalarWhereWithAggregatesInput | PhishingTargetScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"PhishingTarget"> | string
-    email?: StringNullableWithAggregatesFilter<"PhishingTarget"> | string | null
-    phoneNumber?: StringNullableWithAggregatesFilter<"PhishingTarget"> | string | null
+    email?: StringWithAggregatesFilter<"PhishingTarget"> | string
     firstName?: StringNullableWithAggregatesFilter<"PhishingTarget"> | string | null
     lastName?: StringNullableWithAggregatesFilter<"PhishingTarget"> | string | null
     department?: StringNullableWithAggregatesFilter<"PhishingTarget"> | string | null
     jobTitle?: StringNullableWithAggregatesFilter<"PhishingTarget"> | string | null
-    messageSent?: BoolWithAggregatesFilter<"PhishingTarget"> | boolean
-    messageDelivered?: BoolWithAggregatesFilter<"PhishingTarget"> | boolean
-    messageOpened?: BoolWithAggregatesFilter<"PhishingTarget"> | boolean
-    linkClicked?: BoolWithAggregatesFilter<"PhishingTarget"> | boolean
-    credentialsEntered?: BoolWithAggregatesFilter<"PhishingTarget"> | boolean
-    reportedPhishing?: BoolWithAggregatesFilter<"PhishingTarget"> | boolean
-    messageFailed?: BoolWithAggregatesFilter<"PhishingTarget"> | boolean
     emailSent?: BoolWithAggregatesFilter<"PhishingTarget"> | boolean
     emailDelivered?: BoolWithAggregatesFilter<"PhishingTarget"> | boolean
     emailOpened?: BoolWithAggregatesFilter<"PhishingTarget"> | boolean
+    linkClicked?: BoolWithAggregatesFilter<"PhishingTarget"> | boolean
+    credentialsEntered?: BoolWithAggregatesFilter<"PhishingTarget"> | boolean
+    reportedPhishing?: BoolWithAggregatesFilter<"PhishingTarget"> | boolean
     emailBounced?: BoolWithAggregatesFilter<"PhishingTarget"> | boolean
     sentAt?: DateTimeNullableWithAggregatesFilter<"PhishingTarget"> | Date | string | null
     deliveredAt?: DateTimeNullableWithAggregatesFilter<"PhishingTarget"> | Date | string | null
@@ -40660,13 +40268,10 @@ export namespace Prisma {
     clickedAt?: DateTimeNullableWithAggregatesFilter<"PhishingTarget"> | Date | string | null
     credentialsAt?: DateTimeNullableWithAggregatesFilter<"PhishingTarget"> | Date | string | null
     reportedAt?: DateTimeNullableWithAggregatesFilter<"PhishingTarget"> | Date | string | null
-    failedAt?: DateTimeNullableWithAggregatesFilter<"PhishingTarget"> | Date | string | null
     bouncedAt?: DateTimeNullableWithAggregatesFilter<"PhishingTarget"> | Date | string | null
     userAgent?: StringNullableWithAggregatesFilter<"PhishingTarget"> | string | null
     ipAddress?: StringNullableWithAggregatesFilter<"PhishingTarget"> | string | null
     clickCount?: IntWithAggregatesFilter<"PhishingTarget"> | number
-    smsProvider?: StringNullableWithAggregatesFilter<"PhishingTarget"> | string | null
-    messageId?: StringNullableWithAggregatesFilter<"PhishingTarget"> | string | null
     riskScore?: FloatNullableWithAggregatesFilter<"PhishingTarget"> | number | null
     createdAt?: DateTimeWithAggregatesFilter<"PhishingTarget"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"PhishingTarget"> | Date | string
@@ -40761,14 +40366,10 @@ export namespace Prisma {
     description?: StringFilter<"PhishingTemplate"> | string
     category?: EnumTemplateCategoryFilter<"PhishingTemplate"> | $Enums.TemplateCategory
     riskLevel?: EnumRiskLevelFilter<"PhishingTemplate"> | $Enums.RiskLevel
-    templateType?: EnumTemplateTypeFilter<"PhishingTemplate"> | $Enums.TemplateType
-    defaultSubject?: StringNullableFilter<"PhishingTemplate"> | string | null
-    defaultSenderName?: StringNullableFilter<"PhishingTemplate"> | string | null
-    emailBodyHtml?: StringNullableFilter<"PhishingTemplate"> | string | null
-    emailBodyText?: StringNullableFilter<"PhishingTemplate"> | string | null
-    smsContent?: StringNullableFilter<"PhishingTemplate"> | string | null
-    defaultSenderNumber?: StringNullableFilter<"PhishingTemplate"> | string | null
-    messageContent?: StringNullableFilter<"PhishingTemplate"> | string | null
+    defaultSubject?: StringFilter<"PhishingTemplate"> | string
+    defaultSenderName?: StringFilter<"PhishingTemplate"> | string
+    emailBodyHtml?: StringFilter<"PhishingTemplate"> | string
+    emailBodyText?: StringFilter<"PhishingTemplate"> | string
     landingPageHtml?: StringNullableFilter<"PhishingTemplate"> | string | null
     captureCredentials?: BoolFilter<"PhishingTemplate"> | boolean
     isActive?: BoolFilter<"PhishingTemplate"> | boolean
@@ -40790,14 +40391,10 @@ export namespace Prisma {
     description?: SortOrder
     category?: SortOrder
     riskLevel?: SortOrder
-    templateType?: SortOrder
-    defaultSubject?: SortOrderInput | SortOrder
-    defaultSenderName?: SortOrderInput | SortOrder
-    emailBodyHtml?: SortOrderInput | SortOrder
-    emailBodyText?: SortOrderInput | SortOrder
-    smsContent?: SortOrderInput | SortOrder
-    defaultSenderNumber?: SortOrderInput | SortOrder
-    messageContent?: SortOrderInput | SortOrder
+    defaultSubject?: SortOrder
+    defaultSenderName?: SortOrder
+    emailBodyHtml?: SortOrder
+    emailBodyText?: SortOrder
     landingPageHtml?: SortOrderInput | SortOrder
     captureCredentials?: SortOrder
     isActive?: SortOrder
@@ -40822,14 +40419,10 @@ export namespace Prisma {
     description?: StringFilter<"PhishingTemplate"> | string
     category?: EnumTemplateCategoryFilter<"PhishingTemplate"> | $Enums.TemplateCategory
     riskLevel?: EnumRiskLevelFilter<"PhishingTemplate"> | $Enums.RiskLevel
-    templateType?: EnumTemplateTypeFilter<"PhishingTemplate"> | $Enums.TemplateType
-    defaultSubject?: StringNullableFilter<"PhishingTemplate"> | string | null
-    defaultSenderName?: StringNullableFilter<"PhishingTemplate"> | string | null
-    emailBodyHtml?: StringNullableFilter<"PhishingTemplate"> | string | null
-    emailBodyText?: StringNullableFilter<"PhishingTemplate"> | string | null
-    smsContent?: StringNullableFilter<"PhishingTemplate"> | string | null
-    defaultSenderNumber?: StringNullableFilter<"PhishingTemplate"> | string | null
-    messageContent?: StringNullableFilter<"PhishingTemplate"> | string | null
+    defaultSubject?: StringFilter<"PhishingTemplate"> | string
+    defaultSenderName?: StringFilter<"PhishingTemplate"> | string
+    emailBodyHtml?: StringFilter<"PhishingTemplate"> | string
+    emailBodyText?: StringFilter<"PhishingTemplate"> | string
     landingPageHtml?: StringNullableFilter<"PhishingTemplate"> | string | null
     captureCredentials?: BoolFilter<"PhishingTemplate"> | boolean
     isActive?: BoolFilter<"PhishingTemplate"> | boolean
@@ -40851,14 +40444,10 @@ export namespace Prisma {
     description?: SortOrder
     category?: SortOrder
     riskLevel?: SortOrder
-    templateType?: SortOrder
-    defaultSubject?: SortOrderInput | SortOrder
-    defaultSenderName?: SortOrderInput | SortOrder
-    emailBodyHtml?: SortOrderInput | SortOrder
-    emailBodyText?: SortOrderInput | SortOrder
-    smsContent?: SortOrderInput | SortOrder
-    defaultSenderNumber?: SortOrderInput | SortOrder
-    messageContent?: SortOrderInput | SortOrder
+    defaultSubject?: SortOrder
+    defaultSenderName?: SortOrder
+    emailBodyHtml?: SortOrder
+    emailBodyText?: SortOrder
     landingPageHtml?: SortOrderInput | SortOrder
     captureCredentials?: SortOrder
     isActive?: SortOrder
@@ -40886,14 +40475,10 @@ export namespace Prisma {
     description?: StringWithAggregatesFilter<"PhishingTemplate"> | string
     category?: EnumTemplateCategoryWithAggregatesFilter<"PhishingTemplate"> | $Enums.TemplateCategory
     riskLevel?: EnumRiskLevelWithAggregatesFilter<"PhishingTemplate"> | $Enums.RiskLevel
-    templateType?: EnumTemplateTypeWithAggregatesFilter<"PhishingTemplate"> | $Enums.TemplateType
-    defaultSubject?: StringNullableWithAggregatesFilter<"PhishingTemplate"> | string | null
-    defaultSenderName?: StringNullableWithAggregatesFilter<"PhishingTemplate"> | string | null
-    emailBodyHtml?: StringNullableWithAggregatesFilter<"PhishingTemplate"> | string | null
-    emailBodyText?: StringNullableWithAggregatesFilter<"PhishingTemplate"> | string | null
-    smsContent?: StringNullableWithAggregatesFilter<"PhishingTemplate"> | string | null
-    defaultSenderNumber?: StringNullableWithAggregatesFilter<"PhishingTemplate"> | string | null
-    messageContent?: StringNullableWithAggregatesFilter<"PhishingTemplate"> | string | null
+    defaultSubject?: StringWithAggregatesFilter<"PhishingTemplate"> | string
+    defaultSenderName?: StringWithAggregatesFilter<"PhishingTemplate"> | string
+    emailBodyHtml?: StringWithAggregatesFilter<"PhishingTemplate"> | string
+    emailBodyText?: StringWithAggregatesFilter<"PhishingTemplate"> | string
     landingPageHtml?: StringNullableWithAggregatesFilter<"PhishingTemplate"> | string | null
     captureCredentials?: BoolWithAggregatesFilter<"PhishingTemplate"> | boolean
     isActive?: BoolWithAggregatesFilter<"PhishingTemplate"> | boolean
@@ -42257,6 +41842,7 @@ export namespace Prisma {
     phone?: string | null
     avatar?: string | null
     emailVerified?: boolean
+    verificationToken?: string | null
     isActive?: boolean
     role?: $Enums.UserRole
     createdAt?: Date | string
@@ -42286,6 +41872,7 @@ export namespace Prisma {
     phone?: string | null
     avatar?: string | null
     emailVerified?: boolean
+    verificationToken?: string | null
     isActive?: boolean
     role?: $Enums.UserRole
     createdAt?: Date | string
@@ -42315,6 +41902,7 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -42344,6 +41932,7 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -42373,6 +41962,7 @@ export namespace Prisma {
     phone?: string | null
     avatar?: string | null
     emailVerified?: boolean
+    verificationToken?: string | null
     isActive?: boolean
     role?: $Enums.UserRole
     createdAt?: Date | string
@@ -42389,6 +41979,7 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -42404,6 +41995,7 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -43500,32 +43092,24 @@ export namespace Prisma {
     id?: string
     name: string
     description?: string | null
-    campaignType?: $Enums.CampaignType
     templateId: string
     template: string
-    subject?: string | null
-    senderName?: string | null
-    senderEmail?: string | null
+    subject: string
+    senderName: string
+    senderEmail: string
     landingPageUrl?: string | null
-    senderNumber?: string | null
-    messageContent?: string | null
-    trackingUrl?: string | null
     status?: $Enums.CampaignStatus
     scheduledAt?: Date | string | null
     launchedAt?: Date | string | null
     completedAt?: Date | string | null
     pausedAt?: Date | string | null
     targetCount?: number
-    messagesSent?: number
-    messagesDelivered?: number
-    messagesOpened?: number
-    linksClicked?: number
-    credentialsEntered?: number
-    phishingReported?: number
-    messagesFailed?: number
     emailsSent?: number
     emailsDelivered?: number
     emailsOpened?: number
+    linksClicked?: number
+    credentialsEntered?: number
+    phishingReported?: number
     emailsBounced?: number
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -43539,32 +43123,24 @@ export namespace Prisma {
     id?: string
     name: string
     description?: string | null
-    campaignType?: $Enums.CampaignType
     templateId: string
     template: string
-    subject?: string | null
-    senderName?: string | null
-    senderEmail?: string | null
+    subject: string
+    senderName: string
+    senderEmail: string
     landingPageUrl?: string | null
-    senderNumber?: string | null
-    messageContent?: string | null
-    trackingUrl?: string | null
     status?: $Enums.CampaignStatus
     scheduledAt?: Date | string | null
     launchedAt?: Date | string | null
     completedAt?: Date | string | null
     pausedAt?: Date | string | null
     targetCount?: number
-    messagesSent?: number
-    messagesDelivered?: number
-    messagesOpened?: number
-    linksClicked?: number
-    credentialsEntered?: number
-    phishingReported?: number
-    messagesFailed?: number
     emailsSent?: number
     emailsDelivered?: number
     emailsOpened?: number
+    linksClicked?: number
+    credentialsEntered?: number
+    phishingReported?: number
     emailsBounced?: number
     createdBy: string
     organizationId: string
@@ -43578,32 +43154,24 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    campaignType?: EnumCampaignTypeFieldUpdateOperationsInput | $Enums.CampaignType
     templateId?: StringFieldUpdateOperationsInput | string
     template?: StringFieldUpdateOperationsInput | string
-    subject?: NullableStringFieldUpdateOperationsInput | string | null
-    senderName?: NullableStringFieldUpdateOperationsInput | string | null
-    senderEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    subject?: StringFieldUpdateOperationsInput | string
+    senderName?: StringFieldUpdateOperationsInput | string
+    senderEmail?: StringFieldUpdateOperationsInput | string
     landingPageUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    senderNumber?: NullableStringFieldUpdateOperationsInput | string | null
-    messageContent?: NullableStringFieldUpdateOperationsInput | string | null
-    trackingUrl?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumCampaignStatusFieldUpdateOperationsInput | $Enums.CampaignStatus
     scheduledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     launchedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     pausedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     targetCount?: IntFieldUpdateOperationsInput | number
-    messagesSent?: IntFieldUpdateOperationsInput | number
-    messagesDelivered?: IntFieldUpdateOperationsInput | number
-    messagesOpened?: IntFieldUpdateOperationsInput | number
-    linksClicked?: IntFieldUpdateOperationsInput | number
-    credentialsEntered?: IntFieldUpdateOperationsInput | number
-    phishingReported?: IntFieldUpdateOperationsInput | number
-    messagesFailed?: IntFieldUpdateOperationsInput | number
     emailsSent?: IntFieldUpdateOperationsInput | number
     emailsDelivered?: IntFieldUpdateOperationsInput | number
     emailsOpened?: IntFieldUpdateOperationsInput | number
+    linksClicked?: IntFieldUpdateOperationsInput | number
+    credentialsEntered?: IntFieldUpdateOperationsInput | number
+    phishingReported?: IntFieldUpdateOperationsInput | number
     emailsBounced?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -43617,32 +43185,24 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    campaignType?: EnumCampaignTypeFieldUpdateOperationsInput | $Enums.CampaignType
     templateId?: StringFieldUpdateOperationsInput | string
     template?: StringFieldUpdateOperationsInput | string
-    subject?: NullableStringFieldUpdateOperationsInput | string | null
-    senderName?: NullableStringFieldUpdateOperationsInput | string | null
-    senderEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    subject?: StringFieldUpdateOperationsInput | string
+    senderName?: StringFieldUpdateOperationsInput | string
+    senderEmail?: StringFieldUpdateOperationsInput | string
     landingPageUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    senderNumber?: NullableStringFieldUpdateOperationsInput | string | null
-    messageContent?: NullableStringFieldUpdateOperationsInput | string | null
-    trackingUrl?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumCampaignStatusFieldUpdateOperationsInput | $Enums.CampaignStatus
     scheduledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     launchedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     pausedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     targetCount?: IntFieldUpdateOperationsInput | number
-    messagesSent?: IntFieldUpdateOperationsInput | number
-    messagesDelivered?: IntFieldUpdateOperationsInput | number
-    messagesOpened?: IntFieldUpdateOperationsInput | number
-    linksClicked?: IntFieldUpdateOperationsInput | number
-    credentialsEntered?: IntFieldUpdateOperationsInput | number
-    phishingReported?: IntFieldUpdateOperationsInput | number
-    messagesFailed?: IntFieldUpdateOperationsInput | number
     emailsSent?: IntFieldUpdateOperationsInput | number
     emailsDelivered?: IntFieldUpdateOperationsInput | number
     emailsOpened?: IntFieldUpdateOperationsInput | number
+    linksClicked?: IntFieldUpdateOperationsInput | number
+    credentialsEntered?: IntFieldUpdateOperationsInput | number
+    phishingReported?: IntFieldUpdateOperationsInput | number
     emailsBounced?: IntFieldUpdateOperationsInput | number
     createdBy?: StringFieldUpdateOperationsInput | string
     organizationId?: StringFieldUpdateOperationsInput | string
@@ -43656,32 +43216,24 @@ export namespace Prisma {
     id?: string
     name: string
     description?: string | null
-    campaignType?: $Enums.CampaignType
     templateId: string
     template: string
-    subject?: string | null
-    senderName?: string | null
-    senderEmail?: string | null
+    subject: string
+    senderName: string
+    senderEmail: string
     landingPageUrl?: string | null
-    senderNumber?: string | null
-    messageContent?: string | null
-    trackingUrl?: string | null
     status?: $Enums.CampaignStatus
     scheduledAt?: Date | string | null
     launchedAt?: Date | string | null
     completedAt?: Date | string | null
     pausedAt?: Date | string | null
     targetCount?: number
-    messagesSent?: number
-    messagesDelivered?: number
-    messagesOpened?: number
-    linksClicked?: number
-    credentialsEntered?: number
-    phishingReported?: number
-    messagesFailed?: number
     emailsSent?: number
     emailsDelivered?: number
     emailsOpened?: number
+    linksClicked?: number
+    credentialsEntered?: number
+    phishingReported?: number
     emailsBounced?: number
     createdBy: string
     organizationId: string
@@ -43693,32 +43245,24 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    campaignType?: EnumCampaignTypeFieldUpdateOperationsInput | $Enums.CampaignType
     templateId?: StringFieldUpdateOperationsInput | string
     template?: StringFieldUpdateOperationsInput | string
-    subject?: NullableStringFieldUpdateOperationsInput | string | null
-    senderName?: NullableStringFieldUpdateOperationsInput | string | null
-    senderEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    subject?: StringFieldUpdateOperationsInput | string
+    senderName?: StringFieldUpdateOperationsInput | string
+    senderEmail?: StringFieldUpdateOperationsInput | string
     landingPageUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    senderNumber?: NullableStringFieldUpdateOperationsInput | string | null
-    messageContent?: NullableStringFieldUpdateOperationsInput | string | null
-    trackingUrl?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumCampaignStatusFieldUpdateOperationsInput | $Enums.CampaignStatus
     scheduledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     launchedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     pausedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     targetCount?: IntFieldUpdateOperationsInput | number
-    messagesSent?: IntFieldUpdateOperationsInput | number
-    messagesDelivered?: IntFieldUpdateOperationsInput | number
-    messagesOpened?: IntFieldUpdateOperationsInput | number
-    linksClicked?: IntFieldUpdateOperationsInput | number
-    credentialsEntered?: IntFieldUpdateOperationsInput | number
-    phishingReported?: IntFieldUpdateOperationsInput | number
-    messagesFailed?: IntFieldUpdateOperationsInput | number
     emailsSent?: IntFieldUpdateOperationsInput | number
     emailsDelivered?: IntFieldUpdateOperationsInput | number
     emailsOpened?: IntFieldUpdateOperationsInput | number
+    linksClicked?: IntFieldUpdateOperationsInput | number
+    credentialsEntered?: IntFieldUpdateOperationsInput | number
+    phishingReported?: IntFieldUpdateOperationsInput | number
     emailsBounced?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -43728,32 +43272,24 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    campaignType?: EnumCampaignTypeFieldUpdateOperationsInput | $Enums.CampaignType
     templateId?: StringFieldUpdateOperationsInput | string
     template?: StringFieldUpdateOperationsInput | string
-    subject?: NullableStringFieldUpdateOperationsInput | string | null
-    senderName?: NullableStringFieldUpdateOperationsInput | string | null
-    senderEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    subject?: StringFieldUpdateOperationsInput | string
+    senderName?: StringFieldUpdateOperationsInput | string
+    senderEmail?: StringFieldUpdateOperationsInput | string
     landingPageUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    senderNumber?: NullableStringFieldUpdateOperationsInput | string | null
-    messageContent?: NullableStringFieldUpdateOperationsInput | string | null
-    trackingUrl?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumCampaignStatusFieldUpdateOperationsInput | $Enums.CampaignStatus
     scheduledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     launchedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     pausedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     targetCount?: IntFieldUpdateOperationsInput | number
-    messagesSent?: IntFieldUpdateOperationsInput | number
-    messagesDelivered?: IntFieldUpdateOperationsInput | number
-    messagesOpened?: IntFieldUpdateOperationsInput | number
-    linksClicked?: IntFieldUpdateOperationsInput | number
-    credentialsEntered?: IntFieldUpdateOperationsInput | number
-    phishingReported?: IntFieldUpdateOperationsInput | number
-    messagesFailed?: IntFieldUpdateOperationsInput | number
     emailsSent?: IntFieldUpdateOperationsInput | number
     emailsDelivered?: IntFieldUpdateOperationsInput | number
     emailsOpened?: IntFieldUpdateOperationsInput | number
+    linksClicked?: IntFieldUpdateOperationsInput | number
+    credentialsEntered?: IntFieldUpdateOperationsInput | number
+    phishingReported?: IntFieldUpdateOperationsInput | number
     emailsBounced?: IntFieldUpdateOperationsInput | number
     createdBy?: StringFieldUpdateOperationsInput | string
     organizationId?: StringFieldUpdateOperationsInput | string
@@ -43763,22 +43299,17 @@ export namespace Prisma {
 
   export type PhishingTargetCreateInput = {
     id?: string
-    email?: string | null
-    phoneNumber?: string | null
+    email: string
     firstName?: string | null
     lastName?: string | null
     department?: string | null
     jobTitle?: string | null
-    messageSent?: boolean
-    messageDelivered?: boolean
-    messageOpened?: boolean
-    linkClicked?: boolean
-    credentialsEntered?: boolean
-    reportedPhishing?: boolean
-    messageFailed?: boolean
     emailSent?: boolean
     emailDelivered?: boolean
     emailOpened?: boolean
+    linkClicked?: boolean
+    credentialsEntered?: boolean
+    reportedPhishing?: boolean
     emailBounced?: boolean
     sentAt?: Date | string | null
     deliveredAt?: Date | string | null
@@ -43786,13 +43317,10 @@ export namespace Prisma {
     clickedAt?: Date | string | null
     credentialsAt?: Date | string | null
     reportedAt?: Date | string | null
-    failedAt?: Date | string | null
     bouncedAt?: Date | string | null
     userAgent?: string | null
     ipAddress?: string | null
     clickCount?: number
-    smsProvider?: string | null
-    messageId?: string | null
     riskScore?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -43803,22 +43331,17 @@ export namespace Prisma {
 
   export type PhishingTargetUncheckedCreateInput = {
     id?: string
-    email?: string | null
-    phoneNumber?: string | null
+    email: string
     firstName?: string | null
     lastName?: string | null
     department?: string | null
     jobTitle?: string | null
-    messageSent?: boolean
-    messageDelivered?: boolean
-    messageOpened?: boolean
-    linkClicked?: boolean
-    credentialsEntered?: boolean
-    reportedPhishing?: boolean
-    messageFailed?: boolean
     emailSent?: boolean
     emailDelivered?: boolean
     emailOpened?: boolean
+    linkClicked?: boolean
+    credentialsEntered?: boolean
+    reportedPhishing?: boolean
     emailBounced?: boolean
     sentAt?: Date | string | null
     deliveredAt?: Date | string | null
@@ -43826,13 +43349,10 @@ export namespace Prisma {
     clickedAt?: Date | string | null
     credentialsAt?: Date | string | null
     reportedAt?: Date | string | null
-    failedAt?: Date | string | null
     bouncedAt?: Date | string | null
     userAgent?: string | null
     ipAddress?: string | null
     clickCount?: number
-    smsProvider?: string | null
-    messageId?: string | null
     riskScore?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -43843,22 +43363,17 @@ export namespace Prisma {
 
   export type PhishingTargetUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    email?: NullableStringFieldUpdateOperationsInput | string | null
-    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: StringFieldUpdateOperationsInput | string
     firstName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: NullableStringFieldUpdateOperationsInput | string | null
     department?: NullableStringFieldUpdateOperationsInput | string | null
     jobTitle?: NullableStringFieldUpdateOperationsInput | string | null
-    messageSent?: BoolFieldUpdateOperationsInput | boolean
-    messageDelivered?: BoolFieldUpdateOperationsInput | boolean
-    messageOpened?: BoolFieldUpdateOperationsInput | boolean
-    linkClicked?: BoolFieldUpdateOperationsInput | boolean
-    credentialsEntered?: BoolFieldUpdateOperationsInput | boolean
-    reportedPhishing?: BoolFieldUpdateOperationsInput | boolean
-    messageFailed?: BoolFieldUpdateOperationsInput | boolean
     emailSent?: BoolFieldUpdateOperationsInput | boolean
     emailDelivered?: BoolFieldUpdateOperationsInput | boolean
     emailOpened?: BoolFieldUpdateOperationsInput | boolean
+    linkClicked?: BoolFieldUpdateOperationsInput | boolean
+    credentialsEntered?: BoolFieldUpdateOperationsInput | boolean
+    reportedPhishing?: BoolFieldUpdateOperationsInput | boolean
     emailBounced?: BoolFieldUpdateOperationsInput | boolean
     sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -43866,13 +43381,10 @@ export namespace Prisma {
     clickedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     credentialsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     reportedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     bouncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     userAgent?: NullableStringFieldUpdateOperationsInput | string | null
     ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
     clickCount?: IntFieldUpdateOperationsInput | number
-    smsProvider?: NullableStringFieldUpdateOperationsInput | string | null
-    messageId?: NullableStringFieldUpdateOperationsInput | string | null
     riskScore?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -43883,22 +43395,17 @@ export namespace Prisma {
 
   export type PhishingTargetUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    email?: NullableStringFieldUpdateOperationsInput | string | null
-    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: StringFieldUpdateOperationsInput | string
     firstName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: NullableStringFieldUpdateOperationsInput | string | null
     department?: NullableStringFieldUpdateOperationsInput | string | null
     jobTitle?: NullableStringFieldUpdateOperationsInput | string | null
-    messageSent?: BoolFieldUpdateOperationsInput | boolean
-    messageDelivered?: BoolFieldUpdateOperationsInput | boolean
-    messageOpened?: BoolFieldUpdateOperationsInput | boolean
-    linkClicked?: BoolFieldUpdateOperationsInput | boolean
-    credentialsEntered?: BoolFieldUpdateOperationsInput | boolean
-    reportedPhishing?: BoolFieldUpdateOperationsInput | boolean
-    messageFailed?: BoolFieldUpdateOperationsInput | boolean
     emailSent?: BoolFieldUpdateOperationsInput | boolean
     emailDelivered?: BoolFieldUpdateOperationsInput | boolean
     emailOpened?: BoolFieldUpdateOperationsInput | boolean
+    linkClicked?: BoolFieldUpdateOperationsInput | boolean
+    credentialsEntered?: BoolFieldUpdateOperationsInput | boolean
+    reportedPhishing?: BoolFieldUpdateOperationsInput | boolean
     emailBounced?: BoolFieldUpdateOperationsInput | boolean
     sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -43906,13 +43413,10 @@ export namespace Prisma {
     clickedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     credentialsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     reportedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     bouncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     userAgent?: NullableStringFieldUpdateOperationsInput | string | null
     ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
     clickCount?: IntFieldUpdateOperationsInput | number
-    smsProvider?: NullableStringFieldUpdateOperationsInput | string | null
-    messageId?: NullableStringFieldUpdateOperationsInput | string | null
     riskScore?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -43923,22 +43427,17 @@ export namespace Prisma {
 
   export type PhishingTargetCreateManyInput = {
     id?: string
-    email?: string | null
-    phoneNumber?: string | null
+    email: string
     firstName?: string | null
     lastName?: string | null
     department?: string | null
     jobTitle?: string | null
-    messageSent?: boolean
-    messageDelivered?: boolean
-    messageOpened?: boolean
-    linkClicked?: boolean
-    credentialsEntered?: boolean
-    reportedPhishing?: boolean
-    messageFailed?: boolean
     emailSent?: boolean
     emailDelivered?: boolean
     emailOpened?: boolean
+    linkClicked?: boolean
+    credentialsEntered?: boolean
+    reportedPhishing?: boolean
     emailBounced?: boolean
     sentAt?: Date | string | null
     deliveredAt?: Date | string | null
@@ -43946,13 +43445,10 @@ export namespace Prisma {
     clickedAt?: Date | string | null
     credentialsAt?: Date | string | null
     reportedAt?: Date | string | null
-    failedAt?: Date | string | null
     bouncedAt?: Date | string | null
     userAgent?: string | null
     ipAddress?: string | null
     clickCount?: number
-    smsProvider?: string | null
-    messageId?: string | null
     riskScore?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -43962,22 +43458,17 @@ export namespace Prisma {
 
   export type PhishingTargetUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    email?: NullableStringFieldUpdateOperationsInput | string | null
-    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: StringFieldUpdateOperationsInput | string
     firstName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: NullableStringFieldUpdateOperationsInput | string | null
     department?: NullableStringFieldUpdateOperationsInput | string | null
     jobTitle?: NullableStringFieldUpdateOperationsInput | string | null
-    messageSent?: BoolFieldUpdateOperationsInput | boolean
-    messageDelivered?: BoolFieldUpdateOperationsInput | boolean
-    messageOpened?: BoolFieldUpdateOperationsInput | boolean
-    linkClicked?: BoolFieldUpdateOperationsInput | boolean
-    credentialsEntered?: BoolFieldUpdateOperationsInput | boolean
-    reportedPhishing?: BoolFieldUpdateOperationsInput | boolean
-    messageFailed?: BoolFieldUpdateOperationsInput | boolean
     emailSent?: BoolFieldUpdateOperationsInput | boolean
     emailDelivered?: BoolFieldUpdateOperationsInput | boolean
     emailOpened?: BoolFieldUpdateOperationsInput | boolean
+    linkClicked?: BoolFieldUpdateOperationsInput | boolean
+    credentialsEntered?: BoolFieldUpdateOperationsInput | boolean
+    reportedPhishing?: BoolFieldUpdateOperationsInput | boolean
     emailBounced?: BoolFieldUpdateOperationsInput | boolean
     sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -43985,13 +43476,10 @@ export namespace Prisma {
     clickedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     credentialsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     reportedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     bouncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     userAgent?: NullableStringFieldUpdateOperationsInput | string | null
     ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
     clickCount?: IntFieldUpdateOperationsInput | number
-    smsProvider?: NullableStringFieldUpdateOperationsInput | string | null
-    messageId?: NullableStringFieldUpdateOperationsInput | string | null
     riskScore?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -43999,22 +43487,17 @@ export namespace Prisma {
 
   export type PhishingTargetUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    email?: NullableStringFieldUpdateOperationsInput | string | null
-    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: StringFieldUpdateOperationsInput | string
     firstName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: NullableStringFieldUpdateOperationsInput | string | null
     department?: NullableStringFieldUpdateOperationsInput | string | null
     jobTitle?: NullableStringFieldUpdateOperationsInput | string | null
-    messageSent?: BoolFieldUpdateOperationsInput | boolean
-    messageDelivered?: BoolFieldUpdateOperationsInput | boolean
-    messageOpened?: BoolFieldUpdateOperationsInput | boolean
-    linkClicked?: BoolFieldUpdateOperationsInput | boolean
-    credentialsEntered?: BoolFieldUpdateOperationsInput | boolean
-    reportedPhishing?: BoolFieldUpdateOperationsInput | boolean
-    messageFailed?: BoolFieldUpdateOperationsInput | boolean
     emailSent?: BoolFieldUpdateOperationsInput | boolean
     emailDelivered?: BoolFieldUpdateOperationsInput | boolean
     emailOpened?: BoolFieldUpdateOperationsInput | boolean
+    linkClicked?: BoolFieldUpdateOperationsInput | boolean
+    credentialsEntered?: BoolFieldUpdateOperationsInput | boolean
+    reportedPhishing?: BoolFieldUpdateOperationsInput | boolean
     emailBounced?: BoolFieldUpdateOperationsInput | boolean
     sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -44022,13 +43505,10 @@ export namespace Prisma {
     clickedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     credentialsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     reportedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     bouncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     userAgent?: NullableStringFieldUpdateOperationsInput | string | null
     ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
     clickCount?: IntFieldUpdateOperationsInput | number
-    smsProvider?: NullableStringFieldUpdateOperationsInput | string | null
-    messageId?: NullableStringFieldUpdateOperationsInput | string | null
     riskScore?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -44124,14 +43604,10 @@ export namespace Prisma {
     description: string
     category: $Enums.TemplateCategory
     riskLevel: $Enums.RiskLevel
-    templateType?: $Enums.TemplateType
-    defaultSubject?: string | null
-    defaultSenderName?: string | null
-    emailBodyHtml?: string | null
-    emailBodyText?: string | null
-    smsContent?: string | null
-    defaultSenderNumber?: string | null
-    messageContent?: string | null
+    defaultSubject: string
+    defaultSenderName: string
+    emailBodyHtml: string
+    emailBodyText: string
     landingPageHtml?: string | null
     captureCredentials?: boolean
     isActive?: boolean
@@ -44151,14 +43627,10 @@ export namespace Prisma {
     description: string
     category: $Enums.TemplateCategory
     riskLevel: $Enums.RiskLevel
-    templateType?: $Enums.TemplateType
-    defaultSubject?: string | null
-    defaultSenderName?: string | null
-    emailBodyHtml?: string | null
-    emailBodyText?: string | null
-    smsContent?: string | null
-    defaultSenderNumber?: string | null
-    messageContent?: string | null
+    defaultSubject: string
+    defaultSenderName: string
+    emailBodyHtml: string
+    emailBodyText: string
     landingPageHtml?: string | null
     captureCredentials?: boolean
     isActive?: boolean
@@ -44178,14 +43650,10 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     category?: EnumTemplateCategoryFieldUpdateOperationsInput | $Enums.TemplateCategory
     riskLevel?: EnumRiskLevelFieldUpdateOperationsInput | $Enums.RiskLevel
-    templateType?: EnumTemplateTypeFieldUpdateOperationsInput | $Enums.TemplateType
-    defaultSubject?: NullableStringFieldUpdateOperationsInput | string | null
-    defaultSenderName?: NullableStringFieldUpdateOperationsInput | string | null
-    emailBodyHtml?: NullableStringFieldUpdateOperationsInput | string | null
-    emailBodyText?: NullableStringFieldUpdateOperationsInput | string | null
-    smsContent?: NullableStringFieldUpdateOperationsInput | string | null
-    defaultSenderNumber?: NullableStringFieldUpdateOperationsInput | string | null
-    messageContent?: NullableStringFieldUpdateOperationsInput | string | null
+    defaultSubject?: StringFieldUpdateOperationsInput | string
+    defaultSenderName?: StringFieldUpdateOperationsInput | string
+    emailBodyHtml?: StringFieldUpdateOperationsInput | string
+    emailBodyText?: StringFieldUpdateOperationsInput | string
     landingPageHtml?: NullableStringFieldUpdateOperationsInput | string | null
     captureCredentials?: BoolFieldUpdateOperationsInput | boolean
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -44205,14 +43673,10 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     category?: EnumTemplateCategoryFieldUpdateOperationsInput | $Enums.TemplateCategory
     riskLevel?: EnumRiskLevelFieldUpdateOperationsInput | $Enums.RiskLevel
-    templateType?: EnumTemplateTypeFieldUpdateOperationsInput | $Enums.TemplateType
-    defaultSubject?: NullableStringFieldUpdateOperationsInput | string | null
-    defaultSenderName?: NullableStringFieldUpdateOperationsInput | string | null
-    emailBodyHtml?: NullableStringFieldUpdateOperationsInput | string | null
-    emailBodyText?: NullableStringFieldUpdateOperationsInput | string | null
-    smsContent?: NullableStringFieldUpdateOperationsInput | string | null
-    defaultSenderNumber?: NullableStringFieldUpdateOperationsInput | string | null
-    messageContent?: NullableStringFieldUpdateOperationsInput | string | null
+    defaultSubject?: StringFieldUpdateOperationsInput | string
+    defaultSenderName?: StringFieldUpdateOperationsInput | string
+    emailBodyHtml?: StringFieldUpdateOperationsInput | string
+    emailBodyText?: StringFieldUpdateOperationsInput | string
     landingPageHtml?: NullableStringFieldUpdateOperationsInput | string | null
     captureCredentials?: BoolFieldUpdateOperationsInput | boolean
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -44232,14 +43696,10 @@ export namespace Prisma {
     description: string
     category: $Enums.TemplateCategory
     riskLevel: $Enums.RiskLevel
-    templateType?: $Enums.TemplateType
-    defaultSubject?: string | null
-    defaultSenderName?: string | null
-    emailBodyHtml?: string | null
-    emailBodyText?: string | null
-    smsContent?: string | null
-    defaultSenderNumber?: string | null
-    messageContent?: string | null
+    defaultSubject: string
+    defaultSenderName: string
+    emailBodyHtml: string
+    emailBodyText: string
     landingPageHtml?: string | null
     captureCredentials?: boolean
     isActive?: boolean
@@ -44259,14 +43719,10 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     category?: EnumTemplateCategoryFieldUpdateOperationsInput | $Enums.TemplateCategory
     riskLevel?: EnumRiskLevelFieldUpdateOperationsInput | $Enums.RiskLevel
-    templateType?: EnumTemplateTypeFieldUpdateOperationsInput | $Enums.TemplateType
-    defaultSubject?: NullableStringFieldUpdateOperationsInput | string | null
-    defaultSenderName?: NullableStringFieldUpdateOperationsInput | string | null
-    emailBodyHtml?: NullableStringFieldUpdateOperationsInput | string | null
-    emailBodyText?: NullableStringFieldUpdateOperationsInput | string | null
-    smsContent?: NullableStringFieldUpdateOperationsInput | string | null
-    defaultSenderNumber?: NullableStringFieldUpdateOperationsInput | string | null
-    messageContent?: NullableStringFieldUpdateOperationsInput | string | null
+    defaultSubject?: StringFieldUpdateOperationsInput | string
+    defaultSenderName?: StringFieldUpdateOperationsInput | string
+    emailBodyHtml?: StringFieldUpdateOperationsInput | string
+    emailBodyText?: StringFieldUpdateOperationsInput | string
     landingPageHtml?: NullableStringFieldUpdateOperationsInput | string | null
     captureCredentials?: BoolFieldUpdateOperationsInput | boolean
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -44284,14 +43740,10 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     category?: EnumTemplateCategoryFieldUpdateOperationsInput | $Enums.TemplateCategory
     riskLevel?: EnumRiskLevelFieldUpdateOperationsInput | $Enums.RiskLevel
-    templateType?: EnumTemplateTypeFieldUpdateOperationsInput | $Enums.TemplateType
-    defaultSubject?: NullableStringFieldUpdateOperationsInput | string | null
-    defaultSenderName?: NullableStringFieldUpdateOperationsInput | string | null
-    emailBodyHtml?: NullableStringFieldUpdateOperationsInput | string | null
-    emailBodyText?: NullableStringFieldUpdateOperationsInput | string | null
-    smsContent?: NullableStringFieldUpdateOperationsInput | string | null
-    defaultSenderNumber?: NullableStringFieldUpdateOperationsInput | string | null
-    messageContent?: NullableStringFieldUpdateOperationsInput | string | null
+    defaultSubject?: StringFieldUpdateOperationsInput | string
+    defaultSenderName?: StringFieldUpdateOperationsInput | string
+    emailBodyHtml?: StringFieldUpdateOperationsInput | string
+    emailBodyText?: StringFieldUpdateOperationsInput | string
     landingPageHtml?: NullableStringFieldUpdateOperationsInput | string | null
     captureCredentials?: BoolFieldUpdateOperationsInput | boolean
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -46025,6 +45477,7 @@ export namespace Prisma {
     phone?: SortOrder
     avatar?: SortOrder
     emailVerified?: SortOrder
+    verificationToken?: SortOrder
     isActive?: SortOrder
     role?: SortOrder
     createdAt?: SortOrder
@@ -46041,6 +45494,7 @@ export namespace Prisma {
     phone?: SortOrder
     avatar?: SortOrder
     emailVerified?: SortOrder
+    verificationToken?: SortOrder
     isActive?: SortOrder
     role?: SortOrder
     createdAt?: SortOrder
@@ -46057,6 +45511,7 @@ export namespace Prisma {
     phone?: SortOrder
     avatar?: SortOrder
     emailVerified?: SortOrder
+    verificationToken?: SortOrder
     isActive?: SortOrder
     role?: SortOrder
     createdAt?: SortOrder
@@ -47061,13 +46516,6 @@ export namespace Prisma {
     _max?: NestedEnumCSITierFilter<$PrismaModel>
   }
 
-  export type EnumCampaignTypeFilter<$PrismaModel = never> = {
-    equals?: $Enums.CampaignType | EnumCampaignTypeFieldRefInput<$PrismaModel>
-    in?: $Enums.CampaignType[] | ListEnumCampaignTypeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.CampaignType[] | ListEnumCampaignTypeFieldRefInput<$PrismaModel>
-    not?: NestedEnumCampaignTypeFilter<$PrismaModel> | $Enums.CampaignType
-  }
-
   export type EnumCampaignStatusFilter<$PrismaModel = never> = {
     equals?: $Enums.CampaignStatus | EnumCampaignStatusFieldRefInput<$PrismaModel>
     in?: $Enums.CampaignStatus[] | ListEnumCampaignStatusFieldRefInput<$PrismaModel>
@@ -47089,32 +46537,24 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     description?: SortOrder
-    campaignType?: SortOrder
     templateId?: SortOrder
     template?: SortOrder
     subject?: SortOrder
     senderName?: SortOrder
     senderEmail?: SortOrder
     landingPageUrl?: SortOrder
-    senderNumber?: SortOrder
-    messageContent?: SortOrder
-    trackingUrl?: SortOrder
     status?: SortOrder
     scheduledAt?: SortOrder
     launchedAt?: SortOrder
     completedAt?: SortOrder
     pausedAt?: SortOrder
     targetCount?: SortOrder
-    messagesSent?: SortOrder
-    messagesDelivered?: SortOrder
-    messagesOpened?: SortOrder
-    linksClicked?: SortOrder
-    credentialsEntered?: SortOrder
-    phishingReported?: SortOrder
-    messagesFailed?: SortOrder
     emailsSent?: SortOrder
     emailsDelivered?: SortOrder
     emailsOpened?: SortOrder
+    linksClicked?: SortOrder
+    credentialsEntered?: SortOrder
+    phishingReported?: SortOrder
     emailsBounced?: SortOrder
     createdBy?: SortOrder
     organizationId?: SortOrder
@@ -47124,16 +46564,12 @@ export namespace Prisma {
 
   export type PhishingCampaignAvgOrderByAggregateInput = {
     targetCount?: SortOrder
-    messagesSent?: SortOrder
-    messagesDelivered?: SortOrder
-    messagesOpened?: SortOrder
-    linksClicked?: SortOrder
-    credentialsEntered?: SortOrder
-    phishingReported?: SortOrder
-    messagesFailed?: SortOrder
     emailsSent?: SortOrder
     emailsDelivered?: SortOrder
     emailsOpened?: SortOrder
+    linksClicked?: SortOrder
+    credentialsEntered?: SortOrder
+    phishingReported?: SortOrder
     emailsBounced?: SortOrder
   }
 
@@ -47141,32 +46577,24 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     description?: SortOrder
-    campaignType?: SortOrder
     templateId?: SortOrder
     template?: SortOrder
     subject?: SortOrder
     senderName?: SortOrder
     senderEmail?: SortOrder
     landingPageUrl?: SortOrder
-    senderNumber?: SortOrder
-    messageContent?: SortOrder
-    trackingUrl?: SortOrder
     status?: SortOrder
     scheduledAt?: SortOrder
     launchedAt?: SortOrder
     completedAt?: SortOrder
     pausedAt?: SortOrder
     targetCount?: SortOrder
-    messagesSent?: SortOrder
-    messagesDelivered?: SortOrder
-    messagesOpened?: SortOrder
-    linksClicked?: SortOrder
-    credentialsEntered?: SortOrder
-    phishingReported?: SortOrder
-    messagesFailed?: SortOrder
     emailsSent?: SortOrder
     emailsDelivered?: SortOrder
     emailsOpened?: SortOrder
+    linksClicked?: SortOrder
+    credentialsEntered?: SortOrder
+    phishingReported?: SortOrder
     emailsBounced?: SortOrder
     createdBy?: SortOrder
     organizationId?: SortOrder
@@ -47178,32 +46606,24 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     description?: SortOrder
-    campaignType?: SortOrder
     templateId?: SortOrder
     template?: SortOrder
     subject?: SortOrder
     senderName?: SortOrder
     senderEmail?: SortOrder
     landingPageUrl?: SortOrder
-    senderNumber?: SortOrder
-    messageContent?: SortOrder
-    trackingUrl?: SortOrder
     status?: SortOrder
     scheduledAt?: SortOrder
     launchedAt?: SortOrder
     completedAt?: SortOrder
     pausedAt?: SortOrder
     targetCount?: SortOrder
-    messagesSent?: SortOrder
-    messagesDelivered?: SortOrder
-    messagesOpened?: SortOrder
-    linksClicked?: SortOrder
-    credentialsEntered?: SortOrder
-    phishingReported?: SortOrder
-    messagesFailed?: SortOrder
     emailsSent?: SortOrder
     emailsDelivered?: SortOrder
     emailsOpened?: SortOrder
+    linksClicked?: SortOrder
+    credentialsEntered?: SortOrder
+    phishingReported?: SortOrder
     emailsBounced?: SortOrder
     createdBy?: SortOrder
     organizationId?: SortOrder
@@ -47213,27 +46633,13 @@ export namespace Prisma {
 
   export type PhishingCampaignSumOrderByAggregateInput = {
     targetCount?: SortOrder
-    messagesSent?: SortOrder
-    messagesDelivered?: SortOrder
-    messagesOpened?: SortOrder
-    linksClicked?: SortOrder
-    credentialsEntered?: SortOrder
-    phishingReported?: SortOrder
-    messagesFailed?: SortOrder
     emailsSent?: SortOrder
     emailsDelivered?: SortOrder
     emailsOpened?: SortOrder
+    linksClicked?: SortOrder
+    credentialsEntered?: SortOrder
+    phishingReported?: SortOrder
     emailsBounced?: SortOrder
-  }
-
-  export type EnumCampaignTypeWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.CampaignType | EnumCampaignTypeFieldRefInput<$PrismaModel>
-    in?: $Enums.CampaignType[] | ListEnumCampaignTypeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.CampaignType[] | ListEnumCampaignTypeFieldRefInput<$PrismaModel>
-    not?: NestedEnumCampaignTypeWithAggregatesFilter<$PrismaModel> | $Enums.CampaignType
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumCampaignTypeFilter<$PrismaModel>
-    _max?: NestedEnumCampaignTypeFilter<$PrismaModel>
   }
 
   export type EnumCampaignStatusWithAggregatesFilter<$PrismaModel = never> = {
@@ -47259,21 +46665,16 @@ export namespace Prisma {
   export type PhishingTargetCountOrderByAggregateInput = {
     id?: SortOrder
     email?: SortOrder
-    phoneNumber?: SortOrder
     firstName?: SortOrder
     lastName?: SortOrder
     department?: SortOrder
     jobTitle?: SortOrder
-    messageSent?: SortOrder
-    messageDelivered?: SortOrder
-    messageOpened?: SortOrder
-    linkClicked?: SortOrder
-    credentialsEntered?: SortOrder
-    reportedPhishing?: SortOrder
-    messageFailed?: SortOrder
     emailSent?: SortOrder
     emailDelivered?: SortOrder
     emailOpened?: SortOrder
+    linkClicked?: SortOrder
+    credentialsEntered?: SortOrder
+    reportedPhishing?: SortOrder
     emailBounced?: SortOrder
     sentAt?: SortOrder
     deliveredAt?: SortOrder
@@ -47281,13 +46682,10 @@ export namespace Prisma {
     clickedAt?: SortOrder
     credentialsAt?: SortOrder
     reportedAt?: SortOrder
-    failedAt?: SortOrder
     bouncedAt?: SortOrder
     userAgent?: SortOrder
     ipAddress?: SortOrder
     clickCount?: SortOrder
-    smsProvider?: SortOrder
-    messageId?: SortOrder
     riskScore?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -47303,21 +46701,16 @@ export namespace Prisma {
   export type PhishingTargetMaxOrderByAggregateInput = {
     id?: SortOrder
     email?: SortOrder
-    phoneNumber?: SortOrder
     firstName?: SortOrder
     lastName?: SortOrder
     department?: SortOrder
     jobTitle?: SortOrder
-    messageSent?: SortOrder
-    messageDelivered?: SortOrder
-    messageOpened?: SortOrder
-    linkClicked?: SortOrder
-    credentialsEntered?: SortOrder
-    reportedPhishing?: SortOrder
-    messageFailed?: SortOrder
     emailSent?: SortOrder
     emailDelivered?: SortOrder
     emailOpened?: SortOrder
+    linkClicked?: SortOrder
+    credentialsEntered?: SortOrder
+    reportedPhishing?: SortOrder
     emailBounced?: SortOrder
     sentAt?: SortOrder
     deliveredAt?: SortOrder
@@ -47325,13 +46718,10 @@ export namespace Prisma {
     clickedAt?: SortOrder
     credentialsAt?: SortOrder
     reportedAt?: SortOrder
-    failedAt?: SortOrder
     bouncedAt?: SortOrder
     userAgent?: SortOrder
     ipAddress?: SortOrder
     clickCount?: SortOrder
-    smsProvider?: SortOrder
-    messageId?: SortOrder
     riskScore?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -47342,21 +46732,16 @@ export namespace Prisma {
   export type PhishingTargetMinOrderByAggregateInput = {
     id?: SortOrder
     email?: SortOrder
-    phoneNumber?: SortOrder
     firstName?: SortOrder
     lastName?: SortOrder
     department?: SortOrder
     jobTitle?: SortOrder
-    messageSent?: SortOrder
-    messageDelivered?: SortOrder
-    messageOpened?: SortOrder
-    linkClicked?: SortOrder
-    credentialsEntered?: SortOrder
-    reportedPhishing?: SortOrder
-    messageFailed?: SortOrder
     emailSent?: SortOrder
     emailDelivered?: SortOrder
     emailOpened?: SortOrder
+    linkClicked?: SortOrder
+    credentialsEntered?: SortOrder
+    reportedPhishing?: SortOrder
     emailBounced?: SortOrder
     sentAt?: SortOrder
     deliveredAt?: SortOrder
@@ -47364,13 +46749,10 @@ export namespace Prisma {
     clickedAt?: SortOrder
     credentialsAt?: SortOrder
     reportedAt?: SortOrder
-    failedAt?: SortOrder
     bouncedAt?: SortOrder
     userAgent?: SortOrder
     ipAddress?: SortOrder
     clickCount?: SortOrder
-    smsProvider?: SortOrder
-    messageId?: SortOrder
     riskScore?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -47455,13 +46837,6 @@ export namespace Prisma {
     not?: NestedEnumRiskLevelFilter<$PrismaModel> | $Enums.RiskLevel
   }
 
-  export type EnumTemplateTypeFilter<$PrismaModel = never> = {
-    equals?: $Enums.TemplateType | EnumTemplateTypeFieldRefInput<$PrismaModel>
-    in?: $Enums.TemplateType[] | ListEnumTemplateTypeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.TemplateType[] | ListEnumTemplateTypeFieldRefInput<$PrismaModel>
-    not?: NestedEnumTemplateTypeFilter<$PrismaModel> | $Enums.TemplateType
-  }
-
   export type StringNullableListFilter<$PrismaModel = never> = {
     equals?: string[] | ListStringFieldRefInput<$PrismaModel> | null
     has?: string | StringFieldRefInput<$PrismaModel> | null
@@ -47476,14 +46851,10 @@ export namespace Prisma {
     description?: SortOrder
     category?: SortOrder
     riskLevel?: SortOrder
-    templateType?: SortOrder
     defaultSubject?: SortOrder
     defaultSenderName?: SortOrder
     emailBodyHtml?: SortOrder
     emailBodyText?: SortOrder
-    smsContent?: SortOrder
-    defaultSenderNumber?: SortOrder
-    messageContent?: SortOrder
     landingPageHtml?: SortOrder
     captureCredentials?: SortOrder
     isActive?: SortOrder
@@ -47508,14 +46879,10 @@ export namespace Prisma {
     description?: SortOrder
     category?: SortOrder
     riskLevel?: SortOrder
-    templateType?: SortOrder
     defaultSubject?: SortOrder
     defaultSenderName?: SortOrder
     emailBodyHtml?: SortOrder
     emailBodyText?: SortOrder
-    smsContent?: SortOrder
-    defaultSenderNumber?: SortOrder
-    messageContent?: SortOrder
     landingPageHtml?: SortOrder
     captureCredentials?: SortOrder
     isActive?: SortOrder
@@ -47534,14 +46901,10 @@ export namespace Prisma {
     description?: SortOrder
     category?: SortOrder
     riskLevel?: SortOrder
-    templateType?: SortOrder
     defaultSubject?: SortOrder
     defaultSenderName?: SortOrder
     emailBodyHtml?: SortOrder
     emailBodyText?: SortOrder
-    smsContent?: SortOrder
-    defaultSenderNumber?: SortOrder
-    messageContent?: SortOrder
     landingPageHtml?: SortOrder
     captureCredentials?: SortOrder
     isActive?: SortOrder
@@ -47577,16 +46940,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumRiskLevelFilter<$PrismaModel>
     _max?: NestedEnumRiskLevelFilter<$PrismaModel>
-  }
-
-  export type EnumTemplateTypeWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.TemplateType | EnumTemplateTypeFieldRefInput<$PrismaModel>
-    in?: $Enums.TemplateType[] | ListEnumTemplateTypeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.TemplateType[] | ListEnumTemplateTypeFieldRefInput<$PrismaModel>
-    not?: NestedEnumTemplateTypeWithAggregatesFilter<$PrismaModel> | $Enums.TemplateType
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumTemplateTypeFilter<$PrismaModel>
-    _max?: NestedEnumTemplateTypeFilter<$PrismaModel>
   }
 
   export type EnumJobPriorityFilter<$PrismaModel = never> = {
@@ -50088,10 +49441,6 @@ export namespace Prisma {
     connect?: PhishingEventWhereUniqueInput | PhishingEventWhereUniqueInput[]
   }
 
-  export type EnumCampaignTypeFieldUpdateOperationsInput = {
-    set?: $Enums.CampaignType
-  }
-
   export type EnumCampaignStatusFieldUpdateOperationsInput = {
     set?: $Enums.CampaignStatus
   }
@@ -50296,10 +49645,6 @@ export namespace Prisma {
 
   export type EnumRiskLevelFieldUpdateOperationsInput = {
     set?: $Enums.RiskLevel
-  }
-
-  export type EnumTemplateTypeFieldUpdateOperationsInput = {
-    set?: $Enums.TemplateType
   }
 
   export type PhishingTemplateUpdatetagsInput = {
@@ -51271,28 +50616,11 @@ export namespace Prisma {
     _max?: NestedEnumCSITierFilter<$PrismaModel>
   }
 
-  export type NestedEnumCampaignTypeFilter<$PrismaModel = never> = {
-    equals?: $Enums.CampaignType | EnumCampaignTypeFieldRefInput<$PrismaModel>
-    in?: $Enums.CampaignType[] | ListEnumCampaignTypeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.CampaignType[] | ListEnumCampaignTypeFieldRefInput<$PrismaModel>
-    not?: NestedEnumCampaignTypeFilter<$PrismaModel> | $Enums.CampaignType
-  }
-
   export type NestedEnumCampaignStatusFilter<$PrismaModel = never> = {
     equals?: $Enums.CampaignStatus | EnumCampaignStatusFieldRefInput<$PrismaModel>
     in?: $Enums.CampaignStatus[] | ListEnumCampaignStatusFieldRefInput<$PrismaModel>
     notIn?: $Enums.CampaignStatus[] | ListEnumCampaignStatusFieldRefInput<$PrismaModel>
     not?: NestedEnumCampaignStatusFilter<$PrismaModel> | $Enums.CampaignStatus
-  }
-
-  export type NestedEnumCampaignTypeWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.CampaignType | EnumCampaignTypeFieldRefInput<$PrismaModel>
-    in?: $Enums.CampaignType[] | ListEnumCampaignTypeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.CampaignType[] | ListEnumCampaignTypeFieldRefInput<$PrismaModel>
-    not?: NestedEnumCampaignTypeWithAggregatesFilter<$PrismaModel> | $Enums.CampaignType
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumCampaignTypeFilter<$PrismaModel>
-    _max?: NestedEnumCampaignTypeFilter<$PrismaModel>
   }
 
   export type NestedEnumCampaignStatusWithAggregatesFilter<$PrismaModel = never> = {
@@ -51336,13 +50664,6 @@ export namespace Prisma {
     not?: NestedEnumRiskLevelFilter<$PrismaModel> | $Enums.RiskLevel
   }
 
-  export type NestedEnumTemplateTypeFilter<$PrismaModel = never> = {
-    equals?: $Enums.TemplateType | EnumTemplateTypeFieldRefInput<$PrismaModel>
-    in?: $Enums.TemplateType[] | ListEnumTemplateTypeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.TemplateType[] | ListEnumTemplateTypeFieldRefInput<$PrismaModel>
-    not?: NestedEnumTemplateTypeFilter<$PrismaModel> | $Enums.TemplateType
-  }
-
   export type NestedEnumTemplateCategoryWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.TemplateCategory | EnumTemplateCategoryFieldRefInput<$PrismaModel>
     in?: $Enums.TemplateCategory[] | ListEnumTemplateCategoryFieldRefInput<$PrismaModel>
@@ -51361,16 +50682,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumRiskLevelFilter<$PrismaModel>
     _max?: NestedEnumRiskLevelFilter<$PrismaModel>
-  }
-
-  export type NestedEnumTemplateTypeWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.TemplateType | EnumTemplateTypeFieldRefInput<$PrismaModel>
-    in?: $Enums.TemplateType[] | ListEnumTemplateTypeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.TemplateType[] | ListEnumTemplateTypeFieldRefInput<$PrismaModel>
-    not?: NestedEnumTemplateTypeWithAggregatesFilter<$PrismaModel> | $Enums.TemplateType
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumTemplateTypeFilter<$PrismaModel>
-    _max?: NestedEnumTemplateTypeFilter<$PrismaModel>
   }
 
   export type NestedEnumJobPriorityFilter<$PrismaModel = never> = {
@@ -51768,22 +51079,17 @@ export namespace Prisma {
 
   export type PhishingTargetCreateWithoutUserInput = {
     id?: string
-    email?: string | null
-    phoneNumber?: string | null
+    email: string
     firstName?: string | null
     lastName?: string | null
     department?: string | null
     jobTitle?: string | null
-    messageSent?: boolean
-    messageDelivered?: boolean
-    messageOpened?: boolean
-    linkClicked?: boolean
-    credentialsEntered?: boolean
-    reportedPhishing?: boolean
-    messageFailed?: boolean
     emailSent?: boolean
     emailDelivered?: boolean
     emailOpened?: boolean
+    linkClicked?: boolean
+    credentialsEntered?: boolean
+    reportedPhishing?: boolean
     emailBounced?: boolean
     sentAt?: Date | string | null
     deliveredAt?: Date | string | null
@@ -51791,13 +51097,10 @@ export namespace Prisma {
     clickedAt?: Date | string | null
     credentialsAt?: Date | string | null
     reportedAt?: Date | string | null
-    failedAt?: Date | string | null
     bouncedAt?: Date | string | null
     userAgent?: string | null
     ipAddress?: string | null
     clickCount?: number
-    smsProvider?: string | null
-    messageId?: string | null
     riskScore?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -51807,22 +51110,17 @@ export namespace Prisma {
 
   export type PhishingTargetUncheckedCreateWithoutUserInput = {
     id?: string
-    email?: string | null
-    phoneNumber?: string | null
+    email: string
     firstName?: string | null
     lastName?: string | null
     department?: string | null
     jobTitle?: string | null
-    messageSent?: boolean
-    messageDelivered?: boolean
-    messageOpened?: boolean
-    linkClicked?: boolean
-    credentialsEntered?: boolean
-    reportedPhishing?: boolean
-    messageFailed?: boolean
     emailSent?: boolean
     emailDelivered?: boolean
     emailOpened?: boolean
+    linkClicked?: boolean
+    credentialsEntered?: boolean
+    reportedPhishing?: boolean
     emailBounced?: boolean
     sentAt?: Date | string | null
     deliveredAt?: Date | string | null
@@ -51830,13 +51128,10 @@ export namespace Prisma {
     clickedAt?: Date | string | null
     credentialsAt?: Date | string | null
     reportedAt?: Date | string | null
-    failedAt?: Date | string | null
     bouncedAt?: Date | string | null
     userAgent?: string | null
     ipAddress?: string | null
     clickCount?: number
-    smsProvider?: string | null
-    messageId?: string | null
     riskScore?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -51858,32 +51153,24 @@ export namespace Prisma {
     id?: string
     name: string
     description?: string | null
-    campaignType?: $Enums.CampaignType
     templateId: string
     template: string
-    subject?: string | null
-    senderName?: string | null
-    senderEmail?: string | null
+    subject: string
+    senderName: string
+    senderEmail: string
     landingPageUrl?: string | null
-    senderNumber?: string | null
-    messageContent?: string | null
-    trackingUrl?: string | null
     status?: $Enums.CampaignStatus
     scheduledAt?: Date | string | null
     launchedAt?: Date | string | null
     completedAt?: Date | string | null
     pausedAt?: Date | string | null
     targetCount?: number
-    messagesSent?: number
-    messagesDelivered?: number
-    messagesOpened?: number
-    linksClicked?: number
-    credentialsEntered?: number
-    phishingReported?: number
-    messagesFailed?: number
     emailsSent?: number
     emailsDelivered?: number
     emailsOpened?: number
+    linksClicked?: number
+    credentialsEntered?: number
+    phishingReported?: number
     emailsBounced?: number
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -51896,32 +51183,24 @@ export namespace Prisma {
     id?: string
     name: string
     description?: string | null
-    campaignType?: $Enums.CampaignType
     templateId: string
     template: string
-    subject?: string | null
-    senderName?: string | null
-    senderEmail?: string | null
+    subject: string
+    senderName: string
+    senderEmail: string
     landingPageUrl?: string | null
-    senderNumber?: string | null
-    messageContent?: string | null
-    trackingUrl?: string | null
     status?: $Enums.CampaignStatus
     scheduledAt?: Date | string | null
     launchedAt?: Date | string | null
     completedAt?: Date | string | null
     pausedAt?: Date | string | null
     targetCount?: number
-    messagesSent?: number
-    messagesDelivered?: number
-    messagesOpened?: number
-    linksClicked?: number
-    credentialsEntered?: number
-    phishingReported?: number
-    messagesFailed?: number
     emailsSent?: number
     emailsDelivered?: number
     emailsOpened?: number
+    linksClicked?: number
+    credentialsEntered?: number
+    phishingReported?: number
     emailsBounced?: number
     organizationId: string
     createdAt?: Date | string
@@ -51946,14 +51225,10 @@ export namespace Prisma {
     description: string
     category: $Enums.TemplateCategory
     riskLevel: $Enums.RiskLevel
-    templateType?: $Enums.TemplateType
-    defaultSubject?: string | null
-    defaultSenderName?: string | null
-    emailBodyHtml?: string | null
-    emailBodyText?: string | null
-    smsContent?: string | null
-    defaultSenderNumber?: string | null
-    messageContent?: string | null
+    defaultSubject: string
+    defaultSenderName: string
+    emailBodyHtml: string
+    emailBodyText: string
     landingPageHtml?: string | null
     captureCredentials?: boolean
     isActive?: boolean
@@ -51972,14 +51247,10 @@ export namespace Prisma {
     description: string
     category: $Enums.TemplateCategory
     riskLevel: $Enums.RiskLevel
-    templateType?: $Enums.TemplateType
-    defaultSubject?: string | null
-    defaultSenderName?: string | null
-    emailBodyHtml?: string | null
-    emailBodyText?: string | null
-    smsContent?: string | null
-    defaultSenderNumber?: string | null
-    messageContent?: string | null
+    defaultSubject: string
+    defaultSenderName: string
+    emailBodyHtml: string
+    emailBodyText: string
     landingPageHtml?: string | null
     captureCredentials?: boolean
     isActive?: boolean
@@ -52419,22 +51690,17 @@ export namespace Prisma {
     OR?: PhishingTargetScalarWhereInput[]
     NOT?: PhishingTargetScalarWhereInput | PhishingTargetScalarWhereInput[]
     id?: StringFilter<"PhishingTarget"> | string
-    email?: StringNullableFilter<"PhishingTarget"> | string | null
-    phoneNumber?: StringNullableFilter<"PhishingTarget"> | string | null
+    email?: StringFilter<"PhishingTarget"> | string
     firstName?: StringNullableFilter<"PhishingTarget"> | string | null
     lastName?: StringNullableFilter<"PhishingTarget"> | string | null
     department?: StringNullableFilter<"PhishingTarget"> | string | null
     jobTitle?: StringNullableFilter<"PhishingTarget"> | string | null
-    messageSent?: BoolFilter<"PhishingTarget"> | boolean
-    messageDelivered?: BoolFilter<"PhishingTarget"> | boolean
-    messageOpened?: BoolFilter<"PhishingTarget"> | boolean
-    linkClicked?: BoolFilter<"PhishingTarget"> | boolean
-    credentialsEntered?: BoolFilter<"PhishingTarget"> | boolean
-    reportedPhishing?: BoolFilter<"PhishingTarget"> | boolean
-    messageFailed?: BoolFilter<"PhishingTarget"> | boolean
     emailSent?: BoolFilter<"PhishingTarget"> | boolean
     emailDelivered?: BoolFilter<"PhishingTarget"> | boolean
     emailOpened?: BoolFilter<"PhishingTarget"> | boolean
+    linkClicked?: BoolFilter<"PhishingTarget"> | boolean
+    credentialsEntered?: BoolFilter<"PhishingTarget"> | boolean
+    reportedPhishing?: BoolFilter<"PhishingTarget"> | boolean
     emailBounced?: BoolFilter<"PhishingTarget"> | boolean
     sentAt?: DateTimeNullableFilter<"PhishingTarget"> | Date | string | null
     deliveredAt?: DateTimeNullableFilter<"PhishingTarget"> | Date | string | null
@@ -52442,13 +51708,10 @@ export namespace Prisma {
     clickedAt?: DateTimeNullableFilter<"PhishingTarget"> | Date | string | null
     credentialsAt?: DateTimeNullableFilter<"PhishingTarget"> | Date | string | null
     reportedAt?: DateTimeNullableFilter<"PhishingTarget"> | Date | string | null
-    failedAt?: DateTimeNullableFilter<"PhishingTarget"> | Date | string | null
     bouncedAt?: DateTimeNullableFilter<"PhishingTarget"> | Date | string | null
     userAgent?: StringNullableFilter<"PhishingTarget"> | string | null
     ipAddress?: StringNullableFilter<"PhishingTarget"> | string | null
     clickCount?: IntFilter<"PhishingTarget"> | number
-    smsProvider?: StringNullableFilter<"PhishingTarget"> | string | null
-    messageId?: StringNullableFilter<"PhishingTarget"> | string | null
     riskScore?: FloatNullableFilter<"PhishingTarget"> | number | null
     createdAt?: DateTimeFilter<"PhishingTarget"> | Date | string
     updatedAt?: DateTimeFilter<"PhishingTarget"> | Date | string
@@ -52479,32 +51742,24 @@ export namespace Prisma {
     id?: StringFilter<"PhishingCampaign"> | string
     name?: StringFilter<"PhishingCampaign"> | string
     description?: StringNullableFilter<"PhishingCampaign"> | string | null
-    campaignType?: EnumCampaignTypeFilter<"PhishingCampaign"> | $Enums.CampaignType
     templateId?: StringFilter<"PhishingCampaign"> | string
     template?: StringFilter<"PhishingCampaign"> | string
-    subject?: StringNullableFilter<"PhishingCampaign"> | string | null
-    senderName?: StringNullableFilter<"PhishingCampaign"> | string | null
-    senderEmail?: StringNullableFilter<"PhishingCampaign"> | string | null
+    subject?: StringFilter<"PhishingCampaign"> | string
+    senderName?: StringFilter<"PhishingCampaign"> | string
+    senderEmail?: StringFilter<"PhishingCampaign"> | string
     landingPageUrl?: StringNullableFilter<"PhishingCampaign"> | string | null
-    senderNumber?: StringNullableFilter<"PhishingCampaign"> | string | null
-    messageContent?: StringNullableFilter<"PhishingCampaign"> | string | null
-    trackingUrl?: StringNullableFilter<"PhishingCampaign"> | string | null
     status?: EnumCampaignStatusFilter<"PhishingCampaign"> | $Enums.CampaignStatus
     scheduledAt?: DateTimeNullableFilter<"PhishingCampaign"> | Date | string | null
     launchedAt?: DateTimeNullableFilter<"PhishingCampaign"> | Date | string | null
     completedAt?: DateTimeNullableFilter<"PhishingCampaign"> | Date | string | null
     pausedAt?: DateTimeNullableFilter<"PhishingCampaign"> | Date | string | null
     targetCount?: IntFilter<"PhishingCampaign"> | number
-    messagesSent?: IntFilter<"PhishingCampaign"> | number
-    messagesDelivered?: IntFilter<"PhishingCampaign"> | number
-    messagesOpened?: IntFilter<"PhishingCampaign"> | number
-    linksClicked?: IntFilter<"PhishingCampaign"> | number
-    credentialsEntered?: IntFilter<"PhishingCampaign"> | number
-    phishingReported?: IntFilter<"PhishingCampaign"> | number
-    messagesFailed?: IntFilter<"PhishingCampaign"> | number
     emailsSent?: IntFilter<"PhishingCampaign"> | number
     emailsDelivered?: IntFilter<"PhishingCampaign"> | number
     emailsOpened?: IntFilter<"PhishingCampaign"> | number
+    linksClicked?: IntFilter<"PhishingCampaign"> | number
+    credentialsEntered?: IntFilter<"PhishingCampaign"> | number
+    phishingReported?: IntFilter<"PhishingCampaign"> | number
     emailsBounced?: IntFilter<"PhishingCampaign"> | number
     createdBy?: StringFilter<"PhishingCampaign"> | string
     organizationId?: StringFilter<"PhishingCampaign"> | string
@@ -52537,14 +51792,10 @@ export namespace Prisma {
     description?: StringFilter<"PhishingTemplate"> | string
     category?: EnumTemplateCategoryFilter<"PhishingTemplate"> | $Enums.TemplateCategory
     riskLevel?: EnumRiskLevelFilter<"PhishingTemplate"> | $Enums.RiskLevel
-    templateType?: EnumTemplateTypeFilter<"PhishingTemplate"> | $Enums.TemplateType
-    defaultSubject?: StringNullableFilter<"PhishingTemplate"> | string | null
-    defaultSenderName?: StringNullableFilter<"PhishingTemplate"> | string | null
-    emailBodyHtml?: StringNullableFilter<"PhishingTemplate"> | string | null
-    emailBodyText?: StringNullableFilter<"PhishingTemplate"> | string | null
-    smsContent?: StringNullableFilter<"PhishingTemplate"> | string | null
-    defaultSenderNumber?: StringNullableFilter<"PhishingTemplate"> | string | null
-    messageContent?: StringNullableFilter<"PhishingTemplate"> | string | null
+    defaultSubject?: StringFilter<"PhishingTemplate"> | string
+    defaultSenderName?: StringFilter<"PhishingTemplate"> | string
+    emailBodyHtml?: StringFilter<"PhishingTemplate"> | string
+    emailBodyText?: StringFilter<"PhishingTemplate"> | string
     landingPageHtml?: StringNullableFilter<"PhishingTemplate"> | string | null
     captureCredentials?: BoolFilter<"PhishingTemplate"> | boolean
     isActive?: BoolFilter<"PhishingTemplate"> | boolean
@@ -52836,6 +52087,7 @@ export namespace Prisma {
     phone?: string | null
     avatar?: string | null
     emailVerified?: boolean
+    verificationToken?: string | null
     isActive?: boolean
     role?: $Enums.UserRole
     createdAt?: Date | string
@@ -52864,6 +52116,7 @@ export namespace Prisma {
     phone?: string | null
     avatar?: string | null
     emailVerified?: boolean
+    verificationToken?: string | null
     isActive?: boolean
     role?: $Enums.UserRole
     createdAt?: Date | string
@@ -52908,6 +52161,7 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -52936,6 +52190,7 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -52964,6 +52219,7 @@ export namespace Prisma {
     phone?: string | null
     avatar?: string | null
     emailVerified?: boolean
+    verificationToken?: string | null
     isActive?: boolean
     role?: $Enums.UserRole
     createdAt?: Date | string
@@ -52992,6 +52248,7 @@ export namespace Prisma {
     phone?: string | null
     avatar?: string | null
     emailVerified?: boolean
+    verificationToken?: string | null
     isActive?: boolean
     role?: $Enums.UserRole
     createdAt?: Date | string
@@ -53036,6 +52293,7 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -53064,6 +52322,7 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -53092,6 +52351,7 @@ export namespace Prisma {
     phone?: string | null
     avatar?: string | null
     emailVerified?: boolean
+    verificationToken?: string | null
     isActive?: boolean
     role?: $Enums.UserRole
     createdAt?: Date | string
@@ -53120,6 +52380,7 @@ export namespace Prisma {
     phone?: string | null
     avatar?: string | null
     emailVerified?: boolean
+    verificationToken?: string | null
     isActive?: boolean
     role?: $Enums.UserRole
     createdAt?: Date | string
@@ -53247,32 +52508,24 @@ export namespace Prisma {
     id?: string
     name: string
     description?: string | null
-    campaignType?: $Enums.CampaignType
     templateId: string
     template: string
-    subject?: string | null
-    senderName?: string | null
-    senderEmail?: string | null
+    subject: string
+    senderName: string
+    senderEmail: string
     landingPageUrl?: string | null
-    senderNumber?: string | null
-    messageContent?: string | null
-    trackingUrl?: string | null
     status?: $Enums.CampaignStatus
     scheduledAt?: Date | string | null
     launchedAt?: Date | string | null
     completedAt?: Date | string | null
     pausedAt?: Date | string | null
     targetCount?: number
-    messagesSent?: number
-    messagesDelivered?: number
-    messagesOpened?: number
-    linksClicked?: number
-    credentialsEntered?: number
-    phishingReported?: number
-    messagesFailed?: number
     emailsSent?: number
     emailsDelivered?: number
     emailsOpened?: number
+    linksClicked?: number
+    credentialsEntered?: number
+    phishingReported?: number
     emailsBounced?: number
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -53285,32 +52538,24 @@ export namespace Prisma {
     id?: string
     name: string
     description?: string | null
-    campaignType?: $Enums.CampaignType
     templateId: string
     template: string
-    subject?: string | null
-    senderName?: string | null
-    senderEmail?: string | null
+    subject: string
+    senderName: string
+    senderEmail: string
     landingPageUrl?: string | null
-    senderNumber?: string | null
-    messageContent?: string | null
-    trackingUrl?: string | null
     status?: $Enums.CampaignStatus
     scheduledAt?: Date | string | null
     launchedAt?: Date | string | null
     completedAt?: Date | string | null
     pausedAt?: Date | string | null
     targetCount?: number
-    messagesSent?: number
-    messagesDelivered?: number
-    messagesOpened?: number
-    linksClicked?: number
-    credentialsEntered?: number
-    phishingReported?: number
-    messagesFailed?: number
     emailsSent?: number
     emailsDelivered?: number
     emailsOpened?: number
+    linksClicked?: number
+    credentialsEntered?: number
+    phishingReported?: number
     emailsBounced?: number
     createdBy: string
     createdAt?: Date | string
@@ -53335,14 +52580,10 @@ export namespace Prisma {
     description: string
     category: $Enums.TemplateCategory
     riskLevel: $Enums.RiskLevel
-    templateType?: $Enums.TemplateType
-    defaultSubject?: string | null
-    defaultSenderName?: string | null
-    emailBodyHtml?: string | null
-    emailBodyText?: string | null
-    smsContent?: string | null
-    defaultSenderNumber?: string | null
-    messageContent?: string | null
+    defaultSubject: string
+    defaultSenderName: string
+    emailBodyHtml: string
+    emailBodyText: string
     landingPageHtml?: string | null
     captureCredentials?: boolean
     isActive?: boolean
@@ -53361,14 +52602,10 @@ export namespace Prisma {
     description: string
     category: $Enums.TemplateCategory
     riskLevel: $Enums.RiskLevel
-    templateType?: $Enums.TemplateType
-    defaultSubject?: string | null
-    defaultSenderName?: string | null
-    emailBodyHtml?: string | null
-    emailBodyText?: string | null
-    smsContent?: string | null
-    defaultSenderNumber?: string | null
-    messageContent?: string | null
+    defaultSubject: string
+    defaultSenderName: string
+    emailBodyHtml: string
+    emailBodyText: string
     landingPageHtml?: string | null
     captureCredentials?: boolean
     isActive?: boolean
@@ -53573,6 +52810,7 @@ export namespace Prisma {
     phone?: StringNullableFilter<"User"> | string | null
     avatar?: StringNullableFilter<"User"> | string | null
     emailVerified?: BoolFilter<"User"> | boolean
+    verificationToken?: StringNullableFilter<"User"> | string | null
     isActive?: BoolFilter<"User"> | boolean
     role?: EnumUserRoleFilter<"User"> | $Enums.UserRole
     createdAt?: DateTimeFilter<"User"> | Date | string
@@ -53842,6 +53080,7 @@ export namespace Prisma {
     phone?: string | null
     avatar?: string | null
     emailVerified?: boolean
+    verificationToken?: string | null
     isActive?: boolean
     role?: $Enums.UserRole
     createdAt?: Date | string
@@ -53870,6 +53109,7 @@ export namespace Prisma {
     phone?: string | null
     avatar?: string | null
     emailVerified?: boolean
+    verificationToken?: string | null
     isActive?: boolean
     role?: $Enums.UserRole
     createdAt?: Date | string
@@ -53987,6 +53227,7 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -54015,6 +53256,7 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -54043,6 +53285,7 @@ export namespace Prisma {
     phone?: string | null
     avatar?: string | null
     emailVerified?: boolean
+    verificationToken?: string | null
     isActive?: boolean
     role?: $Enums.UserRole
     createdAt?: Date | string
@@ -54071,6 +53314,7 @@ export namespace Prisma {
     phone?: string | null
     avatar?: string | null
     emailVerified?: boolean
+    verificationToken?: string | null
     isActive?: boolean
     role?: $Enums.UserRole
     createdAt?: Date | string
@@ -54171,6 +53415,7 @@ export namespace Prisma {
     phone?: string | null
     avatar?: string | null
     emailVerified?: boolean
+    verificationToken?: string | null
     isActive?: boolean
     role?: $Enums.UserRole
     createdAt?: Date | string
@@ -54199,6 +53444,7 @@ export namespace Prisma {
     phone?: string | null
     avatar?: string | null
     emailVerified?: boolean
+    verificationToken?: string | null
     isActive?: boolean
     role?: $Enums.UserRole
     createdAt?: Date | string
@@ -54243,6 +53489,7 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -54271,6 +53518,7 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -54383,6 +53631,7 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -54411,6 +53660,7 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -54506,6 +53756,7 @@ export namespace Prisma {
     phone?: string | null
     avatar?: string | null
     emailVerified?: boolean
+    verificationToken?: string | null
     isActive?: boolean
     role?: $Enums.UserRole
     createdAt?: Date | string
@@ -54534,6 +53785,7 @@ export namespace Prisma {
     phone?: string | null
     avatar?: string | null
     emailVerified?: boolean
+    verificationToken?: string | null
     isActive?: boolean
     role?: $Enums.UserRole
     createdAt?: Date | string
@@ -54718,6 +53970,7 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -54746,6 +53999,7 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -55531,6 +54785,7 @@ export namespace Prisma {
     phone?: string | null
     avatar?: string | null
     emailVerified?: boolean
+    verificationToken?: string | null
     isActive?: boolean
     role?: $Enums.UserRole
     createdAt?: Date | string
@@ -55559,6 +54814,7 @@ export namespace Prisma {
     phone?: string | null
     avatar?: string | null
     emailVerified?: boolean
+    verificationToken?: string | null
     isActive?: boolean
     role?: $Enums.UserRole
     createdAt?: Date | string
@@ -55585,22 +54841,17 @@ export namespace Prisma {
 
   export type PhishingTargetCreateWithoutCampaignInput = {
     id?: string
-    email?: string | null
-    phoneNumber?: string | null
+    email: string
     firstName?: string | null
     lastName?: string | null
     department?: string | null
     jobTitle?: string | null
-    messageSent?: boolean
-    messageDelivered?: boolean
-    messageOpened?: boolean
-    linkClicked?: boolean
-    credentialsEntered?: boolean
-    reportedPhishing?: boolean
-    messageFailed?: boolean
     emailSent?: boolean
     emailDelivered?: boolean
     emailOpened?: boolean
+    linkClicked?: boolean
+    credentialsEntered?: boolean
+    reportedPhishing?: boolean
     emailBounced?: boolean
     sentAt?: Date | string | null
     deliveredAt?: Date | string | null
@@ -55608,13 +54859,10 @@ export namespace Prisma {
     clickedAt?: Date | string | null
     credentialsAt?: Date | string | null
     reportedAt?: Date | string | null
-    failedAt?: Date | string | null
     bouncedAt?: Date | string | null
     userAgent?: string | null
     ipAddress?: string | null
     clickCount?: number
-    smsProvider?: string | null
-    messageId?: string | null
     riskScore?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -55624,22 +54872,17 @@ export namespace Prisma {
 
   export type PhishingTargetUncheckedCreateWithoutCampaignInput = {
     id?: string
-    email?: string | null
-    phoneNumber?: string | null
+    email: string
     firstName?: string | null
     lastName?: string | null
     department?: string | null
     jobTitle?: string | null
-    messageSent?: boolean
-    messageDelivered?: boolean
-    messageOpened?: boolean
-    linkClicked?: boolean
-    credentialsEntered?: boolean
-    reportedPhishing?: boolean
-    messageFailed?: boolean
     emailSent?: boolean
     emailDelivered?: boolean
     emailOpened?: boolean
+    linkClicked?: boolean
+    credentialsEntered?: boolean
+    reportedPhishing?: boolean
     emailBounced?: boolean
     sentAt?: Date | string | null
     deliveredAt?: Date | string | null
@@ -55647,13 +54890,10 @@ export namespace Prisma {
     clickedAt?: Date | string | null
     credentialsAt?: Date | string | null
     reportedAt?: Date | string | null
-    failedAt?: Date | string | null
     bouncedAt?: Date | string | null
     userAgent?: string | null
     ipAddress?: string | null
     clickCount?: number
-    smsProvider?: string | null
-    messageId?: string | null
     riskScore?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -55796,6 +55036,7 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -55824,6 +55065,7 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -55894,32 +55136,24 @@ export namespace Prisma {
     id?: string
     name: string
     description?: string | null
-    campaignType?: $Enums.CampaignType
     templateId: string
     template: string
-    subject?: string | null
-    senderName?: string | null
-    senderEmail?: string | null
+    subject: string
+    senderName: string
+    senderEmail: string
     landingPageUrl?: string | null
-    senderNumber?: string | null
-    messageContent?: string | null
-    trackingUrl?: string | null
     status?: $Enums.CampaignStatus
     scheduledAt?: Date | string | null
     launchedAt?: Date | string | null
     completedAt?: Date | string | null
     pausedAt?: Date | string | null
     targetCount?: number
-    messagesSent?: number
-    messagesDelivered?: number
-    messagesOpened?: number
-    linksClicked?: number
-    credentialsEntered?: number
-    phishingReported?: number
-    messagesFailed?: number
     emailsSent?: number
     emailsDelivered?: number
     emailsOpened?: number
+    linksClicked?: number
+    credentialsEntered?: number
+    phishingReported?: number
     emailsBounced?: number
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -55932,32 +55166,24 @@ export namespace Prisma {
     id?: string
     name: string
     description?: string | null
-    campaignType?: $Enums.CampaignType
     templateId: string
     template: string
-    subject?: string | null
-    senderName?: string | null
-    senderEmail?: string | null
+    subject: string
+    senderName: string
+    senderEmail: string
     landingPageUrl?: string | null
-    senderNumber?: string | null
-    messageContent?: string | null
-    trackingUrl?: string | null
     status?: $Enums.CampaignStatus
     scheduledAt?: Date | string | null
     launchedAt?: Date | string | null
     completedAt?: Date | string | null
     pausedAt?: Date | string | null
     targetCount?: number
-    messagesSent?: number
-    messagesDelivered?: number
-    messagesOpened?: number
-    linksClicked?: number
-    credentialsEntered?: number
-    phishingReported?: number
-    messagesFailed?: number
     emailsSent?: number
     emailsDelivered?: number
     emailsOpened?: number
+    linksClicked?: number
+    credentialsEntered?: number
+    phishingReported?: number
     emailsBounced?: number
     createdBy: string
     organizationId: string
@@ -55980,6 +55206,7 @@ export namespace Prisma {
     phone?: string | null
     avatar?: string | null
     emailVerified?: boolean
+    verificationToken?: string | null
     isActive?: boolean
     role?: $Enums.UserRole
     createdAt?: Date | string
@@ -56008,6 +55235,7 @@ export namespace Prisma {
     phone?: string | null
     avatar?: string | null
     emailVerified?: boolean
+    verificationToken?: string | null
     isActive?: boolean
     role?: $Enums.UserRole
     createdAt?: Date | string
@@ -56079,32 +55307,24 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    campaignType?: EnumCampaignTypeFieldUpdateOperationsInput | $Enums.CampaignType
     templateId?: StringFieldUpdateOperationsInput | string
     template?: StringFieldUpdateOperationsInput | string
-    subject?: NullableStringFieldUpdateOperationsInput | string | null
-    senderName?: NullableStringFieldUpdateOperationsInput | string | null
-    senderEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    subject?: StringFieldUpdateOperationsInput | string
+    senderName?: StringFieldUpdateOperationsInput | string
+    senderEmail?: StringFieldUpdateOperationsInput | string
     landingPageUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    senderNumber?: NullableStringFieldUpdateOperationsInput | string | null
-    messageContent?: NullableStringFieldUpdateOperationsInput | string | null
-    trackingUrl?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumCampaignStatusFieldUpdateOperationsInput | $Enums.CampaignStatus
     scheduledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     launchedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     pausedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     targetCount?: IntFieldUpdateOperationsInput | number
-    messagesSent?: IntFieldUpdateOperationsInput | number
-    messagesDelivered?: IntFieldUpdateOperationsInput | number
-    messagesOpened?: IntFieldUpdateOperationsInput | number
-    linksClicked?: IntFieldUpdateOperationsInput | number
-    credentialsEntered?: IntFieldUpdateOperationsInput | number
-    phishingReported?: IntFieldUpdateOperationsInput | number
-    messagesFailed?: IntFieldUpdateOperationsInput | number
     emailsSent?: IntFieldUpdateOperationsInput | number
     emailsDelivered?: IntFieldUpdateOperationsInput | number
     emailsOpened?: IntFieldUpdateOperationsInput | number
+    linksClicked?: IntFieldUpdateOperationsInput | number
+    credentialsEntered?: IntFieldUpdateOperationsInput | number
+    phishingReported?: IntFieldUpdateOperationsInput | number
     emailsBounced?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -56117,32 +55337,24 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    campaignType?: EnumCampaignTypeFieldUpdateOperationsInput | $Enums.CampaignType
     templateId?: StringFieldUpdateOperationsInput | string
     template?: StringFieldUpdateOperationsInput | string
-    subject?: NullableStringFieldUpdateOperationsInput | string | null
-    senderName?: NullableStringFieldUpdateOperationsInput | string | null
-    senderEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    subject?: StringFieldUpdateOperationsInput | string
+    senderName?: StringFieldUpdateOperationsInput | string
+    senderEmail?: StringFieldUpdateOperationsInput | string
     landingPageUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    senderNumber?: NullableStringFieldUpdateOperationsInput | string | null
-    messageContent?: NullableStringFieldUpdateOperationsInput | string | null
-    trackingUrl?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumCampaignStatusFieldUpdateOperationsInput | $Enums.CampaignStatus
     scheduledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     launchedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     pausedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     targetCount?: IntFieldUpdateOperationsInput | number
-    messagesSent?: IntFieldUpdateOperationsInput | number
-    messagesDelivered?: IntFieldUpdateOperationsInput | number
-    messagesOpened?: IntFieldUpdateOperationsInput | number
-    linksClicked?: IntFieldUpdateOperationsInput | number
-    credentialsEntered?: IntFieldUpdateOperationsInput | number
-    phishingReported?: IntFieldUpdateOperationsInput | number
-    messagesFailed?: IntFieldUpdateOperationsInput | number
     emailsSent?: IntFieldUpdateOperationsInput | number
     emailsDelivered?: IntFieldUpdateOperationsInput | number
     emailsOpened?: IntFieldUpdateOperationsInput | number
+    linksClicked?: IntFieldUpdateOperationsInput | number
+    credentialsEntered?: IntFieldUpdateOperationsInput | number
+    phishingReported?: IntFieldUpdateOperationsInput | number
     emailsBounced?: IntFieldUpdateOperationsInput | number
     createdBy?: StringFieldUpdateOperationsInput | string
     organizationId?: StringFieldUpdateOperationsInput | string
@@ -56171,6 +55383,7 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -56199,6 +55412,7 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -56238,32 +55452,24 @@ export namespace Prisma {
     id?: string
     name: string
     description?: string | null
-    campaignType?: $Enums.CampaignType
     templateId: string
     template: string
-    subject?: string | null
-    senderName?: string | null
-    senderEmail?: string | null
+    subject: string
+    senderName: string
+    senderEmail: string
     landingPageUrl?: string | null
-    senderNumber?: string | null
-    messageContent?: string | null
-    trackingUrl?: string | null
     status?: $Enums.CampaignStatus
     scheduledAt?: Date | string | null
     launchedAt?: Date | string | null
     completedAt?: Date | string | null
     pausedAt?: Date | string | null
     targetCount?: number
-    messagesSent?: number
-    messagesDelivered?: number
-    messagesOpened?: number
-    linksClicked?: number
-    credentialsEntered?: number
-    phishingReported?: number
-    messagesFailed?: number
     emailsSent?: number
     emailsDelivered?: number
     emailsOpened?: number
+    linksClicked?: number
+    credentialsEntered?: number
+    phishingReported?: number
     emailsBounced?: number
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -56276,32 +55482,24 @@ export namespace Prisma {
     id?: string
     name: string
     description?: string | null
-    campaignType?: $Enums.CampaignType
     templateId: string
     template: string
-    subject?: string | null
-    senderName?: string | null
-    senderEmail?: string | null
+    subject: string
+    senderName: string
+    senderEmail: string
     landingPageUrl?: string | null
-    senderNumber?: string | null
-    messageContent?: string | null
-    trackingUrl?: string | null
     status?: $Enums.CampaignStatus
     scheduledAt?: Date | string | null
     launchedAt?: Date | string | null
     completedAt?: Date | string | null
     pausedAt?: Date | string | null
     targetCount?: number
-    messagesSent?: number
-    messagesDelivered?: number
-    messagesOpened?: number
-    linksClicked?: number
-    credentialsEntered?: number
-    phishingReported?: number
-    messagesFailed?: number
     emailsSent?: number
     emailsDelivered?: number
     emailsOpened?: number
+    linksClicked?: number
+    credentialsEntered?: number
+    phishingReported?: number
     emailsBounced?: number
     createdBy: string
     organizationId: string
@@ -56317,22 +55515,17 @@ export namespace Prisma {
 
   export type PhishingTargetCreateWithoutEventsInput = {
     id?: string
-    email?: string | null
-    phoneNumber?: string | null
+    email: string
     firstName?: string | null
     lastName?: string | null
     department?: string | null
     jobTitle?: string | null
-    messageSent?: boolean
-    messageDelivered?: boolean
-    messageOpened?: boolean
-    linkClicked?: boolean
-    credentialsEntered?: boolean
-    reportedPhishing?: boolean
-    messageFailed?: boolean
     emailSent?: boolean
     emailDelivered?: boolean
     emailOpened?: boolean
+    linkClicked?: boolean
+    credentialsEntered?: boolean
+    reportedPhishing?: boolean
     emailBounced?: boolean
     sentAt?: Date | string | null
     deliveredAt?: Date | string | null
@@ -56340,13 +55533,10 @@ export namespace Prisma {
     clickedAt?: Date | string | null
     credentialsAt?: Date | string | null
     reportedAt?: Date | string | null
-    failedAt?: Date | string | null
     bouncedAt?: Date | string | null
     userAgent?: string | null
     ipAddress?: string | null
     clickCount?: number
-    smsProvider?: string | null
-    messageId?: string | null
     riskScore?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -56356,22 +55546,17 @@ export namespace Prisma {
 
   export type PhishingTargetUncheckedCreateWithoutEventsInput = {
     id?: string
-    email?: string | null
-    phoneNumber?: string | null
+    email: string
     firstName?: string | null
     lastName?: string | null
     department?: string | null
     jobTitle?: string | null
-    messageSent?: boolean
-    messageDelivered?: boolean
-    messageOpened?: boolean
-    linkClicked?: boolean
-    credentialsEntered?: boolean
-    reportedPhishing?: boolean
-    messageFailed?: boolean
     emailSent?: boolean
     emailDelivered?: boolean
     emailOpened?: boolean
+    linkClicked?: boolean
+    credentialsEntered?: boolean
+    reportedPhishing?: boolean
     emailBounced?: boolean
     sentAt?: Date | string | null
     deliveredAt?: Date | string | null
@@ -56379,13 +55564,10 @@ export namespace Prisma {
     clickedAt?: Date | string | null
     credentialsAt?: Date | string | null
     reportedAt?: Date | string | null
-    failedAt?: Date | string | null
     bouncedAt?: Date | string | null
     userAgent?: string | null
     ipAddress?: string | null
     clickCount?: number
-    smsProvider?: string | null
-    messageId?: string | null
     riskScore?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -56413,32 +55595,24 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    campaignType?: EnumCampaignTypeFieldUpdateOperationsInput | $Enums.CampaignType
     templateId?: StringFieldUpdateOperationsInput | string
     template?: StringFieldUpdateOperationsInput | string
-    subject?: NullableStringFieldUpdateOperationsInput | string | null
-    senderName?: NullableStringFieldUpdateOperationsInput | string | null
-    senderEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    subject?: StringFieldUpdateOperationsInput | string
+    senderName?: StringFieldUpdateOperationsInput | string
+    senderEmail?: StringFieldUpdateOperationsInput | string
     landingPageUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    senderNumber?: NullableStringFieldUpdateOperationsInput | string | null
-    messageContent?: NullableStringFieldUpdateOperationsInput | string | null
-    trackingUrl?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumCampaignStatusFieldUpdateOperationsInput | $Enums.CampaignStatus
     scheduledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     launchedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     pausedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     targetCount?: IntFieldUpdateOperationsInput | number
-    messagesSent?: IntFieldUpdateOperationsInput | number
-    messagesDelivered?: IntFieldUpdateOperationsInput | number
-    messagesOpened?: IntFieldUpdateOperationsInput | number
-    linksClicked?: IntFieldUpdateOperationsInput | number
-    credentialsEntered?: IntFieldUpdateOperationsInput | number
-    phishingReported?: IntFieldUpdateOperationsInput | number
-    messagesFailed?: IntFieldUpdateOperationsInput | number
     emailsSent?: IntFieldUpdateOperationsInput | number
     emailsDelivered?: IntFieldUpdateOperationsInput | number
     emailsOpened?: IntFieldUpdateOperationsInput | number
+    linksClicked?: IntFieldUpdateOperationsInput | number
+    credentialsEntered?: IntFieldUpdateOperationsInput | number
+    phishingReported?: IntFieldUpdateOperationsInput | number
     emailsBounced?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -56451,32 +55625,24 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    campaignType?: EnumCampaignTypeFieldUpdateOperationsInput | $Enums.CampaignType
     templateId?: StringFieldUpdateOperationsInput | string
     template?: StringFieldUpdateOperationsInput | string
-    subject?: NullableStringFieldUpdateOperationsInput | string | null
-    senderName?: NullableStringFieldUpdateOperationsInput | string | null
-    senderEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    subject?: StringFieldUpdateOperationsInput | string
+    senderName?: StringFieldUpdateOperationsInput | string
+    senderEmail?: StringFieldUpdateOperationsInput | string
     landingPageUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    senderNumber?: NullableStringFieldUpdateOperationsInput | string | null
-    messageContent?: NullableStringFieldUpdateOperationsInput | string | null
-    trackingUrl?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumCampaignStatusFieldUpdateOperationsInput | $Enums.CampaignStatus
     scheduledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     launchedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     pausedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     targetCount?: IntFieldUpdateOperationsInput | number
-    messagesSent?: IntFieldUpdateOperationsInput | number
-    messagesDelivered?: IntFieldUpdateOperationsInput | number
-    messagesOpened?: IntFieldUpdateOperationsInput | number
-    linksClicked?: IntFieldUpdateOperationsInput | number
-    credentialsEntered?: IntFieldUpdateOperationsInput | number
-    phishingReported?: IntFieldUpdateOperationsInput | number
-    messagesFailed?: IntFieldUpdateOperationsInput | number
     emailsSent?: IntFieldUpdateOperationsInput | number
     emailsDelivered?: IntFieldUpdateOperationsInput | number
     emailsOpened?: IntFieldUpdateOperationsInput | number
+    linksClicked?: IntFieldUpdateOperationsInput | number
+    credentialsEntered?: IntFieldUpdateOperationsInput | number
+    phishingReported?: IntFieldUpdateOperationsInput | number
     emailsBounced?: IntFieldUpdateOperationsInput | number
     createdBy?: StringFieldUpdateOperationsInput | string
     organizationId?: StringFieldUpdateOperationsInput | string
@@ -56498,22 +55664,17 @@ export namespace Prisma {
 
   export type PhishingTargetUpdateWithoutEventsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    email?: NullableStringFieldUpdateOperationsInput | string | null
-    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: StringFieldUpdateOperationsInput | string
     firstName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: NullableStringFieldUpdateOperationsInput | string | null
     department?: NullableStringFieldUpdateOperationsInput | string | null
     jobTitle?: NullableStringFieldUpdateOperationsInput | string | null
-    messageSent?: BoolFieldUpdateOperationsInput | boolean
-    messageDelivered?: BoolFieldUpdateOperationsInput | boolean
-    messageOpened?: BoolFieldUpdateOperationsInput | boolean
-    linkClicked?: BoolFieldUpdateOperationsInput | boolean
-    credentialsEntered?: BoolFieldUpdateOperationsInput | boolean
-    reportedPhishing?: BoolFieldUpdateOperationsInput | boolean
-    messageFailed?: BoolFieldUpdateOperationsInput | boolean
     emailSent?: BoolFieldUpdateOperationsInput | boolean
     emailDelivered?: BoolFieldUpdateOperationsInput | boolean
     emailOpened?: BoolFieldUpdateOperationsInput | boolean
+    linkClicked?: BoolFieldUpdateOperationsInput | boolean
+    credentialsEntered?: BoolFieldUpdateOperationsInput | boolean
+    reportedPhishing?: BoolFieldUpdateOperationsInput | boolean
     emailBounced?: BoolFieldUpdateOperationsInput | boolean
     sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -56521,13 +55682,10 @@ export namespace Prisma {
     clickedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     credentialsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     reportedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     bouncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     userAgent?: NullableStringFieldUpdateOperationsInput | string | null
     ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
     clickCount?: IntFieldUpdateOperationsInput | number
-    smsProvider?: NullableStringFieldUpdateOperationsInput | string | null
-    messageId?: NullableStringFieldUpdateOperationsInput | string | null
     riskScore?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -56537,22 +55695,17 @@ export namespace Prisma {
 
   export type PhishingTargetUncheckedUpdateWithoutEventsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    email?: NullableStringFieldUpdateOperationsInput | string | null
-    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: StringFieldUpdateOperationsInput | string
     firstName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: NullableStringFieldUpdateOperationsInput | string | null
     department?: NullableStringFieldUpdateOperationsInput | string | null
     jobTitle?: NullableStringFieldUpdateOperationsInput | string | null
-    messageSent?: BoolFieldUpdateOperationsInput | boolean
-    messageDelivered?: BoolFieldUpdateOperationsInput | boolean
-    messageOpened?: BoolFieldUpdateOperationsInput | boolean
-    linkClicked?: BoolFieldUpdateOperationsInput | boolean
-    credentialsEntered?: BoolFieldUpdateOperationsInput | boolean
-    reportedPhishing?: BoolFieldUpdateOperationsInput | boolean
-    messageFailed?: BoolFieldUpdateOperationsInput | boolean
     emailSent?: BoolFieldUpdateOperationsInput | boolean
     emailDelivered?: BoolFieldUpdateOperationsInput | boolean
     emailOpened?: BoolFieldUpdateOperationsInput | boolean
+    linkClicked?: BoolFieldUpdateOperationsInput | boolean
+    credentialsEntered?: BoolFieldUpdateOperationsInput | boolean
+    reportedPhishing?: BoolFieldUpdateOperationsInput | boolean
     emailBounced?: BoolFieldUpdateOperationsInput | boolean
     sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -56560,13 +55713,10 @@ export namespace Prisma {
     clickedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     credentialsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     reportedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     bouncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     userAgent?: NullableStringFieldUpdateOperationsInput | string | null
     ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
     clickCount?: IntFieldUpdateOperationsInput | number
-    smsProvider?: NullableStringFieldUpdateOperationsInput | string | null
-    messageId?: NullableStringFieldUpdateOperationsInput | string | null
     riskScore?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -56650,6 +55800,7 @@ export namespace Prisma {
     phone?: string | null
     avatar?: string | null
     emailVerified?: boolean
+    verificationToken?: string | null
     isActive?: boolean
     role?: $Enums.UserRole
     createdAt?: Date | string
@@ -56678,6 +55829,7 @@ export namespace Prisma {
     phone?: string | null
     avatar?: string | null
     emailVerified?: boolean
+    verificationToken?: string | null
     isActive?: boolean
     role?: $Enums.UserRole
     createdAt?: Date | string
@@ -56795,6 +55947,7 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -56823,6 +55976,7 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -57221,6 +56375,7 @@ export namespace Prisma {
     phone?: string | null
     avatar?: string | null
     emailVerified?: boolean
+    verificationToken?: string | null
     isActive?: boolean
     role?: $Enums.UserRole
     createdAt?: Date | string
@@ -57249,6 +56404,7 @@ export namespace Prisma {
     phone?: string | null
     avatar?: string | null
     emailVerified?: boolean
+    verificationToken?: string | null
     isActive?: boolean
     role?: $Enums.UserRole
     createdAt?: Date | string
@@ -57342,6 +56498,7 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -57370,6 +56527,7 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -58407,6 +57565,7 @@ export namespace Prisma {
     phone?: string | null
     avatar?: string | null
     emailVerified?: boolean
+    verificationToken?: string | null
     isActive?: boolean
     role?: $Enums.UserRole
     createdAt?: Date | string
@@ -58435,6 +57594,7 @@ export namespace Prisma {
     phone?: string | null
     avatar?: string | null
     emailVerified?: boolean
+    verificationToken?: string | null
     isActive?: boolean
     role?: $Enums.UserRole
     createdAt?: Date | string
@@ -58479,6 +57639,7 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -58507,6 +57668,7 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -58535,6 +57697,7 @@ export namespace Prisma {
     phone?: string | null
     avatar?: string | null
     emailVerified?: boolean
+    verificationToken?: string | null
     isActive?: boolean
     role?: $Enums.UserRole
     createdAt?: Date | string
@@ -58563,6 +57726,7 @@ export namespace Prisma {
     phone?: string | null
     avatar?: string | null
     emailVerified?: boolean
+    verificationToken?: string | null
     isActive?: boolean
     role?: $Enums.UserRole
     createdAt?: Date | string
@@ -58607,6 +57771,7 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -58635,6 +57800,7 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -58663,6 +57829,7 @@ export namespace Prisma {
     phone?: string | null
     avatar?: string | null
     emailVerified?: boolean
+    verificationToken?: string | null
     isActive?: boolean
     role?: $Enums.UserRole
     createdAt?: Date | string
@@ -58691,6 +57858,7 @@ export namespace Prisma {
     phone?: string | null
     avatar?: string | null
     emailVerified?: boolean
+    verificationToken?: string | null
     isActive?: boolean
     role?: $Enums.UserRole
     createdAt?: Date | string
@@ -58735,6 +57903,7 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -58763,6 +57932,7 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -58804,22 +57974,17 @@ export namespace Prisma {
 
   export type PhishingTargetCreateManyUserInput = {
     id?: string
-    email?: string | null
-    phoneNumber?: string | null
+    email: string
     firstName?: string | null
     lastName?: string | null
     department?: string | null
     jobTitle?: string | null
-    messageSent?: boolean
-    messageDelivered?: boolean
-    messageOpened?: boolean
-    linkClicked?: boolean
-    credentialsEntered?: boolean
-    reportedPhishing?: boolean
-    messageFailed?: boolean
     emailSent?: boolean
     emailDelivered?: boolean
     emailOpened?: boolean
+    linkClicked?: boolean
+    credentialsEntered?: boolean
+    reportedPhishing?: boolean
     emailBounced?: boolean
     sentAt?: Date | string | null
     deliveredAt?: Date | string | null
@@ -58827,13 +57992,10 @@ export namespace Prisma {
     clickedAt?: Date | string | null
     credentialsAt?: Date | string | null
     reportedAt?: Date | string | null
-    failedAt?: Date | string | null
     bouncedAt?: Date | string | null
     userAgent?: string | null
     ipAddress?: string | null
     clickCount?: number
-    smsProvider?: string | null
-    messageId?: string | null
     riskScore?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -58844,32 +58006,24 @@ export namespace Prisma {
     id?: string
     name: string
     description?: string | null
-    campaignType?: $Enums.CampaignType
     templateId: string
     template: string
-    subject?: string | null
-    senderName?: string | null
-    senderEmail?: string | null
+    subject: string
+    senderName: string
+    senderEmail: string
     landingPageUrl?: string | null
-    senderNumber?: string | null
-    messageContent?: string | null
-    trackingUrl?: string | null
     status?: $Enums.CampaignStatus
     scheduledAt?: Date | string | null
     launchedAt?: Date | string | null
     completedAt?: Date | string | null
     pausedAt?: Date | string | null
     targetCount?: number
-    messagesSent?: number
-    messagesDelivered?: number
-    messagesOpened?: number
-    linksClicked?: number
-    credentialsEntered?: number
-    phishingReported?: number
-    messagesFailed?: number
     emailsSent?: number
     emailsDelivered?: number
     emailsOpened?: number
+    linksClicked?: number
+    credentialsEntered?: number
+    phishingReported?: number
     emailsBounced?: number
     organizationId: string
     createdAt?: Date | string
@@ -58882,14 +58036,10 @@ export namespace Prisma {
     description: string
     category: $Enums.TemplateCategory
     riskLevel: $Enums.RiskLevel
-    templateType?: $Enums.TemplateType
-    defaultSubject?: string | null
-    defaultSenderName?: string | null
-    emailBodyHtml?: string | null
-    emailBodyText?: string | null
-    smsContent?: string | null
-    defaultSenderNumber?: string | null
-    messageContent?: string | null
+    defaultSubject: string
+    defaultSenderName: string
+    emailBodyHtml: string
+    emailBodyText: string
     landingPageHtml?: string | null
     captureCredentials?: boolean
     isActive?: boolean
@@ -59054,22 +58204,17 @@ export namespace Prisma {
 
   export type PhishingTargetUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
-    email?: NullableStringFieldUpdateOperationsInput | string | null
-    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: StringFieldUpdateOperationsInput | string
     firstName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: NullableStringFieldUpdateOperationsInput | string | null
     department?: NullableStringFieldUpdateOperationsInput | string | null
     jobTitle?: NullableStringFieldUpdateOperationsInput | string | null
-    messageSent?: BoolFieldUpdateOperationsInput | boolean
-    messageDelivered?: BoolFieldUpdateOperationsInput | boolean
-    messageOpened?: BoolFieldUpdateOperationsInput | boolean
-    linkClicked?: BoolFieldUpdateOperationsInput | boolean
-    credentialsEntered?: BoolFieldUpdateOperationsInput | boolean
-    reportedPhishing?: BoolFieldUpdateOperationsInput | boolean
-    messageFailed?: BoolFieldUpdateOperationsInput | boolean
     emailSent?: BoolFieldUpdateOperationsInput | boolean
     emailDelivered?: BoolFieldUpdateOperationsInput | boolean
     emailOpened?: BoolFieldUpdateOperationsInput | boolean
+    linkClicked?: BoolFieldUpdateOperationsInput | boolean
+    credentialsEntered?: BoolFieldUpdateOperationsInput | boolean
+    reportedPhishing?: BoolFieldUpdateOperationsInput | boolean
     emailBounced?: BoolFieldUpdateOperationsInput | boolean
     sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -59077,13 +58222,10 @@ export namespace Prisma {
     clickedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     credentialsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     reportedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     bouncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     userAgent?: NullableStringFieldUpdateOperationsInput | string | null
     ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
     clickCount?: IntFieldUpdateOperationsInput | number
-    smsProvider?: NullableStringFieldUpdateOperationsInput | string | null
-    messageId?: NullableStringFieldUpdateOperationsInput | string | null
     riskScore?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -59093,22 +58235,17 @@ export namespace Prisma {
 
   export type PhishingTargetUncheckedUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
-    email?: NullableStringFieldUpdateOperationsInput | string | null
-    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: StringFieldUpdateOperationsInput | string
     firstName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: NullableStringFieldUpdateOperationsInput | string | null
     department?: NullableStringFieldUpdateOperationsInput | string | null
     jobTitle?: NullableStringFieldUpdateOperationsInput | string | null
-    messageSent?: BoolFieldUpdateOperationsInput | boolean
-    messageDelivered?: BoolFieldUpdateOperationsInput | boolean
-    messageOpened?: BoolFieldUpdateOperationsInput | boolean
-    linkClicked?: BoolFieldUpdateOperationsInput | boolean
-    credentialsEntered?: BoolFieldUpdateOperationsInput | boolean
-    reportedPhishing?: BoolFieldUpdateOperationsInput | boolean
-    messageFailed?: BoolFieldUpdateOperationsInput | boolean
     emailSent?: BoolFieldUpdateOperationsInput | boolean
     emailDelivered?: BoolFieldUpdateOperationsInput | boolean
     emailOpened?: BoolFieldUpdateOperationsInput | boolean
+    linkClicked?: BoolFieldUpdateOperationsInput | boolean
+    credentialsEntered?: BoolFieldUpdateOperationsInput | boolean
+    reportedPhishing?: BoolFieldUpdateOperationsInput | boolean
     emailBounced?: BoolFieldUpdateOperationsInput | boolean
     sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -59116,13 +58253,10 @@ export namespace Prisma {
     clickedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     credentialsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     reportedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     bouncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     userAgent?: NullableStringFieldUpdateOperationsInput | string | null
     ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
     clickCount?: IntFieldUpdateOperationsInput | number
-    smsProvider?: NullableStringFieldUpdateOperationsInput | string | null
-    messageId?: NullableStringFieldUpdateOperationsInput | string | null
     riskScore?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -59132,22 +58266,17 @@ export namespace Prisma {
 
   export type PhishingTargetUncheckedUpdateManyWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
-    email?: NullableStringFieldUpdateOperationsInput | string | null
-    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: StringFieldUpdateOperationsInput | string
     firstName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: NullableStringFieldUpdateOperationsInput | string | null
     department?: NullableStringFieldUpdateOperationsInput | string | null
     jobTitle?: NullableStringFieldUpdateOperationsInput | string | null
-    messageSent?: BoolFieldUpdateOperationsInput | boolean
-    messageDelivered?: BoolFieldUpdateOperationsInput | boolean
-    messageOpened?: BoolFieldUpdateOperationsInput | boolean
-    linkClicked?: BoolFieldUpdateOperationsInput | boolean
-    credentialsEntered?: BoolFieldUpdateOperationsInput | boolean
-    reportedPhishing?: BoolFieldUpdateOperationsInput | boolean
-    messageFailed?: BoolFieldUpdateOperationsInput | boolean
     emailSent?: BoolFieldUpdateOperationsInput | boolean
     emailDelivered?: BoolFieldUpdateOperationsInput | boolean
     emailOpened?: BoolFieldUpdateOperationsInput | boolean
+    linkClicked?: BoolFieldUpdateOperationsInput | boolean
+    credentialsEntered?: BoolFieldUpdateOperationsInput | boolean
+    reportedPhishing?: BoolFieldUpdateOperationsInput | boolean
     emailBounced?: BoolFieldUpdateOperationsInput | boolean
     sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -59155,13 +58284,10 @@ export namespace Prisma {
     clickedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     credentialsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     reportedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     bouncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     userAgent?: NullableStringFieldUpdateOperationsInput | string | null
     ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
     clickCount?: IntFieldUpdateOperationsInput | number
-    smsProvider?: NullableStringFieldUpdateOperationsInput | string | null
-    messageId?: NullableStringFieldUpdateOperationsInput | string | null
     riskScore?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -59172,32 +58298,24 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    campaignType?: EnumCampaignTypeFieldUpdateOperationsInput | $Enums.CampaignType
     templateId?: StringFieldUpdateOperationsInput | string
     template?: StringFieldUpdateOperationsInput | string
-    subject?: NullableStringFieldUpdateOperationsInput | string | null
-    senderName?: NullableStringFieldUpdateOperationsInput | string | null
-    senderEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    subject?: StringFieldUpdateOperationsInput | string
+    senderName?: StringFieldUpdateOperationsInput | string
+    senderEmail?: StringFieldUpdateOperationsInput | string
     landingPageUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    senderNumber?: NullableStringFieldUpdateOperationsInput | string | null
-    messageContent?: NullableStringFieldUpdateOperationsInput | string | null
-    trackingUrl?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumCampaignStatusFieldUpdateOperationsInput | $Enums.CampaignStatus
     scheduledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     launchedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     pausedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     targetCount?: IntFieldUpdateOperationsInput | number
-    messagesSent?: IntFieldUpdateOperationsInput | number
-    messagesDelivered?: IntFieldUpdateOperationsInput | number
-    messagesOpened?: IntFieldUpdateOperationsInput | number
-    linksClicked?: IntFieldUpdateOperationsInput | number
-    credentialsEntered?: IntFieldUpdateOperationsInput | number
-    phishingReported?: IntFieldUpdateOperationsInput | number
-    messagesFailed?: IntFieldUpdateOperationsInput | number
     emailsSent?: IntFieldUpdateOperationsInput | number
     emailsDelivered?: IntFieldUpdateOperationsInput | number
     emailsOpened?: IntFieldUpdateOperationsInput | number
+    linksClicked?: IntFieldUpdateOperationsInput | number
+    credentialsEntered?: IntFieldUpdateOperationsInput | number
+    phishingReported?: IntFieldUpdateOperationsInput | number
     emailsBounced?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -59210,32 +58328,24 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    campaignType?: EnumCampaignTypeFieldUpdateOperationsInput | $Enums.CampaignType
     templateId?: StringFieldUpdateOperationsInput | string
     template?: StringFieldUpdateOperationsInput | string
-    subject?: NullableStringFieldUpdateOperationsInput | string | null
-    senderName?: NullableStringFieldUpdateOperationsInput | string | null
-    senderEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    subject?: StringFieldUpdateOperationsInput | string
+    senderName?: StringFieldUpdateOperationsInput | string
+    senderEmail?: StringFieldUpdateOperationsInput | string
     landingPageUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    senderNumber?: NullableStringFieldUpdateOperationsInput | string | null
-    messageContent?: NullableStringFieldUpdateOperationsInput | string | null
-    trackingUrl?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumCampaignStatusFieldUpdateOperationsInput | $Enums.CampaignStatus
     scheduledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     launchedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     pausedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     targetCount?: IntFieldUpdateOperationsInput | number
-    messagesSent?: IntFieldUpdateOperationsInput | number
-    messagesDelivered?: IntFieldUpdateOperationsInput | number
-    messagesOpened?: IntFieldUpdateOperationsInput | number
-    linksClicked?: IntFieldUpdateOperationsInput | number
-    credentialsEntered?: IntFieldUpdateOperationsInput | number
-    phishingReported?: IntFieldUpdateOperationsInput | number
-    messagesFailed?: IntFieldUpdateOperationsInput | number
     emailsSent?: IntFieldUpdateOperationsInput | number
     emailsDelivered?: IntFieldUpdateOperationsInput | number
     emailsOpened?: IntFieldUpdateOperationsInput | number
+    linksClicked?: IntFieldUpdateOperationsInput | number
+    credentialsEntered?: IntFieldUpdateOperationsInput | number
+    phishingReported?: IntFieldUpdateOperationsInput | number
     emailsBounced?: IntFieldUpdateOperationsInput | number
     organizationId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -59248,32 +58358,24 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    campaignType?: EnumCampaignTypeFieldUpdateOperationsInput | $Enums.CampaignType
     templateId?: StringFieldUpdateOperationsInput | string
     template?: StringFieldUpdateOperationsInput | string
-    subject?: NullableStringFieldUpdateOperationsInput | string | null
-    senderName?: NullableStringFieldUpdateOperationsInput | string | null
-    senderEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    subject?: StringFieldUpdateOperationsInput | string
+    senderName?: StringFieldUpdateOperationsInput | string
+    senderEmail?: StringFieldUpdateOperationsInput | string
     landingPageUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    senderNumber?: NullableStringFieldUpdateOperationsInput | string | null
-    messageContent?: NullableStringFieldUpdateOperationsInput | string | null
-    trackingUrl?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumCampaignStatusFieldUpdateOperationsInput | $Enums.CampaignStatus
     scheduledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     launchedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     pausedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     targetCount?: IntFieldUpdateOperationsInput | number
-    messagesSent?: IntFieldUpdateOperationsInput | number
-    messagesDelivered?: IntFieldUpdateOperationsInput | number
-    messagesOpened?: IntFieldUpdateOperationsInput | number
-    linksClicked?: IntFieldUpdateOperationsInput | number
-    credentialsEntered?: IntFieldUpdateOperationsInput | number
-    phishingReported?: IntFieldUpdateOperationsInput | number
-    messagesFailed?: IntFieldUpdateOperationsInput | number
     emailsSent?: IntFieldUpdateOperationsInput | number
     emailsDelivered?: IntFieldUpdateOperationsInput | number
     emailsOpened?: IntFieldUpdateOperationsInput | number
+    linksClicked?: IntFieldUpdateOperationsInput | number
+    credentialsEntered?: IntFieldUpdateOperationsInput | number
+    phishingReported?: IntFieldUpdateOperationsInput | number
     emailsBounced?: IntFieldUpdateOperationsInput | number
     organizationId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -59286,14 +58388,10 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     category?: EnumTemplateCategoryFieldUpdateOperationsInput | $Enums.TemplateCategory
     riskLevel?: EnumRiskLevelFieldUpdateOperationsInput | $Enums.RiskLevel
-    templateType?: EnumTemplateTypeFieldUpdateOperationsInput | $Enums.TemplateType
-    defaultSubject?: NullableStringFieldUpdateOperationsInput | string | null
-    defaultSenderName?: NullableStringFieldUpdateOperationsInput | string | null
-    emailBodyHtml?: NullableStringFieldUpdateOperationsInput | string | null
-    emailBodyText?: NullableStringFieldUpdateOperationsInput | string | null
-    smsContent?: NullableStringFieldUpdateOperationsInput | string | null
-    defaultSenderNumber?: NullableStringFieldUpdateOperationsInput | string | null
-    messageContent?: NullableStringFieldUpdateOperationsInput | string | null
+    defaultSubject?: StringFieldUpdateOperationsInput | string
+    defaultSenderName?: StringFieldUpdateOperationsInput | string
+    emailBodyHtml?: StringFieldUpdateOperationsInput | string
+    emailBodyText?: StringFieldUpdateOperationsInput | string
     landingPageHtml?: NullableStringFieldUpdateOperationsInput | string | null
     captureCredentials?: BoolFieldUpdateOperationsInput | boolean
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -59312,14 +58410,10 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     category?: EnumTemplateCategoryFieldUpdateOperationsInput | $Enums.TemplateCategory
     riskLevel?: EnumRiskLevelFieldUpdateOperationsInput | $Enums.RiskLevel
-    templateType?: EnumTemplateTypeFieldUpdateOperationsInput | $Enums.TemplateType
-    defaultSubject?: NullableStringFieldUpdateOperationsInput | string | null
-    defaultSenderName?: NullableStringFieldUpdateOperationsInput | string | null
-    emailBodyHtml?: NullableStringFieldUpdateOperationsInput | string | null
-    emailBodyText?: NullableStringFieldUpdateOperationsInput | string | null
-    smsContent?: NullableStringFieldUpdateOperationsInput | string | null
-    defaultSenderNumber?: NullableStringFieldUpdateOperationsInput | string | null
-    messageContent?: NullableStringFieldUpdateOperationsInput | string | null
+    defaultSubject?: StringFieldUpdateOperationsInput | string
+    defaultSenderName?: StringFieldUpdateOperationsInput | string
+    emailBodyHtml?: StringFieldUpdateOperationsInput | string
+    emailBodyText?: StringFieldUpdateOperationsInput | string
     landingPageHtml?: NullableStringFieldUpdateOperationsInput | string | null
     captureCredentials?: BoolFieldUpdateOperationsInput | boolean
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -59338,14 +58432,10 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     category?: EnumTemplateCategoryFieldUpdateOperationsInput | $Enums.TemplateCategory
     riskLevel?: EnumRiskLevelFieldUpdateOperationsInput | $Enums.RiskLevel
-    templateType?: EnumTemplateTypeFieldUpdateOperationsInput | $Enums.TemplateType
-    defaultSubject?: NullableStringFieldUpdateOperationsInput | string | null
-    defaultSenderName?: NullableStringFieldUpdateOperationsInput | string | null
-    emailBodyHtml?: NullableStringFieldUpdateOperationsInput | string | null
-    emailBodyText?: NullableStringFieldUpdateOperationsInput | string | null
-    smsContent?: NullableStringFieldUpdateOperationsInput | string | null
-    defaultSenderNumber?: NullableStringFieldUpdateOperationsInput | string | null
-    messageContent?: NullableStringFieldUpdateOperationsInput | string | null
+    defaultSubject?: StringFieldUpdateOperationsInput | string
+    defaultSenderName?: StringFieldUpdateOperationsInput | string
+    emailBodyHtml?: StringFieldUpdateOperationsInput | string
+    emailBodyText?: StringFieldUpdateOperationsInput | string
     landingPageHtml?: NullableStringFieldUpdateOperationsInput | string | null
     captureCredentials?: BoolFieldUpdateOperationsInput | boolean
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -59625,6 +58715,7 @@ export namespace Prisma {
     phone?: string | null
     avatar?: string | null
     emailVerified?: boolean
+    verificationToken?: string | null
     isActive?: boolean
     role?: $Enums.UserRole
     createdAt?: Date | string
@@ -59669,32 +58760,24 @@ export namespace Prisma {
     id?: string
     name: string
     description?: string | null
-    campaignType?: $Enums.CampaignType
     templateId: string
     template: string
-    subject?: string | null
-    senderName?: string | null
-    senderEmail?: string | null
+    subject: string
+    senderName: string
+    senderEmail: string
     landingPageUrl?: string | null
-    senderNumber?: string | null
-    messageContent?: string | null
-    trackingUrl?: string | null
     status?: $Enums.CampaignStatus
     scheduledAt?: Date | string | null
     launchedAt?: Date | string | null
     completedAt?: Date | string | null
     pausedAt?: Date | string | null
     targetCount?: number
-    messagesSent?: number
-    messagesDelivered?: number
-    messagesOpened?: number
-    linksClicked?: number
-    credentialsEntered?: number
-    phishingReported?: number
-    messagesFailed?: number
     emailsSent?: number
     emailsDelivered?: number
     emailsOpened?: number
+    linksClicked?: number
+    credentialsEntered?: number
+    phishingReported?: number
     emailsBounced?: number
     createdBy: string
     createdAt?: Date | string
@@ -59707,14 +58790,10 @@ export namespace Prisma {
     description: string
     category: $Enums.TemplateCategory
     riskLevel: $Enums.RiskLevel
-    templateType?: $Enums.TemplateType
-    defaultSubject?: string | null
-    defaultSenderName?: string | null
-    emailBodyHtml?: string | null
-    emailBodyText?: string | null
-    smsContent?: string | null
-    defaultSenderNumber?: string | null
-    messageContent?: string | null
+    defaultSubject: string
+    defaultSenderName: string
+    emailBodyHtml: string
+    emailBodyText: string
     landingPageHtml?: string | null
     captureCredentials?: boolean
     isActive?: boolean
@@ -59789,6 +58868,7 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -59817,6 +58897,7 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -59845,6 +58926,7 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     avatar?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -59963,32 +59045,24 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    campaignType?: EnumCampaignTypeFieldUpdateOperationsInput | $Enums.CampaignType
     templateId?: StringFieldUpdateOperationsInput | string
     template?: StringFieldUpdateOperationsInput | string
-    subject?: NullableStringFieldUpdateOperationsInput | string | null
-    senderName?: NullableStringFieldUpdateOperationsInput | string | null
-    senderEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    subject?: StringFieldUpdateOperationsInput | string
+    senderName?: StringFieldUpdateOperationsInput | string
+    senderEmail?: StringFieldUpdateOperationsInput | string
     landingPageUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    senderNumber?: NullableStringFieldUpdateOperationsInput | string | null
-    messageContent?: NullableStringFieldUpdateOperationsInput | string | null
-    trackingUrl?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumCampaignStatusFieldUpdateOperationsInput | $Enums.CampaignStatus
     scheduledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     launchedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     pausedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     targetCount?: IntFieldUpdateOperationsInput | number
-    messagesSent?: IntFieldUpdateOperationsInput | number
-    messagesDelivered?: IntFieldUpdateOperationsInput | number
-    messagesOpened?: IntFieldUpdateOperationsInput | number
-    linksClicked?: IntFieldUpdateOperationsInput | number
-    credentialsEntered?: IntFieldUpdateOperationsInput | number
-    phishingReported?: IntFieldUpdateOperationsInput | number
-    messagesFailed?: IntFieldUpdateOperationsInput | number
     emailsSent?: IntFieldUpdateOperationsInput | number
     emailsDelivered?: IntFieldUpdateOperationsInput | number
     emailsOpened?: IntFieldUpdateOperationsInput | number
+    linksClicked?: IntFieldUpdateOperationsInput | number
+    credentialsEntered?: IntFieldUpdateOperationsInput | number
+    phishingReported?: IntFieldUpdateOperationsInput | number
     emailsBounced?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -60001,32 +59075,24 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    campaignType?: EnumCampaignTypeFieldUpdateOperationsInput | $Enums.CampaignType
     templateId?: StringFieldUpdateOperationsInput | string
     template?: StringFieldUpdateOperationsInput | string
-    subject?: NullableStringFieldUpdateOperationsInput | string | null
-    senderName?: NullableStringFieldUpdateOperationsInput | string | null
-    senderEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    subject?: StringFieldUpdateOperationsInput | string
+    senderName?: StringFieldUpdateOperationsInput | string
+    senderEmail?: StringFieldUpdateOperationsInput | string
     landingPageUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    senderNumber?: NullableStringFieldUpdateOperationsInput | string | null
-    messageContent?: NullableStringFieldUpdateOperationsInput | string | null
-    trackingUrl?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumCampaignStatusFieldUpdateOperationsInput | $Enums.CampaignStatus
     scheduledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     launchedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     pausedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     targetCount?: IntFieldUpdateOperationsInput | number
-    messagesSent?: IntFieldUpdateOperationsInput | number
-    messagesDelivered?: IntFieldUpdateOperationsInput | number
-    messagesOpened?: IntFieldUpdateOperationsInput | number
-    linksClicked?: IntFieldUpdateOperationsInput | number
-    credentialsEntered?: IntFieldUpdateOperationsInput | number
-    phishingReported?: IntFieldUpdateOperationsInput | number
-    messagesFailed?: IntFieldUpdateOperationsInput | number
     emailsSent?: IntFieldUpdateOperationsInput | number
     emailsDelivered?: IntFieldUpdateOperationsInput | number
     emailsOpened?: IntFieldUpdateOperationsInput | number
+    linksClicked?: IntFieldUpdateOperationsInput | number
+    credentialsEntered?: IntFieldUpdateOperationsInput | number
+    phishingReported?: IntFieldUpdateOperationsInput | number
     emailsBounced?: IntFieldUpdateOperationsInput | number
     createdBy?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -60039,32 +59105,24 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    campaignType?: EnumCampaignTypeFieldUpdateOperationsInput | $Enums.CampaignType
     templateId?: StringFieldUpdateOperationsInput | string
     template?: StringFieldUpdateOperationsInput | string
-    subject?: NullableStringFieldUpdateOperationsInput | string | null
-    senderName?: NullableStringFieldUpdateOperationsInput | string | null
-    senderEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    subject?: StringFieldUpdateOperationsInput | string
+    senderName?: StringFieldUpdateOperationsInput | string
+    senderEmail?: StringFieldUpdateOperationsInput | string
     landingPageUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    senderNumber?: NullableStringFieldUpdateOperationsInput | string | null
-    messageContent?: NullableStringFieldUpdateOperationsInput | string | null
-    trackingUrl?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumCampaignStatusFieldUpdateOperationsInput | $Enums.CampaignStatus
     scheduledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     launchedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     pausedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     targetCount?: IntFieldUpdateOperationsInput | number
-    messagesSent?: IntFieldUpdateOperationsInput | number
-    messagesDelivered?: IntFieldUpdateOperationsInput | number
-    messagesOpened?: IntFieldUpdateOperationsInput | number
-    linksClicked?: IntFieldUpdateOperationsInput | number
-    credentialsEntered?: IntFieldUpdateOperationsInput | number
-    phishingReported?: IntFieldUpdateOperationsInput | number
-    messagesFailed?: IntFieldUpdateOperationsInput | number
     emailsSent?: IntFieldUpdateOperationsInput | number
     emailsDelivered?: IntFieldUpdateOperationsInput | number
     emailsOpened?: IntFieldUpdateOperationsInput | number
+    linksClicked?: IntFieldUpdateOperationsInput | number
+    credentialsEntered?: IntFieldUpdateOperationsInput | number
+    phishingReported?: IntFieldUpdateOperationsInput | number
     emailsBounced?: IntFieldUpdateOperationsInput | number
     createdBy?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -60077,14 +59135,10 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     category?: EnumTemplateCategoryFieldUpdateOperationsInput | $Enums.TemplateCategory
     riskLevel?: EnumRiskLevelFieldUpdateOperationsInput | $Enums.RiskLevel
-    templateType?: EnumTemplateTypeFieldUpdateOperationsInput | $Enums.TemplateType
-    defaultSubject?: NullableStringFieldUpdateOperationsInput | string | null
-    defaultSenderName?: NullableStringFieldUpdateOperationsInput | string | null
-    emailBodyHtml?: NullableStringFieldUpdateOperationsInput | string | null
-    emailBodyText?: NullableStringFieldUpdateOperationsInput | string | null
-    smsContent?: NullableStringFieldUpdateOperationsInput | string | null
-    defaultSenderNumber?: NullableStringFieldUpdateOperationsInput | string | null
-    messageContent?: NullableStringFieldUpdateOperationsInput | string | null
+    defaultSubject?: StringFieldUpdateOperationsInput | string
+    defaultSenderName?: StringFieldUpdateOperationsInput | string
+    emailBodyHtml?: StringFieldUpdateOperationsInput | string
+    emailBodyText?: StringFieldUpdateOperationsInput | string
     landingPageHtml?: NullableStringFieldUpdateOperationsInput | string | null
     captureCredentials?: BoolFieldUpdateOperationsInput | boolean
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -60103,14 +59157,10 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     category?: EnumTemplateCategoryFieldUpdateOperationsInput | $Enums.TemplateCategory
     riskLevel?: EnumRiskLevelFieldUpdateOperationsInput | $Enums.RiskLevel
-    templateType?: EnumTemplateTypeFieldUpdateOperationsInput | $Enums.TemplateType
-    defaultSubject?: NullableStringFieldUpdateOperationsInput | string | null
-    defaultSenderName?: NullableStringFieldUpdateOperationsInput | string | null
-    emailBodyHtml?: NullableStringFieldUpdateOperationsInput | string | null
-    emailBodyText?: NullableStringFieldUpdateOperationsInput | string | null
-    smsContent?: NullableStringFieldUpdateOperationsInput | string | null
-    defaultSenderNumber?: NullableStringFieldUpdateOperationsInput | string | null
-    messageContent?: NullableStringFieldUpdateOperationsInput | string | null
+    defaultSubject?: StringFieldUpdateOperationsInput | string
+    defaultSenderName?: StringFieldUpdateOperationsInput | string
+    emailBodyHtml?: StringFieldUpdateOperationsInput | string
+    emailBodyText?: StringFieldUpdateOperationsInput | string
     landingPageHtml?: NullableStringFieldUpdateOperationsInput | string | null
     captureCredentials?: BoolFieldUpdateOperationsInput | boolean
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -60129,14 +59179,10 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     category?: EnumTemplateCategoryFieldUpdateOperationsInput | $Enums.TemplateCategory
     riskLevel?: EnumRiskLevelFieldUpdateOperationsInput | $Enums.RiskLevel
-    templateType?: EnumTemplateTypeFieldUpdateOperationsInput | $Enums.TemplateType
-    defaultSubject?: NullableStringFieldUpdateOperationsInput | string | null
-    defaultSenderName?: NullableStringFieldUpdateOperationsInput | string | null
-    emailBodyHtml?: NullableStringFieldUpdateOperationsInput | string | null
-    emailBodyText?: NullableStringFieldUpdateOperationsInput | string | null
-    smsContent?: NullableStringFieldUpdateOperationsInput | string | null
-    defaultSenderNumber?: NullableStringFieldUpdateOperationsInput | string | null
-    messageContent?: NullableStringFieldUpdateOperationsInput | string | null
+    defaultSubject?: StringFieldUpdateOperationsInput | string
+    defaultSenderName?: StringFieldUpdateOperationsInput | string
+    emailBodyHtml?: StringFieldUpdateOperationsInput | string
+    emailBodyText?: StringFieldUpdateOperationsInput | string
     landingPageHtml?: NullableStringFieldUpdateOperationsInput | string | null
     captureCredentials?: BoolFieldUpdateOperationsInput | boolean
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -60490,22 +59536,17 @@ export namespace Prisma {
 
   export type PhishingTargetCreateManyCampaignInput = {
     id?: string
-    email?: string | null
-    phoneNumber?: string | null
+    email: string
     firstName?: string | null
     lastName?: string | null
     department?: string | null
     jobTitle?: string | null
-    messageSent?: boolean
-    messageDelivered?: boolean
-    messageOpened?: boolean
-    linkClicked?: boolean
-    credentialsEntered?: boolean
-    reportedPhishing?: boolean
-    messageFailed?: boolean
     emailSent?: boolean
     emailDelivered?: boolean
     emailOpened?: boolean
+    linkClicked?: boolean
+    credentialsEntered?: boolean
+    reportedPhishing?: boolean
     emailBounced?: boolean
     sentAt?: Date | string | null
     deliveredAt?: Date | string | null
@@ -60513,13 +59554,10 @@ export namespace Prisma {
     clickedAt?: Date | string | null
     credentialsAt?: Date | string | null
     reportedAt?: Date | string | null
-    failedAt?: Date | string | null
     bouncedAt?: Date | string | null
     userAgent?: string | null
     ipAddress?: string | null
     clickCount?: number
-    smsProvider?: string | null
-    messageId?: string | null
     riskScore?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -60539,22 +59577,17 @@ export namespace Prisma {
 
   export type PhishingTargetUpdateWithoutCampaignInput = {
     id?: StringFieldUpdateOperationsInput | string
-    email?: NullableStringFieldUpdateOperationsInput | string | null
-    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: StringFieldUpdateOperationsInput | string
     firstName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: NullableStringFieldUpdateOperationsInput | string | null
     department?: NullableStringFieldUpdateOperationsInput | string | null
     jobTitle?: NullableStringFieldUpdateOperationsInput | string | null
-    messageSent?: BoolFieldUpdateOperationsInput | boolean
-    messageDelivered?: BoolFieldUpdateOperationsInput | boolean
-    messageOpened?: BoolFieldUpdateOperationsInput | boolean
-    linkClicked?: BoolFieldUpdateOperationsInput | boolean
-    credentialsEntered?: BoolFieldUpdateOperationsInput | boolean
-    reportedPhishing?: BoolFieldUpdateOperationsInput | boolean
-    messageFailed?: BoolFieldUpdateOperationsInput | boolean
     emailSent?: BoolFieldUpdateOperationsInput | boolean
     emailDelivered?: BoolFieldUpdateOperationsInput | boolean
     emailOpened?: BoolFieldUpdateOperationsInput | boolean
+    linkClicked?: BoolFieldUpdateOperationsInput | boolean
+    credentialsEntered?: BoolFieldUpdateOperationsInput | boolean
+    reportedPhishing?: BoolFieldUpdateOperationsInput | boolean
     emailBounced?: BoolFieldUpdateOperationsInput | boolean
     sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -60562,13 +59595,10 @@ export namespace Prisma {
     clickedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     credentialsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     reportedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     bouncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     userAgent?: NullableStringFieldUpdateOperationsInput | string | null
     ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
     clickCount?: IntFieldUpdateOperationsInput | number
-    smsProvider?: NullableStringFieldUpdateOperationsInput | string | null
-    messageId?: NullableStringFieldUpdateOperationsInput | string | null
     riskScore?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -60578,22 +59608,17 @@ export namespace Prisma {
 
   export type PhishingTargetUncheckedUpdateWithoutCampaignInput = {
     id?: StringFieldUpdateOperationsInput | string
-    email?: NullableStringFieldUpdateOperationsInput | string | null
-    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: StringFieldUpdateOperationsInput | string
     firstName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: NullableStringFieldUpdateOperationsInput | string | null
     department?: NullableStringFieldUpdateOperationsInput | string | null
     jobTitle?: NullableStringFieldUpdateOperationsInput | string | null
-    messageSent?: BoolFieldUpdateOperationsInput | boolean
-    messageDelivered?: BoolFieldUpdateOperationsInput | boolean
-    messageOpened?: BoolFieldUpdateOperationsInput | boolean
-    linkClicked?: BoolFieldUpdateOperationsInput | boolean
-    credentialsEntered?: BoolFieldUpdateOperationsInput | boolean
-    reportedPhishing?: BoolFieldUpdateOperationsInput | boolean
-    messageFailed?: BoolFieldUpdateOperationsInput | boolean
     emailSent?: BoolFieldUpdateOperationsInput | boolean
     emailDelivered?: BoolFieldUpdateOperationsInput | boolean
     emailOpened?: BoolFieldUpdateOperationsInput | boolean
+    linkClicked?: BoolFieldUpdateOperationsInput | boolean
+    credentialsEntered?: BoolFieldUpdateOperationsInput | boolean
+    reportedPhishing?: BoolFieldUpdateOperationsInput | boolean
     emailBounced?: BoolFieldUpdateOperationsInput | boolean
     sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -60601,13 +59626,10 @@ export namespace Prisma {
     clickedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     credentialsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     reportedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     bouncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     userAgent?: NullableStringFieldUpdateOperationsInput | string | null
     ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
     clickCount?: IntFieldUpdateOperationsInput | number
-    smsProvider?: NullableStringFieldUpdateOperationsInput | string | null
-    messageId?: NullableStringFieldUpdateOperationsInput | string | null
     riskScore?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -60617,22 +59639,17 @@ export namespace Prisma {
 
   export type PhishingTargetUncheckedUpdateManyWithoutCampaignInput = {
     id?: StringFieldUpdateOperationsInput | string
-    email?: NullableStringFieldUpdateOperationsInput | string | null
-    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: StringFieldUpdateOperationsInput | string
     firstName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: NullableStringFieldUpdateOperationsInput | string | null
     department?: NullableStringFieldUpdateOperationsInput | string | null
     jobTitle?: NullableStringFieldUpdateOperationsInput | string | null
-    messageSent?: BoolFieldUpdateOperationsInput | boolean
-    messageDelivered?: BoolFieldUpdateOperationsInput | boolean
-    messageOpened?: BoolFieldUpdateOperationsInput | boolean
-    linkClicked?: BoolFieldUpdateOperationsInput | boolean
-    credentialsEntered?: BoolFieldUpdateOperationsInput | boolean
-    reportedPhishing?: BoolFieldUpdateOperationsInput | boolean
-    messageFailed?: BoolFieldUpdateOperationsInput | boolean
     emailSent?: BoolFieldUpdateOperationsInput | boolean
     emailDelivered?: BoolFieldUpdateOperationsInput | boolean
     emailOpened?: BoolFieldUpdateOperationsInput | boolean
+    linkClicked?: BoolFieldUpdateOperationsInput | boolean
+    credentialsEntered?: BoolFieldUpdateOperationsInput | boolean
+    reportedPhishing?: BoolFieldUpdateOperationsInput | boolean
     emailBounced?: BoolFieldUpdateOperationsInput | boolean
     sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -60640,13 +59657,10 @@ export namespace Prisma {
     clickedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     credentialsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     reportedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     bouncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     userAgent?: NullableStringFieldUpdateOperationsInput | string | null
     ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
     clickCount?: IntFieldUpdateOperationsInput | number
-    smsProvider?: NullableStringFieldUpdateOperationsInput | string | null
-    messageId?: NullableStringFieldUpdateOperationsInput | string | null
     riskScore?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string

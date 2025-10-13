@@ -23,6 +23,7 @@ import { ChangePasswordDto } from './dto/change-password.dto';
 import { ForgotPasswordDto } from './dto/forgot-password.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
 import { RefreshTokenDto } from './dto/refresh-token.dto';
+import { VerifyEmailDto, ResendVerificationDto } from './dto/verify-email.dto';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { Public } from './decorators/public.decorator';
 import { GetUser } from './decorators/get-user.decorator';
@@ -202,10 +203,44 @@ export class AuthController {
   @Public()
   @Post('verify-email')
   @HttpCode(HttpStatus.OK)
-  @ApiOperation({ summary: 'Verify user email' })
-  @ApiResponse({ status: 200, description: 'Email verified successfully' })
+  @ApiOperation({ 
+    summary: 'Verify user email',
+    description: 'Verify user email address using verification token'
+  })
+  @ApiResponse({ 
+    status: 200, 
+    description: 'Email verified successfully',
+    schema: {
+      example: {
+        message: 'Email verified successfully'
+      }
+    }
+  })
   @ApiResponse({ status: 400, description: 'Invalid or expired token' })
-  async verifyEmail(@Body('token') token: string) {
-    return this.authService.verifyEmail(token);
+  @ApiBody({ type: VerifyEmailDto })
+  async verifyEmail(@Body() verifyEmailDto: VerifyEmailDto) {
+    return this.authService.verifyEmail(verifyEmailDto.token);
+  }
+
+  @Public()
+  @Post('resend-verification')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ 
+    summary: 'Resend verification email',
+    description: 'Resend email verification link to user'
+  })
+  @ApiResponse({ 
+    status: 200, 
+    description: 'Verification email sent successfully',
+    schema: {
+      example: {
+        message: 'Verification email sent successfully'
+      }
+    }
+  })
+  @ApiResponse({ status: 404, description: 'User not found' })
+  @ApiBody({ type: ResendVerificationDto })
+  async resendVerification(@Body() resendVerificationDto: ResendVerificationDto) {
+    return this.authService.resendVerificationEmail(resendVerificationDto.email);
   }
 }
