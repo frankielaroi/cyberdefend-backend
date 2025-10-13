@@ -30,8 +30,7 @@ async function bootstrap() {
 
   // CORS configuration
   app.enableCors({
-    origin: configService.get('FRONTEND_URL'),
-    // origin: 'http://localhost:5173',
+    origin: ['https://www.cyber360.tech', 'http://localhost:5173'],
     credentials: true,
   });
 
