@@ -531,3 +531,120 @@ export class DashboardDto {
   })
   recentAssessments: any[];
 }
+
+// Anonymous Assessment DTOs
+export class CreateAnonymousAssessmentDto {
+  @ApiProperty({
+    description: 'Unique session ID for the anonymous assessment',
+    example: 'sess_12345678-1234-1234-1234-123456789abc',
+  })
+  @IsString({ message: 'Session ID must be a string' })
+  @IsNotEmpty({ message: 'Session ID is required' })
+  sessionId: string;
+
+  @ApiPropertyOptional({
+    description: 'Assessment title',
+    example: 'Anonymous Security Assessment',
+  })
+  @IsOptional()
+  @IsString({ message: 'Title must be a string' })
+  title?: string;
+
+  @ApiPropertyOptional({
+    description: 'Type of assessment',
+    enum: AssessmentType,
+    example: AssessmentType.CSI_ASSESSMENT,
+  })
+  @IsOptional()
+  @IsEnum(AssessmentType, { message: 'Please provide a valid assessment type' })
+  type?: AssessmentType;
+}
+
+export class AnonymousResponseDto {
+  @ApiProperty({
+    description: 'Session ID for validation',
+    example: 'sess_12345678-1234-1234-1234-123456789abc',
+  })
+  @IsString({ message: 'Session ID must be a string' })
+  @IsNotEmpty({ message: 'Session ID is required' })
+  sessionId: string;
+
+  @ApiProperty({
+    description: 'Question ID',
+    example: 'q_001',
+  })
+  @IsString({ message: 'Question ID must be a string' })
+  @IsNotEmpty({ message: 'Question ID is required' })
+  questionId: string;
+
+  @ApiProperty({
+    description: 'Answer to the question',
+    example: 'Yes',
+  })
+  @IsNotEmpty({ message: 'Answer is required' })
+  answer: string | number;
+
+  @ApiPropertyOptional({
+    description: 'Time spent on this question in seconds',
+    example: 30,
+  })
+  @IsOptional()
+  @IsNumber({}, { message: 'Time spent must be a number' })
+  @Min(0, { message: 'Time spent cannot be negative' })
+  timeSpent?: number;
+}
+
+export class BulkAnonymousResponseDto {
+  @ApiProperty({
+    description: 'Session ID for validation',
+    example: 'sess_12345678-1234-1234-1234-123456789abc',
+  })
+  @IsString({ message: 'Session ID must be a string' })
+  @IsNotEmpty({ message: 'Session ID is required' })
+  sessionId: string;
+
+  @ApiProperty({
+    description: 'Array of responses',
+    type: [AnonymousResponseDto],
+  })
+  @IsArray({ message: 'Responses must be an array' })
+  @ValidateNested({ each: true })
+  @Type(() => AnonymousResponseDto)
+  responses: AnonymousResponseDto[];
+}
+
+export class CompleteAnonymousAssessmentDto {
+  @ApiProperty({
+    description: 'Session ID for validation',
+    example: 'sess_12345678-1234-1234-1234-123456789abc',
+  })
+  @IsString({ message: 'Session ID must be a string' })
+  @IsNotEmpty({ message: 'Session ID is required' })
+  sessionId: string;
+}
+
+export class TransferAnonymousAssessmentDto {
+  @ApiProperty({
+    description: 'Session ID of the anonymous assessment',
+    example: 'sess_12345678-1234-1234-1234-123456789abc',
+  })
+  @IsString({ message: 'Session ID must be a string' })
+  @IsNotEmpty({ message: 'Session ID is required' })
+  sessionId: string;
+
+  @ApiProperty({
+    description: 'User ID to transfer the assessment to',
+    example: 'user_12345678-1234-1234-1234-123456789abc',
+  })
+  @IsString({ message: 'User ID must be a string' })
+  @IsNotEmpty({ message: 'User ID is required' })
+  userId: string;
+
+  @ApiPropertyOptional({
+    description: 'Organization ID (if user belongs to one)',
+    example: 'org_12345678-1234-1234-1234-123456789abc',
+  })
+  @IsOptional()
+  @IsString({ message: 'Organization ID must be a string' })
+  organizationId?: string;
+}

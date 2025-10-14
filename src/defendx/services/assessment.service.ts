@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException, ForbiddenException, BadRequestException } from '@nestjs/common';
 import { PrismaService } from '../../database/prisma.service';
+import { v4 as uuidv4, validate as uuidValidate } from 'uuid';
 import {
   CreateAssessmentDto,
   SubmitAssessmentDto,
@@ -10,7 +11,11 @@ import {
   SingleResponseDto,
   CSIScoreDto,
   AssessmentStatsDto,
-  CSIBenchmarkDto
+  CSIBenchmarkDto,
+  CreateAnonymousAssessmentDto,
+  BulkAnonymousResponseDto,
+  CompleteAnonymousAssessmentDto,
+  TransferAnonymousAssessmentDto
 } from '../dto/assessment.dto';
 import { AssessmentType, AssessmentStatus, CSITier, RiskTier } from '../../../generated/prisma';
 import { QuestionService } from './question.service';
@@ -28,6 +33,11 @@ export class AssessmentService {
    * Create a new assessment
    */
   async createAssessment(userId: string, dto: CreateAssessmentDto) {
+    // Check if this is an anonymous assessment (has sessionId)
+    if ((dto as any).sessionId) {
+      return this.createAnonymousAssessment(dto as any);
+    }
+
     // Verify user has access to the organization
     const membership = await this.prisma.organizationMember.findFirst({
       where: {
@@ -98,8 +108,9 @@ export class AssessmentService {
       throw new NotFoundException('Assessment not found');
     }
 
-    // Check if user has access
-    const hasAccess = await this.checkUserAccess(userId, assessment.organizationId);
+    // Check if user has access (organization membership or transferred assessment)
+    const hasAccess = await this.checkUserAccess(userId, assessment.organizationId) ||
+                     (assessment.transferredToUserId === userId);
     if (!hasAccess) {
       throw new ForbiddenException('You do not have access to this assessment');
     }
@@ -799,5 +810,529 @@ export class AssessmentService {
     });
 
     return recommendations;
+  }
+
+  /**
+   * Create a new anonymous assessment
+   */
+  async createAnonymousAssessment(dto: CreateAnonymousAssessmentDto) {
+    // Validate session ID format (should be UUID)
+    if (!this.validateSessionId(dto.sessionId)) {
+      throw new BadRequestException('Invalid session ID format. Must be a valid UUID.');
+    }
+
+    // Check if session ID already exists
+    const existingAssessment = await this.prisma.assessment.findUnique({
+      where: { sessionId: dto.sessionId }
+    });
+
+    if (existingAssessment) {
+      // If the assessment exists and is expired, we can return it
+      if (existingAssessment.expiresAt && new Date() > existingAssessment.expiresAt) {
+        throw new BadRequestException('Session ID already exists but has expired. Please use a new session ID.');
+      }
+      
+      // If assessment already exists and is active, return the existing one
+      return {
+        id: existingAssessment.id,
+        sessionId: existingAssessment.sessionId,
+        status: existingAssessment.status,
+        createdAt: existingAssessment.createdAt,
+        isAnonymous: existingAssessment.isAnonymous,
+        message: 'Returning existing assessment for this session'
+      };
+    }
+
+    // Set expiration to 48 hours from now
+    const expiresAt = new Date();
+    expiresAt.setHours(expiresAt.getHours() + 48);
+
+    try {
+      const assessment = await this.prisma.assessment.create({
+        data: {
+          title: dto.title || 'Anonymous Security Assessment',
+          type: dto.type || AssessmentType.CSI_ASSESSMENT,
+          sessionId: dto.sessionId,
+          isAnonymous: true,
+          expiresAt,
+          status: AssessmentStatus.DRAFT
+        },
+        include: {
+          responses: {
+            include: {
+              question: {
+                include: {
+                  category: true,
+                  options: true
+                }
+              }
+            }
+          }
+        }
+      });
+
+      return {
+        id: assessment.id,
+        sessionId: assessment.sessionId,
+        status: assessment.status,
+        createdAt: assessment.createdAt,
+        isAnonymous: assessment.isAnonymous
+      };
+    } catch (error) {
+      // Handle Prisma unique constraint errors
+      if (error.code === 'P2002') {
+        throw new BadRequestException('This session ID is already in use. Please generate a new session ID.');
+      }
+      throw error;
+    }
+  }
+
+  /**
+   * Submit bulk responses for anonymous assessment
+   */
+  async bulkSubmitAnonymousResponses(assessmentId: string, dto: BulkAnonymousResponseDto) {
+    // Validate session
+    const assessment = await this.validateAnonymousSession(assessmentId, dto.sessionId);
+
+    // Ensure assessment is in valid state
+    if (assessment.status !== AssessmentStatus.DRAFT && assessment.status !== AssessmentStatus.IN_PROGRESS) {
+      throw new BadRequestException('Assessment is not in a valid state for responses');
+    }
+
+    // Update assessment status to IN_PROGRESS if it's still DRAFT
+    if (assessment.status === AssessmentStatus.DRAFT) {
+      await this.prisma.assessment.update({
+        where: { id: assessmentId },
+        data: { status: AssessmentStatus.IN_PROGRESS, startedAt: new Date() }
+      });
+    }
+
+    // Process responses
+    const responsePromises = dto.responses.map(async (response) => {
+      // Validate question exists
+      const question = await this.prisma.question.findUnique({
+        where: { id: response.questionId }
+      });
+
+      if (!question) {
+        throw new NotFoundException(`Question ${response.questionId} not found`);
+      }
+
+      // Create or update response
+      return this.prisma.assessmentResponse.upsert({
+        where: {
+          assessmentId_questionId: {
+            assessmentId,
+            questionId: response.questionId
+          }
+        },
+        update: {
+          answer: JSON.stringify(response.answer),
+          score: await this.calculateResponseScore(question, response.answer),
+          timeSpent: response.timeSpent,
+          sessionId: dto.sessionId
+        },
+        create: {
+          assessmentId,
+          questionId: response.questionId,
+          answer: JSON.stringify(response.answer),
+          score: await this.calculateResponseScore(question, response.answer),
+          timeSpent: response.timeSpent,
+          sessionId: dto.sessionId
+        }
+      });
+    });
+
+    const responses = await Promise.all(responsePromises);
+
+    return {
+      success: true,
+      submitted: responses.length,
+      assessmentId,
+      sessionId: dto.sessionId
+    };
+  }
+
+  /**
+   * Complete anonymous assessment
+   */
+  async completeAnonymousAssessment(assessmentId: string, dto: CompleteAnonymousAssessmentDto) {
+    // Validate session
+    const assessment = await this.validateAnonymousSession(assessmentId, dto.sessionId);
+
+    // Ensure assessment is in progress
+    if (assessment.status !== AssessmentStatus.IN_PROGRESS) {
+      throw new BadRequestException('Assessment must be in progress to complete');
+    }
+
+    // Get assessment with responses for scoring
+    const fullAssessment = await this.prisma.assessment.findUnique({
+      where: { id: assessmentId },
+      include: {
+        responses: {
+          include: {
+            question: {
+              include: {
+                category: true
+              }
+            }
+          }
+        }
+      }
+    });
+
+    // Calculate final score and complete assessment
+    const result = await this.calculateAssessmentResult(fullAssessment);
+
+    // Update assessment with results
+    const completedAssessment = await this.prisma.assessment.update({
+      where: { id: assessmentId },
+      data: {
+        status: AssessmentStatus.COMPLETED,
+        completedAt: new Date(),
+        score: result.score,
+        maxScore: result.maxScore,
+        riskTier: result.riskTier
+      },
+      include: {
+        responses: {
+          include: {
+            question: {
+              include: {
+                category: true
+              }
+            }
+          }
+        }
+      }
+    });
+
+    return {
+      assessmentId: completedAssessment.id,
+      score: completedAssessment.score,
+      tier: completedAssessment.riskTier,
+      completedAt: completedAssessment.completedAt,
+      responses: completedAssessment.responses.length,
+      questionsCount: completedAssessment.responses.length,
+      isAnonymous: true
+    };
+  }
+
+  /**
+   * Transfer anonymous assessment to authenticated user
+   */
+  async transferAnonymousAssessment(userId: string, dto: TransferAnonymousAssessmentDto) {
+    // Find the anonymous assessment
+    const assessment = await this.prisma.assessment.findFirst({
+      where: {
+        sessionId: dto.sessionId,
+        isAnonymous: true,
+        transferredToUserId: null, // Not already transferred
+        status: AssessmentStatus.COMPLETED
+      }
+    });
+
+    if (!assessment) {
+      throw new NotFoundException('Anonymous assessment not found or already transferred');
+    }
+
+    // Check if assessment has expired
+    if (assessment.expiresAt && new Date() > assessment.expiresAt) {
+      throw new BadRequestException('Assessment session has expired');
+    }
+
+    // Get user and their organization
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+      include: { organization: true }
+    });
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    // Determine organization ID (use provided or user's organization)
+    const organizationId = dto.organizationId || user.organizationId;
+
+    if (!organizationId) {
+      throw new BadRequestException('Organization ID is required');
+    }
+
+    // Verify user has access to the organization
+    const membership = await this.prisma.organizationMember.findFirst({
+      where: {
+        userId,
+        organizationId,
+        status: 'ACTIVE'
+      }
+    });
+
+    if (!membership) {
+      throw new ForbiddenException('You do not have access to this organization');
+    }
+
+    // Transfer the assessment
+    const transferredAssessment = await this.prisma.assessment.update({
+      where: { id: assessment.id },
+      data: {
+        userId,
+        organizationId,
+        isAnonymous: false,
+        transferredToUserId: userId,
+        expiresAt: null // Remove expiration
+      },
+      include: {
+        organization: true,
+        user: true,
+        responses: true
+      }
+    });
+
+    return {
+      success: true,
+      assessmentId: transferredAssessment.id,
+      transferredTo: {
+        userId: transferredAssessment.userId,
+        organizationId: transferredAssessment.organizationId
+      }
+    };
+  }
+
+  /**
+   * Validate session ID format
+   */
+  private validateSessionId(sessionId: string): boolean {
+    return uuidValidate(sessionId);
+  }
+
+  /**
+   * Generate a new session ID
+   */
+  generateSessionId(): string {
+    return uuidv4();
+  }
+
+  /**
+   * Check if anonymous session exists
+   */
+  async checkAnonymousSessionExists(sessionId: string) {
+    if (!this.validateSessionId(sessionId)) {
+      throw new BadRequestException('Invalid session ID format');
+    }
+
+    const assessment = await this.prisma.assessment.findUnique({
+      where: { sessionId },
+      select: {
+        id: true,
+        sessionId: true,
+        status: true,
+        isAnonymous: true,
+        expiresAt: true,
+        createdAt: true
+      }
+    });
+
+    if (!assessment) {
+      return {
+        exists: false,
+        sessionId,
+        message: 'Session ID is available'
+      };
+    }
+
+    // Check if expired
+    const isExpired = assessment.expiresAt && new Date() > assessment.expiresAt;
+
+    return {
+      exists: true,
+      sessionId,
+      assessmentId: assessment.id,
+      status: assessment.status,
+      isExpired,
+      createdAt: assessment.createdAt,
+      expiresAt: assessment.expiresAt
+    };
+  }
+
+  /**
+   * Get questions for assessment (public endpoint for anonymous users)
+   */
+  async getQuestionsForAssessment(categoryId?: string) {
+    const where: any = { isActive: true };
+    
+    if (categoryId) {
+      where.categoryId = categoryId;
+    }
+
+    const questions = await this.prisma.question.findMany({
+      where,
+      include: {
+        category: {
+          select: {
+            id: true,
+            name: true,
+            description: true,
+            weight: true,
+            order: true
+          }
+        },
+        options: {
+          orderBy: { order: 'asc' },
+          select: {
+            id: true,
+            text: true,
+            value: true,
+            order: true,
+            // Don't expose isCorrect for security
+          }
+        }
+      },
+      orderBy: [
+        { category: { order: 'asc' } },
+        { order: 'asc' }
+      ]
+    });
+
+    // Format response to group by category
+    const categorizedQuestions = questions.reduce((acc, question) => {
+      const categoryName = question.category.name;
+      
+      if (!acc[categoryName]) {
+        acc[categoryName] = {
+          category: {
+            id: question.category.id,
+            name: question.category.name,
+            description: question.category.description,
+            weight: question.category.weight,
+            order: question.category.order
+          },
+          questions: []
+        };
+      }
+      
+      acc[categoryName].questions.push({
+        id: question.id,
+        text: question.text,
+        type: question.type,
+        description: question.description,
+        weight: question.weight,
+        order: question.order,
+        required: question.isRequired,
+        options: question.options
+      });
+      
+      return acc;
+    }, {});
+
+    return {
+      total: questions.length,
+      categories: Object.values(categorizedQuestions)
+    };
+  }
+
+  /**
+   * Get question categories (public endpoint)
+   */
+  async getQuestionCategories() {
+    const categories = await this.prisma.questionCategory.findMany({
+      where: { isActive: true },
+      select: {
+        id: true,
+        name: true,
+        description: true,
+        weight: true,
+        order: true,
+        _count: {
+          select: {
+            questions: {
+              where: { isActive: true }
+            }
+          }
+        }
+      },
+      orderBy: { order: 'asc' }
+    });
+
+    return {
+      total: categories.length,
+      categories: categories.map(cat => ({
+        id: cat.id,
+        name: cat.name,
+        description: cat.description,
+        weight: cat.weight,
+        order: cat.order,
+        questionCount: cat._count.questions
+      }))
+    };
+  }
+
+  /**
+   * Validate anonymous assessment session
+   */
+  private async validateAnonymousSession(assessmentId: string, sessionId: string): Promise<any> {
+    if (!this.validateSessionId(sessionId)) {
+      throw new BadRequestException('Invalid session ID format');
+    }
+
+    const assessment = await this.prisma.assessment.findFirst({
+      where: {
+        id: assessmentId,
+        sessionId,
+        isAnonymous: true
+      }
+    });
+
+    if (!assessment) {
+      throw new NotFoundException('Assessment not found or invalid session');
+    }
+
+    // Check if assessment has expired
+    if (assessment.expiresAt && new Date() > assessment.expiresAt) {
+      throw new BadRequestException('Assessment session has expired');
+    }
+
+    return assessment;
+  }
+  private async calculateResponseScore(question: any, answer: any): Promise<number> {
+    // This is a simplified scoring logic - you may need to adjust based on your question types
+    if (typeof answer === 'string') {
+      // For yes/no questions, assume "Yes" = full points
+      if (answer.toLowerCase() === 'yes') return question.weight || 1;
+      if (answer.toLowerCase() === 'no') return 0;
+    }
+    if (typeof answer === 'number') {
+      // For rating questions, return the rating value
+      return answer;
+    }
+    return 0;
+  }
+
+  /**
+   * Calculate assessment result (helper method)
+   */
+  private async calculateAssessmentResult(assessment: any) {
+    let totalScore = 0;
+    let maxScore = 0;
+
+    assessment.responses.forEach((response: any) => {
+      totalScore += response.score || 0;
+      maxScore += response.question.weight || 1;
+    });
+
+    const percentage = maxScore > 0 ? (totalScore / maxScore) * 100 : 0;
+
+    // Determine risk tier based on score
+    let riskTier: RiskTier;
+    if (percentage >= 81) riskTier = RiskTier.VERY_LOW;
+    else if (percentage >= 61) riskTier = RiskTier.LOW;
+    else if (percentage >= 41) riskTier = RiskTier.MEDIUM;
+    else if (percentage >= 21) riskTier = RiskTier.HIGH;
+    else riskTier = RiskTier.VERY_HIGH;
+
+    return {
+      score: percentage,
+      maxScore: 100,
+      riskTier
+    };
   }
 }

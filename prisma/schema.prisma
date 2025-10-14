@@ -33,6 +33,7 @@ model User {
 
   // User activities
   assessments        Assessment[]
+  transferredAssessments Assessment[] @relation("TransferredAssessments")
   phishingTargets    PhishingTarget[]
   phishingCampaigns  PhishingCampaign[] @relation("CampaignCreator")
   phishingTemplates  PhishingTemplate[] @relation("TemplateCreator")
@@ -208,18 +209,23 @@ model Assessment {
   startedAt         DateTime?
   completedAt       DateTime?
   reportUrl         String?          // S3 URL for generated report
+  sessionId         String?          @unique // For anonymous assessments
+  isAnonymous       Boolean          @default(false)
+  transferredToUserId String?        // User who claimed this anonymous assessment
+  expiresAt         DateTime?        // Expiration for anonymous assessments
   createdAt         DateTime         @default(now())
   updatedAt         DateTime         @updatedAt
 
   // Relationships
-  organization   Organization @relation(fields: [organizationId], references: [id])
-  organizationId String
-  user           User         @relation(fields: [userId], references: [id])
-  userId         String
+  organization   Organization? @relation(fields: [organizationId], references: [id])
+  organizationId String?
+  user           User?         @relation(fields: [userId], references: [id])
+  userId         String?
+  transferredToUser User?      @relation("TransferredAssessments", fields: [transferredToUserId], references: [id])
 
   responses      AssessmentResponse[]
   result         AssessmentResult?
-  
+
   @@map("assessments")
 }
 
@@ -315,6 +321,7 @@ model AssessmentResponse {
   answer       String   // JSON: stores answer(s)
   score        Float?   // Points earned for this response
   timeSpent    Int?     // Seconds spent on question
+  sessionId    String?  // For anonymous responses
   createdAt    DateTime @default(now())
   
   // Relationships
@@ -325,6 +332,7 @@ model AssessmentResponse {
 
   @@unique([assessmentId, questionId])
   @@map("assessment_responses")
+  @@index([sessionId])
 }
 
 // Assessment Results with detailed scoring

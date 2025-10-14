@@ -7,6 +7,7 @@ import { QuestionService } from './services/question.service';
 import { ReportService } from './services/report.service';
 import { ComprehensiveReportService } from './services/comprehensive-report.service';
 import { BenchmarkService } from './services/benchmark.service';
+import { CleanupService } from './services/cleanup.service';
 
 @Module({
   providers: [
@@ -16,6 +17,7 @@ import { BenchmarkService } from './services/benchmark.service';
     ReportService,
     ComprehensiveReportService,
     BenchmarkService,
+    CleanupService,
   ],
   controllers: [DefendxController, CSIDirectoryController],
   exports: [DefendxService, AssessmentService],

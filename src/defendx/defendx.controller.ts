@@ -29,7 +29,11 @@ import {
   AssessmentQueryDto,
   ReportQueryDto,
   CSIDirectoryQueryDto,
-  DashboardDto
+  DashboardDto,
+  CreateAnonymousAssessmentDto,
+  BulkAnonymousResponseDto,
+  CompleteAnonymousAssessmentDto,
+  TransferAnonymousAssessmentDto
 } from './dto/assessment.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
@@ -207,6 +211,86 @@ export class DefendxController {
     @Param('id') assessmentId: string,
   ) {
     return this.comprehensiveReportService.generateAssessmentReport(assessmentId);
+  }
+
+  // Anonymous Assessment Endpoints
+  @Public()
+  @Post('assessments/anonymous')
+  @ApiOperation({ summary: 'Create a new anonymous assessment session' })
+  @ApiResponse({ status: 201, description: 'Anonymous assessment created successfully' })
+  @ApiResponse({ status: 400, description: 'Invalid session ID or assessment already exists' })
+  async createAnonymousAssessment(@Body() dto: CreateAnonymousAssessmentDto) {
+    return this.assessmentService.createAnonymousAssessment(dto);
+  }
+
+  @Public()
+  @Get('assessments/anonymous/check/:sessionId')
+  @ApiOperation({ summary: 'Check if anonymous assessment session exists' })
+  @ApiResponse({ status: 200, description: 'Session check result' })
+  @ApiParam({ name: 'sessionId', description: 'Session ID to check' })
+  async checkAnonymousSession(@Param('sessionId') sessionId: string) {
+    return this.assessmentService.checkAnonymousSessionExists(sessionId);
+  }
+
+  @Public()
+  @Get('questions')
+  @ApiOperation({ summary: 'Get all active assessment questions (public for anonymous assessments)' })
+  @ApiResponse({ status: 200, description: 'Questions retrieved successfully' })
+  @ApiQuery({ name: 'categoryId', required: false, description: 'Filter by category ID' })
+  async getQuestions(@Query('categoryId') categoryId?: string) {
+    return this.assessmentService.getQuestionsForAssessment(categoryId);
+  }
+
+  @Public()
+  @Get('questions/categories')
+  @ApiOperation({ summary: 'Get all question categories (public)' })
+  @ApiResponse({ status: 200, description: 'Categories retrieved successfully' })
+  async getQuestionCategories() {
+    return this.assessmentService.getQuestionCategories();
+  }
+
+  @Public()
+  @Post('assessments/:id/responses/bulk/anonymous')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Submit multiple responses for anonymous assessment' })
+  @ApiResponse({ status: 200, description: 'Responses submitted successfully' })
+  @ApiResponse({ status: 404, description: 'Assessment not found' })
+  @ApiResponse({ status: 403, description: 'Invalid session ID' })
+  @ApiParam({ name: 'id', description: 'Assessment ID' })
+  async bulkSubmitAnonymousResponses(
+    @Param('id') assessmentId: string,
+    @Body() dto: BulkAnonymousResponseDto,
+  ) {
+    return this.assessmentService.bulkSubmitAnonymousResponses(assessmentId, dto);
+  }
+
+  @Public()
+  @Post('assessments/:id/complete/anonymous')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Complete anonymous assessment and generate results' })
+  @ApiResponse({ status: 200, description: 'Assessment completed successfully' })
+  @ApiResponse({ status: 404, description: 'Assessment not found' })
+  @ApiResponse({ status: 403, description: 'Invalid session ID' })
+  @ApiParam({ name: 'id', description: 'Assessment ID' })
+  async completeAnonymousAssessment(
+    @Param('id') assessmentId: string,
+    @Body() dto: CompleteAnonymousAssessmentDto,
+  ) {
+    return this.assessmentService.completeAnonymousAssessment(assessmentId, dto);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('assessments/transfer')
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Transfer anonymous assessment to authenticated user' })
+  @ApiResponse({ status: 200, description: 'Assessment transferred successfully' })
+  @ApiResponse({ status: 404, description: 'Assessment not found' })
+  @ApiResponse({ status: 403, description: 'Assessment already transferred or expired' })
+  async transferAnonymousAssessment(
+    @GetUser('userId') userId: string,
+    @Body() dto: TransferAnonymousAssessmentDto,
+  ) {
+    return this.assessmentService.transferAnonymousAssessment(userId, dto);
   }
 
   @UseGuards(JwtAuthGuard)
