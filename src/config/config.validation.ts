@@ -38,7 +38,7 @@ export const configValidation = Joi.object({
   
   // Mailtrap (Notification System)
   MAILTRAP_API_TOKEN: Joi.string().required(),
-  MAILTRAP_FROM_EMAIL: Joi.string().email().default('noreply@cyberdefend.com'),
+  MAILTRAP_FROM_EMAIL: Joi.string().email().default('noreply@cyber360.tech'),
   MAILTRAP_FROM_NAME: Joi.string().default('CyberDefend'),
   
   // Arkesel SMS

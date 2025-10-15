@@ -28,7 +28,7 @@ MAILTRAP_SMTP_PORT=587
 
 # Legacy Mailtrap Configuration (API Token Method)
 MAILTRAP_API_TOKEN=your_mailtrap_api_token
-MAILTRAP_FROM_EMAIL=noreply@cyberdefend.com
+MAILTRAP_FROM_EMAIL=noreply@cyber360.tech
 MAILTRAP_FROM_NAME=CyberDefend
 
 # Arkesel SMS Configuration
@@ -277,7 +277,7 @@ async schedulePasswordResetReminder(user: User) {
 ```typescript
 async scheduleDailyDigest() {
   await this.notificationService.scheduleEmail({
-    to: ['admin@cyberdefend.com'],
+    to: ['admin@cyber360.tech'],
     subject: 'Daily Security Digest',
     htmlContent: '<h1>Daily Security Digest</h1><p>Your daily security summary...</p>',
     textContent: 'Daily Security Digest\n\nYour daily security summary...',

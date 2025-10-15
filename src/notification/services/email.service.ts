@@ -44,11 +44,11 @@ export class EmailService {
     });
 
     this.defaultSender = {
-      email: this.configService.get<string>('MAILTRAP_FROM_EMAIL') || 'noreply@cyberdefend.com',
+      email: this.configService.get<string>('MAILTRAP_FROM_EMAIL') || 'noreply@cyber360.tech',
       name: this.configService.get<string>('MAILTRAP_FROM_NAME') || 'CyberDefend',
     };
 
-    this.logger.log('Nodemailer transports initialized (bulk + live)');
+    this.logger.log(`Nodemailer transports initialized (bulk + live) - Default sender: ${this.defaultSender.email}`);
   }
 
   async sendEmail(emailData: EmailData): Promise<NotificationResult> {
@@ -98,7 +98,34 @@ export class EmailService {
       result.error = error.message;
       const duration = Date.now() - startTime;
       
-      this.logger.error(`Failed to send email to ${emailData.to} after ${duration}ms:`, error);
+      // Check for domain verification errors
+      if (error.message && error.message.includes('domain') && error.message.includes('not allowed')) {
+        const sender = emailData.fromEmail || this.defaultSender.email;
+        const domain = sender.split('@')[1];
+        this.logger.error(
+          `❌ DOMAIN NOT VERIFIED: Cannot send from ${sender}. ` +
+          `The domain "${domain}" must be verified in Mailtrap. ` +
+          `See docs/EMAIL_DOMAIN_SETUP.md for instructions.`
+        );
+        this.logger.error(`Full error details:`, {
+          message: error.message,
+          code: error.code,
+          command: error.command,
+          response: error.response,
+          responseCode: error.responseCode,
+          stack: error.stack
+        });
+      } else {
+        this.logger.error(`Failed to send email to ${emailData.to} after ${duration}ms:`, error);
+        this.logger.error(`Error details:`, {
+          message: error.message,
+          code: error.code,
+          command: error.command,
+          response: error.response,
+          responseCode: error.responseCode,
+          stack: error.stack
+        });
+      }
       
       return result;
     }
@@ -173,6 +200,14 @@ export class EmailService {
       const duration = Date.now() - startTime;
 
       this.logger.error(`Failed to send email to ${emailData.to} after ${duration}ms:`, error);
+      this.logger.error(`Error details:`, {
+        message: error.message,
+        code: error.code,
+        command: error.command,
+        response: error.response,
+        responseCode: error.responseCode,
+        stack: error.stack
+      });
 
       return result;
     }
@@ -196,6 +231,14 @@ export class EmailService {
       return true;
     } catch (error) {
       this.logger.error('Mailtrap connection test failed:', error);
+      this.logger.error(`Error details:`, {
+        message: error.message,
+        code: error.code,
+        command: error.command,
+        response: error.response,
+        responseCode: error.responseCode,
+        stack: error.stack
+      });
       return false;
     }
   }
@@ -251,6 +294,14 @@ export class EmailService {
       const duration = Date.now() - startTime;
 
       this.logger.error(`Failed to send bulk email to ${recipients.length} recipients after ${duration}ms:`, error);
+      this.logger.error(`Error details:`, {
+        message: error.message,
+        code: error.code,
+        command: error.command,
+        response: error.response,
+        responseCode: error.responseCode,
+        stack: error.stack
+      });
 
       return result;
     }

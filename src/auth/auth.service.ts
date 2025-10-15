@@ -199,17 +199,22 @@ export class AuthService {
     // Generate email verification token
     const verificationToken = uuidv4();
     
-    // Send verification email
-    try {
-      await this.sendVerificationEmail(user.email, verificationToken, `${user.firstName} ${user.lastName}`);
-      await this.prisma.user.update({
-        where: { id: user.id },
-        data: { verificationToken },
+    // Update user with verification token
+    await this.prisma.user.update({
+      where: { id: user.id },
+      data: { verificationToken },
+    });
+    
+    // Send verification email (async, don't block registration)
+    this.sendVerificationEmail(user.email, verificationToken, `${user.firstName} ${user.lastName}`)
+      .then(() => {
+        console.log(`Verification email sent successfully to ${user.email}`);
+      })
+      .catch((emailError) => {
+        console.error(`Failed to send verification email to ${user.email}:`, emailError.message);
+        // Note: Registration continues even if email fails
+        // User can request resend via /auth/resend-verification endpoint
       });
-    } catch (emailError) {
-      console.error('Failed to send verification email:', emailError);
-      // Continue with registration even if email fails
-    }
 
     // Generate JWT tokens for immediate login
     const payload = { 

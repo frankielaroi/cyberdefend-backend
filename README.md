@@ -1,6 +1,14 @@
 # CyberDefend 360 Backend API
 
-A comprehensive NestJS backend for the CyberDefend 360 platform providing cybersecurity assessment (DefendX) and phishing simulation (DefendX+) services.
+A comprehensive NestJS backend for the CyberDefend 360 platform providing cybersecurity assessment ### Authentication
+- `POST /api/v1/auth/login` - User login
+- `POST /api/v1/auth/register` - User registration (sends verification email)
+- `POST /api/v1/auth/verify-email` - Verify email address
+- `POST /api/v1/auth/resend-verification` - Resend verification email
+- `POST /api/v1/auth/refresh-token` - Refresh access token
+- `GET /api/v1/auth/profile` - Get user profile
+- `POST /api/v1/auth/forgot-password` - Request password reset
+- `POST /api/v1/auth/reset-password` - Reset password with tokenndX) and phishing simulation (DefendX+) services.
 
 ## 🚀 Features
 
@@ -83,10 +91,15 @@ AWS_S3_BUCKET="cyberdefend-storage"
 PAYSTACK_SECRET_KEY="sk_test_your_paystack_secret_key"
 FLUTTERWAVE_SECRET_KEY="FLWSECK_TEST-your_flutterwave_secret_key"
 
-# Email Configuration
-SMTP_HOST="smtp.gmail.com"
-SMTP_USER="your-email@gmail.com"
-SMTP_PASS="your-app-password"
+# Email Configuration (Mailtrap)
+MAILTRAP_API_TOKEN="your-mailtrap-api-token"
+MAILTRAP_SMTP_USER="api"
+MAILTRAP_SMTP_PASS="your-smtp-password"
+MAILTRAP_FROM_EMAIL="noreply@cyber360.tech"
+MAILTRAP_FROM_NAME="CyberDefend 360"
+
+# Frontend URL (for verification links)
+FRONTEND_URL="https://your-frontend-domain.com"
 \`\`\`
 
 ### 3. Database Setup
