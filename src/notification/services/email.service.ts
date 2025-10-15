@@ -3,6 +3,8 @@ import { ConfigService } from '@nestjs/config';
 import * as nodemailer from 'nodemailer';
 import { Transporter } from 'nodemailer';
 import { EmailData, NotificationResult } from '../interfaces/notification.interface';
+import { RateLimiterService } from '../../common/services/rate-limiter.service';
+import { CircuitBreakerService } from '../../common/services/circuit-breaker.service';
 
 @Injectable()
 export class EmailService {
@@ -10,9 +12,25 @@ export class EmailService {
   private bulkTransport: Transporter;
   private liveTransport: Transporter;
   private defaultSender: { email: string; name: string };
+  private rateLimitConfig: {
+    perSecond: number;
+    perMinute: number;
+    perHour: number;
+  };
+  private circuitBreakerConfig = {
+    failureThreshold: 5,      // Open circuit after 5 failures
+    successThreshold: 3,      // Close circuit after 3 successes in HALF_OPEN
+    timeout: 60000,           // Try recovery after 60 seconds
+    monitoringPeriod: 300000  // Monitor failures over 5 minutes
+  };
 
-  constructor(private configService: ConfigService) {
+  constructor(
+    private configService: ConfigService,
+    private rateLimiter: RateLimiterService,
+    private circuitBreaker: CircuitBreakerService
+  ) {
     this.initializeTransports();
+    this.initializeRateLimitConfig();
   }
 
   private initializeMailtrapClient() {
@@ -51,6 +69,23 @@ export class EmailService {
     this.logger.log(`Nodemailer transports initialized (bulk + live) - Default sender: ${this.defaultSender.email}`);
   }
 
+  private initializeRateLimitConfig() {
+    // Initialize rate limit configuration from environment variables
+    // Default values based on Mailtrap limits: https://help.mailtrap.io/article/23-smtp-sending-limits
+    this.rateLimitConfig = {
+      perSecond: this.configService.get<number>('EMAIL_RATE_LIMIT_PER_SECOND') || 10,
+      perMinute: this.configService.get<number>('EMAIL_RATE_LIMIT_PER_MINUTE') || 100,
+      perHour: this.configService.get<number>('EMAIL_RATE_LIMIT_PER_HOUR') || 1000,
+    };
+
+    this.logger.log(
+      `Rate limiter initialized - ` +
+      `${this.rateLimitConfig.perSecond}/sec, ` +
+      `${this.rateLimitConfig.perMinute}/min, ` +
+      `${this.rateLimitConfig.perHour}/hour`
+    );
+  }
+
   async sendEmail(emailData: EmailData): Promise<NotificationResult> {
     const startTime = Date.now();
     const result: NotificationResult = {
@@ -62,6 +97,19 @@ export class EmailService {
     try {
       if (!this.liveTransport) {
         throw new Error('Live SMTP transport not initialized');
+      }
+
+      // Check rate limit before sending
+      const rateLimitResult = await this.rateLimiter.checkRateLimit('email-sending', this.rateLimitConfig);
+      
+      if (!rateLimitResult.allowed) {
+        this.logger.warn(
+          `Rate limit exceeded. Waiting ${rateLimitResult.waitTimeMs}ms before sending email. ` +
+          `Current usage: ${JSON.stringify(rateLimitResult.currentUsage)}`
+        );
+        
+        // Wait for rate limit to clear
+        await this.rateLimiter.waitForRateLimit('email-sending', this.rateLimitConfig);
       }
 
       // Prepare recipients
@@ -84,8 +132,12 @@ export class EmailService {
         html: emailData.htmlContent || emailData.textContent || '',
       } as any;
 
-      // Use live transport for single sends
-      const info = await this.liveTransport.sendMail(mailOptions);
+      // Use live transport for single sends with circuit breaker protection
+      const info = await this.circuitBreaker.execute(
+        'email-smtp-live',
+        async () => await this.liveTransport.sendMail(mailOptions),
+        this.circuitBreakerConfig
+      );
 
       result.success = true;
       result.messageId = info.messageId || `smtp_${Date.now()}`;
@@ -265,6 +317,19 @@ export class EmailService {
         throw new Error('Bulk SMTP transport not initialized');
       }
 
+      // Check rate limit before sending (using bulk-email-sending bucket)
+      const rateLimitResult = await this.rateLimiter.checkRateLimit('bulk-email-sending', this.rateLimitConfig);
+      
+      if (!rateLimitResult.allowed) {
+        this.logger.warn(
+          `Bulk email rate limit exceeded. Waiting ${rateLimitResult.waitTimeMs}ms before sending. ` +
+          `Recipients: ${recipients.length}, Current usage: ${JSON.stringify(rateLimitResult.currentUsage)}`
+        );
+        
+        // Wait for rate limit to clear
+        await this.rateLimiter.waitForRateLimit('bulk-email-sending', this.rateLimitConfig);
+      }
+
       const recipientList = recipients;
 
       const sender = {
@@ -280,7 +345,12 @@ export class EmailService {
         html: isHtml ? content : this.createHtmlFromText(content),
       } as any;
 
-      const info = await this.bulkTransport.sendMail(mailOptions);
+      // Use bulk transport with circuit breaker protection
+      const info = await this.circuitBreaker.execute(
+        'email-smtp-bulk',
+        async () => await this.bulkTransport.sendMail(mailOptions),
+        this.circuitBreakerConfig
+      );
 
       result.success = true;
       result.messageId = info.messageId || `smtp_bulk_${Date.now()}`;

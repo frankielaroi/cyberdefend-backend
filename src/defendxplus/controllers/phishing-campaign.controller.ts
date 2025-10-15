@@ -18,6 +18,7 @@ import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
 import { Roles } from '../../auth/decorators/roles.decorator';
 import { GetUser } from '../../auth/decorators/get-user.decorator';
 import { PhishingCampaignService } from '../services/phishing-campaign.service';
+import { HealthCheckService } from '../services/health-check.service';
 import { 
   CreateCampaignDto, 
   UpdateCampaignDto, 
@@ -53,7 +54,10 @@ enum PhishingEventType {
 @UseGuards(JwtAuthGuard)
 @Controller('defendx-plus/campaigns')
 export class PhishingCampaignController {
-  constructor(private readonly campaignService: PhishingCampaignService) {}
+  constructor(
+    private readonly campaignService: PhishingCampaignService,
+    private readonly healthCheckService: HealthCheckService
+  ) {}
 
   /**
    * Campaign CRUD Operations
@@ -524,5 +528,24 @@ export class PhishingCampaignController {
       message: 'Template preview will be implemented',
       templateId
     };
+  }
+
+  /**
+   * Health Check & System Monitoring
+   */
+
+  @Get('system/health')
+  @Roles(UserRole.ORG_ADMIN, UserRole.CSA_ADMIN, UserRole.SUPER_ADMIN)
+  @ApiOperation({ summary: 'Get comprehensive system health check' })
+  @ApiResponse({ status: 200, description: 'Health check completed successfully' })
+  async getHealthCheck(@GetUser() user: any) {
+    return this.healthCheckService.performHealthCheck();
+  }
+
+  @Get('system/health/quick')
+  @ApiOperation({ summary: 'Get quick health status (lightweight)' })
+  @ApiResponse({ status: 200, description: 'Quick health check completed' })
+  async getQuickHealthCheck() {
+    return this.healthCheckService.quickHealthCheck();
   }
 }

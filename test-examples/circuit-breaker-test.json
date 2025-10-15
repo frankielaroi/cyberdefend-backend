@@ -1,0 +1,180 @@
+{
+  "description": "Test scenarios for circuit breaker and error recovery",
+  "scenarios": [
+    {
+      "scenario": "Normal Operation",
+      "description": "Circuit breaker in CLOSED state, all emails sending successfully",
+      "test": {
+        "endpoint": "POST /api/v1/defendx-plus/campaigns/:campaignId/launch",
+        "expectedBehavior": {
+          "circuitState": "CLOSED",
+          "emailsSucceed": true,
+          "retries": 0,
+          "fallback": false
+        }
+      }
+    },
+    {
+      "scenario": "Intermittent Failures",
+      "description": "Some email failures but below threshold, circuit stays CLOSED",
+      "test": {
+        "endpoint": "POST /api/v1/defendx-plus/campaigns/:campaignId/launch",
+        "simulateFailures": "2 out of 10 emails fail",
+        "expectedBehavior": {
+          "circuitState": "CLOSED",
+          "failureCount": 2,
+          "circuitBreakerAction": "Record failures, continue operation",
+          "retries": "Failed jobs retry automatically"
+        }
+      }
+    },
+    {
+      "scenario": "Circuit Opens - Too Many Failures",
+      "description": "5+ consecutive failures trigger circuit to OPEN state",
+      "test": {
+        "endpoint": "POST /api/v1/defendx-plus/campaigns/:campaignId/launch",
+        "simulateFailures": "5 consecutive email failures",
+        "expectedBehavior": {
+          "circuitState": "OPEN",
+          "action": "Stop sending emails immediately",
+          "fallback": "Mark jobs for retry instead of failing",
+          "notification": "Admin alerted of email service issue",
+          "retryAfter": "60 seconds (circuit timeout)"
+        }
+      }
+    },
+    {
+      "scenario": "Circuit Half-Open - Testing Recovery",
+      "description": "After 60 seconds, circuit moves to HALF-OPEN to test if service recovered",
+      "test": {
+        "endpoint": "POST /api/v1/defendx-plus/campaigns/:campaignId/launch",
+        "timing": "60 seconds after circuit opened",
+        "expectedBehavior": {
+          "circuitState": "HALF_OPEN",
+          "action": "Allow limited test emails",
+          "successThreshold": "2 successful emails needed",
+          "onSuccess": "Circuit closes, resume normal operation",
+          "onFailure": "Circuit reopens, wait another 60 seconds"
+        }
+      }
+    },
+    {
+      "scenario": "Circuit Closes - Service Recovered",
+      "description": "2 successful emails in HALF-OPEN state close the circuit",
+      "test": {
+        "endpoint": "POST /api/v1/defendx-plus/campaigns/:campaignId/launch",
+        "circuitState": "HALF_OPEN",
+        "simulateSuccess": "2 consecutive successful emails",
+        "expectedBehavior": {
+          "circuitState": "CLOSED",
+          "action": "Resume normal campaign processing",
+          "notification": "Admin notified service recovered",
+          "retryJobs": "Process all pending jobs from queue"
+        }
+      }
+    },
+    {
+      "scenario": "Health Check During Circuit Open",
+      "description": "Health check endpoint shows degraded status when circuit is open",
+      "test": {
+        "endpoint": "GET /api/v1/defendx-plus/campaigns/system/health",
+        "circuitState": "OPEN",
+        "expectedResponse": {
+          "status": "UNHEALTHY",
+          "services": {
+            "emailService": {
+              "status": "UNHEALTHY",
+              "message": "Email service circuit breaker is OPEN",
+              "circuitState": "OPEN"
+            },
+            "database": {
+              "status": "HEALTHY"
+            },
+            "queueService": {
+              "status": "HEALTHY"
+            }
+          }
+        }
+      }
+    },
+    {
+      "scenario": "Automatic Job Retry",
+      "description": "Failed jobs automatically retry with exponential backoff",
+      "test": {
+        "endpoint": "Background process",
+        "cronJob": "*/5 * * * * (every 5 minutes)",
+        "expectedBehavior": {
+          "action": "Find jobs with status=FAILED and attempts < 3",
+          "retry": "Reset to PENDING and attempt again",
+          "backoff": "2 seconds, 4 seconds, 8 seconds",
+          "maxAttempts": 3,
+          "afterMaxAttempts": "Mark as permanently failed, alert admin"
+        }
+      }
+    },
+    {
+      "scenario": "Campaign Health Check",
+      "description": "Detect stuck jobs and reset them automatically",
+      "test": {
+        "endpoint": "Background process",
+        "cronJob": "*/15 * * * * (every 15 minutes)",
+        "detects": [
+          "Jobs stuck in PROCESSING for > 30 minutes",
+          "High failure rate (>50%)",
+          "Campaigns running > 7 days with no progress"
+        ],
+        "actions": [
+          "Reset stuck jobs to PENDING",
+          "Create alert event for high failure rate",
+          "Suggest completing stale campaigns"
+        ]
+      }
+    }
+  ],
+  "circuitBreakerConfiguration": {
+    "failureThreshold": 5,
+    "successThreshold": 2,
+    "timeout": 60000,
+    "monitoringPeriod": 120000
+  },
+  "testingInstructions": {
+    "step1": "Start a campaign with 20 targets",
+    "step2": "Simulate email service failure (disconnect SMTP)",
+    "step3": "Watch circuit breaker open after 5 failures",
+    "step4": "Check health endpoint - should show UNHEALTHY",
+    "step5": "Restore email service (reconnect SMTP)",
+    "step6": "Wait 60 seconds for circuit to go HALF-OPEN",
+    "step7": "Send test emails - circuit should close after 2 successes",
+    "step8": "Verify pending jobs are processed",
+    "step9": "Check health endpoint - should show HEALTHY"
+  },
+  "manualTesting": {
+    "forceOpenCircuit": "POST /api/v1/defendx-plus/campaigns/circuit/email-service/open",
+    "forceCloseCircuit": "POST /api/v1/defendx-plus/campaigns/circuit/email-service/close",
+    "resetCircuit": "POST /api/v1/defendx-plus/campaigns/circuit/email-service/reset",
+    "getCircuitMetrics": "GET /api/v1/defendx-plus/campaigns/circuit/email-service/metrics"
+  },
+  "expectedMetrics": {
+    "circuitClosed": {
+      "state": "CLOSED",
+      "uptime": "99.5%",
+      "failures": 2,
+      "successes": 198,
+      "consecutiveFailures": 0
+    },
+    "circuitOpen": {
+      "state": "OPEN",
+      "uptime": "50.0%",
+      "failures": 50,
+      "successes": 50,
+      "consecutiveFailures": 5,
+      "openedAt": "2025-10-15T10:30:00Z"
+    },
+    "circuitHalfOpen": {
+      "state": "HALF_OPEN",
+      "uptime": "60.0%",
+      "consecutiveSuccesses": 1,
+      "halfOpenedAt": "2025-10-15T10:31:00Z"
+    }
+  }
+}

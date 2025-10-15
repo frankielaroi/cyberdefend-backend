@@ -1,0 +1,129 @@
+{
+  "description": "Complete phishing campaign example with all features - email tracking, analytics, multiple targets",
+  "endpoint": "POST /api/v1/defendx-plus/campaigns",
+  "payload": {
+    "name": "Q1 Security Awareness Training Campaign",
+    "description": "Phishing simulation targeting all departments to assess security awareness levels and identify training needs",
+    "templateId": "template-uuid-here",
+    "subject": "Urgent: Your Microsoft 365 Account Will Be Suspended",
+    "senderName": "Microsoft Security Team",
+    "senderEmail": "no-reply@microsft-security.com",
+    "landingPageUrl": "https://your-domain.com/phishing/landing",
+    "scheduledAt": "2025-10-20T09:00:00Z",
+    "targets": [
+      {
+        "email": "john.doe@company.com",
+        "firstName": "John",
+        "lastName": "Doe",
+        "department": "Engineering",
+        "jobTitle": "Senior Developer",
+        "company": "Tech Corp"
+      },
+      {
+        "email": "jane.smith@company.com",
+        "firstName": "Jane",
+        "lastName": "Smith",
+        "department": "Marketing",
+        "jobTitle": "Marketing Manager",
+        "company": "Tech Corp"
+      },
+      {
+        "email": "bob.johnson@company.com",
+        "firstName": "Bob",
+        "lastName": "Johnson",
+        "department": "Finance",
+        "jobTitle": "Financial Analyst",
+        "company": "Tech Corp"
+      },
+      {
+        "email": "alice.williams@company.com",
+        "firstName": "Alice",
+        "lastName": "Williams",
+        "department": "HR",
+        "jobTitle": "HR Director",
+        "company": "Tech Corp"
+      },
+      {
+        "email": "charlie.brown@company.com",
+        "firstName": "Charlie",
+        "lastName": "Brown",
+        "department": "Sales",
+        "jobTitle": "Sales Representative",
+        "company": "Tech Corp"
+      },
+      {
+        "email": "diana.davis@company.com",
+        "firstName": "Diana",
+        "lastName": "Davis",
+        "department": "Engineering",
+        "jobTitle": "DevOps Engineer",
+        "company": "Tech Corp"
+      },
+      {
+        "email": "edward.miller@company.com",
+        "firstName": "Edward",
+        "lastName": "Miller",
+        "department": "Customer Support",
+        "jobTitle": "Support Lead",
+        "company": "Tech Corp"
+      },
+      {
+        "email": "fiona.wilson@company.com",
+        "firstName": "Fiona",
+        "lastName": "Wilson",
+        "department": "Legal",
+        "jobTitle": "Legal Counsel",
+        "company": "Tech Corp"
+      },
+      {
+        "email": "george.moore@company.com",
+        "firstName": "George",
+        "lastName": "Moore",
+        "department": "IT",
+        "jobTitle": "System Administrator",
+        "company": "Tech Corp"
+      },
+      {
+        "email": "helen.taylor@company.com",
+        "firstName": "Helen",
+        "lastName": "Taylor",
+        "department": "Operations",
+        "jobTitle": "Operations Manager",
+        "company": "Tech Corp"
+      }
+    ]
+  },
+  "features": [
+    "✅ Scheduled campaign launch",
+    "✅ Multiple targets across different departments",
+    "✅ Personalization variables (firstName, lastName, department, etc.)",
+    "✅ Email tracking (opens, clicks, credential submission)",
+    "✅ Department-level analytics",
+    "✅ Landing page integration",
+    "✅ Real-time event tracking"
+  ],
+  "notes": [
+    "📧 Campaign will be scheduled to launch at specified date/time",
+    "🎯 Targets 10 employees across 9 different departments",
+    "📊 Analytics will show department-level risk scores",
+    "🔍 Tracks: email sent, delivered, opened, link clicked, credentials entered, reported",
+    "⚙️ Uses circuit breaker for email failures",
+    "📈 Real-time dashboard shows campaign progress",
+    "🔔 Can pause/resume/complete campaign via API"
+  ],
+  "emailTemplate": {
+    "subject": "Urgent: Your Microsoft 365 Account Will Be Suspended",
+    "htmlBody": "<html><head><style>body{font-family:Arial,sans-serif;line-height:1.6;color:#333}.header{background:#0078d4;color:white;padding:20px;text-align:center}.content{padding:30px;background:#f4f4f4}.warning{background:#fff3cd;border-left:4px solid #ffc107;padding:15px;margin:20px 0}.button{display:inline-block;padding:12px 30px;background:#0078d4;color:white;text-decoration:none;border-radius:4px;margin:20px 0}.footer{background:#333;color:#ccc;padding:20px;text-align:center;font-size:12px}</style></head><body><div class='header'><h2>Microsoft Security Alert</h2></div><div class='content'><p>Hello {{firstName}} {{lastName}},</p><div class='warning'><strong>⚠️ Security Alert</strong><p>We have detected unusual activity on your Microsoft 365 account. Your account will be suspended in 24 hours unless you verify your identity.</p></div><p><strong>Account Details:</strong></p><ul><li>Email: {{email}}</li><li>Department: {{department}}</li><li>Last Login: October 15, 2025 3:42 AM (Suspicious Location: Russia)</li></ul><p>To prevent account suspension and secure your access:</p><a href='{{landingPageUrl}}' class='button'>🔐 Verify Account Now</a><p>If you don't verify within 24 hours, your account will be permanently suspended and all data will be removed.</p><p><small>This is an automated security message from Microsoft Security Team.</small></p></div><div class='footer'><p>Microsoft Corporation | One Microsoft Way | Redmond, WA 98052</p><p>© 2025 Microsoft. All rights reserved.</p></div></body></html>",
+    "textBody": "Hello {{firstName}} {{lastName}},\n\nSECURITY ALERT\n\nWe have detected unusual activity on your Microsoft 365 account ({{email}}).\n\nYour account will be suspended in 24 hours unless you verify your identity immediately.\n\nLast suspicious login: October 15, 2025 3:42 AM from Russia\n\nVerify your account now: {{landingPageUrl}}\n\nFailure to verify will result in permanent account suspension.\n\nMicrosoft Security Team"
+  },
+  "apiUsage": {
+    "launch": "POST /api/v1/defendx-plus/campaigns/:campaignId/launch",
+    "pause": "POST /api/v1/defendx-plus/campaigns/:campaignId/pause",
+    "resume": "POST /api/v1/defendx-plus/campaigns/:campaignId/resume",
+    "complete": "POST /api/v1/defendx-plus/campaigns/:campaignId/complete",
+    "analytics": "GET /api/v1/defendx-plus/campaigns/:campaignId/analytics",
+    "liveStats": "GET /api/v1/defendx-plus/campaigns/:campaignId/live-stats",
+    "addTargets": "POST /api/v1/defendx-plus/campaigns/:campaignId/targets",
+    "removeTarget": "DELETE /api/v1/defendx-plus/campaigns/:campaignId/targets/:targetId"
+  }
+}

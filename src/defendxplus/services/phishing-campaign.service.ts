@@ -1,6 +1,10 @@
-import { Injectable, NotFoundException, BadRequestException, ConflictException } from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException, ConflictException, Logger, Optional } from '@nestjs/common';
+import { Cron, CronExpression } from '@nestjs/schedule';
 import { PrismaService } from '../../database/prisma.service';
 import { EmailTrackingService, PhishingEventType } from './email-tracking.service';
+import { EmailService } from '../../notification/services/email.service';
+import { PhishingQueueService } from './phishing-queue.service';
+import { CircuitBreakerService } from './circuit-breaker.service';
 import { 
   CreateCampaignDto, 
   UpdateCampaignDto, 
@@ -32,10 +36,32 @@ enum JobStatus {
 
 @Injectable()
 export class PhishingCampaignService {
+  private readonly logger = new Logger(PhishingCampaignService.name);
+  private useQueue: boolean = false;
+
   constructor(
     private prisma: PrismaService,
-    private emailTrackingService: EmailTrackingService
-  ) {}
+    private emailTrackingService: EmailTrackingService,
+    private emailService: EmailService,
+    private circuitBreaker: CircuitBreakerService,
+    @Optional() private phishingQueueService?: PhishingQueueService
+  ) {
+    // Check if queue service is available
+    this.useQueue = !!this.phishingQueueService;
+    if (this.useQueue) {
+      this.logger.log('✅ Bull Queue enabled for phishing campaigns');
+    } else {
+      this.logger.warn('⚠️ Bull Queue not available, using synchronous processing');
+    }
+    
+    // Initialize circuit breaker for email service
+    this.circuitBreaker.getCircuit('email-service', {
+      failureThreshold: 5,
+      successThreshold: 2,
+      timeout: 60000,
+      monitoringPeriod: 120000
+    });
+  }
 
   /**
    * Campaign CRUD Operations
@@ -266,54 +292,104 @@ export class PhishingCampaignService {
    */
 
   async launchCampaign(organizationId: string, campaignId: string, launchDto: LaunchCampaignDto) {
+    this.logger.log(`🚀 Attempting to launch campaign ${campaignId} for organization ${organizationId}`);
+    
     const campaign = await this.prisma.phishingCampaign.findFirst({
       where: { id: campaignId, organizationId },
       include: { targets: true }
     });
 
     if (!campaign) {
+      this.logger.error(`❌ Campaign launch failed: Campaign ${campaignId} not found for organization ${organizationId}`);
       throw new NotFoundException('Campaign not found');
     }
 
+    this.logger.log(`📊 Campaign ${campaignId} found: ${campaign.name}, Status: ${campaign.status}, Targets: ${campaign.targets.length}`);
+
     if (campaign.status !== CampaignStatus.DRAFT && campaign.status !== CampaignStatus.SCHEDULED) {
+      this.logger.error(`❌ Campaign launch failed: Campaign ${campaignId} has invalid status ${campaign.status}. Expected DRAFT or SCHEDULED.`);
       throw new BadRequestException('Campaign cannot be launched from current status');
     }
 
     if (campaign.targets.length === 0) {
+      this.logger.error(`❌ Campaign launch failed: Campaign ${campaignId} has no targets`);
       throw new BadRequestException('Campaign must have at least one target');
     }
 
     const scheduledAt = launchDto.scheduledAt ? new Date(launchDto.scheduledAt) : new Date();
     const isScheduled = scheduledAt > new Date();
 
+    this.logger.log(`⏰ Campaign ${campaignId} launch timing: ${isScheduled ? 'SCHEDULED' : 'IMMEDIATE'} at ${scheduledAt.toISOString()}`);
+
     // Update campaign status
-    const updatedCampaign = await this.prisma.phishingCampaign.update({
-      where: { id: campaignId },
-      data: {
-        status: isScheduled ? CampaignStatus.SCHEDULED : CampaignStatus.RUNNING,
-        scheduledAt,
-        launchedAt: isScheduled ? null : new Date()
-      },
-      include: {
-        targets: true,
-        creator: {
-          select: { id: true, firstName: true, lastName: true, email: true }
+    try {
+      const updatedCampaign = await this.prisma.phishingCampaign.update({
+        where: { id: campaignId },
+        data: {
+          status: isScheduled ? CampaignStatus.SCHEDULED : CampaignStatus.RUNNING,
+          scheduledAt,
+          launchedAt: isScheduled ? null : new Date()
+        },
+        include: {
+          targets: true,
+          creator: {
+            select: { id: true, firstName: true, lastName: true, email: true }
+          }
         }
+      });
+
+      this.logger.log(`✅ Campaign ${campaignId} status updated to ${updatedCampaign.status}`);
+
+      // Create email jobs for immediate launch
+      if (!isScheduled) {
+        this.logger.log(`📧 Creating ${campaign.targets.length} email jobs for campaign ${campaignId}`);
+        await this.createEmailJobs(campaignId, campaign.targets);
+        this.logger.log(`✅ Email jobs created successfully for campaign ${campaignId}`);
+      
+      // Use Bull queue if available, otherwise process synchronously
+      if (this.useQueue && this.phishingQueueService) {
+        this.logger.log(`Using Bull queue to process campaign ${campaignId}`);
+        
+        // Add campaign processing job to queue
+        await this.phishingQueueService.addCampaignProcessingJob(
+          campaignId,
+          organizationId,
+          'high' // High priority for immediate launches
+        );
+      } else {
+        this.logger.log(`Using synchronous processing for campaign ${campaignId}`);
+        
+        // Process email jobs asynchronously (don't wait for completion)
+        this.processEmailJobs(campaignId).catch(error => {
+          this.logger.error(`Error processing email jobs for campaign ${campaignId}:`, error);
+        });
       }
-    });
+      } else {
+        this.logger.log(`📅 Campaign ${campaignId} scheduled for ${scheduledAt.toISOString()}`);
+      }
 
-    // Create email jobs for immediate launch
-    if (!isScheduled) {
-      await this.createEmailJobs(campaignId, campaign.targets);
+      // Create launch event
+      await this.createCampaignEvent(campaignId, 
+        isScheduled ? PhishingEventType.CAMPAIGN_STARTED : PhishingEventType.CAMPAIGN_STARTED,
+        { 
+          scheduledAt: scheduledAt.toISOString(),
+          processingMode: this.useQueue ? 'queue' : 'sync'
+        }
+      );
+
+      this.logger.log(`✅ Campaign ${campaignId} launched successfully. Status: ${updatedCampaign.status}`);
+      return updatedCampaign;
+      
+    } catch (error) {
+      this.logger.error(`❌ CRITICAL: Campaign ${campaignId} launch failed:`, {
+        error: error.message,
+        stack: error.stack,
+        campaignId,
+        organizationId,
+        timestamp: new Date().toISOString()
+      });
+      throw error;
     }
-
-    // Create launch event
-    await this.createCampaignEvent(campaignId, 
-      isScheduled ? PhishingEventType.CAMPAIGN_STARTED : PhishingEventType.CAMPAIGN_STARTED,
-      { scheduledAt: scheduledAt.toISOString() }
-    );
-
-    return updatedCampaign;
   }
 
   async pauseCampaign(organizationId: string, campaignId: string) {
@@ -702,6 +778,957 @@ export class PhishingCampaignService {
     }));
 
     await this.prisma.emailJob.createMany({ data: jobs });
+  }
+
+  /**
+   * Process email jobs and send phishing emails to targets
+   */
+  async processEmailJobs(campaignId: string) {
+    const startTime = Date.now();
+    this.logger.log(`📨 [${campaignId}] Starting email job processing...`);
+
+    try {
+      // Get campaign details
+      const campaign = await this.prisma.phishingCampaign.findUnique({
+        where: { id: campaignId },
+        include: {
+          targets: true,
+          organization: true
+        }
+      });
+
+      if (!campaign) {
+        this.logger.error(`❌ [${campaignId}] Campaign not found in database`);
+        throw new NotFoundException('Campaign not found');
+      }
+
+      this.logger.log(`✅ [${campaignId}] Campaign found: "${campaign.name}", Org: ${campaign.organization?.name || 'Unknown'}`);
+
+      // Get pending email jobs and their targets
+      const pendingJobs = await this.prisma.emailJob.findMany({
+        where: {
+          campaignId,
+          status: JobStatus.PENDING
+        }
+      });
+
+      this.logger.log(`📋 [${campaignId}] Found ${pendingJobs.length} pending email jobs to process`);
+
+      // Process each job
+      let successCount = 0;
+      let failureCount = 0;
+
+      for (const job of pendingJobs) {
+        try {
+          this.logger.log(`📧 [${campaignId}] Processing job ${job.id}...`);
+          
+          // Get target details
+          const target = await this.prisma.phishingTarget.findUnique({
+            where: { id: job.targetId }
+          });
+
+          if (!target) {
+            this.logger.error(`❌ [${campaignId}] Target not found for job ${job.id}. Skipping...`);
+            failureCount++;
+            continue;
+          }
+
+          this.logger.log(`👤 [${campaignId}] Target: ${target.email} (${target.firstName} ${target.lastName})`);
+
+          // Mark job as processing
+          await this.prisma.emailJob.update({
+            where: { id: job.id },
+            data: { 
+              status: JobStatus.PROCESSING,
+              lastAttemptAt: new Date(),
+              attempts: { increment: 1 }
+            }
+          });
+
+          this.logger.log(`⏳ [${campaignId}] Job ${job.id} marked as PROCESSING (attempt ${job.attempts + 1})`);
+
+        // Personalize email content
+        const personalizedContent = this.personalizeEmailContent(
+          campaign.template,
+          target
+        );
+
+        const personalizedSubject = this.personalizeEmailContent(
+          campaign.subject,
+          target
+        );
+
+        // Generate tracking URL for this specific target
+        const trackingUrl = this.generateTrackingUrl(
+          campaign.landingPageUrl,
+          campaign.id,
+          target.id
+        );
+
+        // Insert tracking pixel and link into email
+        const emailWithTracking = this.insertTrackingElements(
+          personalizedContent,
+          campaign.id,
+          target.id,
+          trackingUrl
+        );
+
+        // Send email using bulk transport for phishing campaigns with circuit breaker
+        const result = await this.circuitBreaker.execute(
+          'email-service',
+          async () => {
+            return await this.emailService.sendBulkEmail(
+              personalizedSubject,
+              emailWithTracking,
+              [target.email],
+              true, // isHtml
+              'Phishing Campaign',
+              campaign.senderEmail,
+              campaign.senderName
+            );
+          },
+          // Fallback: mark job for retry instead of failing immediately
+          async () => {
+            this.logger.warn(`Circuit breaker fallback for ${target.email} - will retry later`);
+            return { 
+              success: false, 
+              error: 'Circuit breaker open - email service temporarily unavailable',
+              timestamp: new Date(),
+              attempts: 0
+            };
+          }
+        );
+
+        if (result.success) {
+          // Update job status to SENT
+          await this.prisma.emailJob.update({
+            where: { id: job.id },
+            data: {
+              status: JobStatus.SENT,
+              lastAttemptAt: new Date()
+            }
+          });
+
+          // Track email sent event
+          await this.emailTrackingService.trackEmailEvent(
+            campaignId,
+            target.id,
+            PhishingEventType.EMAIL_SENT,
+            { messageId: result.messageId }
+          );
+
+          // Update campaign statistics
+          await this.updateCampaignStatistics(campaignId, PhishingEventType.EMAIL_SENT);
+
+          successCount++;
+          this.logger.log(`✅ [${campaignId}] Email sent to ${target.email} (MessageID: ${result.messageId})`);
+        } else {
+          // Update job status to FAILED
+          await this.prisma.emailJob.update({
+            where: { id: job.id },
+            data: {
+              status: JobStatus.FAILED,
+              errorMessage: result.error,
+              lastAttemptAt: new Date()
+            }
+          });
+
+          failureCount++;
+          this.logger.error(`❌ [${campaignId}] Failed to send email to ${target.email}: ${result.error}`);
+        }
+
+        // Small delay between emails to avoid rate limiting
+        await new Promise(resolve => setTimeout(resolve, 100));
+
+      } catch (error) {
+        failureCount++;
+        this.logger.error(`❌ [${campaignId}] EXCEPTION processing job ${job.id}:`, {
+          error: error.message,
+          stack: error.stack,
+          jobId: job.id,
+          targetId: job.targetId,
+          timestamp: new Date().toISOString()
+        });
+
+        // Update job status to FAILED
+        await this.prisma.emailJob.update({
+          where: { id: job.id },
+          data: {
+            status: JobStatus.FAILED,
+            errorMessage: error.message,
+            lastAttemptAt: new Date()
+          }
+        });
+      }
+      }
+
+      const endTime = Date.now();
+      const duration = ((endTime - startTime) / 1000).toFixed(2);
+      
+      this.logger.log(`✅ [${campaignId}] Email job processing completed in ${duration}s`);
+      this.logger.log(`📊 [${campaignId}] Summary: ${successCount} succeeded, ${failureCount} failed out of ${pendingJobs.length} total`);
+
+      if (failureCount > 0) {
+        const failureRate = ((failureCount / pendingJobs.length) * 100).toFixed(2);
+        this.logger.warn(`⚠️ [${campaignId}] Failure rate: ${failureRate}%`);
+      }
+
+      // Check if all jobs are complete and update campaign status
+      await this.checkAndUpdateCampaignCompletion(campaignId);
+      
+    } catch (error) {
+      const endTime = Date.now();
+      const duration = ((endTime - startTime) / 1000).toFixed(2);
+      
+      this.logger.error(`❌ [${campaignId}] CRITICAL ERROR in processEmailJobs after ${duration}s:`, {
+        error: error.message,
+        stack: error.stack,
+        campaignId,
+        timestamp: new Date().toISOString()
+      });
+      throw error;
+    }
+  }
+
+  /**
+   * Process a single email job
+   * Used by Bull queue processor for individual email processing
+   */
+  async processSingleEmailJob(campaignId: string, targetId: string) {
+    const startTime = Date.now();
+    this.logger.log(`🎯 [Queue] Processing single job - Campaign: ${campaignId}, Target: ${targetId}`);
+
+    try {
+      // Get campaign details
+      const campaign = await this.prisma.phishingCampaign.findUnique({
+        where: { id: campaignId },
+        include: {
+          organization: true
+        }
+      });
+
+      if (!campaign) {
+        this.logger.error(`❌ [Queue] Campaign ${campaignId} not found`);
+        throw new NotFoundException('Campaign not found');
+      }
+
+      // Get target details
+      const target = await this.prisma.phishingTarget.findUnique({
+        where: { id: targetId }
+      });
+
+      if (!target) {
+        this.logger.error(`❌ [Queue] Target ${targetId} not found for campaign ${campaignId}`);
+        throw new NotFoundException('Target not found');
+      }
+
+      this.logger.log(`✅ [Queue] Found target: ${target.email}`);
+
+    // Get the email job
+    const job = await this.prisma.emailJob.findFirst({
+      where: {
+        campaignId,
+        targetId
+      }
+    });
+
+    if (!job) {
+      throw new NotFoundException('Email job not found');
+    }
+
+    // Check if already sent
+    if (job.status === JobStatus.SENT) {
+      this.logger.log(`Email job ${job.id} already sent, skipping`);
+      return;
+    }
+
+    try {
+      // Mark job as processing
+      await this.prisma.emailJob.update({
+        where: { id: job.id },
+        data: { 
+          status: JobStatus.PROCESSING,
+          lastAttemptAt: new Date(),
+          attempts: { increment: 1 }
+        }
+      });
+
+      // Personalize email content
+      const personalizedContent = this.personalizeEmailContent(
+        campaign.template,
+        target
+      );
+
+      const personalizedSubject = this.personalizeEmailContent(
+        campaign.subject,
+        target
+      );
+
+      // Generate tracking URL for this specific target
+      const trackingUrl = this.generateTrackingUrl(
+        campaign.landingPageUrl,
+        campaign.id,
+        target.id
+      );
+
+      // Insert tracking pixel and link into email
+      const emailWithTracking = this.insertTrackingElements(
+        personalizedContent,
+        campaign.id,
+        target.id,
+        trackingUrl
+      );
+
+      // Send email using bulk transport for phishing campaigns with circuit breaker
+      const result = await this.circuitBreaker.execute(
+        'email-service',
+        async () => {
+          return await this.emailService.sendBulkEmail(
+            personalizedSubject,
+            emailWithTracking,
+            [target.email],
+            true, // isHtml
+            'Phishing Campaign',
+            campaign.senderEmail,
+            campaign.senderName
+          );
+        },
+        // Fallback: mark job for retry instead of failing immediately
+        async () => {
+          this.logger.warn(`Circuit breaker fallback for ${target.email} - will retry later`);
+          return { 
+            success: false, 
+            error: 'Circuit breaker open - email service temporarily unavailable',
+            timestamp: new Date(),
+            attempts: 0
+          };
+        }
+      );
+
+      if (result.success) {
+        // Update job status to SENT
+        await this.prisma.emailJob.update({
+          where: { id: job.id },
+          data: {
+            status: JobStatus.SENT,
+            lastAttemptAt: new Date()
+          }
+        });
+
+        // Track email sent event
+        await this.emailTrackingService.trackEmailEvent(
+          campaignId,
+          target.id,
+          PhishingEventType.EMAIL_SENT,
+          { messageId: result.messageId }
+        );
+
+        // Update campaign statistics
+        await this.updateCampaignStatistics(campaignId, PhishingEventType.EMAIL_SENT);
+
+        const endTime = Date.now();
+        const duration = endTime - startTime;
+        this.logger.log(`✅ [Queue] Email sent to ${target.email} in ${duration}ms (MessageID: ${result.messageId})`);
+      } else {
+        // Update job status to FAILED
+        await this.prisma.emailJob.update({
+          where: { id: job.id },
+          data: {
+            status: JobStatus.FAILED,
+            errorMessage: result.error,
+            lastAttemptAt: new Date()
+          }
+        });
+
+        this.logger.error(`❌ [Queue] Failed to send to ${target.email}: ${result.error}`);
+        throw new Error(`Failed to send email: ${result.error}`);
+      }
+    } catch (error) {
+      const endTime = Date.now();
+      const duration = endTime - startTime;
+      
+      this.logger.error(`❌ [Queue] EXCEPTION processing job ${job.id} after ${duration}ms:`, {
+        error: error.message,
+        stack: error.stack,
+        campaignId,
+        targetId,
+        jobId: job.id,
+        targetEmail: target.email,
+        timestamp: new Date().toISOString()
+      });
+
+      // Update job status to FAILED if not already updated
+      await this.prisma.emailJob.updateMany({
+        where: {
+          id: job.id,
+          status: { not: JobStatus.FAILED }
+        },
+        data: {
+          status: JobStatus.FAILED,
+          errorMessage: error.message,
+          lastAttemptAt: new Date()
+        }
+      });
+
+      throw error; // Re-throw for Bull queue to handle retry
+    }
+    } catch (error) {
+      this.logger.error(`❌ [Queue] CRITICAL ERROR in processSingleEmailJob:`, {
+        error: error.message,
+        stack: error.stack,
+        campaignId,
+        targetId,
+        timestamp: new Date().toISOString()
+      });
+      throw error;
+    }
+  }
+
+  /**
+   * Personalize email content with target information
+   */
+  private personalizeEmailContent(content: string, target: any): string {
+    let personalized = content;
+
+    // Replace placeholders with target information
+    const replacements = {
+      '{{firstName}}': target.firstName || '',
+      '{{lastName}}': target.lastName || '',
+      '{{fullName}}': `${target.firstName || ''} ${target.lastName || ''}`.trim(),
+      '{{email}}': target.email || '',
+      '{{department}}': target.department || '',
+      '{{jobTitle}}': target.jobTitle || '',
+      '{{company}}': target.company || ''
+    };
+
+    for (const [placeholder, value] of Object.entries(replacements)) {
+      personalized = personalized.replace(new RegExp(placeholder, 'g'), value);
+    }
+
+    return personalized;
+  }
+
+  /**
+   * Generate tracking URL with campaign and target IDs
+   */
+  private generateTrackingUrl(baseUrl: string, campaignId: string, targetId: string): string {
+    if (!baseUrl) {
+      // Use default landing page URL with tracking params
+      return `${process.env.APP_URL || 'http://localhost:3000'}/phishing/landing?c=${campaignId}&t=${targetId}`;
+    }
+
+    // Add tracking parameters to provided URL
+    const separator = baseUrl.includes('?') ? '&' : '?';
+    return `${baseUrl}${separator}c=${campaignId}&t=${targetId}`;
+  }
+
+  /**
+   * Insert tracking pixel and convert links to tracking links
+   */
+  private insertTrackingElements(htmlContent: string, campaignId: string, targetId: string, trackingUrl: string): string {
+    let content = htmlContent;
+
+    // Replace landing page URL placeholders with tracking URL
+    content = content.replace(/{{landingPageUrl}}/g, trackingUrl);
+    content = content.replace(/{{trackingUrl}}/g, trackingUrl);
+
+    // Insert tracking pixel at the end of the body
+    const trackingPixelUrl = `${process.env.APP_URL || 'http://localhost:3000'}/api/v1/defendxplus/phishing/track/open/${campaignId}/${targetId}`;
+    const trackingPixel = `<img src="${trackingPixelUrl}" width="1" height="1" alt="" style="display:none;" />`;
+
+    // Insert before closing body tag, or append if no body tag
+    if (content.includes('</body>')) {
+      content = content.replace('</body>', `${trackingPixel}</body>`);
+    } else {
+      content += trackingPixel;
+    }
+
+    return content;
+  }
+
+  /**
+   * Check if all email jobs are complete and update campaign status
+   */
+  private async checkAndUpdateCampaignCompletion(campaignId: string) {
+    const pendingJobs = await this.prisma.emailJob.count({
+      where: {
+        campaignId,
+        status: { in: [JobStatus.PENDING, JobStatus.PROCESSING] }
+      }
+    });
+
+    if (pendingJobs === 0) {
+      // All jobs complete, check if campaign should be marked complete
+      const campaign = await this.prisma.phishingCampaign.findUnique({
+        where: { id: campaignId }
+      });
+
+      if (campaign && campaign.status === CampaignStatus.RUNNING) {
+        this.logger.log(`All emails sent for campaign ${campaignId}. Campaign remains in RUNNING state for tracking.`);
+        // Note: We don't auto-complete the campaign here as we want to continue tracking
+        // The admin can manually complete it when they're done tracking
+      }
+    }
+  }
+
+  /**
+   * Scheduled Campaign Processing
+   * Runs every minute to check for campaigns that need to be launched
+   */
+  @Cron(CronExpression.EVERY_MINUTE)
+  async processScheduledCampaigns() {
+    try {
+      const now = new Date();
+      this.logger.debug(`⏰ [Cron] Checking for scheduled campaigns at ${now.toISOString()}`);
+      
+      // Find campaigns that are scheduled to launch now or in the past
+      const scheduledCampaigns = await this.prisma.phishingCampaign.findMany({
+        where: {
+          status: CampaignStatus.SCHEDULED,
+          scheduledAt: {
+            lte: now
+          }
+        },
+        include: {
+          targets: true
+        }
+      });
+
+      if (scheduledCampaigns.length === 0) {
+        this.logger.debug(`⏰ [Cron] No scheduled campaigns ready to launch`);
+        return;
+      }
+
+      this.logger.log(`🚀 [Cron] Found ${scheduledCampaigns.length} scheduled campaigns ready to launch`);
+
+      for (const campaign of scheduledCampaigns) {
+        try {
+          this.logger.log(`🚀 [Cron] Launching scheduled campaign: ${campaign.id} - "${campaign.name}"`);
+          this.logger.log(`📅 [Cron] Was scheduled for: ${campaign.scheduledAt?.toISOString()}`);
+
+          // Update campaign status to RUNNING
+          await this.prisma.phishingCampaign.update({
+            where: { id: campaign.id },
+            data: {
+              status: CampaignStatus.RUNNING,
+              launchedAt: new Date()
+            }
+          });
+
+          this.logger.log(`✅ [Cron] Campaign ${campaign.id} status updated to RUNNING`);
+
+          // Create email jobs
+          this.logger.log(`📧 [Cron] Creating ${campaign.targets.length} email jobs for campaign ${campaign.id}`);
+          await this.createEmailJobs(campaign.id, campaign.targets);
+
+          // Use Bull queue if available, otherwise process synchronously
+          if (this.useQueue && this.phishingQueueService) {
+            this.logger.log(`🔄 [Cron] Using Bull queue to process scheduled campaign ${campaign.id}`);
+            
+            // Add campaign processing job to queue
+            await this.phishingQueueService.addCampaignProcessingJob(
+              campaign.id,
+              campaign.organizationId,
+              'normal' // Normal priority for scheduled campaigns
+            );
+          } else {
+            this.logger.log(`⚡ [Cron] Using synchronous processing for campaign ${campaign.id}`);
+            
+            // Process email jobs asynchronously
+            this.processEmailJobs(campaign.id).catch(error => {
+              this.logger.error(`❌ [Cron] Error processing email jobs for scheduled campaign ${campaign.id}:`, {
+                error: error.message,
+                stack: error.stack,
+                campaignId: campaign.id,
+                timestamp: new Date().toISOString()
+              });
+            });
+          }
+
+          // Create launch event
+          await this.createCampaignEvent(
+            campaign.id,
+            PhishingEventType.CAMPAIGN_STARTED,
+            { 
+              autoLaunched: true, 
+              scheduledAt: campaign.scheduledAt,
+              processingMode: this.useQueue ? 'queue' : 'sync'
+            }
+          );
+
+          this.logger.log(`✅ [Cron] Successfully launched scheduled campaign: ${campaign.id} - "${campaign.name}"`);
+        } catch (error) {
+          this.logger.error(`❌ [Cron] Failed to launch scheduled campaign ${campaign.id}:`, {
+            error: error.message,
+            stack: error.stack,
+            campaignId: campaign.id,
+            campaignName: campaign.name,
+            timestamp: new Date().toISOString()
+          });
+        }
+      }
+    } catch (error) {
+      this.logger.error(`❌ [Cron] CRITICAL ERROR in processScheduledCampaigns:`, {
+        error: error.message,
+        stack: error.stack,
+        timestamp: new Date().toISOString()
+      });
+    }
+  }
+
+  /**
+   * Retry Failed Email Jobs
+   * Runs every 5 minutes to retry failed jobs that haven't exceeded max attempts
+   */
+  @Cron('*/5 * * * *')
+  async retryFailedEmailJobs() {
+    try {
+      this.logger.log('Checking for failed email jobs to retry...');
+      
+      const failedJobs = await this.prisma.emailJob.findMany({
+        where: {
+          status: JobStatus.FAILED,
+          attempts: {
+            lt: 3 // maxAttempts default value
+          },
+          // Only retry jobs from last 24 hours
+          createdAt: {
+            gte: new Date(Date.now() - 24 * 60 * 60 * 1000)
+          }
+        },
+        take: 50 // Limit to 50 at a time
+      });
+
+      if (failedJobs.length === 0) {
+        return;
+      }
+
+      this.logger.log(`Found ${failedJobs.length} failed email jobs to retry`);
+
+      // Group jobs by campaign
+      const jobsByCampaign = failedJobs.reduce((acc, job) => {
+        const campaignId = job.campaignId;
+        if (!acc[campaignId]) {
+          acc[campaignId] = [];
+        }
+        acc[campaignId].push(job);
+        return acc;
+      }, {} as Record<string, typeof failedJobs>);
+
+      // Process each campaign's failed jobs
+      for (const [campaignId, jobs] of Object.entries(jobsByCampaign)) {
+        try {
+          // Check if campaign is still running
+          const campaign = await this.prisma.phishingCampaign.findUnique({
+            where: { id: campaignId },
+            select: { id: true, name: true, status: true }
+          });
+
+          if (!campaign) {
+            this.logger.log(`Skipping retry - campaign ${campaignId} not found`);
+            continue;
+          }
+
+          if (campaign.status !== CampaignStatus.RUNNING) {
+            this.logger.log(`Skipping retry for campaign ${campaignId} - status: ${campaign.status}`);
+            continue;
+          }
+
+          this.logger.log(`Retrying ${jobs.length} failed jobs for campaign ${campaignId} (${campaign.name})`);
+
+          // Reset jobs to pending
+          await this.prisma.emailJob.updateMany({
+            where: {
+              id: { in: jobs.map(j => j.id) }
+            },
+            data: {
+              status: JobStatus.PENDING,
+              errorMessage: null
+            }
+          });
+
+          // Process the jobs (will be picked up by processEmailJobs)
+          // We don't call processEmailJobs here to avoid blocking the cron job
+          // Instead, we can trigger it asynchronously
+          this.processEmailJobs(campaignId).catch(error => {
+            this.logger.error(`Error processing retried jobs for campaign ${campaignId}:`, error);
+          });
+
+        } catch (error) {
+          this.logger.error(`Failed to retry jobs for campaign ${campaignId}:`, error);
+        }
+      }
+
+      this.logger.log(`Completed retry process for ${failedJobs.length} jobs`);
+    } catch (error) {
+      this.logger.error('Error in retryFailedEmailJobs:', error);
+    }
+  }
+
+  /**
+   * Clean Up Old Email Jobs
+   * Runs daily at 2 AM to remove old completed and cancelled jobs
+   */
+  @Cron('0 2 * * *')
+  async cleanupOldJobs() {
+    try {
+      this.logger.log('Starting cleanup of old email jobs...');
+      
+      const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
+      
+      // Delete completed and cancelled jobs older than 30 days
+      const result = await this.prisma.emailJob.deleteMany({
+        where: {
+          status: { in: [JobStatus.SENT, JobStatus.CANCELLED] },
+          updatedAt: { lt: thirtyDaysAgo }
+        }
+      });
+
+      this.logger.log(`✅ Cleaned up ${result.count} old email jobs (older than 30 days)`);
+
+      // Also clean up old events (optional - keep last 90 days)
+      const ninetyDaysAgo = new Date(Date.now() - 90 * 24 * 60 * 60 * 1000);
+      const eventsResult = await this.prisma.phishingEvent.deleteMany({
+        where: {
+          timestamp: { lt: ninetyDaysAgo }
+        }
+      });
+
+      this.logger.log(`✅ Cleaned up ${eventsResult.count} old phishing events (older than 90 days)`);
+
+    } catch (error) {
+      this.logger.error('❌ Error in cleanupOldJobs:', error);
+    }
+  }
+
+  /**
+   * Campaign Health Check
+   * Runs every 15 minutes to monitor campaign health and fix issues
+   */
+  @Cron('*/15 * * * *')
+  async campaignHealthCheck() {
+    try {
+      this.logger.log('Running campaign health check...');
+      
+      const runningCampaigns = await this.prisma.phishingCampaign.findMany({
+        where: { status: CampaignStatus.RUNNING },
+        select: {
+          id: true,
+          name: true,
+          organizationId: true,
+          launchedAt: true,
+          targetCount: true,
+          emailsSent: true
+        }
+      });
+
+      if (runningCampaigns.length === 0) {
+        this.logger.log('No running campaigns to check');
+        return;
+      }
+
+      this.logger.log(`Checking health of ${runningCampaigns.length} running campaigns...`);
+
+      for (const campaign of runningCampaigns) {
+        try {
+          // Check 1: Stuck jobs (processing for > 30 minutes)
+          const thirtyMinutesAgo = new Date(Date.now() - 30 * 60 * 1000);
+          const stuckJobs = await this.prisma.emailJob.findMany({
+            where: {
+              campaignId: campaign.id,
+              status: JobStatus.PROCESSING,
+              lastAttemptAt: {
+                lt: thirtyMinutesAgo
+              }
+            }
+          });
+
+          if (stuckJobs.length > 0) {
+            this.logger.warn(
+              `⚠️ Campaign ${campaign.id} (${campaign.name}) has ${stuckJobs.length} stuck jobs. Resetting...`
+            );
+
+            // Reset stuck jobs to pending
+            await this.prisma.emailJob.updateMany({
+              where: { id: { in: stuckJobs.map(j => j.id) } },
+              data: { 
+                status: JobStatus.PENDING,
+                errorMessage: 'Reset from stuck state by health check'
+              }
+            });
+
+            this.logger.log(`✅ Reset ${stuckJobs.length} stuck jobs for campaign ${campaign.id}`);
+          }
+
+          // Check 2: High failure rate
+          const totalJobs = await this.prisma.emailJob.count({
+            where: { campaignId: campaign.id }
+          });
+
+          const failedJobs = await this.prisma.emailJob.count({
+            where: { 
+              campaignId: campaign.id,
+              status: JobStatus.FAILED,
+              attempts: { gte: 3 } // Only count permanently failed jobs
+            }
+          });
+
+          const failureRate = totalJobs > 0 ? (failedJobs / totalJobs) * 100 : 0;
+
+          if (failureRate > 50 && totalJobs > 10) {
+            this.logger.error(
+              `🚨 ALERT: Campaign ${campaign.id} (${campaign.name}) has high failure rate: ${failureRate.toFixed(2)}% (${failedJobs}/${totalJobs} jobs)`
+            );
+            
+            // Create a critical event
+            await this.createCampaignEvent(
+              campaign.id,
+              PhishingEventType.CAMPAIGN_PAUSED, // Using available event type
+              {
+                alert: 'High failure rate detected',
+                failureRate: failureRate.toFixed(2),
+                failedJobs,
+                totalJobs,
+                autoDetected: true
+              }
+            );
+          }
+
+          // Check 3: Campaign stuck without progress
+          const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000);
+          if (campaign.launchedAt && campaign.launchedAt < oneHourAgo) {
+            const pendingJobs = await this.prisma.emailJob.count({
+              where: {
+                campaignId: campaign.id,
+                status: JobStatus.PENDING
+              }
+            });
+
+            const processingJobs = await this.prisma.emailJob.count({
+              where: {
+                campaignId: campaign.id,
+                status: JobStatus.PROCESSING
+              }
+            });
+
+            // If campaign has been running for > 1 hour with no pending/processing jobs
+            // but emails sent is less than target count, something might be wrong
+            if (pendingJobs === 0 && processingJobs === 0 && campaign.emailsSent < campaign.targetCount) {
+              this.logger.warn(
+                `⚠️ Campaign ${campaign.id} (${campaign.name}) appears stuck. ` +
+                `Sent: ${campaign.emailsSent}/${campaign.targetCount}, ` +
+                `Pending: ${pendingJobs}, Processing: ${processingJobs}`
+              );
+              
+              // Check if there are failed jobs that could be retried
+              const retriableFailedJobs = await this.prisma.emailJob.count({
+                where: {
+                  campaignId: campaign.id,
+                  status: JobStatus.FAILED,
+                  attempts: { lt: 3 }
+                }
+              });
+
+              if (retriableFailedJobs > 0) {
+                this.logger.log(`Found ${retriableFailedJobs} retriable failed jobs. These will be retried by retryFailedEmailJobs cron.`);
+              }
+            }
+          }
+
+          // Check 4: Long-running campaigns (> 7 days)
+          const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+          if (campaign.launchedAt && campaign.launchedAt < sevenDaysAgo) {
+            const pendingOrProcessing = await this.prisma.emailJob.count({
+              where: {
+                campaignId: campaign.id,
+                status: { in: [JobStatus.PENDING, JobStatus.PROCESSING] }
+              }
+            });
+
+            if (pendingOrProcessing === 0) {
+              this.logger.log(
+                `📅 Campaign ${campaign.id} (${campaign.name}) has been running for > 7 days with all jobs complete. Consider completing it.`
+              );
+            }
+          }
+
+        } catch (error) {
+          this.logger.error(`Error checking health of campaign ${campaign.id}:`, error);
+        }
+      }
+
+      this.logger.log('✅ Campaign health check completed');
+
+    } catch (error) {
+      this.logger.error('❌ Error in campaignHealthCheck:', error);
+    }
+  }
+
+  /**
+   * Auto-Complete Stale Campaigns
+   * Runs every 6 hours to auto-complete campaigns that have been running for > 7 days
+   * with all emails sent
+   */
+  @Cron('0 */6 * * *')
+  async autoCompleteStaleCampaigns() {
+    try {
+      this.logger.log('Checking for stale campaigns to auto-complete...');
+      
+      const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+      
+      const staleCampaigns = await this.prisma.phishingCampaign.findMany({
+        where: {
+          status: CampaignStatus.RUNNING,
+          launchedAt: { lt: sevenDaysAgo }
+        },
+        select: {
+          id: true,
+          name: true,
+          organizationId: true,
+          launchedAt: true
+        }
+      });
+
+      if (staleCampaigns.length === 0) {
+        this.logger.log('No stale campaigns found');
+        return;
+      }
+
+      this.logger.log(`Found ${staleCampaigns.length} campaigns running for > 7 days`);
+
+      for (const campaign of staleCampaigns) {
+        try {
+          // Check if all jobs are complete
+          const pendingJobs = await this.prisma.emailJob.count({
+            where: {
+              campaignId: campaign.id,
+              status: { in: [JobStatus.PENDING, JobStatus.PROCESSING] }
+            }
+          });
+
+          if (pendingJobs === 0) {
+            this.logger.log(
+              `Auto-completing stale campaign: ${campaign.id} (${campaign.name}) - ` +
+              `Running since ${campaign.launchedAt?.toISOString()}`
+            );
+
+            await this.completeCampaign(campaign.organizationId, campaign.id);
+            
+            this.logger.log(`✅ Auto-completed campaign ${campaign.id}`);
+          } else {
+            this.logger.log(
+              `Campaign ${campaign.id} still has ${pendingJobs} pending/processing jobs - not auto-completing`
+            );
+          }
+        } catch (error) {
+          this.logger.error(`Failed to auto-complete campaign ${campaign.id}:`, error);
+        }
+      }
+
+      this.logger.log('✅ Stale campaign check completed');
+    } catch (error) {
+      this.logger.error('❌ Error in autoCompleteStaleCampaigns:', error);
+    }
   }
 
   /**

@@ -1,0 +1,153 @@
+{
+  "description": "Multi-phase phishing campaign with progressive difficulty levels",
+  "endpoint": "POST /api/v1/defendx-plus/campaigns (create multiple campaigns)",
+  "phases": [
+    {
+      "phase": 1,
+      "name": "Phase 1: Simple Phishing - Low Risk",
+      "difficulty": "EASY",
+      "scheduledAt": "2025-10-20T09:00:00Z",
+      "description": "Initial baseline assessment with obvious phishing indicators",
+      "payload": {
+        "name": "Q1 Training - Phase 1: Baseline",
+        "description": "Low difficulty phishing test to establish baseline awareness",
+        "templateId": "template-low-risk",
+        "subject": "Free Pizza Lunch for All Employees Today!",
+        "senderName": "HR Department",
+        "senderEmail": "hr-team@company.com",
+        "landingPageUrl": "https://your-domain.com/phishing/landing",
+        "scheduledAt": "2025-10-20T09:00:00Z",
+        "targets": [
+          {
+            "email": "john.doe@company.com",
+            "firstName": "John",
+            "lastName": "Doe",
+            "department": "Engineering"
+          }
+        ]
+      },
+      "indicators": [
+        "🟢 Generic greeting",
+        "🟢 Too good to be true offer",
+        "🟢 Suspicious sender domain",
+        "🟢 Urgent call to action",
+        "🟢 Poor grammar/spelling"
+      ]
+    },
+    {
+      "phase": 2,
+      "name": "Phase 2: Moderate Phishing - Medium Risk",
+      "difficulty": "MEDIUM",
+      "scheduledAt": "2025-10-27T09:00:00Z",
+      "waitDays": 7,
+      "description": "More sophisticated phishing after 1 week delay",
+      "payload": {
+        "name": "Q1 Training - Phase 2: Intermediate",
+        "description": "Medium difficulty phishing test with some legitimate-looking elements",
+        "templateId": "template-medium-risk",
+        "subject": "Action Required: Update Your Benefits Enrollment",
+        "senderName": "Benefits Administration",
+        "senderEmail": "benefits@company-portal.com",
+        "landingPageUrl": "https://your-domain.com/phishing/landing",
+        "scheduledAt": "2025-10-27T09:00:00Z",
+        "targets": [
+          {
+            "email": "john.doe@company.com",
+            "firstName": "John",
+            "lastName": "Doe",
+            "department": "Engineering"
+          }
+        ]
+      },
+      "indicators": [
+        "🟡 Personalized greeting",
+        "🟡 Professional-looking email",
+        "🟡 Legitimate-seeming sender",
+        "🟡 Time-sensitive request",
+        "🟡 Official company branding (fake)"
+      ]
+    },
+    {
+      "phase": 3,
+      "name": "Phase 3: Advanced Phishing - High Risk",
+      "difficulty": "HARD",
+      "scheduledAt": "2025-11-03T09:00:00Z",
+      "waitDays": 7,
+      "description": "Highly sophisticated spear-phishing after 2 weeks",
+      "payload": {
+        "name": "Q1 Training - Phase 3: Advanced",
+        "description": "High difficulty spear-phishing test with advanced social engineering",
+        "templateId": "template-high-risk",
+        "subject": "Re: Quarterly Performance Review - {{firstName}}",
+        "senderName": "{{managerName}}",
+        "senderEmail": "executive@company.com",
+        "landingPageUrl": "https://your-domain.com/phishing/landing",
+        "scheduledAt": "2025-11-03T09:00:00Z",
+        "targets": [
+          {
+            "email": "john.doe@company.com",
+            "firstName": "John",
+            "lastName": "Doe",
+            "department": "Engineering"
+          }
+        ]
+      },
+      "indicators": [
+        "🔴 Highly personalized content",
+        "🔴 Context-aware message (references real events)",
+        "🔴 Appears to be from manager/executive",
+        "🔴 Professional language and formatting",
+        "🔴 Legitimate-looking domain",
+        "🔴 No obvious red flags"
+      ]
+    }
+  ],
+  "progressiveTraining": {
+    "overview": "Multi-phase campaign that increases in difficulty",
+    "timing": "Each phase scheduled 1 week apart",
+    "tracking": "Measures improvement over time",
+    "adaptation": "Can skip phase 3 for employees who fail phase 1 & 2"
+  },
+  "features": [
+    "✅ Progressive difficulty (EASY → MEDIUM → HARD)",
+    "✅ Automatic scheduling with delays between phases",
+    "✅ Track employee improvement across phases",
+    "✅ Adaptive training paths based on performance",
+    "✅ Comprehensive analytics per phase",
+    "✅ Department and individual performance tracking"
+  ],
+  "notes": [
+    "📅 Phase 1: Oct 20 - Baseline assessment (obvious phishing)",
+    "📅 Phase 2: Oct 27 - 7 days later (moderate difficulty)",
+    "📅 Phase 3: Nov 3 - 14 days later (advanced spear-phishing)",
+    "📊 Compare click rates across phases to measure improvement",
+    "🎯 Can customize targets and timing per organization",
+    "📈 Analytics show trend: successful phishing detection rate over time",
+    "🔔 Automated notifications after each phase completion"
+  ],
+  "implementation": {
+    "step1": "Create all 3 campaigns with scheduled dates",
+    "step2": "System automatically launches each phase at scheduled time",
+    "step3": "Track metrics per phase: open rate, click rate, report rate",
+    "step4": "Compare performance: Phase 1 vs Phase 2 vs Phase 3",
+    "step5": "Generate improvement report showing security awareness growth"
+  },
+  "expectedResults": {
+    "phase1": {
+      "clickRate": "60-80%",
+      "reportRate": "10-20%",
+      "assessment": "Baseline - many will fall for obvious phishing"
+    },
+    "phase2": {
+      "clickRate": "40-60%",
+      "reportRate": "20-35%",
+      "assessment": "Improvement - more awareness after phase 1"
+    },
+    "phase3": {
+      "clickRate": "30-50%",
+      "reportRate": "35-50%",
+      "assessment": "Advanced - sophisticated attacks still succeed"
+    },
+    "improvement": "30-50% reduction in click rate from Phase 1 to Phase 3"
+  }
+}

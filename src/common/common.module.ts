@@ -4,6 +4,8 @@ import { ThrottlerGuard } from '@nestjs/throttler';
 
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
+import { RateLimiterService } from './services/rate-limiter.service';
+import { CircuitBreakerService } from './services/circuit-breaker.service';
 
 @Module({
   providers: [
@@ -19,6 +21,9 @@ import { RolesGuard } from '../auth/guards/roles.guard';
       provide: APP_GUARD,
       useClass: ThrottlerGuard,
     },
+    RateLimiterService,
+    CircuitBreakerService,
   ],
+  exports: [RateLimiterService, CircuitBreakerService],
 })
 export class CommonModule {}

@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { BullModule } from '@nestjs/bull';
 import { PhishingController } from './controllers/phishing.controller';
 import { IncidentController } from './controllers/incident.controller';
 import { AgentController } from './controllers/agent.controller';
@@ -18,8 +19,33 @@ import { PhishingCampaignService } from './services/phishing-campaign.service';
 import { PhishingTemplateService } from './services/phishing-template.service';
 import { EmailTrackingService } from './services/email-tracking.service';
 import { AnalyticsService } from './services/analytics.service';
+import { PhishingQueueService } from './services/phishing-queue.service';
+import { CircuitBreakerService } from './services/circuit-breaker.service';
+import { HealthCheckService } from './services/health-check.service';
+import { NotificationModule } from '../notification/notification.module';
+import { PhishingEmailProcessor } from './processors/phishing-email.processor';
 
 @Module({
+  imports: [
+    NotificationModule,
+    BullModule.registerQueue({
+      name: 'phishing-email-queue',
+      defaultJobOptions: {
+        attempts: 3, // Retry failed jobs up to 3 times
+        backoff: {
+          type: 'exponential',
+          delay: 2000, // Start with 2 second delay, doubles each retry
+        },
+        removeOnComplete: 100, // Keep last 100 completed jobs for monitoring
+        removeOnFail: 200, // Keep last 200 failed jobs for debugging
+        timeout: 60000, // Job timeout: 60 seconds per email
+      },
+      limiter: {
+        max: 10, // Max 10 jobs processed
+        duration: 1000, // per 1 second (rate limiting)
+      },
+    }),
+  ],
   providers: [
     PhishingService,
     IncidentService,
@@ -31,6 +57,10 @@ import { AnalyticsService } from './services/analytics.service';
     PhishingTemplateService,
     EmailTrackingService,
     AnalyticsService,
+    PhishingQueueService,
+    CircuitBreakerService,
+    HealthCheckService,
+    PhishingEmailProcessor,
   ],
   controllers: [
     PhishingController,
@@ -54,6 +84,7 @@ import { AnalyticsService } from './services/analytics.service';
     PhishingTemplateService,
     EmailTrackingService,
     AnalyticsService,
+    PhishingQueueService,
   ],
 })
 export class DefendxPlusModule {}

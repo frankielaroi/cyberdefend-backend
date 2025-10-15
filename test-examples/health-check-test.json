@@ -1,0 +1,278 @@
+{
+  "description": "Health check endpoint test scenarios and expected responses",
+  "baseEndpoint": "GET /api/v1/defendx-plus/campaigns/system/health",
+  "quickEndpoint": "GET /api/v1/defendx-plus/campaigns/system/health/quick",
+  "scenarios": [
+    {
+      "scenario": "All Systems Healthy",
+      "description": "Perfect health - all services operational",
+      "expectedResponse": {
+        "status": "HEALTHY",
+        "timestamp": "2025-10-15T10:00:00Z",
+        "uptime": 3600000,
+        "version": "1.0.0",
+        "services": {
+          "database": {
+            "status": "HEALTHY",
+            "message": "Database is operational",
+            "metrics": {
+              "responseTime": "15ms",
+              "connected": true
+            }
+          },
+          "emailService": {
+            "status": "HEALTHY",
+            "message": "Email service is operational",
+            "metrics": {
+              "configured": true,
+              "circuitState": "CLOSED",
+              "uptime": "99.50",
+              "failures": 0,
+              "successes": 150
+            }
+          },
+          "queueService": {
+            "status": "HEALTHY",
+            "message": "Queue service is operational",
+            "metrics": {
+              "available": true,
+              "mode": "queue",
+              "service": "BullMQ"
+            }
+          },
+          "circuitBreaker": {
+            "status": "HEALTHY",
+            "message": "All circuit breakers are CLOSED",
+            "metrics": {
+              "totalCircuits": 1,
+              "openCircuits": 0,
+              "halfOpenCircuits": 0,
+              "circuits": [
+                {
+                  "serviceId": "email-service",
+                  "state": "CLOSED",
+                  "uptime": "99.50"
+                }
+              ]
+            }
+          }
+        },
+        "campaigns": {
+          "total": 25,
+          "running": 3,
+          "scheduled": 2,
+          "completed": 18,
+          "failed": 2
+        },
+        "emailJobs": {
+          "pending": 10,
+          "processing": 5,
+          "sent": 1500,
+          "failed": 8
+        },
+        "performance": {
+          "avgEmailSendTime": 250,
+          "emailSuccessRate": 99.47,
+          "campaignCompletionRate": 72.0
+        }
+      }
+    },
+    {
+      "scenario": "Degraded - Queue Service Unavailable",
+      "description": "System degraded but operational - using sync processing",
+      "expectedResponse": {
+        "status": "DEGRADED",
+        "timestamp": "2025-10-15T10:05:00Z",
+        "uptime": 3900000,
+        "version": "1.0.0",
+        "services": {
+          "database": {
+            "status": "HEALTHY",
+            "message": "Database is operational"
+          },
+          "emailService": {
+            "status": "HEALTHY",
+            "message": "Email service is operational"
+          },
+          "queueService": {
+            "status": "DEGRADED",
+            "message": "Queue service not available (using synchronous processing)",
+            "metrics": {
+              "available": false,
+              "mode": "synchronous"
+            }
+          },
+          "circuitBreaker": {
+            "status": "HEALTHY",
+            "message": "All circuit breakers are CLOSED"
+          }
+        },
+        "campaigns": {
+          "total": 25,
+          "running": 3,
+          "scheduled": 2,
+          "completed": 18,
+          "failed": 2
+        }
+      }
+    },
+    {
+      "scenario": "Degraded - Circuit Half-Open",
+      "description": "Email service recovering after failures",
+      "expectedResponse": {
+        "status": "DEGRADED",
+        "timestamp": "2025-10-15T10:31:00Z",
+        "services": {
+          "emailService": {
+            "status": "DEGRADED",
+            "message": "Email service is recovering (circuit HALF-OPEN)",
+            "metrics": {
+              "configured": true,
+              "circuitState": "HALF_OPEN",
+              "uptime": "85.00",
+              "failures": 15,
+              "successes": 85
+            }
+          },
+          "circuitBreaker": {
+            "status": "DEGRADED",
+            "message": "1 circuit breaker(s) are HALF-OPEN",
+            "metrics": {
+              "totalCircuits": 1,
+              "openCircuits": 0,
+              "halfOpenCircuits": 1
+            }
+          }
+        }
+      }
+    },
+    {
+      "scenario": "Unhealthy - Email Service Down",
+      "description": "Critical failure - email service circuit open",
+      "expectedResponse": {
+        "status": "UNHEALTHY",
+        "timestamp": "2025-10-15T10:30:00Z",
+        "services": {
+          "database": {
+            "status": "HEALTHY",
+            "message": "Database is operational"
+          },
+          "emailService": {
+            "status": "UNHEALTHY",
+            "message": "Email service circuit breaker is OPEN",
+            "metrics": {
+              "configured": true,
+              "circuitState": "OPEN",
+              "uptime": "50.00",
+              "failures": 50,
+              "successes": 50
+            }
+          },
+          "queueService": {
+            "status": "HEALTHY",
+            "message": "Queue service is operational"
+          },
+          "circuitBreaker": {
+            "status": "UNHEALTHY",
+            "message": "1 circuit breaker(s) are OPEN",
+            "metrics": {
+              "totalCircuits": 1,
+              "openCircuits": 1,
+              "halfOpenCircuits": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "scenario": "Unhealthy - Database Connection Lost",
+      "description": "Critical failure - database unavailable",
+      "expectedResponse": {
+        "status": "UNHEALTHY",
+        "timestamp": "2025-10-15T10:35:00Z",
+        "services": {
+          "database": {
+            "status": "UNHEALTHY",
+            "message": "Database connection failed: Connection timeout",
+            "lastCheck": "2025-10-15T10:35:00Z"
+          },
+          "emailService": {
+            "status": "HEALTHY",
+            "message": "Email service is operational"
+          }
+        }
+      }
+    },
+    {
+      "scenario": "High Performance Load",
+      "description": "System healthy but under heavy load",
+      "expectedResponse": {
+        "status": "HEALTHY",
+        "campaigns": {
+          "total": 150,
+          "running": 25,
+          "scheduled": 30,
+          "completed": 90,
+          "failed": 5
+        },
+        "emailJobs": {
+          "pending": 5000,
+          "processing": 100,
+          "sent": 50000,
+          "failed": 250
+        },
+        "performance": {
+          "avgEmailSendTime": 450,
+          "emailSuccessRate": 99.5,
+          "campaignCompletionRate": 60.0
+        }
+      }
+    }
+  ],
+  "quickHealthCheck": {
+    "description": "Lightweight health check for load balancers",
+    "endpoint": "GET /api/v1/defendx-plus/campaigns/system/health/quick",
+    "expectedResponse": {
+      "healthy": {
+        "status": "ok",
+        "timestamp": "2025-10-15T10:00:00Z"
+      },
+      "unhealthy": {
+        "status": "error",
+        "timestamp": "2025-10-15T10:00:00Z",
+        "error": "Database connection failed"
+      }
+    }
+  },
+  "monitoringIntegration": {
+    "prometheus": {
+      "endpoint": "GET /metrics",
+      "metrics": [
+        "phishing_campaigns_total",
+        "phishing_campaigns_running",
+        "phishing_emails_sent_total",
+        "phishing_emails_failed_total",
+        "circuit_breaker_state",
+        "email_send_duration_seconds"
+      ]
+    },
+    "alerting": {
+      "unhealthy": "Alert when status=UNHEALTHY for > 5 minutes",
+      "degraded": "Warning when status=DEGRADED for > 15 minutes",
+      "highFailureRate": "Alert when emailSuccessRate < 95%",
+      "circuitOpen": "Critical alert when circuit breaker opens"
+    }
+  },
+  "responseTimeTargets": {
+    "quickHealthCheck": "< 50ms",
+    "fullHealthCheck": "< 500ms",
+    "databaseCheck": "< 100ms",
+    "circuitBreakerCheck": "< 10ms"
+  },
+  "usageExamples": {
+    "kubernetes": "Use quick health check as liveness probe",
+    "monitoring": "Poll full health check every 60 seconds",
+    "loadBalancer": "Use quick check to determine if pod is ready",
+    "dashboard": "Display full health check data in admin panel"
+  }
+}

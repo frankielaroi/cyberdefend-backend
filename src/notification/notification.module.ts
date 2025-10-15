@@ -7,10 +7,12 @@ import { SmsService } from './services/sms.service';
 import { EmailProcessor } from './processors/email.processor';
 import { SmsProcessor } from './processors/sms.processor';
 import { DatabaseModule } from '../database/database.module';
+import { CommonModule } from '../common/common.module';
 
 @Module({
   imports: [
     DatabaseModule,
+    CommonModule,
     BullModule.registerQueue(
       {
         name: 'email-queue',

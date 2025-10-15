@@ -41,6 +41,11 @@ export const configValidation = Joi.object({
   MAILTRAP_FROM_EMAIL: Joi.string().email().default('noreply@cyber360.tech'),
   MAILTRAP_FROM_NAME: Joi.string().default('CyberDefend'),
   
+  // Email Rate Limiting
+  EMAIL_RATE_LIMIT_PER_SECOND: Joi.number().default(10),
+  EMAIL_RATE_LIMIT_PER_MINUTE: Joi.number().default(100),
+  EMAIL_RATE_LIMIT_PER_HOUR: Joi.number().default(1000),
+  
   // Arkesel SMS
   ARKESEL_API_KEY: Joi.string().required(),
   ARKESEL_SENDER_ID: Joi.string().default('CyberDefend'),
