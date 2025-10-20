@@ -23,7 +23,9 @@
     "db:reset": "prisma migrate reset",
     "db:seed": "ts-node prisma/seed.ts",
     "db:studio": "prisma studio",
-    "db:generate": "prisma generate"
+    "db:generate": "prisma generate",
+    "postbuild": "xcopy /E /I /Y generated\\prisma dist\\generated\\prisma",
+    "dev:watch-prisma": "npx chokidar-cli \"generated/prisma/**/*\" -c \"xcopy /E /I /Y generated\\prisma dist\\generated\\prisma\""
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.445.0",
@@ -86,6 +88,7 @@
     "@types/uuid": "^9.0.7",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
+    "chokidar-cli": "^3.0.0",
     "eslint": "^8.42.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-prettier": "^5.0.0",

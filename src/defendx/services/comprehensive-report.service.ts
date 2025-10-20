@@ -289,38 +289,90 @@ export class ComprehensiveReportService {
         where: { id: organizationId }
       });
 
-      if (!org) return null;
+      if (!org || !org.region) return null;
 
-      // Get benchmark data (simplified version)
-      const regionalBenchmark = await this.prisma.benchmarkData.findFirst({
-        where: {
-          region: org.region || 'Unknown',
-          sector: org.sector,
-          size: org.size,
-          period: new Date().getFullYear() + '-Q' + Math.ceil((new Date().getMonth() + 1) / 3)
-        }
-      });
+      const period = new Date().getFullYear() + '-Q' + Math.ceil((new Date().getMonth() + 1) / 3);
+
+      // Get actual benchmark data from the database
+      const [regionalBenchmark, sectoralBenchmark, sizeBenchmark] = await Promise.all([
+        // Regional benchmark
+        this.prisma.benchmarkData.findFirst({
+          where: { region: org.region, period }
+        }),
+        // Sectoral benchmark
+        this.prisma.benchmarkData.findFirst({
+          where: { sector: org.sector, period }
+        }),
+        // Size benchmark
+        this.prisma.benchmarkData.findFirst({
+          where: { size: org.size, period }
+        })
+      ]);
+
+      // Calculate actual percentiles from organization data
+      const [regionalPercentile, sectoralPercentile, sizePercentile] = await Promise.all([
+        this.calculatePercentilePosition(org.csiScore, { region: org.region }),
+        this.calculatePercentilePosition(org.csiScore, { sector: org.sector }),
+        this.calculatePercentilePosition(org.csiScore, { size: org.size })
+      ]);
 
       return {
         regional: {
-          average: regionalBenchmark?.avgScore || 68,
-          position: "75th percentile",
-          totalOrganizations: regionalBenchmark?.totalOrgs || 1250
+          average: regionalBenchmark?.avgScore || 0,
+          position: regionalPercentile ? `${regionalPercentile}th percentile` : 'N/A',
+          totalOrganizations: regionalBenchmark?.totalOrgs || 0
         },
         sectoral: {
-          average: 71,
-          position: "60th percentile", 
-          totalOrganizations: 340
+          average: sectoralBenchmark?.avgScore || 0,
+          position: sectoralPercentile ? `${sectoralPercentile}th percentile` : 'N/A',
+          totalOrganizations: sectoralBenchmark?.totalOrgs || 0
         },
         sizeCategory: {
-          average: 73,
-          position: "55th percentile",
-          totalOrganizations: 890
+          average: sizeBenchmark?.avgScore || 0,
+          position: sizePercentile ? `${sizePercentile}th percentile` : 'N/A',
+          totalOrganizations: sizeBenchmark?.totalOrgs || 0
         }
       };
     } catch (error) {
+      console.error('Error getting benchmarking data:', error);
       return null;
     }
+  }
+
+  // Calculate percentile position based on actual organization data
+  private async calculatePercentilePosition(
+    score: number | null,
+    filter: { region?: string; sector?: string; size?: string }
+  ): Promise<number | null> {
+    if (!score) return null;
+
+    const where: any = {
+      csiScore: { not: null },
+      isActive: true,
+    };
+
+    if (filter.region) where.region = filter.region;
+    if (filter.sector) where.sector = filter.sector;
+    if (filter.size) where.size = filter.size;
+
+    // Get all scores in this category
+    const organizations = await this.prisma.organization.findMany({
+      where,
+      select: { csiScore: true },
+      orderBy: { csiScore: 'asc' },
+    });
+
+    if (organizations.length === 0) return null;
+
+    // Count how many organizations have a lower score
+    const lowerCount = organizations.filter(
+      (o) => o.csiScore !== null && o.csiScore < score
+    ).length;
+
+    // Calculate percentile
+    const percentile = Math.round((lowerCount / organizations.length) * 100);
+
+    return percentile;
   }
 
   // Compliance Framework Mapping

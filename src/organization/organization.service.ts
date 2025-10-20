@@ -1,5 +1,7 @@
 import { Injectable, NotFoundException, ForbiddenException, ConflictException, BadRequestException, UnauthorizedException } from '@nestjs/common';
 import { PrismaService } from '../database/prisma.service';
+import { NotificationService } from '../notification/services/notification.service';
+import { SendEmailDto } from '../notification/dto/notification.dto';
 import { CreateOrganizationDto } from './dto/create-organization.dto';
 import { UpdateOrganizationDto } from './dto/update-organization.dto';
 import { QueryOrganizationsDto } from './dto/query-organizations.dto';
@@ -19,7 +21,10 @@ import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class OrganizationService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private notificationService: NotificationService,
+  ) {}
 
   async findAll(query: QueryOrganizationsDto) {
     const { search, sector, size, page = 1, limit = 10 } = query;
@@ -704,6 +709,7 @@ export class OrganizationService {
     const inviteCode = await this.prisma.inviteCode.create({
       data: {
         code: `INV-${Math.random().toString(36).substring(2, 8).toUpperCase()}`,
+        email: inviteDto.email,
         organizationId: orgId,
         createdBy: userId,
         expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
@@ -711,13 +717,21 @@ export class OrganizationService {
       },
     });
 
-    // TODO: Send invitation email
-    // await this.emailService.sendInvitation({
-    //   to: inviteDto.email,
-    //   organizationName: organization.name,
-    //   inviteCode: inviteCode.code,
-    //   message: inviteDto.message,
-    // });
+    // Send invitation email
+    const invitationEmail: SendEmailDto = {
+      to: [inviteDto.email],
+      subject: `You're invited to join ${organization.name}`,
+      htmlContent: this.generateInvitationEmailHtml(organization.name, inviteCode.code, inviteDto.message),
+      textContent: this.generateInvitationEmailText(organization.name, inviteCode.code, inviteDto.message),
+      category: 'organization-invitation',
+    };
+
+    try {
+      await this.notificationService.sendEmail(invitationEmail);
+    } catch (error) {
+      // Log the error but don't fail the invitation creation
+      console.error('Failed to send invitation email:', error);
+    }
 
     return {
       success: true,
@@ -851,6 +865,9 @@ export class OrganizationService {
         isActive: true,
         expiresAt: { gt: new Date() },
       },
+      include: {
+        organization: true,
+      },
     });
 
     if (!invitation) {
@@ -865,11 +882,23 @@ export class OrganizationService {
       },
     });
 
-    // TODO: Resend invitation email
-    // await this.emailService.resendInvitation({
-    //   inviteCode: invitation.code,
-    //   message: resendDto.message,
-    // });
+    // Resend invitation email
+    if (invitation.email) {
+      const resendEmail: SendEmailDto = {
+        to: [invitation.email],
+        subject: `Reminder: You're invited to join ${invitation.organization.name}`,
+        htmlContent: this.generateInvitationEmailHtml(invitation.organization.name, invitation.code, resendDto.message),
+        textContent: this.generateInvitationEmailText(invitation.organization.name, invitation.code, resendDto.message),
+        category: 'organization-invitation-resend',
+      };
+
+      try {
+        await this.notificationService.sendEmail(resendEmail);
+      } catch (error) {
+        // Log the error but don't fail the resend
+        console.error('Failed to resend invitation email:', error);
+      }
+    }
 
     return {
       success: true,
@@ -925,6 +954,75 @@ export class OrganizationService {
     }
 
     return user;
+  }
+
+  private generateInvitationEmailHtml(organizationName: string, inviteCode: string, customMessage?: string): string {
+    const baseUrl = process.env.FRONTEND_URL || 'https://app.cyberdefend.tech';
+    const joinUrl = `${baseUrl}/join-organization?code=${inviteCode}`;
+
+    return `
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <meta charset="utf-8">
+          <title>You're invited to join ${organizationName}</title>
+          <style>
+            body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+            .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+            .header { background-color: #1a365d; color: white; padding: 20px; text-align: center; }
+            .content { padding: 20px; background-color: #f8f9fa; }
+            .button { display: inline-block; background-color: #3182ce; color: white; padding: 12px 24px; text-decoration: none; border-radius: 4px; margin: 20px 0; }
+            .footer { font-size: 12px; color: #666; text-align: center; padding: 20px; }
+            .code { background-color: #e2e8f0; padding: 10px; border-radius: 4px; font-family: monospace; margin: 10px 0; }
+          </style>
+        </head>
+        <body>
+          <div class="container">
+            <div class="header">
+              <h1>You're Invited!</h1>
+            </div>
+            <div class="content">
+              <h2>Welcome to ${organizationName}</h2>
+              <p>You've been invited to join <strong>${organizationName}</strong> on CyberDefend, our cybersecurity assessment platform.</p>
+              
+              ${customMessage ? `<p><em>"${customMessage}"</em></p>` : ''}
+              
+              <p>To accept this invitation, please use the following invite code:</p>
+              <div class="code">${inviteCode}</div>
+              
+              <p>Or click the button below to join directly:</p>
+              <a href="${joinUrl}" class="button">Join ${organizationName}</a>
+              
+              <p><strong>Important:</strong> This invitation will expire in 7 days. If you have any questions, please contact your organization administrator.</p>
+            </div>
+            <div class="footer">
+              <p>This email was sent by CyberDefend. If you didn't expect this invitation, you can safely ignore this email.</p>
+            </div>
+          </div>
+        </body>
+      </html>
+    `;
+  }
+
+  private generateInvitationEmailText(organizationName: string, inviteCode: string, customMessage?: string): string {
+    const baseUrl = process.env.FRONTEND_URL || 'https://app.cyberdefend.tech';
+    const joinUrl = `${baseUrl}/join-organization?code=${inviteCode}`;
+
+    return `
+You're invited to join ${organizationName}!
+
+You've been invited to join ${organizationName} on CyberDefend, our cybersecurity assessment platform.
+
+${customMessage ? `"${customMessage}"` : ''}
+
+To accept this invitation, use this invite code: ${inviteCode}
+
+Or visit: ${joinUrl}
+
+Important: This invitation will expire in 7 days.
+
+This email was sent by CyberDefend. If you didn't expect this invitation, you can safely ignore this email.
+    `.trim();
   }
 
 }

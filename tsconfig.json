@@ -18,15 +18,42 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "@/*": ["src/*"],
-      "@auth/*": ["src/auth/*"],
-      "@common/*": ["src/common/*"],
-      "@config/*": ["src/config/*"],
-      "@defendx/*": ["src/defendx/*"],
-      "@defendxplus/*": ["src/defendxplus/*"],
-      "@billing/*": ["src/billing/*"],
-      "@database/*": ["src/database/*"],
-      "@utils/*": ["src/utils/*"]
+      "@/*": [
+        "src/*"
+      ],
+      "@auth/*": [
+        "src/auth/*"
+      ],
+      "@common/*": [
+        "src/common/*"
+      ],
+      "@config/*": [
+        "src/config/*"
+      ],
+      "@defendx/*": [
+        "src/defendx/*"
+      ],
+      "@defendxplus/*": [
+        "src/defendxplus/*"
+      ],
+      "@billing/*": [
+        "src/billing/*"
+      ],
+      "@database/*": [
+        "src/database/*"
+      ],
+      "@utils/*": [
+        "src/utils/*"
+      ],
+      "@notification/*": [
+        "src/notification/*"
+      ],
+      "@organization/*": [
+        "src/organization/*"
+      ],
+      "@user/*": [
+        "src/user/*"
+      ]
     }
   }
 }

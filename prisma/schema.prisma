@@ -46,6 +46,7 @@ model User {
   sentInvites        OrganizationMember[] @relation("UserInvites")
   notificationHistory NotificationHistory[]
   notificationPreferences NotificationPreference?
+  emailTracking      EmailTracking[]
 
   @@map("users")
 }
@@ -123,6 +124,7 @@ model Organization {
 model InviteCode {
   id             String   @id @default(uuid())
   code           String   @unique
+  email          String?
   organizationId String
   createdBy      String
   expiresAt      DateTime
@@ -409,6 +411,7 @@ model PhishingCampaign {
   creator         User                 @relation("CampaignCreator", fields: [createdBy], references: [id])
   targets         PhishingTarget[]
   events          PhishingEvent[]
+  emailTracking   EmailTracking[]
 
   @@map("phishing_campaigns")
 }
@@ -939,6 +942,7 @@ model NotificationHistory {
   // Relationships
   user        User?               @relation(fields: [userId], references: [id])
   userId      String?
+  emailTracking EmailTracking[]
 
   @@map("notification_history")
 }
@@ -975,6 +979,44 @@ model NotificationPreference {
   userId            String   @unique
 
   @@map("notification_preferences")
+}
+
+// Email Tracking for open detection
+model EmailTracking {
+  id                String    @id @default(uuid())
+  trackingId        String    @unique // Unique ID embedded in tracking pixel
+  recipientEmail    String    // Email address of recipient
+  emailSubject      String?   // Subject of the email sent
+  emailType         String?   // Type: 'phishing', 'notification', 'assessment', etc.
+  sentAt            DateTime  @default(now())
+  openedAt          DateTime? // When email was first opened
+  openCount         Int       @default(0) // Number of times opened
+  lastOpenedAt      DateTime? // Most recent open time
+  
+  // Tracking metadata
+  ipAddress         String?   // IP address of opener
+  userAgent         String?   // Browser/email client user agent
+  location          String?   // Geolocation data (if available)
+  deviceType        String?   // desktop, mobile, tablet
+  
+  // Optional relationships
+  userId            String?
+  user              User?     @relation(fields: [userId], references: [id])
+  
+  notificationHistoryId String?
+  notificationHistory   NotificationHistory? @relation(fields: [notificationHistoryId], references: [id])
+  
+  phishingCampaignId String?
+  phishingCampaign   PhishingCampaign? @relation(fields: [phishingCampaignId], references: [id])
+  
+  metadata          String?   // JSON: additional tracking data
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  @@index([trackingId])
+  @@index([recipientEmail])
+  @@index([sentAt])
+  @@map("email_tracking")
 }
 
 // Enums for Notification System

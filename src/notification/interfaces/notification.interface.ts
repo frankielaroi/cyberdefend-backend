@@ -46,6 +46,7 @@ export interface NotificationJob {
 export interface NotificationResult {
   success: boolean;
   messageId?: string;
+  trackingId?: string;
   error?: string;
   timestamp: Date;
   attempts: number;

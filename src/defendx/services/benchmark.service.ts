@@ -8,10 +8,18 @@ export class BenchmarkService {
   async getBenchmarks(region: string, sector: string, size: string) {
     const period = this.getCurrentPeriod();
 
-    const [regional, sectoral, sizeBased] = await Promise.all([
+    // Try to get from cached benchmark data first
+    const [regionalCached, sectoralCached, sizeCached] = await Promise.all([
       this.getRegionalBenchmark(region, period),
       this.getSectoralBenchmark(sector, period),
       this.getSizeBasedBenchmark(size, period),
+    ]);
+
+    // If cached data exists, use it; otherwise calculate on-the-fly from actual organizations
+    const [regional, sectoral, sizeBased] = await Promise.all([
+      regionalCached || this.calculateLiveBenchmark({ region }),
+      sectoralCached || this.calculateLiveBenchmark({ sector }),
+      sizeCached || this.calculateLiveBenchmark({ size }),
     ]);
 
     return {
@@ -25,21 +33,44 @@ export class BenchmarkService {
     const benchmark = await this.prisma.benchmarkData.findFirst({
       where: { region, period },
     });
-    return benchmark?.avgScore || 0;
+    return benchmark?.avgScore || null;
   }
 
   private async getSectoralBenchmark(sector: string, period: string) {
     const benchmark = await this.prisma.benchmarkData.findFirst({
       where: { sector: sector as any, period },
     });
-    return benchmark?.avgScore || 0;
+    return benchmark?.avgScore || null;
   }
 
   private async getSizeBasedBenchmark(size: string, period: string) {
     const benchmark = await this.prisma.benchmarkData.findFirst({
       where: { size: size as any, period },
     });
-    return benchmark?.avgScore || 0;
+    return benchmark?.avgScore || null;
+  }
+
+  /**
+   * Calculate live benchmark from actual organization data
+   */
+  private async calculateLiveBenchmark(filter: { region?: string; sector?: string; size?: string }): Promise<number> {
+    const where: any = {
+      csiScore: { not: null },
+      isActive: true,
+    };
+
+    if (filter.region) where.region = filter.region;
+    if (filter.sector) where.sector = filter.sector;
+    if (filter.size) where.size = filter.size;
+
+    const result = await this.prisma.organization.aggregate({
+      where,
+      _avg: {
+        csiScore: true,
+      },
+    });
+
+    return result._avg.csiScore || 0;
   }
 
   private getCurrentPeriod(): string {
@@ -49,89 +80,174 @@ export class BenchmarkService {
     return `${year}-Q${quarter}`;
   }
 
+  /**
+   * Calculate percentile ranking for an organization based on actual company data
+   */
+  async calculatePercentile(organizationId: string): Promise<{
+    industryPercentile: number | null;
+    sizePercentile: number | null;
+    regionPercentile: number | null;
+  }> {
+    const org = await this.prisma.organization.findUnique({
+      where: { id: organizationId },
+      select: {
+        csiScore: true,
+        sector: true,
+        size: true,
+        region: true,
+      },
+    });
+
+    if (!org || !org.csiScore) {
+      return {
+        industryPercentile: null,
+        sizePercentile: null,
+        regionPercentile: null,
+      };
+    }
+
+    // Calculate industry (sector) percentile
+    const industryPercentile = await this.calculatePercentileForFilter(
+      org.csiScore,
+      { sector: org.sector }
+    );
+
+    // Calculate size percentile
+    const sizePercentile = await this.calculatePercentileForFilter(
+      org.csiScore,
+      { size: org.size }
+    );
+
+    // Calculate regional percentile
+    const regionPercentile = org.region 
+      ? await this.calculatePercentileForFilter(org.csiScore, { region: org.region })
+      : null;
+
+    return {
+      industryPercentile,
+      sizePercentile,
+      regionPercentile,
+    };
+  }
+
+  /**
+   * Calculate percentile for a specific filter
+   */
+  private async calculatePercentileForFilter(
+    score: number,
+    filter: { region?: string; sector?: string; size?: string }
+  ): Promise<number | null> {
+    const where: any = {
+      csiScore: { not: null },
+      isActive: true,
+    };
+
+    if (filter.region) where.region = filter.region;
+    if (filter.sector) where.sector = filter.sector;
+    if (filter.size) where.size = filter.size;
+
+    // Get all scores in this category
+    const organizations = await this.prisma.organization.findMany({
+      where,
+      select: { csiScore: true },
+      orderBy: { csiScore: 'asc' },
+    });
+
+    if (organizations.length === 0) return null;
+
+    // Count how many organizations have a lower score
+    const lowerCount = organizations.filter(
+      (o) => o.csiScore !== null && o.csiScore < score
+    ).length;
+
+    // Calculate percentile (what percentage of orgs this org is better than)
+    const percentile = (lowerCount / organizations.length) * 100;
+
+    return Math.round(percentile);
+  }
+
   async updateBenchmarks() {
     const period = this.getCurrentPeriod();
     
-    // Calculate regional benchmarks
-    const regionalStats = await this.prisma.organization.groupBy({
-      by: ['region'],
+    // Get all combinations of region, sector, and size from actual organizations
+    const allOrganizations = await this.prisma.organization.findMany({
       where: {
         csiScore: { not: null },
         isActive: true,
       },
-      _avg: {
+      select: {
+        region: true,
+        sector: true,
+        size: true,
         csiScore: true,
-      },
-      _count: {
-        id: true,
       },
     });
 
-    for (const stat of regionalStats) {
-      await this.prisma.benchmarkData.upsert({
-        where: {
-          region_sector_size_period: {
-            region: stat.region,
-            sector: 'TECHNOLOGY', // Default sector for regional stats
-            size: 'MEDIUM', // Default size for regional stats
-            period,
-          },
-        },
-        update: {
-          avgScore: stat._avg.csiScore || 0,
-          totalOrgs: stat._count.id,
-        },
-        create: {
-          region: stat.region,
-          sector: 'TECHNOLOGY',
-          size: 'MEDIUM',
-          avgScore: stat._avg.csiScore || 0,
-          totalOrgs: stat._count.id,
-          period,
-        },
-      });
+    // Group by all combinations of region, sector, and size
+    const benchmarkMap = new Map<string, { scores: number[]; region: string; sector: string; size: string }>();
+
+    for (const org of allOrganizations) {
+      if (!org.csiScore || !org.region) continue;
+
+      // Create benchmark entries for different combinations
+      const combinations = [
+        // By region only
+        { region: org.region, sector: org.sector, size: org.size },
+        // Add more granular combinations as needed
+      ];
+
+      for (const combo of combinations) {
+        const key = `${combo.region}-${combo.sector}-${combo.size}`;
+        if (!benchmarkMap.has(key)) {
+          benchmarkMap.set(key, {
+            scores: [],
+            region: combo.region,
+            sector: combo.sector,
+            size: combo.size,
+          });
+        }
+        benchmarkMap.get(key)!.scores.push(org.csiScore);
+      }
     }
 
-    // Calculate sectoral benchmarks
-    const sectoralStats = await this.prisma.organization.groupBy({
-      by: ['sector'],
-      where: {
-        csiScore: { not: null },
-        isActive: true,
-      },
-      _avg: {
-        csiScore: true,
-      },
-      _count: {
-        id: true,
-      },
-    });
-
-    for (const stat of sectoralStats) {
-      await this.prisma.benchmarkData.upsert({
-        where: {
-          region_sector_size_period: {
-            region: 'Greater Accra', // Default region for sectoral stats
-            sector: stat.sector,
-            size: 'MEDIUM',
+    // Upsert all benchmark data
+    const upsertPromises = [];
+    for (const [key, data] of benchmarkMap.entries()) {
+      const avgScore = data.scores.reduce((a, b) => a + b, 0) / data.scores.length;
+      
+      upsertPromises.push(
+        this.prisma.benchmarkData.upsert({
+          where: {
+            region_sector_size_period: {
+              region: data.region,
+              sector: data.sector as any,
+              size: data.size as any,
+              period,
+            },
+          },
+          update: {
+            avgScore,
+            totalOrgs: data.scores.length,
+          },
+          create: {
+            region: data.region,
+            sector: data.sector as any,
+            size: data.size as any,
+            avgScore,
+            totalOrgs: data.scores.length,
             period,
           },
-        },
-        update: {
-          avgScore: stat._avg.csiScore || 0,
-          totalOrgs: stat._count.id,
-        },
-        create: {
-          region: 'Greater Accra',
-          sector: stat.sector,
-          size: 'MEDIUM',
-          avgScore: stat._avg.csiScore || 0,
-          totalOrgs: stat._count.id,
-          period,
-        },
-      });
+        })
+      );
     }
 
-    return { message: 'Benchmarks updated successfully' };
+    await Promise.all(upsertPromises);
+
+    return { 
+      message: 'Benchmarks updated successfully',
+      period,
+      totalBenchmarks: benchmarkMap.size,
+      totalOrganizations: allOrganizations.length,
+    };
   }
 }

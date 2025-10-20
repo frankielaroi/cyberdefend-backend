@@ -759,34 +759,13 @@ export class AssessmentService {
   }
 
   private async getBenchmarkData(organizationId: string) {
-    const org = await this.prisma.organization.findUnique({
-      where: { id: organizationId }
-    });
-
-    if (!org) {
-      return { industryPercentile: null, sizePercentile: null, regionPercentile: null };
-    }
-
-    // Use default region if organization region is null
-    const region = org.region || 'Unknown';
-    const currentPeriod = new Date().getFullYear() + '-Q' + Math.ceil((new Date().getMonth() + 1) / 3);
-
-    // Get benchmark data from database
-    const benchmarkData = await this.prisma.benchmarkData.findFirst({
-      where: {
-        region: region,
-        sector: org.sector,
-        size: org.size,
-        period: currentPeriod
-      }
-    });
-
-    // This would be calculated based on actual benchmark data
-    // For now, return placeholder values
+    // Use the BenchmarkService to calculate real percentiles from actual company data
+    const percentiles = await this.benchmarkService.calculatePercentile(organizationId);
+    
     return {
-      industryPercentile: benchmarkData ? 65 : null,
-      sizePercentile: benchmarkData ? 72 : null,
-      regionPercentile: benchmarkData ? 58 : null
+      industryPercentile: percentiles.industryPercentile,
+      sizePercentile: percentiles.sizePercentile,
+      regionPercentile: percentiles.regionPercentile
     };
   }
 

@@ -73,15 +73,14 @@ export class CSIDirectoryController {
     @Query('page') page?: number,
     @Query('limit') limit?: number,
   ) {
-    const query: CSIDirectoryQueryDto = {
+    const query: EnhancedCSIDirectoryQueryDto = {
       region,
       sector: sector as any,
       size: size as any,
-      skip: page ? (page - 1) * (limit || 50) : 0,
-      take: limit || 50,
-      includePrivate: false
+      page: page || 1,
+      limit: limit || 50,
     };
-    return this.assessmentService.getCSIDirectory(query);
+    return this.defendxService.getCSIDirectory(query);
   }
 
   @Public()

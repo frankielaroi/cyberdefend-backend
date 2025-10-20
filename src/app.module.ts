@@ -14,6 +14,7 @@ import { OrganizationModule } from './organization/organization.module';
 import { UserModule } from './user/user.module';
 import { CommonModule } from './common/common.module';
 import { NotificationModule } from './notification/notification.module';
+import { TrackingModule } from './common/tracking.module';
 import { configValidation } from './config/config.validation';
 
 @Module({
@@ -48,6 +49,7 @@ import { configValidation } from './config/config.validation';
     // Core modules
     DatabaseModule,
     CommonModule,
+    TrackingModule,
     AuthModule,
     DefendxModule,
     DefendxPlusModule,

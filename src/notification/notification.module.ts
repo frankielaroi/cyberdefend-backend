@@ -8,11 +8,13 @@ import { EmailProcessor } from './processors/email.processor';
 import { SmsProcessor } from './processors/sms.processor';
 import { DatabaseModule } from '../database/database.module';
 import { CommonModule } from '../common/common.module';
+import { TrackingModule } from '../common/tracking.module';
 
 @Module({
   imports: [
     DatabaseModule,
     CommonModule,
+    TrackingModule,
     BullModule.registerQueue(
       {
         name: 'email-queue',

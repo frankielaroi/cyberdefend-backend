@@ -877,15 +877,14 @@ export class PhishingCampaignService {
         const result = await this.circuitBreaker.execute(
           'email-service',
           async () => {
-            return await this.emailService.sendBulkEmail(
-              personalizedSubject,
-              emailWithTracking,
-              [target.email],
-              true, // isHtml
-              'Phishing Campaign',
-              campaign.senderEmail,
-              campaign.senderName
-            );
+            return await this.emailService.sendEmail({
+              to: target.email,
+              subject: personalizedSubject,
+              htmlContent: emailWithTracking,
+              category: 'Phishing Campaign',
+              fromEmail: campaign.senderEmail,
+              fromName: campaign.senderName
+            });
           },
           // Fallback: mark job for retry instead of failing immediately
           async () => {
@@ -1233,7 +1232,7 @@ export class PhishingCampaignService {
     content = content.replace(/{{trackingUrl}}/g, trackingUrl);
 
     // Insert tracking pixel at the end of the body
-    const trackingPixelUrl = `${process.env.APP_URL || 'http://localhost:3000'}/api/v1/defendxplus/phishing/track/open/${campaignId}/${targetId}`;
+    const trackingPixelUrl = `${process.env.APP_URL || 'http://localhost:3000'}/api/v1/defendx-plus/campaigns/track/open/${campaignId}/${targetId}`;
     const trackingPixel = `<img src="${trackingPixelUrl}" width="1" height="1" alt="" style="display:none;" />`;
 
     // Insert before closing body tag, or append if no body tag
