@@ -30,7 +30,7 @@ async function bootstrap() {
 
   // CORS configuration
   app.enableCors({
-    origin: ['https://www.cyber360.tech', 'http://localhost:5173'],
+    origin: ['https://www.cyber360.tech', 'http://localhost:5173','https://cyberdefend360.netlify.app'],
     credentials: true,
   });
 
