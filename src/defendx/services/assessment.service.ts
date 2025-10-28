@@ -17,7 +17,16 @@ import {
   CompleteAnonymousAssessmentDto,
   TransferAnonymousAssessmentDto
 } from '../dto/assessment.dto';
-import { AssessmentType, AssessmentStatus, CSITier, RiskTier } from '../../../generated/prisma';
+import { AssessmentType, AssessmentStatus, CSITier, RiskTier, Sector, OrganizationSize } from '../../../generated/prisma';
+
+interface RegionalHeatmapData {
+  region: string;
+  averageScore: number;
+  assessmentCount: number;
+}
+
+import { PublicAssessmentResultDto } from '../dto/public-assessment.dto';
+
 import { QuestionService } from './question.service';
 import { BenchmarkService } from './benchmark.service';
 
@@ -30,14 +39,78 @@ export class AssessmentService {
   ) {}
 
   /**
+   * Get public assessments with filtering and privacy controls
+   */
+  async getPublicAssessments(query: CSIDirectoryQueryDto): Promise<PublicAssessmentResultDto> {
+    const { page = 1, limit = 20, sector, region, size, minScore, maxScore } = query;
+    const skip = (page - 1) * limit;
+
+    // Build the where clause for filtering
+    const whereClause = {
+      status: AssessmentStatus.COMPLETED,
+      organization: {
+        isPublic: true,
+        ...(sector && { sector: sector as any }),
+        ...(region && { region }),
+        ...(size && { size: size as any }),
+      },
+      ...(minScore && { score: { gte: minScore } }),
+      ...(maxScore && { score: { lte: maxScore } }),
+    };
+
+    // Get total count for pagination
+    const total = await this.prisma.assessment.count({
+      where: whereClause
+    });
+
+    // Get filtered and paginated results
+    const assessments = await this.prisma.assessment.findMany({
+      where: whereClause,
+      skip,
+      take: limit,
+      orderBy: { score: 'desc' },
+      select: {
+        id: true,
+        score: true,
+        riskTier: true,
+        completedAt: true,
+        organization: {
+          select: {
+            id: true,
+            name: true,
+            sector: true,
+            region: true,
+            size: true,
+          }
+        }
+      }
+    });
+
+    // Transform the results
+    const items = assessments.map(assessment => ({
+      id: assessment.id,
+      organizationId: assessment.organization.id,
+      organizationName: assessment.organization.name,
+      score: assessment.score,
+      tier: assessment.riskTier,
+      sector: assessment.organization.sector,
+      region: assessment.organization.region,
+      size: assessment.organization.size,
+      lastAssessmentDate: assessment.completedAt
+    }));
+
+    return {
+      items,
+      total,
+      page,
+      limit
+    };
+  }
+
+  /**
    * Create a new assessment
    */
   async createAssessment(userId: string, dto: CreateAssessmentDto) {
-    // Check if this is an anonymous assessment (has sessionId)
-    if ((dto as any).sessionId) {
-      return this.createAnonymousAssessment(dto as any);
-    }
-
     // Verify user has access to the organization
     const membership = await this.prisma.organizationMember.findFirst({
       where: {
@@ -69,12 +142,10 @@ export class AssessmentService {
         description: dto.description,
         type: dto.type || AssessmentType.CSI_ASSESSMENT,
         organizationId: dto.organizationId,
-        userId,
         status: AssessmentStatus.DRAFT
       },
       include: {
-        organization: true,
-        user: true
+        organization: true
       }
     });
 
@@ -89,7 +160,6 @@ export class AssessmentService {
       where: { id },
       include: {
         organization: true,
-        user: true,
         responses: {
           include: {
             question: {
@@ -108,7 +178,7 @@ export class AssessmentService {
       throw new NotFoundException('Assessment not found');
     }
 
-    // Check if user has access (organization membership or transferred assessment)
+    // Check if user has access to the organization
     const hasAccess = await this.checkUserAccess(userId, assessment.organizationId) ||
                      (assessment.transferredToUserId === userId);
     if (!hasAccess) {
@@ -177,7 +247,6 @@ export class AssessmentService {
         where,
         include: {
           organization: true,
-          user: true,
           result: true
         },
         orderBy: { createdAt: 'desc' },
@@ -212,8 +281,7 @@ export class AssessmentService {
         startedAt: new Date()
       },
       include: {
-        organization: true,
-        user: true
+        organization: true
       }
     });
 
@@ -589,12 +657,6 @@ export class AssessmentService {
           status: true,
           score: true,
           completedAt: true,
-          user: {
-            select: {
-              firstName: true,
-              lastName: true,
-            },
-          },
         },
         orderBy: { createdAt: 'desc' },
         take: 5,
@@ -648,7 +710,6 @@ export class AssessmentService {
         status: assessment.status,
         score: assessment.score,
         completedAt: assessment.completedAt,
-        createdBy: `${assessment.user.firstName} ${assessment.user.lastName}`,
       })),
     };
   }
@@ -712,7 +773,7 @@ export class AssessmentService {
       
       totalScore += score;
       maxTotalScore += maxScore;
-    });
+    }); 
 
     // Calculate category percentages
     const categoryPercentages: Record<string, number> = {};
@@ -1054,7 +1115,6 @@ export class AssessmentService {
     const transferredAssessment = await this.prisma.assessment.update({
       where: { id: assessment.id },
       data: {
-        userId,
         organizationId,
         isAnonymous: false,
         transferredToUserId: userId,
@@ -1062,7 +1122,6 @@ export class AssessmentService {
       },
       include: {
         organization: true,
-        user: true,
         responses: true
       }
     });
@@ -1071,7 +1130,7 @@ export class AssessmentService {
       success: true,
       assessmentId: transferredAssessment.id,
       transferredTo: {
-        userId: transferredAssessment.userId,
+        userId: transferredAssessment.transferredToUserId,
         organizationId: transferredAssessment.organizationId
       }
     };
@@ -1307,6 +1366,8 @@ export class AssessmentService {
     else if (percentage >= 41) riskTier = RiskTier.MEDIUM;
     else if (percentage >= 21) riskTier = RiskTier.HIGH;
     else riskTier = RiskTier.VERY_HIGH;
+
+
 
     return {
       score: percentage,

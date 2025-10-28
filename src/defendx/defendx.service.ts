@@ -572,13 +572,15 @@ export class DefendxService {
     });
 
     return {
-      success: true,
-      data: {
-        regions,
-        national: {
-          averageScore: nationalStats._avg.csiScore || 0,
-          totalOrganizations: nationalStats._count._all
-        }
+      regions: regions.map(r => ({
+        region: r.name,
+        averageScore: r.averageScore,
+        assessmentCount: r.organizationCount
+      })),
+      lastUpdated: new Date(),
+      national: {
+        averageScore: nationalStats._avg.csiScore || 0,
+        totalOrganizations: nationalStats._count._all
       }
     };
   }

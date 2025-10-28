@@ -98,6 +98,36 @@ export class CSIDirectoryQueryDto {
   region?: string;
 
   @ApiPropertyOptional({
+    description: 'Filter by minimum CSI score',
+    example: 70,
+  })
+  @IsOptional()
+  @Type(() => Number)
+  @IsNumber()
+  @Min(0)
+  @Max(100)
+  minScore?: number;
+
+  @ApiPropertyOptional({
+    description: 'Filter by maximum CSI score',
+    example: 100,
+  })
+  @IsOptional()
+  @Type(() => Number)
+  @IsNumber()
+  @Min(0)
+  @Max(100)
+  maxScore?: number;
+
+  @ApiPropertyOptional({
+    description: 'Only show organizations that have opted to be public',
+    example: true,
+  })
+  @IsOptional()
+  @IsBoolean()
+  publicOnly?: boolean;
+
+  @ApiPropertyOptional({
     description: 'Filter by organization size',
     enum: OrganizationSize,
     example: OrganizationSize.LARGE,
@@ -106,31 +136,8 @@ export class CSIDirectoryQueryDto {
   @IsEnum(OrganizationSize, { message: 'Please provide a valid organization size' })
   size?: OrganizationSize;
 
-  @ApiPropertyOptional({
-    description: 'Minimum score filter',
-    example: 70,
-    minimum: 0,
-    maximum: 100,
-  })
-  @IsOptional()
-  @Type(() => Number)
-  @IsNumber({}, { message: 'Minimum score must be a number' })
-  @Min(0, { message: 'Minimum score cannot be negative' })
-  @Max(100, { message: 'Minimum score cannot exceed 100' })
-  minScore?: number;
+  // minScore and maxScore are already defined above
 
-  @ApiPropertyOptional({
-    description: 'Maximum score filter',
-    example: 100,
-    minimum: 0,
-    maximum: 100,
-  })
-  @IsOptional()
-  @Type(() => Number)
-  @IsNumber({}, { message: 'Maximum score must be a number' })
-  @Min(0, { message: 'Maximum score cannot be negative' })
-  @Max(100, { message: 'Maximum score cannot exceed 100' })
-  maxScore?: number;
 
   @ApiPropertyOptional({
     description: 'Filter by performance tier',
@@ -363,30 +370,35 @@ export class RegionHeatmapDto {
   distribution: { A: number; B: number; C: number; D: number; F: number };
 }
 
+export class RegionalHeatmapDataDto {
+  @ApiProperty({ description: 'Region name' })
+  region: string;
+
+  @ApiProperty({ description: 'Average CSI score for the region' })
+  averageScore: number;
+
+  @ApiProperty({ description: 'Number of assessments in the region' })
+  assessmentCount: number;
+}
+
 export class HeatmapResponseDto {
-  @ApiProperty({ description: 'Request success status' })
-  success: boolean;
+  @ApiProperty({ description: 'Array of regional heatmap data', type: [RegionalHeatmapDataDto] })
+  regions: RegionalHeatmapDataDto[];
+
+  @ApiProperty({ description: 'Timestamp of last data update' })
+  lastUpdated: Date;
 
   @ApiProperty({
-    description: 'Heatmap data',
+    description: 'National statistics',
     type: 'object',
     properties: {
-      regions: { type: 'array', items: { $ref: '#/components/schemas/RegionHeatmapDto' } },
-      national: {
-        type: 'object',
-        properties: {
-          averageScore: { type: 'number' },
-          totalOrganizations: { type: 'number' }
-        }
-      }
+      averageScore: { type: 'number' },
+      totalOrganizations: { type: 'number' }
     }
   })
-  data: {
-    regions: RegionHeatmapDto[];
-    national: {
-      averageScore: number;
-      totalOrganizations: number;
-    };
+  national?: {
+    averageScore: number;
+    totalOrganizations: number;
   };
 }
 

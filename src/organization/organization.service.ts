@@ -347,11 +347,6 @@ export class OrganizationService {
         avatar: true,
         isActive: true,
         createdAt: true,
-        _count: {
-          select: {
-            assessments: true,
-          },
-        },
       },
       orderBy: [
         { role: 'asc' },

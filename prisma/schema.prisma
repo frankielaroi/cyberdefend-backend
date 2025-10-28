@@ -1,9 +1,6 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
-  output = "../generated/prisma"
+  output   = "../generated/prisma"
 }
 
 datasource db {
@@ -11,42 +8,36 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// User Management
 model User {
-  id                String   @id @default(uuid())
-  email             String   @unique
-  password          String
-  firstName         String
-  lastName          String
-  phone             String?
-  avatar            String?
-  emailVerified     Boolean  @default(false)
-  verificationToken String?
-  isActive          Boolean  @default(true)
-  role              UserRole @default(END_USER)
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
-
-  // Relationships
-  organization   Organization? @relation(fields: [organizationId], references: [id])
-  organizationId String?
-
-  // User activities
-  assessments        Assessment[]
-  transferredAssessments Assessment[] @relation("TransferredAssessments")
-  phishingTargets    PhishingTarget[]
-  phishingCampaigns  PhishingCampaign[] @relation("CampaignCreator")
-  phishingTemplates  PhishingTemplate[] @relation("TemplateCreator")
-  telemetryEvents    TelemetryEvent[]
-  auditLogs          AuditLog[]
-  refreshTokens      RefreshToken[]
-  passwordResets     PasswordReset[]
-  createdInviteCodes InviteCode[]
-  organizationMemberships OrganizationMember[]
-  sentInvites        OrganizationMember[] @relation("UserInvites")
-  notificationHistory NotificationHistory[]
-  notificationPreferences NotificationPreference?
-  emailTracking      EmailTracking[]
+  id                                    String                  @id @default(uuid())
+  email                                 String                  @unique
+  password                              String
+  firstName                             String
+  lastName                              String
+  phone                                 String?
+  avatar                                String?
+  emailVerified                         Boolean                 @default(false)
+  isActive                              Boolean                 @default(true)
+  role                                  UserRole                @default(END_USER)
+  createdAt                             DateTime                @default(now())
+  updatedAt                             DateTime                @updatedAt
+  organizationId                        String?
+  verificationToken                     String?
+  transferredAssessments                Assessment[]            @relation("TransferredAssessments")
+  auditLogs                             AuditLog[]
+  emailTracking                         EmailTracking[]
+  createdInviteCodes                    InviteCode[]
+  notificationHistory                   NotificationHistory[]
+  notificationPreferences               NotificationPreference?
+  sentInvites                           OrganizationMember[]    @relation("UserInvites")
+  organizationMemberships               OrganizationMember[]
+  passwordResets                        PasswordReset[]
+  phishingCampaigns                     PhishingCampaign[]      @relation("CampaignCreator")
+  phishingTargets                       PhishingTarget[]
+  phishingTemplates                     PhishingTemplate[]      @relation("TemplateCreator")
+  refreshTokens                         RefreshToken[]
+  telemetryEvents                       TelemetryEvent[]
+  organization                          Organization?           @relation(fields: [organizationId], references: [id])
 
   @@map("users")
 }
@@ -57,8 +48,7 @@ model RefreshToken {
   userId    String
   expiresAt DateTime
   createdAt DateTime @default(now())
-  
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("refresh_tokens")
 }
@@ -70,10 +60,609 @@ model PasswordReset {
   expiresAt DateTime
   used      Boolean  @default(false)
   createdAt DateTime @default(now())
-  
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("password_resets")
+}
+
+model Organization {
+  id                String               @id @default(uuid())
+  name              String
+  email             String?              @unique
+  phone             String?
+  website           String?
+  description       String?
+  logo              String?
+  address           String?
+  city              String?
+  region            String?
+  country           String               @default("Ghana")
+  gpsAddress        String?
+  size              OrganizationSize
+  sector            Sector
+  isPublic          Boolean              @default(false)
+  csiScore          Float?
+  riskTier          RiskTier?
+  isActive          Boolean              @default(true)
+  createdAt         DateTime             @default(now())
+  updatedAt         DateTime             @updatedAt
+  agents            Agent[]
+  assessments       Assessment[]
+  inviteCodes       InviteCode[]
+  invoices          Invoice[]
+  members           OrganizationMember[]
+  phishingCampaigns PhishingCampaign[]
+  phishingTemplates PhishingTemplate[]
+  subscriptions     Subscription[]
+  users             User[]
+
+  @@map("organizations")
+}
+
+model InviteCode {
+  id             String       @id @default(uuid())
+  code           String       @unique
+  organizationId String
+  createdBy      String
+  expiresAt      DateTime
+  usageLimit     Int          @default(10)
+  usedCount      Int          @default(0)
+  isActive       Boolean      @default(true)
+  createdAt      DateTime     @default(now())
+  email          String?
+  creator        User         @relation(fields: [createdBy], references: [id], onDelete: Cascade)
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@map("invite_codes")
+}
+
+model OrganizationMember {
+  id             String       @id @default(uuid())
+  userId         String
+  organizationId String
+  role           UserRole     @default(END_USER)
+  status         MemberStatus @default(ACTIVE)
+  joinedAt       DateTime     @default(now())
+  invitedBy      String?
+  inviteCode     String?
+  inviter        User?        @relation("UserInvites", fields: [invitedBy], references: [id])
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, organizationId])
+  @@map("organization_members")
+}
+
+model Assessment {
+  id                              String               @id @default(uuid())
+  title                           String
+  description                     String?
+  type                            AssessmentType       @default(CSI_ASSESSMENT)
+  status                          AssessmentStatus     @default(DRAFT)
+  score                           Float?
+  maxScore                        Float?
+  riskTier                        RiskTier?
+  benchmarkRegion                 Float?
+  benchmarkSector                 Float?
+  benchmarkSize                   Float?
+  startedAt                       DateTime?
+  completedAt                     DateTime?
+  reportUrl                       String?
+  createdAt                       DateTime             @default(now())
+  updatedAt                       DateTime             @updatedAt
+  organizationId                  String?
+  expiresAt                       DateTime?
+  isAnonymous                     Boolean              @default(false)
+  sessionId                       String?              @unique
+  transferredToUserId             String?
+  responses                       AssessmentResponse[]
+  result                          AssessmentResult?
+  organization                    Organization?        @relation(fields: [organizationId], references: [id])
+  transferredToUser               User?                @relation("TransferredAssessments", fields: [transferredToUserId], references: [id])
+
+  @@map("assessments")
+}
+
+model QuestionCategory {
+  id          String     @id @default(uuid())
+  name        String     @unique
+  description String?
+  weight      Float      @default(1.0)
+  order       Int        @default(0)
+  isActive    Boolean    @default(true)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  questions   Question[]
+
+  @@map("question_categories")
+}
+
+model Question {
+  id              String               @id @default(uuid())
+  text            String
+  description     String?
+  type            QuestionType
+  weight          Float                @default(1.0)
+  isRequired      Boolean              @default(true)
+  order           Int                  @default(0)
+  isActive        Boolean              @default(true)
+  version         String               @default("1.0")
+  dependsOnAnswer String?
+  createdAt       DateTime             @default(now())
+  updatedAt       DateTime             @updatedAt
+  categoryId      String
+  responses       AssessmentResponse[]
+  options         QuestionOption[]
+  category        QuestionCategory     @relation(fields: [categoryId], references: [id])
+
+  @@map("questions")
+}
+
+model QuestionOption {
+  id         String   @id @default(uuid())
+  text       String
+  value      String
+  score      Float
+  order      Int      @default(0)
+  isCorrect  Boolean  @default(false)
+  questionId String
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  @@map("question_options")
+}
+
+model AssessmentResponse {
+  id           String     @id @default(uuid())
+  answer       String
+  score        Float?
+  timeSpent    Int?
+  createdAt    DateTime   @default(now())
+  assessmentId String
+  questionId   String
+  sessionId    String?
+  assessment   Assessment @relation(fields: [assessmentId], references: [id], onDelete: Cascade)
+  question     Question   @relation(fields: [questionId], references: [id])
+
+  @@unique([assessmentId, questionId])
+  @@index([sessionId])
+  @@map("assessment_responses")
+}
+
+model AssessmentResult {
+  id                 String     @id @default(uuid())
+  overallScore       Float
+  overallPercentage  Float
+  tier               CSITier
+  categoryScores     String
+  sectionScores      String
+  industryPercentile Float?
+  sizePercentile     Float?
+  regionPercentile   Float?
+  questionsAnswered  Int
+  totalQuestions     Int
+  completionRate     Float
+  totalTimeMinutes   Int?
+  generatedAt        DateTime   @default(now())
+  assessmentId       String     @unique
+  assessment         Assessment @relation(fields: [assessmentId], references: [id], onDelete: Cascade)
+
+  @@map("assessment_results")
+}
+
+model PhishingCampaign {
+  id                 String           @id @default(uuid())
+  name               String
+  description        String?
+  template           String
+  subject            String
+  senderName         String
+  senderEmail        String
+  landingPageUrl     String?
+  status             CampaignStatus   @default(DRAFT)
+  scheduledAt        DateTime?
+  completedAt        DateTime?
+  targetCount        Int              @default(0)
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @updatedAt
+  organizationId     String
+  createdBy          String
+  credentialsEntered Int              @default(0)
+  emailsBounced      Int              @default(0)
+  emailsDelivered    Int              @default(0)
+  emailsOpened       Int              @default(0)
+  emailsSent         Int              @default(0)
+  launchedAt         DateTime?
+  linksClicked       Int              @default(0)
+  pausedAt           DateTime?
+  phishingReported   Int              @default(0)
+  templateId         String
+  emailTracking      EmailTracking[]
+  creator            User             @relation("CampaignCreator", fields: [createdBy], references: [id])
+  organization       Organization     @relation(fields: [organizationId], references: [id])
+  events             PhishingEvent[]
+  targets            PhishingTarget[]
+
+  @@map("phishing_campaigns")
+}
+
+model PhishingTarget {
+  id                 String           @id @default(uuid())
+  email              String
+  firstName          String?
+  lastName           String?
+  department         String?
+  deliveredAt        DateTime?
+  openedAt           DateTime?
+  clickedAt          DateTime?
+  reportedAt         DateTime?
+  createdAt          DateTime         @default(now())
+  campaignId         String
+  userId             String?
+  bouncedAt          DateTime?
+  clickCount         Int              @default(0)
+  credentialsAt      DateTime?
+  credentialsEntered Boolean          @default(false)
+  emailBounced       Boolean          @default(false)
+  emailDelivered     Boolean          @default(false)
+  emailOpened        Boolean          @default(false)
+  emailSent          Boolean          @default(false)
+  ipAddress          String?
+  jobTitle           String?
+  linkClicked        Boolean          @default(false)
+  reportedPhishing   Boolean          @default(false)
+  riskScore          Float?
+  sentAt             DateTime?
+  updatedAt          DateTime         @updatedAt
+  userAgent          String?
+  events             PhishingEvent[]
+  campaign           PhishingCampaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  user               User?            @relation(fields: [userId], references: [id])
+
+  @@unique([campaignId, email])
+  @@map("phishing_targets")
+}
+
+model PhishingEvent {
+  id         String            @id @default(uuid())
+  type       PhishingEventType
+  metadata   String?
+  ipAddress  String?
+  userAgent  String?
+  timestamp  DateTime          @default(now())
+  campaignId String
+  targetId   String?
+  location   String?
+  campaign   PhishingCampaign  @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  target     PhishingTarget?   @relation(fields: [targetId], references: [id], onDelete: Cascade)
+
+  @@map("phishing_events")
+}
+
+model PhishingTemplate {
+  id                 String           @id @default(uuid())
+  name               String           @unique
+  description        String
+  category           TemplateCategory
+  riskLevel          RiskLevel
+  defaultSubject     String
+  defaultSenderName  String
+  emailBodyHtml      String
+  emailBodyText      String
+  landingPageHtml    String?
+  captureCredentials Boolean          @default(false)
+  isActive           Boolean          @default(true)
+  previewContent     String
+  tags               String[]
+  usageCount         Int              @default(0)
+  successRate        Float?
+  createdBy          String?
+  organizationId     String?
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @updatedAt
+  creator            User?            @relation("TemplateCreator", fields: [createdBy], references: [id])
+  organization       Organization?    @relation(fields: [organizationId], references: [id])
+
+  @@map("phishing_templates")
+}
+
+model EmailJob {
+  id             String      @id @default(uuid())
+  campaignId     String
+  targetId       String
+  priority       JobPriority @default(MEDIUM)
+  scheduledFor   DateTime
+  attempts       Int         @default(0)
+  maxAttempts    Int         @default(3)
+  status         JobStatus   @default(PENDING)
+  processingData String?
+  errorMessage   String?
+  lastAttemptAt  DateTime?
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+
+  @@map("email_jobs")
+}
+
+model Agent {
+  id              String           @id @default(uuid())
+  name            String
+  version         String
+  osType          String
+  osVersion       String
+  hostname        String
+  ipAddress       String?
+  macAddress      String?
+  isActive        Boolean          @default(true)
+  lastSeen        DateTime         @default(now())
+  apiKey          String           @unique
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  organizationId  String
+  organization    Organization     @relation(fields: [organizationId], references: [id])
+  alerts          Alert[]
+  scanResults     ScanResult[]
+  telemetryEvents TelemetryEvent[]
+
+  @@map("agents")
+}
+
+model TelemetryEvent {
+  id        String        @id @default(uuid())
+  type      TelemetryType
+  source    String
+  data      String
+  severity  SeverityLevel @default(INFO)
+  timestamp DateTime      @default(now())
+  agentId   String
+  userId    String?
+  agent     Agent         @relation(fields: [agentId], references: [id])
+  user      User?         @relation(fields: [userId], references: [id])
+
+  @@map("telemetry_events")
+}
+
+model DetectionRule {
+  id          String        @id @default(uuid())
+  name        String
+  description String?
+  condition   String
+  action      RuleAction    @default(ALERT)
+  severity    SeverityLevel @default(MEDIUM)
+  isActive    Boolean       @default(true)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  alerts      Alert[]
+
+  @@map("detection_rules")
+}
+
+model Alert {
+  id             String        @id @default(uuid())
+  title          String
+  description    String
+  severity       SeverityLevel
+  status         AlertStatus   @default(OPEN)
+  data           String?
+  acknowledgedAt DateTime?
+  acknowledgedBy String?
+  resolvedAt     DateTime?
+  resolvedBy     String?
+  createdAt      DateTime      @default(now())
+  ruleId         String
+  agentId        String
+  agent          Agent         @relation(fields: [agentId], references: [id])
+  rule           DetectionRule @relation(fields: [ruleId], references: [id])
+
+  @@map("alerts")
+}
+
+model ScanResult {
+  id              String     @id @default(uuid())
+  type            ScanType
+  status          ScanStatus @default(PENDING)
+  score           String?
+  findings        String
+  recommendations String?
+  startedAt       DateTime   @default(now())
+  completedAt     DateTime?
+  reportUrl       String?
+  agentId         String
+  agent           Agent      @relation(fields: [agentId], references: [id])
+
+  @@map("scan_results")
+}
+
+model SubscriptionPlan {
+  id             String           @id @default(uuid())
+  name           String           @unique
+  description    String?
+  features       String
+  price          Float
+  currency       String           @default("GHS")
+  type           SubscriptionType
+  isActive       Boolean          @default(true)
+  trialDays      Int              @default(0)
+  maxUsers       Int?
+  maxAssessments Int?
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  subscriptions  Subscription[]
+
+  @@map("subscription_plans")
+}
+
+model Subscription {
+  id                 String             @id @default(uuid())
+  status             SubscriptionStatus @default(TRIAL)
+  startDate          DateTime           @default(now())
+  endDate            DateTime?
+  trialEndDate       DateTime?
+  autoRenew          Boolean            @default(true)
+  cancelledAt        DateTime?
+  cancellationReason String?
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
+  organizationId     String
+  planId             String
+  invoices           Invoice[]
+  organization       Organization       @relation(fields: [organizationId], references: [id])
+  plan               SubscriptionPlan   @relation(fields: [planId], references: [id])
+
+  @@map("subscriptions")
+}
+
+model Invoice {
+  id             String        @id @default(uuid())
+  invoiceNumber  String        @unique
+  amount         Float
+  currency       String        @default("GHS")
+  status         InvoiceStatus @default(PENDING)
+  dueDate        DateTime
+  paidAt         DateTime?
+  description    String?
+  metadata       String?
+  receiptUrl     String?
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  organizationId String
+  subscriptionId String
+  organization   Organization  @relation(fields: [organizationId], references: [id])
+  subscription   Subscription  @relation(fields: [subscriptionId], references: [id])
+  payments       Payment[]
+
+  @@map("invoices")
+}
+
+model Payment {
+  id          String          @id @default(uuid())
+  amount      Float
+  currency    String          @default("GHS")
+  method      PaymentMethod
+  provider    PaymentProvider
+  providerRef String
+  status      PaymentStatus   @default(PENDING)
+  metadata    String?
+  paidAt      DateTime?
+  createdAt   DateTime        @default(now())
+  invoiceId   String
+  invoice     Invoice         @relation(fields: [invoiceId], references: [id])
+
+  @@map("payments")
+}
+
+model AuditLog {
+  id        String   @id @default(uuid())
+  action    String
+  entity    String
+  entityId  String?
+  oldValues String?
+  newValues String?
+  ipAddress String?
+  userAgent String?
+  timestamp DateTime @default(now())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@map("audit_logs")
+}
+
+model BenchmarkData {
+  id        String           @id @default(uuid())
+  region    String
+  sector    Sector
+  size      OrganizationSize
+  avgScore  Float
+  totalOrgs Int
+  period    String
+  createdAt DateTime         @default(now())
+
+  @@unique([region, sector, size, period])
+  @@map("benchmark_data")
+}
+
+model NotificationHistory {
+  id            String             @id @default(uuid())
+  type          NotificationType
+  recipient     String
+  subject       String?
+  content       String
+  status        NotificationStatus @default(PENDING)
+  attempts      Int                @default(0)
+  lastAttempt   DateTime?
+  sentAt        DateTime?
+  error         String?
+  jobId         String?
+  messageId     String?
+  metadata      String?
+  createdAt     DateTime           @default(now())
+  updatedAt     DateTime           @updatedAt
+  userId        String?
+  emailTracking EmailTracking[]
+  user          User?              @relation(fields: [userId], references: [id])
+
+  @@map("notification_history")
+}
+
+model EmailTemplate {
+  id          String   @id @default(uuid())
+  name        String   @unique
+  subject     String
+  htmlContent String
+  textContent String?
+  variables   String?
+  description String?
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("email_templates")
+}
+
+model NotificationPreference {
+  id                String   @id @default(uuid())
+  emailEnabled      Boolean  @default(true)
+  smsEnabled        Boolean  @default(false)
+  pushEnabled       Boolean  @default(true)
+  securityAlerts    Boolean  @default(true)
+  assessmentUpdates Boolean  @default(true)
+  systemUpdates     Boolean  @default(false)
+  marketingEmails   Boolean  @default(false)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  userId            String   @unique
+  user              User     @relation(fields: [userId], references: [id])
+
+  @@map("notification_preferences")
+}
+
+model EmailTracking {
+  id                    String               @id @default(uuid())
+  trackingId            String               @unique
+  recipientEmail        String
+  emailSubject          String?
+  emailType             String?
+  sentAt                DateTime             @default(now())
+  openedAt              DateTime?
+  openCount             Int                  @default(0)
+  lastOpenedAt          DateTime?
+  ipAddress             String?
+  userAgent             String?
+  location              String?
+  deviceType            String?
+  userId                String?
+  notificationHistoryId String?
+  phishingCampaignId    String?
+  metadata              String?
+  createdAt             DateTime             @default(now())
+  updatedAt             DateTime             @updatedAt
+  notificationHistory   NotificationHistory? @relation(fields: [notificationHistoryId], references: [id])
+  phishingCampaign      PhishingCampaign?    @relation(fields: [phishingCampaignId], references: [id])
+  user                  User?                @relation(fields: [userId], references: [id])
+
+  @@index([trackingId])
+  @@index([recipientEmail])
+  @@index([sentAt])
+  @@map("email_tracking")
 }
 
 enum UserRole {
@@ -84,79 +673,6 @@ enum UserRole {
   END_USER
 }
 
-// Organization Management
-model Organization {
-  id               String           @id @default(uuid())
-  name             String
-  email            String?           @unique
-  phone            String?
-  website          String?
-  description      String?
-  logo             String?
-  address          String?
-  city             String?
-  region           String?
-  country          String           @default("Ghana")
-  gpsAddress       String?          // Ghana Post GPS Address
-  size             OrganizationSize
-  sector           Sector
-  isPublic         Boolean          @default(false) // Show in CSI Directory
-  csiScore         Float?           // Latest CSI Score
-  riskTier         RiskTier?        // Latest Risk Tier
-  isActive         Boolean          @default(true)
-  createdAt        DateTime         @default(now())
-  updatedAt        DateTime         @updatedAt
-
-  // Relationships
-  users            User[]
-  assessments      Assessment[]
-  subscriptions    Subscription[]
-  phishingCampaigns PhishingCampaign[]
-  phishingTemplates PhishingTemplate[]
-  agents           Agent[]
-  invoices         Invoice[]
-  inviteCodes      InviteCode[]
-  members          OrganizationMember[]
-  
-  @@map("organizations")
-}
-
-model InviteCode {
-  id             String   @id @default(uuid())
-  code           String   @unique
-  email          String?
-  organizationId String
-  createdBy      String
-  expiresAt      DateTime
-  usageLimit     Int      @default(10)
-  usedCount      Int      @default(0)
-  isActive       Boolean  @default(true)
-  createdAt      DateTime @default(now())
-  
-  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  creator        User         @relation(fields: [createdBy], references: [id], onDelete: Cascade)
-  
-  @@map("invite_codes")
-}
-
-model OrganizationMember {
-  id             String    @id @default(uuid())
-  userId         String
-  organizationId String
-  role           UserRole  @default(END_USER)
-  status         MemberStatus @default(ACTIVE)
-  joinedAt       DateTime  @default(now())
-  invitedBy      String?
-  inviteCode     String?
-  
-  user           User          @relation(fields: [userId], references: [id], onDelete: Cascade)
-  organization   Organization  @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  inviter        User?         @relation("UserInvites", fields: [invitedBy], references: [id])
-  
-  @@unique([userId, organizationId])
-  @@map("organization_members")
-}
-
 enum MemberStatus {
   ACTIVE
   INACTIVE
@@ -164,11 +680,11 @@ enum MemberStatus {
 }
 
 enum OrganizationSize {
-  MICRO      // 1-5 employees
-  SMALL      // 6-50 employees
-  MEDIUM     // 51-250 employees
-  LARGE      // 251-1000 employees
-  ENTERPRISE // 1000+ employees
+  MICRO
+  SMALL
+  MEDIUM
+  LARGE
+  ENTERPRISE
 }
 
 enum Sector {
@@ -188,47 +704,11 @@ enum Sector {
 }
 
 enum RiskTier {
-  VERY_LOW    // 81-100
-  LOW         // 61-80
-  MEDIUM      // 41-60
-  HIGH        // 21-40
-  VERY_HIGH   // 0-20
-}
-
-// DefendX Assessment System
-model Assessment {
-  id                String           @id @default(uuid())
-  title             String
-  description       String?
-  type              AssessmentType   @default(CSI_ASSESSMENT)
-  status            AssessmentStatus @default(DRAFT)
-  score             Float?           // 0-100
-  maxScore          Float?           // Maximum possible score
-  riskTier          RiskTier?
-  benchmarkRegion   Float?           // Regional average
-  benchmarkSector   Float?           // Sector average
-  benchmarkSize     Float?           // Size-based average
-  startedAt         DateTime?
-  completedAt       DateTime?
-  reportUrl         String?          // S3 URL for generated report
-  sessionId         String?          @unique // For anonymous assessments
-  isAnonymous       Boolean          @default(false)
-  transferredToUserId String?        // User who claimed this anonymous assessment
-  expiresAt         DateTime?        // Expiration for anonymous assessments
-  createdAt         DateTime         @default(now())
-  updatedAt         DateTime         @updatedAt
-
-  // Relationships
-  organization   Organization? @relation(fields: [organizationId], references: [id])
-  organizationId String?
-  user           User?         @relation(fields: [userId], references: [id])
-  userId         String?
-  transferredToUser User?      @relation("TransferredAssessments", fields: [transferredToUserId], references: [id])
-
-  responses      AssessmentResponse[]
-  result         AssessmentResult?
-
-  @@map("assessments")
+  VERY_LOW
+  LOW
+  MEDIUM
+  HIGH
+  VERY_HIGH
 }
 
 enum AssessmentType {
@@ -244,45 +724,6 @@ enum AssessmentStatus {
   COMPLETED
   EXPIRED
   CANCELLED
-}
-
-model QuestionCategory {
-  id          String    @id @default(uuid())
-  name        String    @unique
-  description String?
-  weight      Float     @default(1.0) // Weight in CSI calculation
-  order       Int       @default(0)
-  isActive    Boolean   @default(true)
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-
-  questions   Question[]
-
-  @@map("question_categories")
-}
-
-model Question {
-  id               String          @id @default(uuid())
-  text             String
-  description      String?
-  type             QuestionType
-  weight           Float           @default(1.0)
-  isRequired       Boolean         @default(true)
-  order            Int             @default(0)
-  isActive         Boolean         @default(true)
-  version          String          @default("1.0")
-  dependsOnAnswer  String?         // JSON: conditional logic
-  createdAt        DateTime        @default(now())
-  updatedAt        DateTime        @updatedAt
-
-  // Relationships
-  category         QuestionCategory @relation(fields: [categoryId], references: [id])
-  categoryId       String
-
-  options          QuestionOption[]
-  responses        AssessmentResponse[]
-
-  @@map("questions")
 }
 
 enum QuestionType {
@@ -303,119 +744,6 @@ enum CSITier {
   INNOVATIVE
 }
 
-model QuestionOption {
-  id          String  @id @default(uuid())
-  text        String
-  value       String  // Used for scoring
-  score       Float   // Points awarded for this option
-  order       Int     @default(0)
-  isCorrect   Boolean @default(false)
-
-  // Relationships
-  question    Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
-  questionId  String
-
-  @@map("question_options")
-}
-
-model AssessmentResponse {
-  id           String   @id @default(uuid())
-  answer       String   // JSON: stores answer(s)
-  score        Float?   // Points earned for this response
-  timeSpent    Int?     // Seconds spent on question
-  sessionId    String?  // For anonymous responses
-  createdAt    DateTime @default(now())
-  
-  // Relationships
-  assessment   Assessment @relation(fields: [assessmentId], references: [id], onDelete: Cascade)
-  assessmentId String
-  question     Question   @relation(fields: [questionId], references: [id])
-  questionId   String
-
-  @@unique([assessmentId, questionId])
-  @@map("assessment_responses")
-  @@index([sessionId])
-}
-
-// Assessment Results with detailed scoring
-model AssessmentResult {
-  id                    String      @id @default(uuid())
-  overallScore          Float       // Total score (0-5)
-  overallPercentage     Float       // Overall percentage (0-100)
-  tier                  CSITier     // CSI tier (Basic, Foundational, etc.)
-  
-  // Category breakdowns
-  categoryScores        String      // JSON: category-wise scores
-  sectionScores         String      // JSON: section-wise scores
-  
-  // Benchmarking data
-  industryPercentile    Float?      // Position compared to industry
-  sizePercentile        Float?      // Position compared to similar sized orgs
-  regionPercentile      Float?      // Position compared to regional orgs
-  
-  // Completion metrics
-  questionsAnswered     Int         // Number of questions answered
-  totalQuestions        Int         // Total questions available
-  completionRate        Float       // Percentage completed
-  
-  // Time tracking
-  totalTimeMinutes      Int?        // Total time spent
-  generatedAt           DateTime    @default(now())
-  
-  // Relationships
-  assessment            Assessment  @relation(fields: [assessmentId], references: [id], onDelete: Cascade)
-  assessmentId          String      @unique
-
-  @@map("assessment_results")
-}
-
-// DefendX+ Phishing & Monitoring System
-model PhishingCampaign {
-  id              String               @id @default(uuid())
-  name            String
-  description     String?
-  
-  // Template & Email Configuration
-  templateId      String               // Reference to template
-  template        String               // HTML email template (cached)
-  subject         String
-  senderName      String
-  senderEmail     String
-  landingPageUrl  String?              // Phishing landing page
-  
-  // Status & Timing
-  status          CampaignStatus       @default(DRAFT)
-  scheduledAt     DateTime?
-  launchedAt      DateTime?
-  completedAt     DateTime?
-  pausedAt        DateTime?
-  
-  // Statistics
-  targetCount     Int                  @default(0)
-  emailsSent      Int                  @default(0)
-  emailsDelivered Int                  @default(0)
-  emailsOpened    Int                  @default(0)
-  linksClicked    Int                  @default(0)
-  credentialsEntered Int               @default(0)
-  phishingReported Int                 @default(0)
-  emailsBounced   Int                  @default(0)
-  
-  // Metadata
-  createdBy       String               // User ID who created campaign
-  organizationId  String
-  createdAt       DateTime             @default(now())
-  updatedAt       DateTime             @updatedAt
-
-  // Relationships
-  organization    Organization         @relation(fields: [organizationId], references: [id])
-  creator         User                 @relation("CampaignCreator", fields: [createdBy], references: [id])
-  targets         PhishingTarget[]
-  events          PhishingEvent[]
-  emailTracking   EmailTracking[]
-
-  @@map("phishing_campaigns")
-}
-
 enum CampaignStatus {
   DRAFT
   SCHEDULED
@@ -423,75 +751,6 @@ enum CampaignStatus {
   PAUSED
   COMPLETED
   CANCELLED
-}
-
-model PhishingTarget {
-  id                  String              @id @default(uuid())
-  email               String
-  firstName           String?
-  lastName            String?
-  department          String?
-  jobTitle            String?
-  
-  // Tracking Status
-  emailSent           Boolean             @default(false)
-  emailDelivered      Boolean             @default(false)
-  emailOpened         Boolean             @default(false)
-  linkClicked         Boolean             @default(false)
-  credentialsEntered  Boolean             @default(false)
-  reportedPhishing    Boolean             @default(false)
-  emailBounced        Boolean             @default(false)
-  
-  // Timestamps
-  sentAt              DateTime?
-  deliveredAt         DateTime?
-  openedAt            DateTime?
-  clickedAt           DateTime?
-  credentialsAt       DateTime?
-  reportedAt          DateTime?
-  bouncedAt           DateTime?
-  
-  // Tracking Data
-  userAgent           String?
-  ipAddress           String?
-  clickCount          Int                 @default(0)
-  
-  // Risk Assessment
-  riskScore           Float?              // 0-10 scale
-  
-  // Metadata
-  createdAt           DateTime            @default(now())
-  updatedAt           DateTime            @updatedAt
-
-  // Relationships
-  campaign            PhishingCampaign    @relation(fields: [campaignId], references: [id], onDelete: Cascade)
-  campaignId          String
-  user                User?               @relation(fields: [userId], references: [id])
-  userId              String?
-  events              PhishingEvent[]
-
-  @@unique([campaignId, email])
-  @@map("phishing_targets")
-}
-
-model PhishingEvent {
-  id          String              @id @default(uuid())
-  type        PhishingEventType
-  timestamp   DateTime            @default(now())
-  
-  // Event Data
-  metadata    String?             // JSON: Additional event-specific data
-  userAgent   String?
-  ipAddress   String?
-  location    String?             // Geolocation info
-  
-  // Relationships
-  campaign    PhishingCampaign    @relation(fields: [campaignId], references: [id], onDelete: Cascade)
-  campaignId  String
-  target      PhishingTarget?     @relation(fields: [targetId], references: [id], onDelete: Cascade)
-  targetId    String?
-
-  @@map("phishing_events")
 }
 
 enum PhishingEventType {
@@ -510,45 +769,6 @@ enum PhishingEventType {
   CAMPAIGN_CANCELLED
 }
 
-model PhishingTemplate {
-  id                  String              @id @default(uuid())
-  name                String              @unique
-  description         String
-  category            TemplateCategory
-  riskLevel           RiskLevel
-  
-  // Email Content
-  defaultSubject      String
-  defaultSenderName   String
-  emailBodyHtml       String              // HTML email template
-  emailBodyText       String              // Plain text version
-  
-  // Landing Page
-  landingPageHtml     String?             // HTML landing page
-  captureCredentials  Boolean             @default(false)
-  
-  // Configuration
-  isActive            Boolean             @default(true)
-  previewContent      String              // Short preview text
-  tags                String[]            // Array of tags
-  
-  // Usage Statistics
-  usageCount          Int                 @default(0)
-  successRate         Float?              // Average success rate
-  
-  // Metadata
-  createdBy           String?             // User ID who created template
-  organizationId      String?             // If org-specific template
-  createdAt           DateTime            @default(now())
-  updatedAt           DateTime            @updatedAt
-
-  // Relationships
-  organization        Organization?       @relation(fields: [organizationId], references: [id])
-  creator             User?               @relation("TemplateCreator", fields: [createdBy], references: [id])
-
-  @@map("phishing_templates")
-}
-
 enum TemplateCategory {
   SECURITY
   HR
@@ -565,30 +785,6 @@ enum RiskLevel {
   VERY_HIGH
 }
 
-model EmailJob {
-  id              String              @id @default(uuid())
-  campaignId      String
-  targetId        String
-  
-  // Job Configuration
-  priority        JobPriority         @default(MEDIUM)
-  scheduledFor    DateTime
-  attempts        Int                 @default(0)
-  maxAttempts     Int                 @default(3)
-  status          JobStatus           @default(PENDING)
-  
-  // Processing Data
-  processingData  String?             // JSON: Email content, headers, etc.
-  errorMessage    String?
-  lastAttemptAt   DateTime?
-  
-  // Metadata
-  createdAt       DateTime            @default(now())
-  updatedAt       DateTime            @updatedAt
-
-  @@map("email_jobs")
-}
-
 enum JobPriority {
   LOW
   MEDIUM
@@ -602,50 +798,6 @@ enum JobStatus {
   SENT
   FAILED
   CANCELLED
-}
-
-// Telemetry & Monitoring System
-model Agent {
-  id              String         @id @default(uuid())
-  name            String
-  version         String
-  osType          String         // Windows, Linux, macOS
-  osVersion       String
-  hostname        String
-  ipAddress       String?
-  macAddress      String?
-  isActive        Boolean        @default(true)
-  lastSeen        DateTime       @default(now())
-  apiKey          String         @unique
-  createdAt       DateTime       @default(now())
-  updatedAt       DateTime       @updatedAt
-
-  // Relationships
-  organization    Organization   @relation(fields: [organizationId], references: [id])
-  organizationId  String
-
-  telemetryEvents TelemetryEvent[]
-  alerts          Alert[]
-  scanResults     ScanResult[]
-
-  @@map("agents")
-}
-
-model TelemetryEvent {
-  id          String           @id @default(uuid())
-  type        TelemetryType
-  source      String           // Application/service name
-  data        String           // JSON: event data
-  severity    SeverityLevel    @default(INFO)
-  timestamp   DateTime         @default(now())
-
-  // Relationships
-  agent       Agent            @relation(fields: [agentId], references: [id])
-  agentId     String
-  user        User?            @relation(fields: [userId], references: [id])
-  userId      String?
-
-  @@map("telemetry_events")
 }
 
 enum TelemetryType {
@@ -669,22 +821,6 @@ enum SeverityLevel {
   CRITICAL
 }
 
-model DetectionRule {
-  id          String          @id @default(uuid())
-  name        String
-  description String?
-  condition   String          // YAML/JSON: rule conditions
-  action      RuleAction      @default(ALERT)
-  severity    SeverityLevel   @default(MEDIUM)
-  isActive    Boolean         @default(true)
-  createdAt   DateTime        @default(now())
-  updatedAt   DateTime        @updatedAt
-
-  alerts      Alert[]
-
-  @@map("detection_rules")
-}
-
 enum RuleAction {
   ALERT
   BLOCK
@@ -693,51 +829,11 @@ enum RuleAction {
   SMS
 }
 
-model Alert {
-  id            String        @id @default(uuid())
-  title         String
-  description   String
-  severity      SeverityLevel
-  status        AlertStatus   @default(OPEN)
-  data          String?       // JSON: alert context
-  acknowledgedAt DateTime?
-  acknowledgedBy String?      // User ID
-  resolvedAt    DateTime?
-  resolvedBy    String?       // User ID
-  createdAt     DateTime      @default(now())
-
-  // Relationships
-  rule          DetectionRule @relation(fields: [ruleId], references: [id])
-  ruleId        String
-  agent         Agent         @relation(fields: [agentId], references: [id])
-  agentId       String
-
-  @@map("alerts")
-}
-
 enum AlertStatus {
   OPEN
   ACKNOWLEDGED
   RESOLVED
   FALSE_POSITIVE
-}
-
-model ScanResult {
-  id          String        @id @default(uuid())
-  type        ScanType
-  status      ScanStatus    @default(PENDING)
-  score       String?       // A, B, C, D, F grade
-  findings    String        // JSON: detailed findings
-  recommendations String?   // JSON: remediation steps
-  startedAt   DateTime      @default(now())
-  completedAt DateTime?
-  reportUrl   String?       // S3 URL for scan report
-
-  // Relationships
-  agent       Agent         @relation(fields: [agentId], references: [id])
-  agentId     String
-
-  @@map("scan_results")
 }
 
 enum ScanType {
@@ -756,54 +852,10 @@ enum ScanStatus {
   CANCELLED
 }
 
-// Billing & Subscription System
-model SubscriptionPlan {
-  id            String            @id @default(uuid())
-  name          String            @unique
-  description   String?
-  features      String            // JSON: feature list
-  price         Float             // Monthly price
-  currency      String            @default("GHS")
-  type          SubscriptionType
-  isActive      Boolean           @default(true)
-  trialDays     Int               @default(0)
-  maxUsers      Int?              // null = unlimited
-  maxAssessments Int?             // null = unlimited
-  createdAt     DateTime          @default(now())
-  updatedAt     DateTime          @updatedAt
-
-  subscriptions Subscription[]
-
-  @@map("subscription_plans")
-}
-
 enum SubscriptionType {
-  DEFEND_CORE   // Basic CSI assessments
-  DEFEND_VAULT  // Core + Phishing
-  DEFEND_CLICK  // Full platform access
-}
-
-model Subscription {
-  id              String              @id @default(uuid())
-  status          SubscriptionStatus  @default(TRIAL)
-  startDate       DateTime            @default(now())
-  endDate         DateTime?
-  trialEndDate    DateTime?
-  autoRenew       Boolean             @default(true)
-  cancelledAt     DateTime?
-  cancellationReason String?
-  createdAt       DateTime            @default(now())
-  updatedAt       DateTime            @updatedAt
-
-  // Relationships
-  organization    Organization        @relation(fields: [organizationId], references: [id])
-  organizationId  String
-  plan            SubscriptionPlan    @relation(fields: [planId], references: [id])
-  planId          String
-
-  invoices        Invoice[]
-
-  @@map("subscriptions")
+  DEFEND_CORE
+  DEFEND_VAULT
+  DEFEND_CLICK
 }
 
 enum SubscriptionStatus {
@@ -814,56 +866,12 @@ enum SubscriptionStatus {
   EXPIRED
 }
 
-model Invoice {
-  id              String        @id @default(uuid())
-  invoiceNumber   String        @unique
-  amount          Float
-  currency        String        @default("GHS")
-  status          InvoiceStatus @default(PENDING)
-  dueDate         DateTime
-  paidAt          DateTime?
-  description     String?
-  metadata        String?       // JSON: payment details
-  receiptUrl      String?       // S3 URL for receipt
-  createdAt       DateTime      @default(now())
-  updatedAt       DateTime      @updatedAt
-
-  // Relationships
-  organization    Organization  @relation(fields: [organizationId], references: [id])
-  organizationId  String
-  subscription    Subscription  @relation(fields: [subscriptionId], references: [id])
-  subscriptionId  String
-
-  payments        Payment[]
-
-  @@map("invoices")
-}
-
 enum InvoiceStatus {
   PENDING
   PAID
   OVERDUE
   CANCELLED
   REFUNDED
-}
-
-model Payment {
-  id              String        @id @default(uuid())
-  amount          Float
-  currency        String        @default("GHS")
-  method          PaymentMethod
-  provider        PaymentProvider
-  providerRef     String        // External payment reference
-  status          PaymentStatus @default(PENDING)
-  metadata        String?       // JSON: provider response
-  paidAt          DateTime?
-  createdAt       DateTime      @default(now())
-
-  // Relationships
-  invoice         Invoice       @relation(fields: [invoiceId], references: [id])
-  invoiceId       String
-
-  @@map("payments")
 }
 
 enum PaymentMethod {
@@ -887,139 +895,6 @@ enum PaymentStatus {
   REFUNDED
 }
 
-// Audit & Compliance
-model AuditLog {
-  id          String      @id @default(uuid())
-  action      String      // Action performed
-  entity      String      // Entity affected
-  entityId    String?     // ID of affected entity
-  oldValues   String?     // JSON: previous state
-  newValues   String?     // JSON: new state
-  ipAddress   String?
-  userAgent   String?
-  timestamp   DateTime    @default(now())
-
-  // Relationships
-  user        User        @relation(fields: [userId], references: [id])
-  userId      String
-
-  @@map("audit_logs")
-}
-
-// CSI Directory & Benchmarking
-model BenchmarkData {
-  id            String           @id @default(uuid())
-  region        String
-  sector        Sector
-  size          OrganizationSize
-  avgScore      Float            // Average CSI score
-  totalOrgs     Int              // Number of organizations
-  period        String           // e.g., "2024-Q1"
-  createdAt     DateTime         @default(now())
-
-  @@unique([region, sector, size, period])
-  @@map("benchmark_data")
-}
-
-// Notification System
-model NotificationHistory {
-  id          String              @id @default(uuid())
-  type        NotificationType    
-  recipient   String              // Email or phone number
-  subject     String?             // For emails only
-  content     String              // Message content or template data
-  status      NotificationStatus  @default(PENDING)
-  attempts    Int                 @default(0)
-  lastAttempt DateTime?
-  sentAt      DateTime?
-  error       String?
-  jobId       String?             // Bull queue job ID
-  messageId   String?             // External service message ID
-  metadata    String?             // JSON: additional data
-  createdAt   DateTime            @default(now())
-  updatedAt   DateTime            @updatedAt
-
-  // Relationships
-  user        User?               @relation(fields: [userId], references: [id])
-  userId      String?
-  emailTracking EmailTracking[]
-
-  @@map("notification_history")
-}
-
-model EmailTemplate {
-  id          String   @id @default(uuid())
-  name        String   @unique
-  subject     String
-  htmlContent String
-  textContent String?
-  variables   String?  // JSON: list of template variables
-  description String?
-  isActive    Boolean  @default(true)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  @@map("email_templates")
-}
-
-model NotificationPreference {
-  id                String   @id @default(uuid())
-  emailEnabled      Boolean  @default(true)
-  smsEnabled        Boolean  @default(false)
-  pushEnabled       Boolean  @default(true)
-  securityAlerts    Boolean  @default(true)
-  assessmentUpdates Boolean  @default(true)
-  systemUpdates     Boolean  @default(false)
-  marketingEmails   Boolean  @default(false)
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
-
-  // Relationships
-  user              User     @relation(fields: [userId], references: [id])
-  userId            String   @unique
-
-  @@map("notification_preferences")
-}
-
-// Email Tracking for open detection
-model EmailTracking {
-  id                String    @id @default(uuid())
-  trackingId        String    @unique // Unique ID embedded in tracking pixel
-  recipientEmail    String    // Email address of recipient
-  emailSubject      String?   // Subject of the email sent
-  emailType         String?   // Type: 'phishing', 'notification', 'assessment', etc.
-  sentAt            DateTime  @default(now())
-  openedAt          DateTime? // When email was first opened
-  openCount         Int       @default(0) // Number of times opened
-  lastOpenedAt      DateTime? // Most recent open time
-  
-  // Tracking metadata
-  ipAddress         String?   // IP address of opener
-  userAgent         String?   // Browser/email client user agent
-  location          String?   // Geolocation data (if available)
-  deviceType        String?   // desktop, mobile, tablet
-  
-  // Optional relationships
-  userId            String?
-  user              User?     @relation(fields: [userId], references: [id])
-  
-  notificationHistoryId String?
-  notificationHistory   NotificationHistory? @relation(fields: [notificationHistoryId], references: [id])
-  
-  phishingCampaignId String?
-  phishingCampaign   PhishingCampaign? @relation(fields: [phishingCampaignId], references: [id])
-  
-  metadata          String?   // JSON: additional tracking data
-  createdAt         DateTime  @default(now())
-  updatedAt         DateTime  @updatedAt
-
-  @@index([trackingId])
-  @@index([recipientEmail])
-  @@index([sentAt])
-  @@map("email_tracking")
-}
-
-// Enums for Notification System
 enum NotificationType {
   EMAIL
   SMS

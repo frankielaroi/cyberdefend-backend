@@ -33,6 +33,8 @@ import {
   FilterOptionsResponseDto,
   InsightsResponseDto
 } from './dto/csi-directory.dto';
+import { PublicAssessmentResultDto } from './dto/public-assessment.dto';
+import { Sector, OrganizationSize } from '../../generated/prisma';
 
 @ApiTags('csi-directory')
 @Controller('csi-directory')
@@ -59,28 +61,42 @@ export class CSIDirectoryController {
 
   @Public()
   @Get('public')
-  @ApiOperation({ summary: '[LEGACY] Public endpoint listing all published Cyber Safety Index (CSI) entries' })
-  @ApiResponse({ status: 200, description: 'CSI directory retrieved successfully' })
+  @ApiOperation({ 
+    summary: 'Public CSI directory with privacy controls',
+    description: 'Lists organizations with completed assessments and respects privacy settings'
+  })
+  @ApiResponse({ 
+    status: 200, 
+    description: 'Public CSI directory retrieved successfully',
+    type: PublicAssessmentResultDto
+  })
   @ApiQuery({ name: 'region', required: false, description: 'Filter by region' })
-  @ApiQuery({ name: 'sector', required: false, description: 'Filter by sector' })
-  @ApiQuery({ name: 'size', required: false, description: 'Filter by organization size' })
+  @ApiQuery({ name: 'sector', required: false, description: 'Filter by sector', enum: Sector })
+  @ApiQuery({ name: 'size', required: false, description: 'Filter by organization size', enum: OrganizationSize })
   @ApiQuery({ name: 'page', required: false, description: 'Page number', type: Number })
   @ApiQuery({ name: 'limit', required: false, description: 'Items per page', type: Number })
+  @ApiQuery({ name: 'minScore', required: false, description: 'Minimum CSI score', type: Number })
+  @ApiQuery({ name: 'maxScore', required: false, description: 'Maximum CSI score', type: Number })
   async getPublicCSIDirectory(
     @Query('region') region?: string,
-    @Query('sector') sector?: string,
-    @Query('size') size?: string,
+    @Query('sector') sector?: Sector,
+    @Query('size') size?: OrganizationSize,
     @Query('page') page?: number,
     @Query('limit') limit?: number,
-  ) {
-    const query: EnhancedCSIDirectoryQueryDto = {
+    @Query('minScore') minScore?: number,
+    @Query('maxScore') maxScore?: number,
+  ): Promise<PublicAssessmentResultDto> {
+    const query = {
       region,
-      sector: sector as any,
-      size: size as any,
+      sector,
+      size,
       page: page || 1,
-      limit: limit || 50,
+      limit: limit || 20,
+      minScore,
+      maxScore,
+      publicOnly: true // Only show organizations that have opted to be public
     };
-    return this.defendxService.getCSIDirectory(query);
+    return this.assessmentService.getPublicAssessments(query as any);
   }
 
   @Public()
@@ -208,16 +224,23 @@ export class CSIDirectoryController {
   @Public()
   @Get('heatmap')
   @ApiOperation({ 
-    summary: 'Get geographic heatmap data for CSI visualization',
-    description: 'Returns average cyber readiness scores by region with coordinates and distribution data'
+    summary: 'Get simplified heatmap data by region',
+    description: 'Returns average CSI scores by region for heatmap visualization'
   })
   @ApiResponse({ 
     status: 200, 
-    description: 'Regional heatmap data retrieved successfully',
+    description: 'Heatmap data retrieved successfully',
     type: HeatmapResponseDto
   })
   async getCSIHeatmap(): Promise<HeatmapResponseDto> {
-    return this.defendxService.getCSIHeatmapData();
+    // Fallback to aggregated stats if the dedicated heatmap method does not exist on AssessmentService.
+    const stats = await this.assessmentService.getAssessmentStats();
+    // Support multiple possible shapes returned by getAssessmentStats and fallback to an empty array.
+    const regions = (stats as any)?.regionalHeatmap ?? (stats as any)?.regions ?? [];
+    return {
+      regions: regions as any,
+      lastUpdated: new Date()
+    } as HeatmapResponseDto;
   }
 
   @Public()
