@@ -37,6 +37,7 @@ model User {
   phishingTemplates                     PhishingTemplate[]      @relation("TemplateCreator")
   refreshTokens                         RefreshToken[]
   telemetryEvents                       TelemetryEvent[]
+  backups                               Backup[]
   organization                          Organization?           @relation(fields: [organizationId], references: [id])
 
   @@map("users")
@@ -95,6 +96,9 @@ model Organization {
   phishingTemplates PhishingTemplate[]
   subscriptions     Subscription[]
   users             User[]
+  backups           Backup[]
+  backupAgents      BackupAgent[]
+  backupJobs        BackupJob[]
 
   @@map("organizations")
 }
@@ -907,4 +911,65 @@ enum NotificationStatus {
   FAILED
   RETRY
   CANCELLED
+}
+
+enum BackupJobStatus {
+  PENDING
+  RUNNING
+  COMPLETED
+  FAILED
+}
+
+model BackupAgent {
+  id            String        @id @default(uuid())
+  name          String
+  token         String        @unique
+  organizationId String
+  organization   Organization  @relation(fields: [organizationId], references: [id])
+  backupJobs     BackupJob[]
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  @@map("backup_agents")
+}
+
+model BackupJob {
+  id            String          @id @default(uuid())
+  status        BackupJobStatus @default(PENDING)
+  sourcePath    String
+  backupType    String          @default("folder")
+  organizationId String
+  agentId       String?
+  s3Path        String?
+  message       String?
+  startedAt     DateTime?
+  finishedAt    DateTime?
+  organization  Organization    @relation(fields: [organizationId], references: [id])
+  agent         BackupAgent?    @relation(fields: [agentId], references: [id])
+  backup        Backup?
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+
+  @@map("backup_jobs")
+}
+
+model Backup {
+  id             String       @id @default(uuid())
+  filename       String
+  originalName   String
+  size           Int
+  mimeType       String
+  s3Key          String       @unique
+  s3Bucket       String
+  uploadedBy     String
+  userId         String?
+  organizationId String
+  jobId          String       @unique
+  user           User?        @relation(fields: [userId], references: [id])
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  job            BackupJob    @relation(fields: [jobId], references: [id])
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  @@map("backups")
 }

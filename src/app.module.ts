@@ -16,6 +16,8 @@ import { CommonModule } from './common/common.module';
 import { NotificationModule } from './notification/notification.module';
 import { TrackingModule } from './common/tracking.module';
 import { configValidation } from './config/config.validation';
+import { BackupModule } from './backup/backup.module';
+import awsConfig from './config/aws.config';
 
 @Module({
   imports: [
@@ -24,6 +26,7 @@ import { configValidation } from './config/config.validation';
       isGlobal: true,
       envFilePath: ['.env.local', '.env'],
       validationSchema: configValidation,
+      load: [awsConfig],
     }),
 
     // Rate limiting
@@ -58,6 +61,7 @@ import { configValidation } from './config/config.validation';
     OrganizationModule,
     UserModule,
     NotificationModule,
+    BackupModule,
   ],
 })
 export class AppModule {}
