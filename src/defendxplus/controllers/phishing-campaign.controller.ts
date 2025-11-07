@@ -19,6 +19,7 @@ import { Roles } from '../../auth/decorators/roles.decorator';
 import { GetUser } from '../../auth/decorators/get-user.decorator';
 import { PhishingCampaignService } from '../services/phishing-campaign.service';
 import { HealthCheckService } from '../services/health-check.service';
+import { CampaignSchedulerService } from '../services/campaign-scheduler.service';
 import { 
   CreateCampaignDto, 
   UpdateCampaignDto, 
@@ -56,7 +57,8 @@ enum PhishingEventType {
 export class PhishingCampaignController {
   constructor(
     private readonly campaignService: PhishingCampaignService,
-    private readonly healthCheckService: HealthCheckService
+    private readonly healthCheckService: HealthCheckService,
+    private readonly campaignScheduler: CampaignSchedulerService
   ) {}
 
   /**
@@ -198,6 +200,24 @@ export class PhishingCampaignController {
     @Param('campaignId') campaignId: string
   ) {
     return this.campaignService.completeCampaign(user.organizationId, campaignId);
+  }
+
+  @Post(':campaignId/schedule')
+  @Roles(UserRole.ORG_ADMIN, UserRole.ORG_MANAGER)
+  @ApiOperation({ summary: 'Schedule a campaign to run at a future time' })
+  @ApiResponse({ status: 201, description: 'Campaign scheduled successfully' })
+  @ApiResponse({ status: 400, description: 'Bad request - invalid scheduledAt or campaign already scheduled' })
+  @ApiResponse({ status: 404, description: 'Campaign not found' })
+  async scheduleCampaign(
+    @GetUser() user: any,
+    @Param('campaignId') campaignId: string,
+    @Body() dto: LaunchCampaignDto
+  ) {
+    return this.campaignScheduler.scheduleCampaign(
+      user.organizationId,
+      campaignId,
+      dto
+    );
   }
 
   /**

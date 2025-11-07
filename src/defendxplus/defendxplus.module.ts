@@ -22,8 +22,11 @@ import { AnalyticsService } from './services/analytics.service';
 import { PhishingQueueService } from './services/phishing-queue.service';
 import { CircuitBreakerService } from './services/circuit-breaker.service';
 import { HealthCheckService } from './services/health-check.service';
+import { CampaignSchedulerService } from './services/campaign-scheduler.service';
 import { NotificationModule } from '../notification/notification.module';
 import { PhishingEmailProcessor } from './processors/phishing-email.processor';
+import { CampaignSchedulerProcessor } from './processors/campaign-scheduler.processor';
+import { CampaignRunnerProcessor } from './processors/campaign-runner.processor';
 
 @Module({
   imports: [
@@ -45,6 +48,32 @@ import { PhishingEmailProcessor } from './processors/phishing-email.processor';
         duration: 1000, // per 1 second (rate limiting)
       },
     }),
+    BullModule.registerQueue(
+      {
+        name: 'campaign-scheduler',
+        defaultJobOptions: {
+          attempts: 3,
+          backoff: {
+            type: 'exponential',
+            delay: 2000,
+          },
+          removeOnComplete: true,
+          removeOnFail: false,
+        },
+      },
+      {
+        name: 'campaign-runner',
+        defaultJobOptions: {
+          attempts: 3,
+          backoff: {
+            type: 'exponential',
+            delay: 2000,
+          },
+          removeOnComplete: true,
+          removeOnFail: false,
+        },
+      }
+    ),
   ],
   providers: [
     PhishingService,
@@ -60,7 +89,10 @@ import { PhishingEmailProcessor } from './processors/phishing-email.processor';
     PhishingQueueService,
     CircuitBreakerService,
     HealthCheckService,
+    CampaignSchedulerService,
     PhishingEmailProcessor,
+    CampaignSchedulerProcessor,
+    CampaignRunnerProcessor,
   ],
   controllers: [
     PhishingController,
@@ -85,6 +117,7 @@ import { PhishingEmailProcessor } from './processors/phishing-email.processor';
     EmailTrackingService,
     AnalyticsService,
     PhishingQueueService,
+    CampaignSchedulerService,
   ],
 })
 export class DefendxPlusModule {}

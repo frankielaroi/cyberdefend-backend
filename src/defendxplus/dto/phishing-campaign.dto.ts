@@ -838,3 +838,4 @@ export class TrackingEventDto {
   @ApiPropertyOptional({ description: 'Additional metadata' })
   metadata?: Record<string, any>;
 }
+

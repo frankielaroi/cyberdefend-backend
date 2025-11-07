@@ -317,9 +317,14 @@ export class PhishingCampaignService {
     }
 
     const scheduledAt = launchDto.scheduledAt ? new Date(launchDto.scheduledAt) : new Date();
-    const isScheduled = scheduledAt > new Date();
+    const nowTime = new Date();
+    const isScheduled = scheduledAt > nowTime;
 
-    this.logger.log(`⏰ Campaign ${campaignId} launch timing: ${isScheduled ? 'SCHEDULED' : 'IMMEDIATE'} at ${scheduledAt.toISOString()}`);
+    this.logger.log(`⏰ Campaign ${campaignId} launch timing calculation:`);
+    this.logger.log(`   scheduledAt=${scheduledAt.toISOString()}`);
+    this.logger.log(`   nowTime=${nowTime.toISOString()}`);
+    this.logger.log(`   diff=${scheduledAt.getTime() - nowTime.getTime()}ms`);
+    this.logger.log(`   isScheduled=${isScheduled ? 'SCHEDULED' : 'IMMEDIATE'} at ${scheduledAt.toISOString()}`);
 
     // Update campaign status
     try {
@@ -342,30 +347,32 @@ export class PhishingCampaignService {
 
       // Create email jobs for immediate launch
       if (!isScheduled) {
-        this.logger.log(`📧 Creating ${campaign.targets.length} email jobs for campaign ${campaignId}`);
+        this.logger.log(`📧 [EMAIL_JOB_START] Creating ${campaign.targets.length} email jobs for campaign ${campaignId}`);
         await this.createEmailJobs(campaignId, campaign.targets);
-        this.logger.log(`✅ Email jobs created successfully for campaign ${campaignId}`);
+        this.logger.log(`✅ [EMAIL_JOB_CREATED] Email jobs created successfully for campaign ${campaignId}`);
       
-      // Use Bull queue if available, otherwise process synchronously
-      if (this.useQueue && this.phishingQueueService) {
-        this.logger.log(`Using Bull queue to process campaign ${campaignId}`);
-        
-        // Add campaign processing job to queue
-        await this.phishingQueueService.addCampaignProcessingJob(
-          campaignId,
-          organizationId,
-          'high' // High priority for immediate launches
-        );
+        // Use Bull queue if available, otherwise process synchronously
+        if (this.useQueue && this.phishingQueueService) {
+          this.logger.log(`📨 [QUEUE_PROCESS_START] Using Bull queue to process campaign ${campaignId}`);
+          
+          // Add campaign processing job to queue
+          await this.phishingQueueService.addCampaignProcessingJob(
+            campaignId,
+            organizationId,
+            'high' // High priority for immediate launches
+          );
+          this.logger.log(`📨 [QUEUE_PROCESS_ADDED] Campaign added to processing queue`);
+        } else {
+          this.logger.log(`📨 [SYNC_PROCESS_START] Using synchronous processing for campaign ${campaignId}`);
+          
+          // Process email jobs asynchronously (don't wait for completion)
+          this.processEmailJobs(campaignId).catch(error => {
+            this.logger.error(`❌ [SYNC_PROCESS_ERROR] Error processing email jobs for campaign ${campaignId}:`, error);
+          });
+          this.logger.log(`📨 [SYNC_PROCESS_STARTED] Email processing started asynchronously`);
+        }
       } else {
-        this.logger.log(`Using synchronous processing for campaign ${campaignId}`);
-        
-        // Process email jobs asynchronously (don't wait for completion)
-        this.processEmailJobs(campaignId).catch(error => {
-          this.logger.error(`Error processing email jobs for campaign ${campaignId}:`, error);
-        });
-      }
-      } else {
-        this.logger.log(`📅 Campaign ${campaignId} scheduled for ${scheduledAt.toISOString()}`);
+        this.logger.log(`📅 [EMAIL_JOB_SKIP] Campaign ${campaignId} scheduled for ${scheduledAt.toISOString()} - email jobs will be created at runtime`);
       }
 
       // Create launch event
