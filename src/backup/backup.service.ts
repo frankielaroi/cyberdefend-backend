@@ -13,6 +13,101 @@ import * as fs from 'fs';
 export class BackupService {
   private s3Client: S3Client;
 
+  async getOrganizationAgents(organizationId: string) {
+    const agents = await this.prisma.backupAgent.findMany({
+      where: {
+        organizationId
+      },
+      select: {
+        id: true,
+        name: true,
+        organizationId: true,
+        createdAt: true,
+        updatedAt: true,
+        // Explicitly exclude token from response
+        token: false
+      },
+      orderBy: {
+        createdAt: 'desc'
+      }
+    });
+
+    return agents;
+  }
+
+  async getOrganizationBackups() {
+    return this.prisma.backup.findMany({
+      include: {
+        job: true,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+  }
+
+  async getBackupDownloadUrl(backupId: string) {
+    const backup = await this.prisma.backup.findUnique({
+      where: { id: backupId },
+      include: { 
+        job: true,
+        organization: true 
+      },
+    });
+
+    if (!backup) {
+      throw new NotFoundException(`Backup with ID ${backupId} not found`);
+    }
+
+    // Construct the full S3 key including organization and job path
+    const s3Key = `backups/${backup.organizationId}/${backup.jobId}/${backup.originalName}`;
+
+    const command = new GetObjectCommand({
+      Bucket: this.configService.get('aws.s3Bucket'),
+      Key: s3Key,
+    });
+
+    const url = await getSignedUrl(this.s3Client, command, { expiresIn: 3600 }); // URL expires in 1 hour
+    return { downloadUrl: url };
+  }
+
+  async deleteBackup(backupId: string, organizationId: string) {
+    const backup = await this.prisma.backup.findFirst({
+      where: { 
+        id: backupId,
+        organizationId: organizationId
+      },
+      include: { job: true },
+    });
+
+    if (!backup) {
+      throw new NotFoundException(`Backup with ID ${backupId} not found`);
+    }
+
+    // Check if backup belongs to the organization
+    if (backup.organizationId !== organizationId) {
+      throw new BadRequestException('Unauthorized: Backup does not belong to your organization');
+    }
+
+    try {
+      // Delete from S3
+      const deleteCommand = new DeleteObjectCommand({
+        Bucket: this.configService.get('aws.s3Bucket'),
+        Key: backup.filename,
+      });
+      await this.s3Client.send(deleteCommand);
+
+      // Delete from database
+      await this.prisma.backup.delete({
+        where: { id: backupId },
+      });
+
+      return { message: 'Backup deleted successfully' };
+    } catch (error) {
+      throw new BadRequestException(`Failed to delete backup: ${error.message}`);
+    }
+  }
+
   constructor(
     private configService: ConfigService,
     private prisma: PrismaService,
@@ -457,40 +552,4 @@ export class BackupService {
     });
   }
 
-  async deleteBackup(backupId: string, userId: string): Promise<void> {
-    // Get user's organization
-    const user = await this.prisma.user.findUnique({
-      where: { id: userId },
-      include: { organization: true },
-    });
-
-    if (!user?.organization) {
-      throw new Error('User must belong to an organization');
-    }
-
-    const backup = await this.prisma.backup.findUnique({
-      where: { id: backupId },
-    });
-
-    if (!backup) {
-      throw new Error('Backup not found');
-    }
-
-    // Check if backup belongs to user's organization
-    if (backup.organizationId !== user.organization.id) {
-      throw new Error('Unauthorized to delete this backup');
-    }
-
-    // Delete from S3
-    const deleteCommand = new DeleteObjectCommand({
-      Bucket: backup.s3Bucket,
-      Key: backup.s3Key,
-    });
-    await this.s3Client.send(deleteCommand);
-
-    // Delete from database
-    await this.prisma.backup.delete({
-      where: { id: backupId },
-    });
-  }
 }

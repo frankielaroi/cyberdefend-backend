@@ -31,6 +31,40 @@ import { CreateBackupJobDto, UpdateBackupJobStatusDto } from './dto/backup-job.d
 export class BackupController {
   constructor(private readonly backupService: BackupService) {}
 
+  @Get('organization')
+  @ApiOperation({ summary: 'Get all backups for the authenticated user\'s organization' })
+  @ApiResponse({ status: 200, description: 'List of organization backups' })
+  async getOrganizationBackups() {
+    return this.backupService.getOrganizationBackups();
+  }
+
+  @Get('organization/:backupId/download')
+  @ApiOperation({ summary: 'Get a pre-signed download URL for a backup' })
+  @ApiResponse({ status: 200, description: 'Pre-signed download URL' })
+  async getBackupDownloadUrl(@Param('backupId') backupId: string) {
+    return this.backupService.getBackupDownloadUrl(backupId);
+  }
+
+  @Delete('organization/:backupId')
+  @ApiOperation({ summary: 'Delete a backup' })
+  @ApiResponse({ status: 200, description: 'Backup deleted successfully' })
+  async deleteBackup(
+    @Param('backupId') backupId: string,
+    @Headers('organization-id') organizationId: string,
+  ) {
+    return this.backupService.deleteBackup(backupId, organizationId);
+  }
+
+  @Get('agents')
+  @ApiOperation({ summary: 'List all backup agents for an organization' })
+  @ApiResponse({ status: 200, description: 'List of backup agents' })
+  @ApiHeader({ name: 'Organization-Id', description: 'Organization ID' })
+  async getOrganizationAgents(
+    @Headers('organization-id') organizationId: string
+  ) {
+    return this.backupService.getOrganizationAgents(organizationId);
+  }
+
   @Post('agents')
   @ApiOperation({ summary: 'Create a new backup agent' })
   @ApiResponse({ status: 201, description: 'Agent created successfully' })

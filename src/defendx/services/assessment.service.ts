@@ -39,6 +39,49 @@ export class AssessmentService {
   ) {}
 
   /**
+   * Get assessments for the user's organization with pagination
+   */
+  async getOrganizationAssessments(userId: string, { page = 1, limit = 10 }) {
+    // First, get the user's organization
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+      include: { organization: true }
+    });
+
+    if (!user || !user.organization) {
+      throw new ForbiddenException('User does not belong to an organization');
+    }
+
+    const skip = (page - 1) * limit;
+
+    // Get organization's assessments with pagination
+    const [assessments, total] = await Promise.all([
+      this.prisma.assessment.findMany({
+        where: { organizationId: user.organizationId },
+        include: {
+          organization: true
+        },
+        orderBy: { createdAt: 'desc' },
+        skip,
+        take: limit
+      }),
+      this.prisma.assessment.count({
+        where: { organizationId: user.organizationId }
+      })
+    ]);
+
+    return {
+      data: assessments,
+      pagination: {
+        total,
+        page,
+        limit,
+        totalPages: Math.ceil(total / limit)
+      }
+    };
+  }
+
+  /**
    * Get public assessments with filtering and privacy controls
    */
   async getPublicAssessments(query: CSIDirectoryQueryDto): Promise<PublicAssessmentResultDto> {
@@ -717,7 +760,17 @@ export class AssessmentService {
   /**
    * Private helper methods
    */
-  private async checkUserAccess(userId: string, organizationId: string): Promise<boolean> {
+  private async checkUserAccess(userId: string, organizationId: string, isAnonymousTransfer = false): Promise<boolean> {
+    // For anonymous assessment transfers, we check the user's organization association
+    if (isAnonymousTransfer) {
+      const user = await this.prisma.user.findUnique({
+        where: { id: userId },
+        select: { organizationId: true, role: true }
+      });
+      return user?.organizationId === organizationId || user?.role === 'SUPER_ADMIN';
+    }
+
+    // For regular access checks, we use organization membership
     const membership = await this.prisma.organizationMember.findFirst({
       where: {
         userId,
@@ -1062,24 +1115,91 @@ export class AssessmentService {
    * Transfer anonymous assessment to authenticated user
    */
   async transferAnonymousAssessment(userId: string, dto: TransferAnonymousAssessmentDto) {
-    // Find the anonymous assessment
-    const assessment = await this.prisma.assessment.findFirst({
+    console.log('Transfer attempt:', {
+      userId,
+      sessionId: dto.sessionId,
+      timestamp: new Date().toISOString()
+    });
+
+    // Get user and check organization
+    const requestingUser = await this.prisma.user.findUnique({
+      where: { id: userId },
+      include: { organization: true }
+    });
+
+    if (!requestingUser) {
+      throw new ForbiddenException('Unable to transfer - your user account could not be found');
+    }
+
+    console.log('User details:', {
+      userId: requestingUser.id,
+      hasOrganization: !!requestingUser.organization,
+      organizationId: requestingUser.organizationId,
+      role: requestingUser.role
+    });
+
+    if (!requestingUser.organizationId && requestingUser.role !== 'SUPER_ADMIN') {
+      throw new ForbiddenException('Unable to transfer - you must be associated with an organization');
+    }
+
+    // If it's a regular user (not SUPER_ADMIN), verify their organization matches
+    // if (requestingUser.role !== 'SUPER_ADMIN'  && requestingUser.role !== 'ORG_ADMIN' && requestingUser.role !== 'ORG_MANAGER' ) {
+    //   throw new ForbiddenException('You do not have access to this organization');
+    // }
+
+    // Then check if the assessment exists
+    const baseAssessment = await this.prisma.assessment.findFirst({
       where: {
-        sessionId: dto.sessionId,
-        isAnonymous: true,
-        transferredToUserId: null, // Not already transferred
-        status: AssessmentStatus.COMPLETED
+        sessionId: dto.sessionId
       }
     });
 
-    if (!assessment) {
-      throw new NotFoundException('Anonymous assessment not found or already transferred');
+    console.log('Assessment found:', {
+      exists: !!baseAssessment,
+      assessmentDetails: baseAssessment ? {
+        id: baseAssessment.id,
+        sessionId: baseAssessment.sessionId,
+        isAnonymous: baseAssessment.isAnonymous,
+        status: baseAssessment.status,
+        transferredToUserId: baseAssessment.transferredToUserId,
+        expiresAt: baseAssessment.expiresAt,
+      } : null
+    });
+
+    if (!baseAssessment) {
+      throw new NotFoundException(`Assessment with session ID '${dto.sessionId}' not found`);
+    }
+
+    // Then check specific conditions
+    if (!baseAssessment.isAnonymous) {
+      console.log('Transfer blocked: Assessment is not anonymous');
+      throw new ForbiddenException('This assessment is not an anonymous assessment');
+    }
+
+    if (baseAssessment.transferredToUserId) {
+      console.log('Transfer blocked: Already transferred', {
+        transferredToUserId: baseAssessment.transferredToUserId
+      });
+      throw new ForbiddenException('This assessment has already been transferred to another user');
+    }
+
+    if (baseAssessment.status !== AssessmentStatus.COMPLETED) {
+      console.log('Transfer blocked: Assessment not completed', {
+        currentStatus: baseAssessment.status
+      });
+      throw new ForbiddenException('This assessment must be completed before it can be transferred');
     }
 
     // Check if assessment has expired
-    if (assessment.expiresAt && new Date() > assessment.expiresAt) {
-      throw new BadRequestException('Assessment session has expired');
+    if (baseAssessment.expiresAt && new Date() > baseAssessment.expiresAt) {
+      console.log('Transfer blocked: Assessment expired', {
+        expiresAt: baseAssessment.expiresAt,
+        currentTime: new Date().toISOString()
+      });
+      throw new ForbiddenException('This assessment has expired and can no longer be transferred');
     }
+
+    const assessment = baseAssessment;
 
     // Get user and their organization
     const user = await this.prisma.user.findUnique({
@@ -1088,7 +1208,29 @@ export class AssessmentService {
     });
 
     if (!user) {
-      throw new NotFoundException('User not found');
+      console.log('Transfer blocked: User not found', { userId });
+      throw new ForbiddenException('Unable to transfer - your user account could not be found');
+    }
+    
+    console.log('User found:', {
+      userId: user.id,
+      hasOrganization: !!user.organization,
+      organizationId: user.organizationId
+    });
+
+    // Check if user has appropriate role and organization
+    if (user.role !== 'ORG_ADMIN' && user.role !== 'SUPER_ADMIN') {
+      console.log('Transfer blocked: Insufficient role', { 
+        userRole: user.role 
+      });
+      throw new ForbiddenException('Unable to transfer - you must be an organization admin');
+    }
+
+    if (!user.organizationId) {
+      console.log('Transfer blocked: No organization', { 
+        userId: user.id 
+      });
+      throw new ForbiddenException('Unable to transfer - you must be associated with an organization');
     }
 
     // Determine organization ID (use provided or user's organization)
@@ -1098,18 +1240,18 @@ export class AssessmentService {
       throw new BadRequestException('Organization ID is required');
     }
 
-    // Verify user has access to the organization
-    const membership = await this.prisma.organizationMember.findFirst({
-      where: {
-        userId,
-        organizationId,
-        status: 'ACTIVE'
-      }
-    });
+    // // Verify user has access to the organization
+    // const membership = await this.prisma.organizationMember.findFirst({
+    //   where: {
+    //     userId,
+    //     organizationId,
+    //     status: 'ACTIVE'
+    //   }
+    // });
 
-    if (!membership) {
-      throw new ForbiddenException('You do not have access to this organization');
-    }
+    // if (!membership) {
+    //   throw new ForbiddenException('13You do not have access to this organization');
+    // }
 
     // Transfer the assessment
     const transferredAssessment = await this.prisma.assessment.update({

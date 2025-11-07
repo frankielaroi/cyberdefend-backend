@@ -93,13 +93,14 @@ export class DefendxController {
   @UseGuards(JwtAuthGuard)
   @Get('assessments')
   @ApiBearerAuth()
-  @ApiOperation({ summary: 'Get assessments with filtering' })
-  @ApiResponse({ status: 200, description: 'Assessments retrieved successfully' })
+  @ApiOperation({ summary: 'Get organization assessments with pagination' })
+  @ApiResponse({ status: 200, description: 'Organization assessments retrieved successfully' })
   async getAssessments(
     @GetUser('userId') userId: string,
-    @Query() query: AssessmentQueryDto,
+    @Query('page') page: number = 1,
+    @Query('limit') limit: number = 10,
   ) {
-    return this.assessmentService.getAssessments(userId, query);
+    return this.assessmentService.getOrganizationAssessments(userId, { page, limit });
   }
 
   @UseGuards(JwtAuthGuard)
