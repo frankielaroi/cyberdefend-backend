@@ -13,6 +13,8 @@ import {
   CampaignAnalyticsDto,
   BulkTargetsDto,
 } from '../dto/phishing-campaign.dto';
+import { RunExclusively } from '../../common/decorators/run-exclusively.decorator';
+import { CronLockService } from '../../common/services/cron-lock.service';
 
 // Local enum definitions (will be replaced with Prisma enums after generation)
 enum CampaignStatus {
@@ -42,6 +44,7 @@ export class PhishingCampaignService {
     private emailTrackingService: EmailTrackingService,
     private emailService: EmailService,
     private circuitBreaker: CircuitBreakerService,
+    private readonly cronLock: CronLockService,
     @Optional() private phishingQueueService?: PhishingQueueService
   ) {
     // Check if queue service is available
@@ -68,9 +71,9 @@ export class PhishingCampaignService {
   async createCampaign(organizationId: string, userId: string, createCampaignDto: CreateCampaignDto) {
     const { templateId, targets, scheduledAt, ...campaignData } = createCampaignDto;
 
-    // Validate template exists
-    const template = await this.prisma.phishingTemplate.findUnique({
-      where: { id: templateId }
+    // Template must be global or belong to this organization
+    const template = await this.prisma.phishingTemplate.findFirst({
+      where: { id: templateId, OR: [{ organizationId: null }, { organizationId }] }
     });
 
     if (!template) {
@@ -1289,6 +1292,7 @@ export class PhishingCampaignService {
    * Runs every minute to check for campaigns that need to be launched
    */
   @Cron(CronExpression.EVERY_MINUTE)
+  @RunExclusively('phishing:process-scheduled-campaigns', 55_000)
   async processScheduledCampaigns() {
     try {
       const now = new Date();
@@ -1394,6 +1398,7 @@ export class PhishingCampaignService {
    * Runs every 5 minutes to retry failed jobs that haven't exceeded max attempts
    */
   @Cron('*/5 * * * *')
+  @RunExclusively('phishing:retry-failed-email-jobs', 4 * 60_000)
   async retryFailedEmailJobs() {
     try {
       this.logger.log('Checking for failed email jobs to retry...');
@@ -1483,6 +1488,7 @@ export class PhishingCampaignService {
    * Runs daily at 2 AM to remove old completed and cancelled jobs
    */
   @Cron('0 2 * * *')
+  @RunExclusively('phishing:cleanup-old-jobs', 60 * 60_000)
   async cleanupOldJobs() {
     try {
       this.logger.log('Starting cleanup of old email jobs...');
@@ -1519,6 +1525,7 @@ export class PhishingCampaignService {
    * Runs every 15 minutes to monitor campaign health and fix issues
    */
   @Cron('*/15 * * * *')
+  @RunExclusively('phishing:campaign-health-check', 14 * 60_000)
   async campaignHealthCheck() {
     try {
       this.logger.log('Running campaign health check...');
@@ -1683,6 +1690,7 @@ export class PhishingCampaignService {
    * with all emails sent
    */
   @Cron('0 */6 * * *')
+  @RunExclusively('phishing:auto-complete-stale-campaigns', 60 * 60_000)
   async autoCompleteStaleCampaigns() {
     try {
       this.logger.log('Checking for stale campaigns to auto-complete...');

@@ -18,6 +18,7 @@ import { TrackingModule } from './common/tracking.module';
 import { configValidation } from './config/config.validation';
 import { BackupModule } from './backup/backup.module';
 import { HealthModule } from './health/health.module';
+import { CronLockModule } from './common/cron-lock.module';
 import awsConfig from './config/aws.config';
 
 @Module({
@@ -53,6 +54,7 @@ import awsConfig from './config/aws.config';
     // Core modules
     DatabaseModule,
     CommonModule,
+    CronLockModule,
     TrackingModule,
     AuthModule,
     DefendxModule,

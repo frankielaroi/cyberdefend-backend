@@ -455,11 +455,12 @@ export class OrganizationService {
       throw new ConflictException('You are already a member of an organization');
     }
 
+    let inviteCodeId: string | null = null;
+
     if (joinDto.inviteCode) {
       // Join via invite code
       const inviteCode = await this.prisma.inviteCode.findUnique({
         where: { code: joinDto.inviteCode },
-        include: { organization: true },
       });
 
       if (!inviteCode || !inviteCode.isActive || inviteCode.expiresAt < new Date()) {
@@ -470,13 +471,16 @@ export class OrganizationService {
         throw new BadRequestException('Invite code has reached its usage limit');
       }
 
-      organizationId = inviteCode.organizationId;
+      // Personal invitations can only be redeemed by the invited address
+      if (inviteCode.email) {
+        const user = await this.prisma.user.findUnique({ where: { id: userId }, select: { email: true } });
+        if (!user || user.email.toLowerCase() !== inviteCode.email.toLowerCase()) {
+          throw new ForbiddenException('This invitation was issued to a different email address');
+        }
+      }
 
-      // Update invite code usage
-      await this.prisma.inviteCode.update({
-        where: { id: inviteCode.id },
-        data: { usedCount: inviteCode.usedCount + 1 },
-      });
+      organizationId = inviteCode.organizationId;
+      inviteCodeId = inviteCode.id;
     } else if (joinDto.organizationId) {
       // Join via organization ID
       const organization = await this.prisma.organization.findUnique({
@@ -496,21 +500,36 @@ export class OrganizationService {
       throw new BadRequestException('Either invite code or organization ID is required');
     }
 
-    // Create membership
-    await this.prisma.organizationMember.create({
-      data: {
-        userId,
-        organizationId,
-        role: 'END_USER',
-        status: 'ACTIVE',
-        inviteCode: joinDto.inviteCode,
-      },
-    });
+    await this.prisma.$transaction(async (tx) => {
+      if (inviteCodeId) {
+        // Conditional increment so concurrent joins cannot exceed the usage limit
+        const { count } = await tx.inviteCode.updateMany({
+          where: {
+            id: inviteCodeId,
+            isActive: true,
+            usedCount: { lt: tx.inviteCode.fields.usageLimit },
+          },
+          data: { usedCount: { increment: 1 } },
+        });
+        if (count === 0) {
+          throw new BadRequestException('Invite code has reached its usage limit');
+        }
+      }
 
-    // Update user's organizationId
-    await this.prisma.user.update({
-      where: { id: userId },
-      data: { organizationId },
+      await tx.organizationMember.create({
+        data: {
+          userId,
+          organizationId,
+          role: 'END_USER',
+          status: 'ACTIVE',
+          inviteCode: joinDto.inviteCode,
+        },
+      });
+
+      await tx.user.update({
+        where: { id: userId },
+        data: { organizationId },
+      });
     });
 
     const organization = await this.prisma.organization.findUnique({
@@ -819,14 +838,20 @@ export class OrganizationService {
       }
     }
 
-    // Remove user from organization (set organizationId to null instead of deleting)
-    await this.prisma.user.update({
-      where: { id: memberId },
-      data: { 
-        organizationId: null,
-        role: 'END_USER', // Reset to default role
-      },
-    });
+    // Detach the user and drop the membership row together; a leftover membership
+    // would block the user from ever joining another organization
+    await this.prisma.$transaction([
+      this.prisma.user.update({
+        where: { id: memberId },
+        data: {
+          organizationId: null,
+          role: 'END_USER', // Reset to default role
+        },
+      }),
+      this.prisma.organizationMember.deleteMany({
+        where: { userId: memberId, organizationId: orgId },
+      }),
+    ]);
 
     // TODO: Log the removal action
     // await this.auditService.log({

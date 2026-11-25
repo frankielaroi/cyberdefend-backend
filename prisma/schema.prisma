@@ -9,37 +9,38 @@ datasource db {
 }
 
 model User {
-  id                                    String                  @id @default(uuid())
-  email                                 String                  @unique
-  password                              String
-  firstName                             String
-  lastName                              String
-  phone                                 String?
-  avatar                                String?
-  emailVerified                         Boolean                 @default(false)
-  isActive                              Boolean                 @default(true)
-  role                                  UserRole                @default(END_USER)
-  createdAt                             DateTime                @default(now())
-  updatedAt                             DateTime                @updatedAt
-  organizationId                        String?
-  verificationToken                     String?
-  transferredAssessments                Assessment[]            @relation("TransferredAssessments")
-  auditLogs                             AuditLog[]
-  emailTracking                         EmailTracking[]
-  createdInviteCodes                    InviteCode[]
-  notificationHistory                   NotificationHistory[]
-  notificationPreferences               NotificationPreference?
-  sentInvites                           OrganizationMember[]    @relation("UserInvites")
-  organizationMemberships               OrganizationMember[]
-  passwordResets                        PasswordReset[]
-  phishingCampaigns                     PhishingCampaign[]      @relation("CampaignCreator")
-  phishingTargets                       PhishingTarget[]
-  phishingTemplates                     PhishingTemplate[]      @relation("TemplateCreator")
-  refreshTokens                         RefreshToken[]
-  telemetryEvents                       TelemetryEvent[]
-  backups                               Backup[]
-  organization                          Organization?           @relation(fields: [organizationId], references: [id])
+  id                      String                  @id @default(uuid())
+  email                   String                  @unique
+  password                String
+  firstName               String
+  lastName                String
+  phone                   String?
+  avatar                  String?
+  emailVerified           Boolean                 @default(false)
+  isActive                Boolean                 @default(true)
+  role                    UserRole                @default(END_USER)
+  createdAt               DateTime                @default(now())
+  updatedAt               DateTime                @updatedAt
+  organizationId          String?
+  verificationToken       String?
+  transferredAssessments  Assessment[]            @relation("TransferredAssessments")
+  auditLogs               AuditLog[]
+  emailTracking           EmailTracking[]
+  createdInviteCodes      InviteCode[]
+  notificationHistory     NotificationHistory[]
+  notificationPreferences NotificationPreference?
+  sentInvites             OrganizationMember[]    @relation("UserInvites")
+  organizationMemberships OrganizationMember[]
+  passwordResets          PasswordReset[]
+  phishingCampaigns       PhishingCampaign[]      @relation("CampaignCreator")
+  phishingTargets         PhishingTarget[]
+  phishingTemplates       PhishingTemplate[]      @relation("TemplateCreator")
+  refreshTokens           RefreshToken[]
+  telemetryEvents         TelemetryEvent[]
+  backups                 Backup[]
+  organization            Organization?           @relation(fields: [organizationId], references: [id])
 
+  @@index([organizationId])
   @@map("users")
 }
 
@@ -51,6 +52,7 @@ model RefreshToken {
   createdAt DateTime @default(now())
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
+  @@index([userId])
   @@map("refresh_tokens")
 }
 
@@ -63,6 +65,7 @@ model PasswordReset {
   createdAt DateTime @default(now())
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
+  @@index([userId])
   @@map("password_resets")
 }
 
@@ -117,6 +120,7 @@ model InviteCode {
   creator        User         @relation(fields: [createdBy], references: [id], onDelete: Cascade)
   organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
 
+  @@index([organizationId])
   @@map("invite_codes")
 }
 
@@ -134,36 +138,39 @@ model OrganizationMember {
   user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, organizationId])
+  @@index([organizationId])
   @@map("organization_members")
 }
 
 model Assessment {
-  id                              String               @id @default(uuid())
-  title                           String
-  description                     String?
-  type                            AssessmentType       @default(CSI_ASSESSMENT)
-  status                          AssessmentStatus     @default(DRAFT)
-  score                           Float?
-  maxScore                        Float?
-  riskTier                        RiskTier?
-  benchmarkRegion                 Float?
-  benchmarkSector                 Float?
-  benchmarkSize                   Float?
-  startedAt                       DateTime?
-  completedAt                     DateTime?
-  reportUrl                       String?
-  createdAt                       DateTime             @default(now())
-  updatedAt                       DateTime             @updatedAt
-  organizationId                  String?
-  expiresAt                       DateTime?
-  isAnonymous                     Boolean              @default(false)
-  sessionId                       String?              @unique
-  transferredToUserId             String?
-  responses                       AssessmentResponse[]
-  result                          AssessmentResult?
-  organization                    Organization?        @relation(fields: [organizationId], references: [id])
-  transferredToUser               User?                @relation("TransferredAssessments", fields: [transferredToUserId], references: [id])
+  id                  String               @id @default(uuid())
+  title               String
+  description         String?
+  type                AssessmentType       @default(CSI_ASSESSMENT)
+  status              AssessmentStatus     @default(DRAFT)
+  score               Float?
+  maxScore            Float?
+  riskTier            RiskTier?
+  benchmarkRegion     Float?
+  benchmarkSector     Float?
+  benchmarkSize       Float?
+  startedAt           DateTime?
+  completedAt         DateTime?
+  reportUrl           String?
+  createdAt           DateTime             @default(now())
+  updatedAt           DateTime             @updatedAt
+  organizationId      String?
+  expiresAt           DateTime?
+  isAnonymous         Boolean              @default(false)
+  sessionId           String?              @unique
+  transferredToUserId String?
+  responses           AssessmentResponse[]
+  result              AssessmentResult?
+  organization        Organization?        @relation(fields: [organizationId], references: [id])
+  transferredToUser   User?                @relation("TransferredAssessments", fields: [transferredToUserId], references: [id])
 
+  @@index([organizationId, createdAt])
+  @@index([status, expiresAt])
   @@map("assessments")
 }
 
@@ -199,6 +206,7 @@ model Question {
   options         QuestionOption[]
   category        QuestionCategory     @relation(fields: [categoryId], references: [id])
 
+  @@index([categoryId])
   @@map("questions")
 }
 
@@ -212,6 +220,7 @@ model QuestionOption {
   questionId String
   question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
 
+  @@index([questionId])
   @@map("question_options")
 }
 
@@ -286,6 +295,8 @@ model PhishingCampaign {
   events             PhishingEvent[]
   targets            PhishingTarget[]
 
+  @@index([organizationId, status])
+  @@index([status, scheduledAt])
   @@map("phishing_campaigns")
 }
 
@@ -339,6 +350,8 @@ model PhishingEvent {
   campaign   PhishingCampaign  @relation(fields: [campaignId], references: [id], onDelete: Cascade)
   target     PhishingTarget?   @relation(fields: [targetId], references: [id], onDelete: Cascade)
 
+  @@index([campaignId, type])
+  @@index([targetId])
   @@map("phishing_events")
 }
 
@@ -366,6 +379,7 @@ model PhishingTemplate {
   creator            User?            @relation("TemplateCreator", fields: [createdBy], references: [id])
   organization       Organization?    @relation(fields: [organizationId], references: [id])
 
+  @@index([organizationId])
   @@map("phishing_templates")
 }
 
@@ -384,6 +398,8 @@ model EmailJob {
   createdAt      DateTime    @default(now())
   updatedAt      DateTime    @updatedAt
 
+  @@index([campaignId, status])
+  @@index([status, scheduledFor])
   @@map("email_jobs")
 }
 
@@ -407,6 +423,7 @@ model Agent {
   scanResults     ScanResult[]
   telemetryEvents TelemetryEvent[]
 
+  @@index([organizationId])
   @@map("agents")
 }
 
@@ -422,6 +439,7 @@ model TelemetryEvent {
   agent     Agent         @relation(fields: [agentId], references: [id])
   user      User?         @relation(fields: [userId], references: [id])
 
+  @@index([agentId, timestamp])
   @@map("telemetry_events")
 }
 
@@ -457,6 +475,7 @@ model Alert {
   agent          Agent         @relation(fields: [agentId], references: [id])
   rule           DetectionRule @relation(fields: [ruleId], references: [id])
 
+  @@index([agentId, status])
   @@map("alerts")
 }
 
@@ -473,6 +492,7 @@ model ScanResult {
   agentId         String
   agent           Agent      @relation(fields: [agentId], references: [id])
 
+  @@index([agentId])
   @@map("scan_results")
 }
 
@@ -512,6 +532,7 @@ model Subscription {
   organization       Organization       @relation(fields: [organizationId], references: [id])
   plan               SubscriptionPlan   @relation(fields: [planId], references: [id])
 
+  @@index([organizationId])
   @@map("subscriptions")
 }
 
@@ -534,6 +555,7 @@ model Invoice {
   subscription   Subscription  @relation(fields: [subscriptionId], references: [id])
   payments       Payment[]
 
+  @@index([organizationId])
   @@map("invoices")
 }
 
@@ -551,6 +573,7 @@ model Payment {
   invoiceId   String
   invoice     Invoice         @relation(fields: [invoiceId], references: [id])
 
+  @@index([invoiceId])
   @@map("payments")
 }
 
@@ -567,6 +590,7 @@ model AuditLog {
   userId    String
   user      User     @relation(fields: [userId], references: [id])
 
+  @@index([userId, timestamp])
   @@map("audit_logs")
 }
 
@@ -604,6 +628,7 @@ model NotificationHistory {
   emailTracking EmailTracking[]
   user          User?              @relation(fields: [userId], references: [id])
 
+  @@index([userId])
   @@map("notification_history")
 }
 
@@ -921,35 +946,37 @@ enum BackupJobStatus {
 }
 
 model BackupAgent {
-  id            String        @id @default(uuid())
-  name          String
-  token         String        @unique
+  id             String       @id @default(uuid())
+  name           String
+  token          String       @unique
   organizationId String
-  organization   Organization  @relation(fields: [organizationId], references: [id])
+  organization   Organization @relation(fields: [organizationId], references: [id])
   backupJobs     BackupJob[]
-  createdAt     DateTime      @default(now())
-  updatedAt     DateTime      @updatedAt
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
 
+  @@index([organizationId])
   @@map("backup_agents")
 }
 
 model BackupJob {
-  id            String          @id @default(uuid())
-  status        BackupJobStatus @default(PENDING)
-  sourcePath    String
-  backupType    String          @default("folder")
+  id             String          @id @default(uuid())
+  status         BackupJobStatus @default(PENDING)
+  sourcePath     String
+  backupType     String          @default("folder")
   organizationId String
-  agentId       String?
-  s3Path        String?
-  message       String?
-  startedAt     DateTime?
-  finishedAt    DateTime?
-  organization  Organization    @relation(fields: [organizationId], references: [id])
-  agent         BackupAgent?    @relation(fields: [agentId], references: [id])
-  backup        Backup?
-  createdAt     DateTime        @default(now())
-  updatedAt     DateTime        @updatedAt
+  agentId        String?
+  s3Path         String?
+  message        String?
+  startedAt      DateTime?
+  finishedAt     DateTime?
+  organization   Organization    @relation(fields: [organizationId], references: [id])
+  agent          BackupAgent?    @relation(fields: [agentId], references: [id])
+  backup         Backup?
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
 
+  @@index([organizationId, status, createdAt])
   @@map("backup_jobs")
 }
 
@@ -971,5 +998,6 @@ model Backup {
   createdAt      DateTime     @default(now())
   updatedAt      DateTime     @updatedAt
 
+  @@index([organizationId, createdAt])
   @@map("backups")
 }
