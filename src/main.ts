@@ -1,9 +1,9 @@
-import { HttpAdapterHost, NestFactory } from '@nestjs/core';
+import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
-import { Logger, ValidationPipe } from '@nestjs/common';
+import { Logger } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
-import { AllExceptionsFilter } from './common/filters/all-exceptions.filter';
+import { configureApp } from './app.setup';
 import { ConfigService } from '@nestjs/config';
 import * as compression from 'compression';
 import * as helmet from 'helmet';
@@ -13,27 +13,12 @@ async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   const configService = app.get(ConfigService);
 
-  // Behind Heroku's router: trust one proxy hop so req.ip is the real client and can't be spoofed further
-  app.set('trust proxy', 1);
-
   // Security middleware
   app.use(helmet.default());
   app.use(compression());
   app.use(morgan('combined'));
 
-  // Global validation pipe
-  app.useGlobalPipes(
-    new ValidationPipe({
-      whitelist: true,
-      forbidNonWhitelisted: true,
-      transform: true,
-      transformOptions: {
-        enableImplicitConversion: true,
-      },
-    }),
-  );
-
-  app.useGlobalFilters(new AllExceptionsFilter(app.get(HttpAdapterHost)));
+  configureApp(app);
 
   // Close HTTP server, Bull queues and Prisma cleanly on SIGTERM (Heroku dyno restarts, docker stop)
   app.enableShutdownHooks();
@@ -43,9 +28,6 @@ async function bootstrap() {
     origin: ['https://www.cyber360.tech', 'http://localhost:5173','https://cyberdefend360.netlify.app'],
     credentials: true,
   });
-
-  // Global prefix
-  app.setGlobalPrefix('api/v1');
 
   // Swagger documentation
   const config = new DocumentBuilder()
