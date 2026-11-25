@@ -1,14 +1,14 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../../database/prisma.service';
-import { randomBytes } from 'crypto';
+import { generateToken, hashToken } from '../../common/utils/token.util';
 
 @Injectable()
 export class AgentService {
   constructor(private prisma: PrismaService) {}
 
   async registerAgent(userId: string, organizationId: string, registerAgentDto: any) {
-    const apiKey = this.generateApiKey();
-    
+    const apiKey = generateToken();
+
     const agent = await this.prisma.agent.create({
       data: {
         name: registerAgentDto.name,
@@ -19,14 +19,14 @@ export class AgentService {
         ipAddress: registerAgentDto.ipAddress,
         macAddress: registerAgentDto.macAddress,
         organizationId,
-        apiKey,
+        apiKey: hashToken(apiKey),
       },
     });
 
     return {
       message: 'Agent registered successfully',
       agentId: agent.id,
-      apiKey: agent.apiKey,
+      apiKey, // Plaintext returned only on registration; only the hash is stored
       config: {
         samplingRate: 100, // Default 100%
         reportingInterval: 60, // 60 seconds
@@ -118,9 +118,9 @@ export class AgentService {
     };
   }
 
-  async updateHeartbeat(agentId: string) {
-    const agent = await this.prisma.agent.findUnique({
-      where: { id: agentId },
+  async updateHeartbeat(organizationId: string, agentId: string) {
+    const agent = await this.prisma.agent.findFirst({
+      where: { id: agentId, organizationId },
     });
 
     if (!agent) {
@@ -139,10 +139,6 @@ export class AgentService {
       message: 'Heartbeat recorded successfully',
       timestamp: new Date(),
     };
-  }
-
-  private generateApiKey(): string {
-    return randomBytes(32).toString('hex');
   }
 
   private getAgentStatus(lastSeen: Date): string {

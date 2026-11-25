@@ -4,7 +4,8 @@ import { PrismaService } from '../database/prisma.service';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { EmailService } from '../notification/services/email.service';
-import { UnauthorizedException } from '@nestjs/common';
+import { ForbiddenException, UnauthorizedException } from '@nestjs/common';
+import { hashToken } from '../common/utils/token.util';
 
 describe('AuthService - Email Verification', () => {
   let service: AuthService;
@@ -17,6 +18,12 @@ describe('AuthService - Email Verification', () => {
       findUnique: jest.fn(),
       update: jest.fn(),
     },
+    passwordReset: {
+      deleteMany: jest.fn(),
+      create: jest.fn(),
+      findUnique: jest.fn(),
+    },
+    $transaction: jest.fn(),
   };
 
   const mockEmailService = {
@@ -166,6 +173,68 @@ describe('AuthService - Email Verification', () => {
 
       expect(result).toEqual({ message: 'Email is already verified' });
       expect(mockEmailService.sendEmail).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('forgotPassword', () => {
+    it('returns the same response for unknown emails without sending mail', async () => {
+      mockPrismaService.user.findUnique.mockResolvedValue(null);
+
+      const result = await service.forgotPassword({ email: 'nobody@example.com' });
+
+      expect(result.message).toMatch(/If an account exists/);
+      expect(mockPrismaService.passwordReset.create).not.toHaveBeenCalled();
+      expect(mockEmailService.sendEmail).not.toHaveBeenCalled();
+    });
+
+    it('stores a hashed token, emails the plaintext link and never returns the token', async () => {
+      mockPrismaService.user.findUnique.mockResolvedValue({
+        id: 'u1', email: 'test@example.com', firstName: 'Test', lastName: 'User', isActive: true,
+      });
+      mockPrismaService.$transaction.mockResolvedValue([]);
+      mockEmailService.sendEmail.mockResolvedValue({ success: true });
+      mockConfigService.get.mockReturnValue('https://app.example');
+
+      const result = await service.forgotPassword({ email: 'test@example.com' });
+      await new Promise(setImmediate);
+
+      const storedToken = mockPrismaService.passwordReset.create.mock.calls[0][0].data.token;
+      const emailBody = mockEmailService.sendEmail.mock.calls[0][0].htmlContent;
+      const plaintext = /token=([0-9a-f]{64})/.exec(emailBody)[1];
+
+      expect(storedToken).toBe(hashToken(plaintext));
+      expect(JSON.stringify(result)).not.toContain(plaintext);
+    });
+  });
+
+  describe('resetPassword', () => {
+    it('looks up the reset record by token hash', async () => {
+      mockPrismaService.passwordReset.findUnique.mockResolvedValue(null);
+
+      await expect(service.resetPassword({ token: 'abc', password: 'newpassword1' })).rejects.toThrow(
+        UnauthorizedException,
+      );
+      expect(mockPrismaService.passwordReset.findUnique).toHaveBeenCalledWith({
+        where: { token: hashToken('abc') },
+      });
+    });
+  });
+
+  describe('register', () => {
+    const base = { email: 'new@example.com', password: 'password123', firstName: 'New', lastName: 'User' };
+
+    beforeEach(() => mockPrismaService.user.findUnique.mockResolvedValue(null));
+
+    it('rejects a self-assigned privileged role', async () => {
+      await expect(service.register({ ...base, role: 'SUPER_ADMIN' } as any)).rejects.toThrow(ForbiddenException);
+      expect(mockPrismaService.$transaction).not.toHaveBeenCalled();
+    });
+
+    it('rejects joining an existing organization without an invite', async () => {
+      await expect(
+        service.register({ ...base, organizationId: '6f1b8a2e-1c2d-4e3f-9a8b-7c6d5e4f3a2b' } as any),
+      ).rejects.toThrow(ForbiddenException);
+      expect(mockPrismaService.$transaction).not.toHaveBeenCalled();
     });
   });
 });

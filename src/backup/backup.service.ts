@@ -1,19 +1,21 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException, ForbiddenException, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PrismaService } from '../database/prisma.service';
 import { S3Client, PutObjectCommand, GetObjectCommand, DeleteObjectCommand } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
-import { v4 as uuidv4 } from 'uuid';
 import { CreateBackupJobDto, UpdateBackupJobStatusDto, BackupJobStatus } from './dto/backup-job.dto';
 import { CreateBackupAgentDto } from './dto/agent.dto';
-import * as crypto from 'crypto';
 import * as fs from 'fs';
+import * as path from 'path';
+import { generateToken, hashToken } from '../common/utils/token.util';
 
 @Injectable()
 export class BackupService {
+  private readonly logger = new Logger(BackupService.name);
   private s3Client: S3Client;
 
   async getOrganizationAgents(organizationId: string) {
+    this.requireOrganization(organizationId);
     const agents = await this.prisma.backupAgent.findMany({
       where: {
         organizationId
@@ -35,8 +37,10 @@ export class BackupService {
     return agents;
   }
 
-  async getOrganizationBackups() {
+  async getOrganizationBackups(organizationId: string) {
+    this.requireOrganization(organizationId);
     return this.prisma.backup.findMany({
+      where: { organizationId },
       include: {
         job: true,
       },
@@ -46,25 +50,19 @@ export class BackupService {
     });
   }
 
-  async getBackupDownloadUrl(backupId: string) {
-    const backup = await this.prisma.backup.findUnique({
-      where: { id: backupId },
-      include: { 
-        job: true,
-        organization: true 
-      },
+  async getBackupDownloadUrl(backupId: string, organizationId: string) {
+    this.requireOrganization(organizationId);
+    const backup = await this.prisma.backup.findFirst({
+      where: { id: backupId, organizationId },
     });
 
     if (!backup) {
       throw new NotFoundException(`Backup with ID ${backupId} not found`);
     }
 
-    // Construct the full S3 key including organization and job path
-    const s3Key = `backups/${backup.organizationId}/${backup.jobId}/${backup.originalName}`;
-
     const command = new GetObjectCommand({
-      Bucket: this.configService.get('aws.s3Bucket'),
-      Key: s3Key,
+      Bucket: backup.s3Bucket,
+      Key: backup.s3Key,
     });
 
     const url = await getSignedUrl(this.s3Client, command, { expiresIn: 3600 }); // URL expires in 1 hour
@@ -72,6 +70,7 @@ export class BackupService {
   }
 
   async deleteBackup(backupId: string, organizationId: string) {
+    this.requireOrganization(organizationId);
     const backup = await this.prisma.backup.findFirst({
       where: { 
         id: backupId,
@@ -84,16 +83,11 @@ export class BackupService {
       throw new NotFoundException(`Backup with ID ${backupId} not found`);
     }
 
-    // Check if backup belongs to the organization
-    if (backup.organizationId !== organizationId) {
-      throw new BadRequestException('Unauthorized: Backup does not belong to your organization');
-    }
-
     try {
       // Delete from S3
       const deleteCommand = new DeleteObjectCommand({
-        Bucket: this.configService.get('aws.s3Bucket'),
-        Key: backup.filename,
+        Bucket: backup.s3Bucket,
+        Key: backup.s3Key,
       });
       await this.s3Client.send(deleteCommand);
 
@@ -112,20 +106,11 @@ export class BackupService {
     private configService: ConfigService,
     private prisma: PrismaService,
   ) {
-    // Debug logging for AWS configuration
     const awsConfig = {
       region: this.configService.get('aws.region'),
       accessKeyId: this.configService.get('aws.accessKeyId'),
       secretAccessKey: this.configService.get('aws.secretAccessKey'),
-      s3Bucket: this.configService.get('aws.s3Bucket'),
     };
-    
-    console.log('=== AWS Configuration Debug ===');
-    console.log('AWS Region:', awsConfig.region);
-    console.log('AWS Access Key ID:', awsConfig.accessKeyId ? `${awsConfig.accessKeyId.substring(0, 8)}...` : 'NOT SET');
-    console.log('AWS Secret Access Key:', awsConfig.secretAccessKey ? `${awsConfig.secretAccessKey.substring(0, 8)}...` : 'NOT SET');
-    console.log('AWS S3 Bucket:', awsConfig.s3Bucket);
-    console.log('================================');
 
     this.s3Client = new S3Client({
       region: awsConfig.region,
@@ -136,21 +121,49 @@ export class BackupService {
     });
   }
 
-  async createBackupAgent(dto: CreateBackupAgentDto): Promise<any> {
-    const token = crypto.randomBytes(32).toString('hex');
+  async createBackupAgent(dto: CreateBackupAgentDto, organizationId: string): Promise<any> {
+    this.requireOrganization(organizationId);
+    const token = generateToken();
 
     const agent = await this.prisma.backupAgent.create({
       data: {
         name: dto.name,
-        token,
-        organizationId: dto.organizationId,
+        token: hashToken(token),
+        organizationId,
       },
     });
 
     return {
       ...agent,
-      token, // Return token only on creation
+      token, // Plaintext returned only on creation; only the hash is stored
     };
+  }
+
+  /** Verifies agent headers; the stored token is a SHA-256 hash of the secret the agent holds. */
+  private async authenticateAgent(organizationId: string, agentId: string, agentToken: string) {
+    if (!organizationId || !agentId || !agentToken) {
+      throw new BadRequestException('Invalid agent credentials');
+    }
+
+    const agent = await this.prisma.backupAgent.findFirst({
+      where: {
+        id: agentId,
+        organizationId,
+        token: hashToken(agentToken),
+      },
+    });
+
+    if (!agent) {
+      throw new BadRequestException('Invalid agent credentials');
+    }
+
+    return agent;
+  }
+
+  private requireOrganization(organizationId: string) {
+    if (!organizationId) {
+      throw new ForbiddenException('User is not a member of an organization');
+    }
   }
 
   async createBackupJob(
@@ -159,18 +172,7 @@ export class BackupService {
     agentId: string,
     agentJwt: string
   ): Promise<any> {
-    // Verify the agent exists and belongs to the organization
-    const agent = await this.prisma.backupAgent.findFirst({
-      where: {
-        id: agentId,
-        organizationId: organizationId,
-        token: agentJwt
-      }
-    });
-
-    if (!agent) {
-      throw new BadRequestException('Invalid agent credentials');
-    }
+    await this.authenticateAgent(organizationId, agentId, agentJwt);
 
     return this.prisma.backupJob.create({
       data: {
@@ -181,24 +183,13 @@ export class BackupService {
       },
       include: {
         organization: true,
-        agent: true,
+        agent: { select: { id: true, name: true } },
       },
     });
   }
 
   async getPendingJobs(organizationId: string, agentId: string, agentJwt: string): Promise<any> {
-    // Verify agent credentials
-    const agent = await this.prisma.backupAgent.findFirst({
-      where: {
-        id: agentId,
-        organizationId: organizationId,
-        token: agentJwt
-      }
-    });
-
-    if (!agent) {
-      throw new BadRequestException('Invalid agent credentials');
-    }
+    await this.authenticateAgent(organizationId, agentId, agentJwt);
 
     const jobs = await this.prisma.backupJob.findMany({
       where: {
@@ -247,18 +238,7 @@ export class BackupService {
     agentId: string,
     agentJwt: string
   ): Promise<any> {
-    // First verify the agent credentials
-    const agent = await this.prisma.backupAgent.findFirst({
-      where: {
-        id: agentId,
-        organizationId: organizationId,
-        token: agentJwt
-      }
-    });
-
-    if (!agent) {
-      throw new BadRequestException('Invalid agent credentials');
-    }
+    await this.authenticateAgent(organizationId, agentId, agentJwt);
 
     // Verify the job exists and belongs to the organization
     const job = await this.prisma.backupJob.findFirst({
@@ -301,17 +281,6 @@ export class BackupService {
       throw new BadRequestException('No file uploaded');
     }
 
-    // Debug logging for file object structure
-    console.log('File object keys:', Object.keys(file));
-    console.log('File properties:', {
-      originalname: file.originalname,
-      mimetype: file.mimetype,
-      size: file.size,
-      hasBuffer: !!file.buffer,
-      hasPath: !!file.path,
-      bufferLength: file.buffer ? file.buffer.length : 'N/A'
-    });
-
     // Check if file has buffer (memory storage) or path (disk storage)
     if (!file.buffer && !file.path) {
       throw new BadRequestException('No file data provided - file has neither buffer nor path');
@@ -327,17 +296,9 @@ export class BackupService {
     }
 
     const bucket = this.configService.get('aws.s3Bucket');
-    const key = `backups/${organizationId}/${jobId}/${file.originalname}`;
-
-    // Debug logging for S3 upload configuration
-    console.log('=== S3 Upload Debug ===');
-    console.log('S3 Bucket from config:', bucket);
-    console.log('S3 Key:', key);
-    console.log('Organization ID:', organizationId);
-    console.log('Job ID:', jobId);
-    console.log('File name:', file.originalname);
-    console.log('File size:', file.size);
-    console.log('======================');
+    // basename() strips any path segments so a crafted filename cannot escape this job's prefix
+    const safeName = path.basename(String(file.originalname || '')).replace(/[^\w.\-]/g, '_') || 'backup';
+    const key = `backups/${organizationId}/${jobId}/${safeName}`;
 
     if (!bucket) {
       throw new BadRequestException('S3 bucket configuration is missing or empty');
@@ -372,28 +333,11 @@ export class BackupService {
       },
     };
 
-    console.log('=== S3 Upload Parameters ===');
-    console.log('Upload Params:', {
-      Bucket: uploadParams.Bucket,
-      Key: uploadParams.Key,
-      BodyLength: uploadParams.Body ? uploadParams.Body.length : 'N/A',
-      ContentType: uploadParams.ContentType,
-      Metadata: uploadParams.Metadata
-    });
-    console.log('=============================');
-
     try {
-      console.log('Attempting S3 upload...');
-      const command = new PutObjectCommand(uploadParams);
-      const result = await this.s3Client.send(command);
-      console.log('S3 upload successful:', result);
+      await this.s3Client.send(new PutObjectCommand(uploadParams));
+      this.logger.log(`Uploaded backup for job ${jobId} (${file.size} bytes)`);
     } catch (s3Error) {
-      console.error('=== S3 Upload Error ===');
-      console.error('Error name:', s3Error.name);
-      console.error('Error message:', s3Error.message);
-      console.error('Error code:', s3Error.code);
-      console.error('Error stack:', s3Error.stack);
-      console.error('=======================');
+      this.logger.error(`S3 upload failed for job ${jobId}: ${s3Error.name}: ${s3Error.message}`);
       throw new BadRequestException(`Failed to upload file to storage: ${s3Error.message}`);
     } finally {
       // Clean up temporary file if using disk storage
@@ -402,7 +346,7 @@ export class BackupService {
           fs.unlinkSync(file.path);
         } catch (error) {
           // Log but don't throw - upload succeeded, cleanup failed
-          console.warn(`Failed to cleanup temporary file ${file.path}:`, error.message);
+          this.logger.warn(`Failed to cleanup temporary file ${file.path}: ${error.message}`);
         }
       }
     }
@@ -410,7 +354,7 @@ export class BackupService {
     // Save backup record to database
     const backup = await this.prisma.backup.create({
       data: {
-        filename: file.originalname,
+        filename: safeName,
         originalName: file.originalname,
         size: file.size,
         mimeType: file.mimetype,
@@ -435,37 +379,8 @@ export class BackupService {
     };
   }
 
-  async generateDownloadUrl(backupId: string): Promise<string> {
-    const backup = await this.prisma.backup.findUnique({
-      where: { id: backupId },
-    });
-
-    if (!backup) {
-      throw new Error('Backup not found');
-    }
-
-    const command = new GetObjectCommand({
-      Bucket: backup.s3Bucket,
-      Key: backup.s3Key,
-    });
-
-    const signedUrl = await getSignedUrl(this.s3Client, command, { expiresIn: 3600 }); // 1 hour
-    return signedUrl;
-  }
-
   async getBackupsByOrganization(organizationId: string, agentId: string, agentJwt: string): Promise<any[]> {
-    // Verify agent credentials
-    const agent = await this.prisma.backupAgent.findFirst({
-      where: {
-        id: agentId,
-        organizationId: organizationId,
-        token: agentJwt
-      }
-    });
-
-    if (!agent) {
-      throw new BadRequestException('Invalid agent credentials');
-    }
+    await this.authenticateAgent(organizationId, agentId, agentJwt);
 
     return this.prisma.backup.findMany({
       where: { organizationId },
@@ -477,24 +392,13 @@ export class BackupService {
   }
 
   async getBackupJobs(organizationId: string, agentId: string, agentJwt: string): Promise<any[]> {
-    // Verify agent credentials
-    const agent = await this.prisma.backupAgent.findFirst({
-      where: {
-        id: agentId,
-        organizationId: organizationId,
-        token: agentJwt
-      }
-    });
-
-    if (!agent) {
-      throw new BadRequestException('Invalid agent credentials');
-    }
+    await this.authenticateAgent(organizationId, agentId, agentJwt);
 
     return this.prisma.backupJob.findMany({
       where: { organizationId },
       orderBy: { createdAt: 'desc' },
       include: {
-        agent: true,
+        agent: { select: { id: true, name: true } },
         backup: true,
       },
     });
@@ -507,18 +411,7 @@ export class BackupService {
     agentJwt: string,
     dto: UpdateBackupJobStatusDto
   ): Promise<any> {
-    // Verify agent credentials
-    const agent = await this.prisma.backupAgent.findFirst({
-      where: {
-        id: agentId,
-        organizationId: organizationId,
-        token: agentJwt
-      }
-    });
-
-    if (!agent) {
-      throw new BadRequestException('Invalid agent credentials');
-    }
+    await this.authenticateAgent(organizationId, agentId, agentJwt);
 
     const job = await this.prisma.backupJob.findFirst({
       where: {
@@ -546,7 +439,7 @@ export class BackupService {
           : undefined,
       },
       include: {
-        agent: true,
+        agent: { select: { id: true, name: true } },
         backup: true,
       },
     });

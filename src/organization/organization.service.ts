@@ -17,7 +17,7 @@ import {
   OrganizationSettingsResponseDto,
   OrganizationMemberResponseDto
 } from './dto/organization.dto';
-import { v4 as uuidv4 } from 'uuid';
+import { generateCode } from '../common/utils/token.util';
 
 @Injectable()
 export class OrganizationService {
@@ -409,7 +409,7 @@ export class OrganizationService {
     let attempts = 0;
 
     do {
-      inviteCode = `INV-${uuidv4().replace(/-/g, '').substring(0, 8).toUpperCase()}`;
+      inviteCode = `INV-${generateCode(10)}`;
       const existing = await this.prisma.inviteCode.findUnique({
         where: { code: inviteCode },
       });
@@ -703,7 +703,7 @@ export class OrganizationService {
     // In a real implementation, you'd want a separate invitations table
     const inviteCode = await this.prisma.inviteCode.create({
       data: {
-        code: `INV-${Math.random().toString(36).substring(2, 8).toUpperCase()}`,
+        code: `INV-${generateCode(10)}`,
         email: inviteDto.email,
         organizationId: orgId,
         createdBy: userId,

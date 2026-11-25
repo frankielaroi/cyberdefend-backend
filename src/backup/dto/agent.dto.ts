@@ -1,5 +1,5 @@
-import { IsString, IsNotEmpty } from 'class-validator';
-import { ApiProperty } from '@nestjs/swagger';
+import { IsString, IsNotEmpty, IsOptional } from 'class-validator';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class CreateBackupAgentDto {
   @ApiProperty()
@@ -7,10 +7,11 @@ export class CreateBackupAgentDto {
   @IsNotEmpty()
   name: string;
 
-  @ApiProperty()
+  /** Ignored: the organization is taken from the authenticated user. Kept so older clients still validate. */
+  @ApiPropertyOptional({ deprecated: true })
   @IsString()
-  @IsNotEmpty()
-  organizationId: string;
+  @IsOptional()
+  organizationId?: string;
 }
 
 export class AgentAuthDto {

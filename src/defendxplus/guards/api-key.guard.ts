@@ -1,5 +1,6 @@
 import { Injectable, CanActivate, ExecutionContext, UnauthorizedException } from '@nestjs/common';
 import { PrismaService } from '../../database/prisma.service';
+import { hashToken } from '../../common/utils/token.util';
 
 @Injectable()
 export class ApiKeyGuard implements CanActivate {
@@ -9,12 +10,12 @@ export class ApiKeyGuard implements CanActivate {
     const request = context.switchToHttp().getRequest();
     const apiKey = request.headers['x-api-key'];
 
-    if (!apiKey) {
+    if (!apiKey || typeof apiKey !== 'string') {
       throw new UnauthorizedException('API key required');
     }
 
     const agent = await this.prisma.agent.findUnique({
-      where: { apiKey },
+      where: { apiKey: hashToken(apiKey) },
       select: { id: true, organizationId: true, isActive: true },
     });
 

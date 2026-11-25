@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException, BadRequestException, UnauthorizedException, ConflictException } from '@nestjs/common';
 import { PrismaService } from '../database/prisma.service';
 import * as bcrypt from 'bcrypt';
+import { generateCode } from '../common/utils/token.util';
 import {
   UpdateProfileDto,
   ChangePasswordDto,
@@ -247,12 +248,9 @@ export class ProfileService {
     // 3. Storing 2FA settings
     // 4. Generating backup codes
 
-    const backupCodes = twoFactorDto.enabled ? [
-      Math.random().toString(36).substring(2, 10),
-      Math.random().toString(36).substring(2, 10),
-      Math.random().toString(36).substring(2, 10),
-      Math.random().toString(36).substring(2, 10),
-    ] : undefined;
+    const backupCodes = twoFactorDto.enabled
+      ? Array.from({ length: 4 }, () => generateCode(10))
+      : undefined;
 
     return {
       success: true,

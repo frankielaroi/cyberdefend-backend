@@ -1217,6 +1217,16 @@ export class PhishingCampaignService {
   /**
    * Generate tracking URL with campaign and target IDs
    */
+  /** Landing page for a tracked click; falls back to the default page for unknown campaign/target pairs. */
+  async getLandingRedirectUrl(campaignId: string, targetId: string): Promise<string> {
+    const target = await this.prisma.phishingTarget.findFirst({
+      where: { id: targetId, campaignId },
+      select: { campaign: { select: { landingPageUrl: true } } },
+    });
+
+    return this.generateTrackingUrl(target?.campaign?.landingPageUrl, campaignId, targetId);
+  }
+
   private generateTrackingUrl(baseUrl: string, campaignId: string, targetId: string): string {
     if (!baseUrl) {
       // Use default landing page URL with tracking params
