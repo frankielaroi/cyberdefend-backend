@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, ForbiddenException, ConflictException, BadRequestException, UnauthorizedException } from '@nestjs/common';
+import { Injectable, NotFoundException, ForbiddenException, ConflictException, BadRequestException, UnauthorizedException, Logger } from '@nestjs/common';
 import { PrismaService } from '../database/prisma.service';
 import { NotificationService } from '../notification/services/notification.service';
 import { SendEmailDto } from '../notification/dto/notification.dto';
@@ -20,6 +20,8 @@ import { generateCode } from '../common/utils/token.util';
 
 @Injectable()
 export class OrganizationService {
+  private readonly logger = new Logger(OrganizationService.name);
+
   constructor(
     private prisma: PrismaService,
     private notificationService: NotificationService,
@@ -743,7 +745,7 @@ export class OrganizationService {
       await this.notificationService.sendEmail(invitationEmail);
     } catch (error) {
       // Log the error but don't fail the invitation creation
-      console.error('Failed to send invitation email:', error);
+      this.logger.error(`Failed to send invitation email: ${error?.message}`, error?.stack);
     }
 
     return {
@@ -915,7 +917,7 @@ export class OrganizationService {
         await this.notificationService.sendEmail(resendEmail);
       } catch (error) {
         // Log the error but don't fail the resend
-        console.error('Failed to resend invitation email:', error);
+        this.logger.error(`Failed to resend invitation email: ${error?.message}`, error?.stack);
       }
     }
 

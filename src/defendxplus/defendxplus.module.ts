@@ -17,7 +17,7 @@ import { AlertService } from './services/alert.service';
 import { ScanService } from './services/scan.service';
 import { PhishingCampaignService } from './services/phishing-campaign.service';
 import { PhishingTemplateService } from './services/phishing-template.service';
-import { EmailTrackingService } from './services/email-tracking.service';
+import { PhishingTrackingService } from './services/phishing-tracking.service';
 import { AnalyticsService } from './services/analytics.service';
 import { PhishingQueueService } from './services/phishing-queue.service';
 import { CircuitBreakerService } from './services/circuit-breaker.service';
@@ -84,7 +84,7 @@ import { CampaignRunnerProcessor } from './processors/campaign-runner.processor'
     ScanService,
     PhishingCampaignService,
     PhishingTemplateService,
-    EmailTrackingService,
+    PhishingTrackingService,
     AnalyticsService,
     PhishingQueueService,
     CircuitBreakerService,
@@ -114,7 +114,7 @@ import { CampaignRunnerProcessor } from './processors/campaign-runner.processor'
     ScanService,
     PhishingCampaignService,
     PhishingTemplateService,
-    EmailTrackingService,
+    PhishingTrackingService,
     AnalyticsService,
     PhishingQueueService,
     CampaignSchedulerService,

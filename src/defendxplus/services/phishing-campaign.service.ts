@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException, BadRequestException, Logger, Optional } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { PrismaService } from '../../database/prisma.service';
-import { EmailTrackingService, PhishingEventType } from './email-tracking.service';
+import { PhishingTrackingService, PhishingEventType } from './phishing-tracking.service';
 import { EmailService } from '../../notification/services/email.service';
 import { PhishingQueueService } from './phishing-queue.service';
 import { CircuitBreakerService } from './circuit-breaker.service';
@@ -41,7 +41,7 @@ export class PhishingCampaignService {
 
   constructor(
     private prisma: PrismaService,
-    private emailTrackingService: EmailTrackingService,
+    private phishingTrackingService: PhishingTrackingService,
     private emailService: EmailService,
     private circuitBreaker: CircuitBreakerService,
     private readonly cronLock: CronLockService,
@@ -916,7 +916,7 @@ export class PhishingCampaignService {
           });
 
           // Track email sent event
-          await this.emailTrackingService.trackEmailEvent(
+          await this.phishingTrackingService.trackEmailEvent(
             campaignId,
             target.id,
             PhishingEventType.EMAIL_SENT,
@@ -1122,7 +1122,7 @@ export class PhishingCampaignService {
         });
 
         // Track email sent event
-        await this.emailTrackingService.trackEmailEvent(
+        await this.phishingTrackingService.trackEmailEvent(
           campaignId,
           target.id,
           PhishingEventType.EMAIL_SENT,
@@ -1767,8 +1767,8 @@ export class PhishingCampaignService {
   }
 
   async trackEmailEvent(campaignId: string, targetId: string, eventType: PhishingEventType, metadata?: any) {
-    // Delegate to EmailTrackingService for better separation of concerns
-    return this.emailTrackingService.trackEmailEvent(campaignId, targetId, eventType, metadata);
+    // Delegate to PhishingTrackingService for better separation of concerns
+    return this.phishingTrackingService.trackEmailEvent(campaignId, targetId, eventType, metadata);
   }
 
   private async updateCampaignStatistics(campaignId: string, eventType: PhishingEventType) {
