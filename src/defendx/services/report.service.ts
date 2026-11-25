@@ -1,9 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from '../../database/prisma.service';
 import { BenchmarkService } from './benchmark.service';
 
 @Injectable()
 export class ReportService {
+  private readonly logger = new Logger(ReportService.name);
+
   constructor(
     private prisma: PrismaService,
     private benchmarkService: BenchmarkService
@@ -67,7 +69,7 @@ export class ReportService {
         data: reportData,
       };
     } catch (error) {
-      console.error('Error generating basic report:', error);
+      this.logger.error(`Error generating basic report: ${error?.message}`, error?.stack);
       return {
         success: false,
         message: 'Failed to generate report',

@@ -1,9 +1,11 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, Logger } from '@nestjs/common';
 import { PrismaService } from '../../database/prisma.service';
 import { ScheduleScanDto, RunScanDto } from '../dto/scan.dto';
 
 @Injectable()
 export class ScanService {
+  private readonly logger = new Logger(ScanService.name);
+
   constructor(private prisma: PrismaService) {}
 
   async scheduleScan(userId: string, organizationId: string, scheduleScanDto: ScheduleScanDto) {
@@ -308,7 +310,7 @@ export class ScanService {
           },
         });
       } catch (error) {
-        console.error('Error completing simulated scan:', error);
+        this.logger.error(`Error completing simulated scan: ${error?.message}`, error?.stack);
       }
     }, 5000);
   }

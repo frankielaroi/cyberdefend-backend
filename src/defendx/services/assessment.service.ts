@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, ForbiddenException, BadRequestException } from '@nestjs/common';
+import { Injectable, NotFoundException, ForbiddenException, BadRequestException, Logger } from '@nestjs/common';
 import { PrismaService } from '../../database/prisma.service';
 import { v4 as uuidv4, validate as uuidValidate } from 'uuid';
 import {
@@ -23,6 +23,8 @@ import { BenchmarkService } from './benchmark.service';
 
 @Injectable()
 export class AssessmentService {
+  private readonly logger = new Logger(AssessmentService.name);
+
   constructor(
     private prisma: PrismaService,
     private questionService: QuestionService,
@@ -1106,11 +1108,11 @@ export class AssessmentService {
    * Transfer anonymous assessment to authenticated user
    */
   async transferAnonymousAssessment(userId: string, dto: TransferAnonymousAssessmentDto) {
-    console.log('Transfer attempt:', {
+    this.logger.debug(`Transfer attempt: ${JSON.stringify({
       userId,
       sessionId: dto.sessionId,
       timestamp: new Date().toISOString()
-    });
+    })}`);
 
     // Get user and check organization
     const requestingUser = await this.prisma.user.findUnique({
@@ -1122,12 +1124,12 @@ export class AssessmentService {
       throw new ForbiddenException('Unable to transfer - your user account could not be found');
     }
 
-    console.log('User details:', {
+    this.logger.debug(`User details: ${JSON.stringify({
       userId: requestingUser.id,
       hasOrganization: !!requestingUser.organization,
       organizationId: requestingUser.organizationId,
       role: requestingUser.role
-    });
+    })}`);
 
     if (!requestingUser.organizationId && requestingUser.role !== 'SUPER_ADMIN') {
       throw new ForbiddenException('Unable to transfer - you must be associated with an organization');
@@ -1145,7 +1147,7 @@ export class AssessmentService {
       }
     });
 
-    console.log('Assessment found:', {
+    this.logger.debug(`Assessment found: ${JSON.stringify({
       exists: !!baseAssessment,
       assessmentDetails: baseAssessment ? {
         id: baseAssessment.id,
@@ -1155,7 +1157,7 @@ export class AssessmentService {
         transferredToUserId: baseAssessment.transferredToUserId,
         expiresAt: baseAssessment.expiresAt,
       } : null
-    });
+    })}`);
 
     if (!baseAssessment) {
       throw new NotFoundException(`Assessment with session ID '${dto.sessionId}' not found`);
@@ -1163,30 +1165,30 @@ export class AssessmentService {
 
     // Then check specific conditions
     if (!baseAssessment.isAnonymous) {
-      console.log('Transfer blocked: Assessment is not anonymous');
+      this.logger.debug('Transfer blocked: Assessment is not anonymous');
       throw new ForbiddenException('This assessment is not an anonymous assessment');
     }
 
     if (baseAssessment.transferredToUserId) {
-      console.log('Transfer blocked: Already transferred', {
+      this.logger.debug(`Transfer blocked: Already transferred: ${JSON.stringify({
         transferredToUserId: baseAssessment.transferredToUserId
-      });
+      })}`);
       throw new ForbiddenException('This assessment has already been transferred to another user');
     }
 
     if (baseAssessment.status !== AssessmentStatus.COMPLETED) {
-      console.log('Transfer blocked: Assessment not completed', {
+      this.logger.debug(`Transfer blocked: Assessment not completed: ${JSON.stringify({
         currentStatus: baseAssessment.status
-      });
+      })}`);
       throw new ForbiddenException('This assessment must be completed before it can be transferred');
     }
 
     // Check if assessment has expired
     if (baseAssessment.expiresAt && new Date() > baseAssessment.expiresAt) {
-      console.log('Transfer blocked: Assessment expired', {
+      this.logger.debug(`Transfer blocked: Assessment expired: ${JSON.stringify({
         expiresAt: baseAssessment.expiresAt,
         currentTime: new Date().toISOString()
-      });
+      })}`);
       throw new ForbiddenException('This assessment has expired and can no longer be transferred');
     }
 
@@ -1199,28 +1201,28 @@ export class AssessmentService {
     });
 
     if (!user) {
-      console.log('Transfer blocked: User not found', { userId });
+      this.logger.debug(`Transfer blocked: User not found: ${JSON.stringify({ userId })}`);
       throw new ForbiddenException('Unable to transfer - your user account could not be found');
     }
     
-    console.log('User found:', {
+    this.logger.debug(`User found: ${JSON.stringify({
       userId: user.id,
       hasOrganization: !!user.organization,
       organizationId: user.organizationId
-    });
+    })}`);
 
     // Check if user has appropriate role and organization
     if (user.role !== 'ORG_ADMIN' && user.role !== 'SUPER_ADMIN') {
-      console.log('Transfer blocked: Insufficient role', { 
+      this.logger.debug(`Transfer blocked: Insufficient role: ${JSON.stringify({ 
         userRole: user.role 
-      });
+      })}`);
       throw new ForbiddenException('Unable to transfer - you must be an organization admin');
     }
 
     if (!user.organizationId) {
-      console.log('Transfer blocked: No organization', { 
+      this.logger.debug(`Transfer blocked: No organization: ${JSON.stringify({ 
         userId: user.id 
-      });
+      })}`);
       throw new ForbiddenException('Unable to transfer - you must be associated with an organization');
     }
 

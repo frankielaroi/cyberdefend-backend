@@ -199,10 +199,10 @@ export class AuthService {
     // Send verification email (async, don't block registration)
     this.sendVerificationEmail(user.email, verificationToken, `${user.firstName} ${user.lastName}`)
       .then(() => {
-        console.log(`Verification email sent successfully to ${user.email}`);
+        this.logger.log(`Verification email sent to user ${user.id}`);
       })
       .catch((emailError) => {
-        console.error(`Failed to send verification email to ${user.email}:`, emailError.message);
+        this.logger.error(`Failed to send verification email to user ${user.id}: ${emailError.message}`);
         // Note: Registration continues even if email fails
         // User can request resend via /auth/resend-verification endpoint
       });

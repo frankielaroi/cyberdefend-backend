@@ -19,7 +19,7 @@ export enum PhishingEventType {
 }
 
 @Injectable()
-export class EmailTrackingService {
+export class PhishingTrackingService {
   constructor(private prisma: PrismaService) {}
 
   /**

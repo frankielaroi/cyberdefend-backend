@@ -1,9 +1,11 @@
-import { Injectable, OnModuleInit, OnModuleDestroy } from '@nestjs/common';
+import { Injectable, OnModuleInit, OnModuleDestroy, Logger } from '@nestjs/common';
 import { PrismaClient } from '../../generated/prisma';
 import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class PrismaService extends PrismaClient implements OnModuleInit, OnModuleDestroy {
+  private readonly logger = new Logger(PrismaService.name);
+
   constructor(private configService: ConfigService) {
     super({
       datasources: {
@@ -17,12 +19,12 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
 
   async onModuleInit() {
     await this.$connect();
-    console.log('✅ Database connected successfully');
+    this.logger.log('Database connected');
   }
 
   async onModuleDestroy() {
     await this.$disconnect();
-    console.log('🔌 Database disconnected');
+    this.logger.log('Database disconnected');
   }
 
   // Utility method for soft deletes

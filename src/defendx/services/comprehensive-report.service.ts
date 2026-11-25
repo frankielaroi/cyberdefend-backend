@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from '../../database/prisma.service';
 
 // Enhanced interfaces for comprehensive report structure
@@ -31,6 +31,8 @@ export interface ComplianceFramework {
 
 @Injectable()
 export class ComprehensiveReportService {
+  private readonly logger = new Logger(ComprehensiveReportService.name);
+
   constructor(private prisma: PrismaService) {}
 
   async generateAssessmentReport(assessmentId: string) {
@@ -195,7 +197,7 @@ export class ComprehensiveReportService {
       };
 
     } catch (error) {
-      console.error('Error generating assessment report:', error);
+      this.logger.error(`Error generating assessment report: ${error?.message}`, error?.stack);
       return {
         success: false,
         message: 'Failed to generate assessment report'
@@ -333,7 +335,7 @@ export class ComprehensiveReportService {
         }
       };
     } catch (error) {
-      console.error('Error getting benchmarking data:', error);
+      this.logger.error(`Error getting benchmarking data: ${error?.message}`, error?.stack);
       return null;
     }
   }

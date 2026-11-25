@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../database/prisma.service';
-import { PhishingEventType } from './email-tracking.service';
+import { PhishingEventType } from './phishing-tracking.service';
 
 @Injectable()
 export class IncidentService {
