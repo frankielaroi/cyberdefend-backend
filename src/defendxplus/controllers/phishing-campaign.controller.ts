@@ -321,7 +321,6 @@ export class PhishingCampaignController {
     @GetUser() user: any,
     @Param('campaignId') campaignId: string,
     @Body() exportDto: CampaignExportDto,
-    @Res({ passthrough: true }) res: Response
   ) {
     // This would be implemented to generate CSV/PDF exports
     // For now, return a placeholder
@@ -572,7 +571,7 @@ export class PhishingCampaignController {
   @Roles(UserRole.ORG_ADMIN, UserRole.CSA_ADMIN, UserRole.SUPER_ADMIN)
   @ApiOperation({ summary: 'Get comprehensive system health check' })
   @ApiResponse({ status: 200, description: 'Health check completed successfully' })
-  async getHealthCheck(@GetUser() user: any) {
+  async getHealthCheck() {
     return this.healthCheckService.performHealthCheck();
   }
 

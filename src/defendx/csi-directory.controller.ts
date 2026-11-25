@@ -20,7 +20,6 @@ import { RolesGuard } from '../auth/guards/roles.guard';
 import { Public } from '../auth/decorators/public.decorator';
 import { Roles } from '../auth/decorators/roles.decorator';
 import { GetUser } from '../auth/decorators/get-user.decorator';
-import { CSIDirectoryQueryDto } from './dto/assessment.dto';
 import {
   CSIDirectoryQueryDto as EnhancedCSIDirectoryQueryDto,
   LeaderboardQueryDto,

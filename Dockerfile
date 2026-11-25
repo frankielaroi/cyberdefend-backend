@@ -1,29 +1,38 @@
-FROM node:18-alpine
+# syntax=docker/dockerfile:1
 
+# ---- Build stage: full dependencies, Prisma client, compiled app ----
+FROM node:22-alpine AS build
 WORKDIR /app
+RUN apk add --no-cache openssl
 
-# Copy package files
 COPY package*.json ./
-COPY prisma ./prisma/
+RUN npm ci
 
-# Install dependencies
-RUN npm ci --only=production && npm cache clean --force
-
-# Generate Prisma client
+COPY prisma ./prisma
 RUN npx prisma generate
 
-# Copy source code
-COPY . .
-
-# Build the application
+COPY tsconfig*.json ./
+COPY src ./src
+# nest build, then postbuild copies generated/prisma into dist/
 RUN npm run build
 
-# Expose port
+# ---- Runtime stage: production dependencies and build output only ----
+FROM node:22-alpine AS runtime
+WORKDIR /app
+RUN apk add --no-cache openssl
+ENV NODE_ENV=production
+
+COPY package*.json ./
+RUN npm ci --omit=dev && npm cache clean --force
+
+# prisma/ is needed at runtime for `npx prisma migrate deploy`
+COPY --from=build /app/prisma ./prisma
+COPY --from=build /app/dist ./dist
+
+USER node
 EXPOSE 3000
 
-# Health check
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-  CMD curl -f http://localhost:3000/health || exit 1
+HEALTHCHECK --interval=30s --timeout=5s --start-period=30s --retries=3 \
+  CMD node -e "fetch('http://localhost:' + (process.env.PORT || 3000) + '/api/v1/health').then(r => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))"
 
-# Start the application
-CMD ["npm", "run", "start:prod"]
+CMD ["node", "dist/src/main.js"]

@@ -1,8 +1,9 @@
-import { NestFactory } from '@nestjs/core';
+import { HttpAdapterHost, NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
-import { ValidationPipe } from '@nestjs/common';
+import { Logger, ValidationPipe } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
+import { AllExceptionsFilter } from './common/filters/all-exceptions.filter';
 import { ConfigService } from '@nestjs/config';
 import * as compression from 'compression';
 import * as helmet from 'helmet';
@@ -32,6 +33,11 @@ async function bootstrap() {
     }),
   );
 
+  app.useGlobalFilters(new AllExceptionsFilter(app.get(HttpAdapterHost)));
+
+  // Close HTTP server, Bull queues and Prisma cleanly on SIGTERM (Heroku dyno restarts, docker stop)
+  app.enableShutdownHooks();
+
   // CORS configuration
   app.enableCors({
     origin: ['https://www.cyber360.tech', 'http://localhost:5173','https://cyberdefend360.netlify.app'],
@@ -60,8 +66,9 @@ async function bootstrap() {
   const port = configService.get('PORT', 3000);
   await app.listen(port);
 
-  console.log(`🚀 CyberDefend 360 API running on: http://localhost:${port}`);
-  console.log(`📚 API Documentation: http://localhost:${port}/api/docs`);
+  const logger = new Logger('Bootstrap');
+  logger.log(`CyberDefend 360 API running on port ${port}`);
+  logger.log(`API documentation at /api/docs`);
 }
 
 bootstrap();

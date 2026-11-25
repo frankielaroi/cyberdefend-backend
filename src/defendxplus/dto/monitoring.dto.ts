@@ -1,4 +1,4 @@
-import { IsString, IsOptional, IsEnum, IsDateString, IsNumber } from 'class-validator';
+import { IsString, IsOptional, IsEnum, IsDateString } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class AlertFiltersDto {

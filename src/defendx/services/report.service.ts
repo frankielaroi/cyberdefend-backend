@@ -14,11 +14,8 @@ export class ReportService {
     includeRecommendations?: boolean;
     includeBenchmarks?: boolean;
   } = {}) {
-    const {
-      includeDetails = true,
-      includeRecommendations = true,
-      includeBenchmarks = true
-    } = options;
+    // TODO: honour options (includeDetails, includeRecommendations, includeBenchmarks); currently always included
+    void options;
 
     try {
       const assessment = await this.prisma.assessment.findUnique({

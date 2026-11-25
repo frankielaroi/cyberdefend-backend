@@ -32,7 +32,7 @@ export class EmailTrackingService {
     try {
       const trackingId = uuidv4();
 
-      const tracking = await this.prisma.emailTracking.create({
+      await this.prisma.emailTracking.create({
         data: {
           trackingId,
           recipientEmail: options.recipientEmail,

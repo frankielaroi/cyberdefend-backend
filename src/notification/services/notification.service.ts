@@ -6,7 +6,6 @@ import { EmailService } from './email.service';
 import { SmsService } from './sms.service';
 import { PrismaService } from '../../database/prisma.service';
 import {
-  NotificationJob,
   NotificationResult,
   EmailData,
   SmsData,

@@ -324,7 +324,7 @@ export class CircuitBreakerService {
    * Force open a circuit (for maintenance or testing)
    */
   forceOpenCircuit(serviceId: string) {
-    const circuit = this.getCircuit(serviceId);
+    this.getCircuit(serviceId);
     this.openCircuit(serviceId);
     this.logger.warn(`🔒 Circuit manually opened for ${serviceId}`);
   }
@@ -333,7 +333,7 @@ export class CircuitBreakerService {
    * Force close a circuit (for maintenance or testing)
    */
   forceCloseCircuit(serviceId: string) {
-    const circuit = this.getCircuit(serviceId);
+    this.getCircuit(serviceId);
     this.closeCircuit(serviceId);
     this.logger.log(`🔓 Circuit manually closed for ${serviceId}`);
   }

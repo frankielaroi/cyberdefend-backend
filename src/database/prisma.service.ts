@@ -25,13 +25,6 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
     console.log('🔌 Database disconnected');
   }
 
-  async enableShutdownHooks(app: any) {
-    // TODO: Fix beforeExit handler type issue
-    // this.$on('beforeExit' as any, async () => {
-    //   await app.close();
-    // });
-  }
-
   // Utility method for soft deletes
   async softDelete(model: string, where: any) {
     return this[model].update({

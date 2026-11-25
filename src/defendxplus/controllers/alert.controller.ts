@@ -21,7 +21,6 @@ import {
 import { Observable } from 'rxjs';
 
 import { AlertService } from '../services/alert.service';
-import { AlertFiltersDto } from '../dto/monitoring.dto';
 import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
 import { GetUser } from '../../auth/decorators/get-user.decorator';
 

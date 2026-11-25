@@ -4,7 +4,6 @@ import { PrismaService } from '../src/database/prisma.service';
 
 describe('Email Tracking System Tests', () => {
   let service: EmailTrackingService;
-  let prisma: PrismaService;
 
   const mockPrismaService = {
     emailTracking: {
@@ -31,7 +30,6 @@ describe('Email Tracking System Tests', () => {
     }).compile();
 
     service = module.get<EmailTrackingService>(EmailTrackingService);
-    prisma = module.get<PrismaService>(PrismaService);
   });
 
   afterEach(() => {

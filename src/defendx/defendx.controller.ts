@@ -23,17 +23,15 @@ import { AssessmentService } from './services/assessment.service';
 import { ComprehensiveReportService } from './services/comprehensive-report.service';
 import {
   CreateAssessmentDto,
-  SubmitAssessmentDto,
   BulkSubmitResponseDto,
   SingleResponseDto,
   AssessmentQueryDto,
   ReportQueryDto,
   CSIDirectoryQueryDto,
-  DashboardDto,
   CreateAnonymousAssessmentDto,
   BulkAnonymousResponseDto,
   CompleteAnonymousAssessmentDto,
-  TransferAnonymousAssessmentDto
+  TransferAnonymousAssessmentDto,
 } from './dto/assessment.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
@@ -365,7 +363,7 @@ export class DefendxController {
   async getCSIAssessmentResult(
     @GetUser('userId') userId: string,
     @Param('id') assessmentId: string,
-    @Query('format') format: 'json' | 'pdf' | 'html' = 'json',
+    @Query('format') _format: 'json' | 'pdf' | 'html' = 'json',
   ) {
     const query: ReportQueryDto = {
       includeDetails: true,

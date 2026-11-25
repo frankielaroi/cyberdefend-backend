@@ -27,7 +27,7 @@ export class SmsProcessor {
 
   @Process('send-sms')
   async handleSendSms(job: Job<SmsJobData>): Promise<NotificationResult> {
-    const { id, smsData, metadata } = job.data;
+    const { id, smsData } = job.data;
     const startTime = Date.now();
 
     this.logger.log(`Processing SMS job ${job.id} for notification ${id}`);

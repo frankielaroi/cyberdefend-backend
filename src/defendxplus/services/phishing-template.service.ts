@@ -1,12 +1,11 @@
-import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
+import { Injectable, NotFoundException, ConflictException, ForbiddenException } from '@nestjs/common';
 import { PrismaService } from '../../database/prisma.service';
-import { 
-  CreateTemplateDto, 
-  UpdateTemplateDto, 
+import {
+  CreateTemplateDto,
+  UpdateTemplateDto,
   TemplateQueryDto,
   TemplatePreviewDto,
   TemplateCategory,
-  RiskLevel
 } from '../dto/phishing-template.dto';
 
 @Injectable()
@@ -135,7 +134,11 @@ export class PhishingTemplateService {
     return template;
   }
 
-  async updateTemplate(templateId: string, userId: string, updateTemplateDto: UpdateTemplateDto) {
+  async updateTemplate(
+    templateId: string,
+    actor: { userId: string; role: string; organizationId: string | null },
+    updateTemplateDto: UpdateTemplateDto,
+  ) {
     const template = await this.prisma.phishingTemplate.findUnique({
       where: { id: templateId }
     });
@@ -144,9 +147,16 @@ export class PhishingTemplateService {
       throw new NotFoundException('Template not found');
     }
 
-    // Only creator or org admin can update
-    if (template.createdBy !== userId && template.organizationId) {
-      // Additional authorization check would be needed here
+    // Global templates: platform admins only. Org templates: the creator or an admin of that organization.
+    const isPlatformAdmin = actor.role === 'SUPER_ADMIN' || actor.role === 'CSA_ADMIN';
+    const canUpdate = template.organizationId
+      ? template.createdBy === actor.userId ||
+        isPlatformAdmin ||
+        (actor.role === 'ORG_ADMIN' && template.organizationId === actor.organizationId)
+      : isPlatformAdmin;
+
+    if (!canUpdate) {
+      throw new ForbiddenException('You do not have permission to update this template');
     }
 
     const updatedTemplate = await this.prisma.phishingTemplate.update({

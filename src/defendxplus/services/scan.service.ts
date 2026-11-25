@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../../database/prisma.service';
-import { ScheduleScanDto, RunScanDto, ScanFiltersDto } from '../dto/scan.dto';
+import { ScheduleScanDto, RunScanDto } from '../dto/scan.dto';
 
 @Injectable()
 export class ScanService {
@@ -346,7 +346,7 @@ export class ScanService {
     return recommendations;
   }
 
-  private generateComplianceReport(findings: any): any {
+  private generateComplianceReport(_findings: any): any {
     return {
       frameworks: {
         'ISO 27001': {

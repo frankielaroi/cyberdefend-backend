@@ -496,7 +496,7 @@ export class EmailService {
     content: string,
     recipients: string[],
     isHtml: boolean = false,
-    category: string = 'Bulk Email',
+    _category: string = 'Bulk Email',
     fromEmail?: string,
     fromName?: string
   ): Promise<NotificationResult> {
@@ -621,7 +621,6 @@ export class EmailService {
   private categorizeEmailError(error: any): string {
     const message = error.message?.toLowerCase() || '';
     const code = error.code?.toLowerCase() || '';
-    const response = error.response?.toLowerCase() || '';
 
     // Domain verification errors
     if (message.includes('domain') && (message.includes('not allowed') || message.includes('not verified'))) {

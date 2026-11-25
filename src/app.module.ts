@@ -17,6 +17,7 @@ import { NotificationModule } from './notification/notification.module';
 import { TrackingModule } from './common/tracking.module';
 import { configValidation } from './config/config.validation';
 import { BackupModule } from './backup/backup.module';
+import { HealthModule } from './health/health.module';
 import awsConfig from './config/aws.config';
 
 @Module({
@@ -62,6 +63,7 @@ import awsConfig from './config/aws.config';
     UserModule,
     NotificationModule,
     BackupModule,
+    HealthModule,
   ],
 })
 export class AppModule {}

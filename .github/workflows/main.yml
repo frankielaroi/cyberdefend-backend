@@ -3,16 +3,17 @@ name: CI/CD - NestJS + Prisma + Heroku
 on:
   push:
     branches:
-      - main      # deploy on pushes to main branch
+      - main
   pull_request:
     branches:
       - main
 
 jobs:
-  build-test-deploy:
+  test:
     runs-on: ubuntu-latest
     env:
-      DATABASE_URL: ${{ secrets.DATABASE_URL }}  # used during testing or migrations
+      # Throwaway database from the postgres service below; never point CI at a real database
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/testdb
 
     services:
       postgres:
@@ -30,43 +31,52 @@ jobs:
           --health-retries=5
 
     steps:
-      # Step 1 — Checkout code
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Step 2 — Set up Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 22
+          cache: npm
 
-      # Step 3 — Install dependencies
       - name: Install dependencies
         run: npm ci
 
-      # Step 4 — Generate Prisma Client
       - name: Generate Prisma Client
         run: npx prisma generate
 
-      # Step 5 — Run Lint
+      - name: Apply migrations to CI database
+        run: npx prisma migrate deploy
+
       - name: Lint code
         run: npm run lint
 
-      # Step 6 — Run Tests
       - name: Run tests
         run: npm run test
 
-      # Step 7 — Build NestJS app
       - name: Build project
         run: npm run build
 
-      # Step 8 — Deploy to Heroku
+  deploy:
+    needs: test
+    # Deploy only after a merge to main, never from a pull request
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    concurrency:
+      group: heroku-production
+      cancel-in-progress: false
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          # Heroku rejects pushes from shallow clones
+          fetch-depth: 0
+
       - name: Deploy to Heroku
         uses: akhileshns/heroku-deploy@v3.13.15
         with:
           heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
           heroku_app_name: ${{ secrets.HEROKU_APP_NAME }}
           heroku_email: ${{ secrets.HEROKU_EMAIL }}
-        env:
-          NODE_ENV: production
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
