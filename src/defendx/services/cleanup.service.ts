@@ -2,18 +2,24 @@ import { Injectable, Logger } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { PrismaService } from '../../database/prisma.service';
 import { AssessmentStatus } from '../../../generated/prisma';
+import { RunExclusively } from '../../common/decorators/run-exclusively.decorator';
+import { CronLockService } from '../../common/services/cron-lock.service';
 
 @Injectable()
 export class CleanupService {
   private readonly logger = new Logger(CleanupService.name);
 
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private readonly cronLock: CronLockService,
+  ) {}
 
   /**
    * Clean up expired anonymous assessments
    * Runs every hour
    */
   @Cron(CronExpression.EVERY_HOUR)
+  @RunExclusively('defendx:cleanup-expired-anonymous-assessments', 50 * 60_000)
   async cleanupExpiredAnonymousAssessments() {
     try {
       this.logger.log('Starting cleanup of expired anonymous assessments');
@@ -79,6 +85,7 @@ export class CleanupService {
    * Runs daily at 2 AM
    */
   @Cron('0 2 * * *')
+  @RunExclusively('defendx:cleanup-old-anonymous-data', 60 * 60_000)
   async cleanupOldAnonymousData() {
     try {
       this.logger.log('Starting cleanup of old anonymous session data');

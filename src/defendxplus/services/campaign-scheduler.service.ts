@@ -8,6 +8,8 @@ import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
 import { LaunchCampaignDto, LaunchType } from '../dto/phishing-campaign.dto';
 import { v4 as uuidv4 } from 'uuid';
+import { RunExclusively } from '../../common/decorators/run-exclusively.decorator';
+import { CronLockService } from '../../common/services/cron-lock.service';
 
 /**
  * Campaign Scheduler Service
@@ -24,7 +26,8 @@ export class CampaignSchedulerService {
     @InjectQueue('campaign-scheduler')
     private readonly schedulerQueue: Queue,
     @InjectQueue('campaign-runner')
-    private readonly runnerQueue: Queue
+    private readonly runnerQueue: Queue,
+    private readonly cronLock: CronLockService,
   ) {}
 
   /**
@@ -532,6 +535,7 @@ export class CampaignSchedulerService {
    * This ensures no schedules are missed if they slip through the staging queue
    */
   @Cron('*/60 * * * * *') // Every 60 seconds
+  @RunExclusively('campaign-scheduler:poll-ready-schedules', 55_000)
   async pollAndLoadReadySchedules(): Promise<void> {
     this.logger.log(`[CRON_POLL_START] Polling Redis for schedules ready to run (≤60s away)`);
 
