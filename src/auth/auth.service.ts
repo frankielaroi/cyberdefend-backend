@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException, ConflictException, Logger } from '@nestjs/common';
+import { Injectable, UnauthorizedException, ConflictException, ForbiddenException, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import * as bcrypt from 'bcrypt';
@@ -117,12 +117,17 @@ export class AuthService {
       throw new ConflictException('User with this email already exists');
     }
 
-    let organization = null;
-    let organizationId = registerDto.organizationId || null;
+    // Roles and organization membership are never taken from the request: a public signup
+    // could otherwise claim SUPER_ADMIN or join any organization. Existing organizations
+    // are joined through invite codes (POST /organizations/join).
+    if (registerDto.role && registerDto.role !== 'END_USER' && !registerDto.organization) {
+      throw new ForbiddenException('Role cannot be chosen at registration');
+    }
+    if (registerDto.organizationId) {
+      throw new ForbiddenException('Use an invite code to join an existing organization');
+    }
 
-    // If organization data is provided, create new organization
     if (registerDto.organization) {
-      // Check if organization with the same name already exists
       const existingOrg = await this.prisma.organization.findFirst({
         where: { name: registerDto.organization.name },
       });
@@ -130,84 +135,67 @@ export class AuthService {
       if (existingOrg) {
         throw new ConflictException('Organization with this name already exists');
       }
-
-      organization = await this.prisma.organization.create({
-        data: {
-          name: registerDto.organization.name,
-          email: registerDto.organization.email || null,
-          phone: registerDto.organization.phone,
-          website: registerDto.organization.website,
-          size: registerDto.organization.size as any,
-          sector: registerDto.organization.sector as any,
-          isActive: true,
-        },
-      });
-
-      organizationId = organization.id;
-    } else if (registerDto.organizationId) {
-      // Check if existing organization is valid
-      organization = await this.prisma.organization.findUnique({
-        where: { id: registerDto.organizationId },
-      });
-      
-      if (!organization) {
-        throw new UnauthorizedException('Invalid organization');
-      }
     }
 
+    // Creating an organization makes the user its admin; otherwise a plain end user
+    const userRole = registerDto.organization ? 'ORG_ADMIN' : 'END_USER';
     const hashedPassword = await bcrypt.hash(registerDto.password, 12);
+    const verificationToken = uuidv4();
 
-    // Set role based on whether they're creating an organization or joining one
-    let userRole = registerDto.role || 'END_USER';
-    if (registerDto.organization && !registerDto.role) {
-      // If creating organization and no role specified, make them ORG_ADMIN
-      userRole = 'ORG_ADMIN';
-    }
+    // Organization, user and membership are created together or not at all
+    const user = await this.prisma.$transaction(async (tx) => {
+      const organization = registerDto.organization
+        ? await tx.organization.create({
+            data: {
+              name: registerDto.organization.name,
+              email: registerDto.organization.email || null,
+              phone: registerDto.organization.phone,
+              website: registerDto.organization.website,
+              size: registerDto.organization.size as any,
+              sector: registerDto.organization.sector as any,
+              isActive: true,
+            },
+          })
+        : null;
 
-    const user = await this.prisma.user.create({
-      data: {
-        email: registerDto.email,
-        password: hashedPassword,
-        firstName: registerDto.firstName,
-        lastName: registerDto.lastName,
-        phone: registerDto.phone,
-        role: userRole as any,
-        organizationId,
-      },
-      include: {
-        organization: {
-          select: {
-            id: true,
-            name: true,
-            email: true,
-            size: true,
-            sector: true,
+      const created = await tx.user.create({
+        data: {
+          email: registerDto.email,
+          password: hashedPassword,
+          firstName: registerDto.firstName,
+          lastName: registerDto.lastName,
+          phone: registerDto.phone,
+          role: userRole,
+          organizationId: organization?.id ?? null,
+          verificationToken,
+        },
+        include: {
+          organization: {
+            select: {
+              id: true,
+              name: true,
+              email: true,
+              size: true,
+              sector: true,
+            },
           },
         },
-      },
-    });
-
-    // Create organization membership if user belongs to an organization
-    if (organizationId) {
-      await this.prisma.organizationMember.create({
-        data: {
-          userId: user.id,
-          organizationId,
-          role: userRole as any,
-          status: 'ACTIVE',
-        },
       });
-    }
 
-    // Generate email verification token
-    const verificationToken = uuidv4();
-    
-    // Update user with verification token
-    await this.prisma.user.update({
-      where: { id: user.id },
-      data: { verificationToken },
+      if (organization) {
+        await tx.organizationMember.create({
+          data: {
+            userId: created.id,
+            organizationId: organization.id,
+            role: userRole,
+            status: 'ACTIVE',
+          },
+        });
+      }
+
+      return created;
     });
-    
+
     // Send verification email (async, don't block registration)
     this.sendVerificationEmail(user.email, verificationToken, `${user.firstName} ${user.lastName}`)
       .then(() => {

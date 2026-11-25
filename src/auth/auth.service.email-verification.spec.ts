@@ -4,7 +4,7 @@ import { PrismaService } from '../database/prisma.service';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { EmailService } from '../notification/services/email.service';
-import { UnauthorizedException } from '@nestjs/common';
+import { ForbiddenException, UnauthorizedException } from '@nestjs/common';
 import { hashToken } from '../common/utils/token.util';
 
 describe('AuthService - Email Verification', () => {
@@ -213,6 +213,24 @@ describe('AuthService - Email Verification', () => {
       expect(mockPrismaService.passwordReset.findUnique).toHaveBeenCalledWith({
         where: { token: hashToken('abc') },
       });
+    });
+  });
+
+  describe('register', () => {
+    const base = { email: 'new@example.com', password: 'password123', firstName: 'New', lastName: 'User' };
+
+    beforeEach(() => mockPrismaService.user.findUnique.mockResolvedValue(null));
+
+    it('rejects a self-assigned privileged role', async () => {
+      await expect(service.register({ ...base, role: 'SUPER_ADMIN' } as any)).rejects.toThrow(ForbiddenException);
+      expect(mockPrismaService.$transaction).not.toHaveBeenCalled();
+    });
+
+    it('rejects joining an existing organization without an invite', async () => {
+      await expect(
+        service.register({ ...base, organizationId: '6f1b8a2e-1c2d-4e3f-9a8b-7c6d5e4f3a2b' } as any),
+      ).rejects.toThrow(ForbiddenException);
+      expect(mockPrismaService.$transaction).not.toHaveBeenCalled();
     });
   });
 });
