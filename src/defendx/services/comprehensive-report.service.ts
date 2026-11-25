@@ -241,7 +241,6 @@ export class ComprehensiveReportService {
 
   // Detailed Recommendations Generation
   private async generateDetailedRecommendations(assessment: any): Promise<Recommendation[]> {
-    const score = assessment.score || 0;
     const categoryScores = this.calculateCategoryBreakdown(assessment.responses);
     const recommendations: Recommendation[] = [];
 
@@ -500,7 +499,7 @@ export class ComprehensiveReportService {
   }
 
   // Detailed Helper Methods
-  private getRecommendationTitle(category: string, score: number): string {
+  private getRecommendationTitle(category: string, _score: number): string {
     const titleMap: { [key: string]: string } = {
       'Governance & Policy': 'Strengthen Cybersecurity Governance Framework',
       'Access & Authentication': 'Implement Multi-Factor Authentication',
@@ -517,7 +516,7 @@ export class ComprehensiveReportService {
     return titleMap[category] || `Improve ${category} Controls`;
   }
 
-  private getRecommendationDescription(category: string, score: number): string {
+  private getRecommendationDescription(category: string, _score: number): string {
     const descMap: { [key: string]: string } = {
       'Governance & Policy': 'Establish comprehensive cybersecurity policies and governance structures to guide organizational security efforts',
       'Access & Authentication': 'Deploy multi-factor authentication across all critical systems to enhance access security',

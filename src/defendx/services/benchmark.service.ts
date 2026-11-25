@@ -212,7 +212,7 @@ export class BenchmarkService {
 
     // Upsert all benchmark data
     const upsertPromises = [];
-    for (const [key, data] of benchmarkMap.entries()) {
+    for (const data of benchmarkMap.values()) {
       const avgScore = data.scores.reduce((a, b) => a + b, 0) / data.scores.length;
       
       upsertPromises.push(

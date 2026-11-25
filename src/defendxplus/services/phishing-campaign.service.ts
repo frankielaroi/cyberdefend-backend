@@ -1,19 +1,17 @@
-import { Injectable, NotFoundException, BadRequestException, ConflictException, Logger, Optional } from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException, Logger, Optional } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { PrismaService } from '../../database/prisma.service';
 import { EmailTrackingService, PhishingEventType } from './email-tracking.service';
 import { EmailService } from '../../notification/services/email.service';
 import { PhishingQueueService } from './phishing-queue.service';
 import { CircuitBreakerService } from './circuit-breaker.service';
-import { 
-  CreateCampaignDto, 
-  UpdateCampaignDto, 
+import {
+  CreateCampaignDto,
+  UpdateCampaignDto,
   CampaignQueryDto,
   LaunchCampaignDto,
   CampaignAnalyticsDto,
   BulkTargetsDto,
-  CampaignOverviewDto,
-  CampaignTargetDto
 } from '../dto/phishing-campaign.dto';
 
 // Local enum definitions (will be replaced with Prisma enums after generation)
@@ -671,7 +669,6 @@ export class PhishingCampaignService {
         });
 
         const totalTargets = targets.length;
-        const emailsOpened = targets.filter(t => t.emailOpened).length;
         const linksClicked = targets.filter(t => t.linkClicked).length;
         const credentialsEntered = targets.filter(t => t.credentialsEntered).length;
         const phishingReported = targets.filter(t => t.reportedPhishing).length;

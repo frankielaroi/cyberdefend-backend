@@ -3,27 +3,18 @@ import { PrismaService } from '../../database/prisma.service';
 import { v4 as uuidv4, validate as uuidValidate } from 'uuid';
 import {
   CreateAssessmentDto,
-  SubmitAssessmentDto,
   AssessmentQueryDto,
   ReportQueryDto,
   CSIDirectoryQueryDto,
   BulkSubmitResponseDto,
   SingleResponseDto,
-  CSIScoreDto,
   AssessmentStatsDto,
-  CSIBenchmarkDto,
   CreateAnonymousAssessmentDto,
   BulkAnonymousResponseDto,
   CompleteAnonymousAssessmentDto,
-  TransferAnonymousAssessmentDto
+  TransferAnonymousAssessmentDto,
 } from '../dto/assessment.dto';
-import { AssessmentType, AssessmentStatus, CSITier, RiskTier, Sector, OrganizationSize } from '../../../generated/prisma';
-
-interface RegionalHeatmapData {
-  region: string;
-  averageScore: number;
-  assessmentCount: number;
-}
+import { AssessmentType, AssessmentStatus, CSITier, RiskTier } from '../../../generated/prisma';
 
 import { PublicAssessmentResultDto } from '../dto/public-assessment.dto';
 
@@ -536,7 +527,7 @@ export class AssessmentService {
       where.result = { ...where.result, tier: query.tier };
     }
 
-    const [assessments, total] = await Promise.all([
+    const [assessments] = await Promise.all([
       this.prisma.assessment.findMany({
         where,
         include: {

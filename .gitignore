@@ -71,3 +71,7 @@ generated/
 # Uploads
 uploads/
 temp/
+# Compiled test output
+test/**/*.js
+test/**/*.js.map
+test/**/*.d.ts

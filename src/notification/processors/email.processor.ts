@@ -27,7 +27,7 @@ export class EmailProcessor {
 
   @Process('send-email')
   async handleSendEmail(job: Job<EmailJobData>): Promise<NotificationResult> {
-    const { id, emailData, metadata } = job.data;
+    const { id, emailData } = job.data;
     const startTime = Date.now();
 
     this.logger.log(`Processing email job ${job.id} for notification ${id}`);

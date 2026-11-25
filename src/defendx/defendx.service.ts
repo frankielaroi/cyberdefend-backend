@@ -3,7 +3,6 @@ import { PrismaService } from '../database/prisma.service';
 import { AssessmentService } from './services/assessment.service';
 import { QuestionService } from './services/question.service';
 import { BenchmarkService } from './services/benchmark.service';
-import { CSITier as PrismaCSITier } from '../../generated/prisma';
 import {
   CSIDirectoryQueryDto,
   LeaderboardQueryDto,
@@ -622,7 +621,7 @@ export class DefendxService {
     const benchmarks = await this.calculateBenchmarks(organization);
 
     // Calculate actual category breakdown from latest assessment
-    let categoryBreakdown = {
+    const categoryBreakdown = {
       governance: 0,
       riskManagement: 0,
       assetManagement: 0,

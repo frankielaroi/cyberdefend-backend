@@ -2,11 +2,10 @@ import {
   Injectable,
   Logger,
   BadRequestException,
-  NotFoundException,
 } from '@nestjs/common';
-import { Cron, CronExpression } from '@nestjs/schedule';
+import { Cron } from '@nestjs/schedule';
 import { InjectQueue } from '@nestjs/bull';
-import { Queue, Job } from 'bull';
+import { Queue } from 'bull';
 import { LaunchCampaignDto, LaunchType } from '../dto/phishing-campaign.dto';
 import { v4 as uuidv4 } from 'uuid';
 

@@ -8,7 +8,6 @@ import {
   Delete,
   Query,
   UseGuards,
-  Request,
   HttpCode,
   HttpStatus,
 } from '@nestjs/common';
@@ -26,7 +25,6 @@ import { UpdateOrganizationDto } from './dto/update-organization.dto';
 import { QueryOrganizationsDto } from './dto/query-organizations.dto';
 import { JoinOrganizationDto } from './dto/join-organization.dto';
 import { CreateInviteCodeDto } from './dto/invite-code.dto';
-import { UpdateMemberRoleDto, InviteMemberDto } from './dto/member.dto';
 import { 
   UpdateOrganizationSettingsDto, 
   InviteMemberDto as InviteDto, 

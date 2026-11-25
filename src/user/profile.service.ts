@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, BadRequestException, UnauthorizedException, ConflictException } from '@nestjs/common';
+import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { PrismaService } from '../database/prisma.service';
 import * as bcrypt from 'bcrypt';
 import { generateCode } from '../common/utils/token.util';
@@ -164,7 +164,7 @@ export class ProfileService {
     };
   }
 
-  async updateNotificationPreferences(userId: string, preferencesDto: NotificationPreferencesDto) {
+  async updateNotificationPreferences(userId: string, _preferencesDto: NotificationPreferencesDto) {
     const user = await this.prisma.user.findUnique({
       where: { id: userId }
     });
@@ -183,7 +183,7 @@ export class ProfileService {
     };
   }
 
-  async updateAccountPreferences(userId: string, preferencesDto: AccountPreferencesDto) {
+  async updateAccountPreferences(userId: string, _preferencesDto: AccountPreferencesDto) {
     const user = await this.prisma.user.findUnique({
       where: { id: userId }
     });
@@ -362,7 +362,7 @@ export class ProfileService {
     };
   }
 
-  async uploadAvatar(userId: string, uploadData: { avatarData: string; fileName: string }) {
+  async uploadAvatar(userId: string, _uploadData: { avatarData: string; fileName: string }) {
     const user = await this.prisma.user.findUnique({
       where: { id: userId }
     });

@@ -60,7 +60,7 @@ export class TelemetryService {
     };
   }
 
-  private async checkForAlerts(telemetryEvent: any, organizationId: string) {
+  private async checkForAlerts(telemetryEvent: any, _organizationId: string) {
     // TODO: Implement alert rules engine
     // For now, we'll skip direct alert creation since it requires rules
     // This will be implemented when we add the detection rules system

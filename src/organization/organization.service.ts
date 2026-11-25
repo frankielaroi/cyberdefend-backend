@@ -5,7 +5,6 @@ import { SendEmailDto } from '../notification/dto/notification.dto';
 import { CreateOrganizationDto } from './dto/create-organization.dto';
 import { UpdateOrganizationDto } from './dto/update-organization.dto';
 import { QueryOrganizationsDto } from './dto/query-organizations.dto';
-import { UpdateMemberRoleDto, InviteMemberDto } from './dto/member.dto';
 import { JoinOrganizationDto } from './dto/join-organization.dto';
 import { CreateInviteCodeDto } from './dto/invite-code.dto';
 import { 
@@ -224,7 +223,7 @@ export class OrganizationService {
   }
 
   async remove(id: string, userId: string) {
-    const organization = await this.findOne(id, true);
+    await this.findOne(id, true);
     
     // Check if user is authorized to delete this organization
     const user = await this.prisma.user.findUnique({

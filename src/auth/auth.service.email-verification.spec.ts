@@ -9,8 +9,6 @@ import { hashToken } from '../common/utils/token.util';
 
 describe('AuthService - Email Verification', () => {
   let service: AuthService;
-  let prismaService: PrismaService;
-  let emailService: EmailService;
 
   const mockPrismaService = {
     user: {
@@ -51,8 +49,6 @@ describe('AuthService - Email Verification', () => {
     }).compile();
 
     service = module.get<AuthService>(AuthService);
-    prismaService = module.get<PrismaService>(PrismaService);
-    emailService = module.get<EmailService>(EmailService);
   });
 
   afterEach(() => {

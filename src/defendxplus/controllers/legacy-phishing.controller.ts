@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Query, Redirect } from '@nestjs/common';
+import { Controller, Get, Param, Query } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiExcludeController } from '@nestjs/swagger';
 import { PhishingCampaignService } from '../services/phishing-campaign.service';
 import { PhishingTemplateService } from '../services/phishing-template.service';
@@ -57,7 +57,7 @@ export class LegacyPhishingController {
     description: 'Use /api/v1/defendx-plus/campaigns instead' 
   })
   @ApiResponse({ status: 200, description: 'Campaigns retrieved successfully' })
-  async getCampaignsLegacy(@Query() query?: any) {
+  async getCampaignsLegacy(@Query() _query?: any) {
     // This would need proper user context in a real implementation
     // For now, return empty array to avoid errors
     return {

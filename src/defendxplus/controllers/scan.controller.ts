@@ -19,7 +19,7 @@ import {
 } from '@nestjs/swagger';
 
 import { ScanService } from '../services/scan.service';
-import { ScheduleScanDto, RunScanDto, ScanFiltersDto } from '../dto/scan.dto';
+import { ScheduleScanDto, RunScanDto } from '../dto/scan.dto';
 import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../../auth/guards/roles.guard';
 import { Roles } from '../../auth/decorators/roles.decorator';

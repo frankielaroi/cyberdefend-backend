@@ -91,7 +91,7 @@ export class AlertService {
 
   async acknowledgeAlert(userId: string, organizationId: string, alertId: string) {
     // First, verify the alert belongs to this organization
-    const alert = await this.findAlertForOrganization(alertId, organizationId);
+    await this.findAlertForOrganization(alertId, organizationId);
 
     const updatedAlert = await this.prisma.alert.update({
       where: { id: alertId },
@@ -116,7 +116,7 @@ export class AlertService {
 
   async closeAlert(userId: string, organizationId: string, alertId: string) {
     // First, verify the alert belongs to this organization
-    const alert = await this.findAlertForOrganization(alertId, organizationId);
+    await this.findAlertForOrganization(alertId, organizationId);
 
     const updatedAlert = await this.prisma.alert.update({
       where: { id: alertId },
@@ -193,7 +193,7 @@ export class AlertService {
 
     // Get alert statistics
     const [
-      totalAlerts,
+      _totalAlerts,
       openAlerts,
       criticalAlerts,
       highAlerts,

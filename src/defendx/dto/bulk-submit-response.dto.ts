@@ -1,4 +1,4 @@
-import { IsString, IsUUID, IsNotEmpty, IsArray, ValidateNested } from 'class-validator';
+import { IsUUID, IsNotEmpty, IsArray, ValidateNested } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import { SubmitResponseDto } from './submit-response.dto';

@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty, IsOptional, IsEmail, IsEnum, IsArray, IsNumber, IsBoolean, ValidateNested, IsInt, Min, Max } from 'class-validator';
+import { IsString, IsNotEmpty, IsOptional, IsEmail, IsEnum, IsArray, IsNumber, IsBoolean, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { UserRole } from 'generated/prisma';

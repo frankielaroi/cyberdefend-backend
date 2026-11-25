@@ -6,12 +6,12 @@ import {
   Delete, 
   Body, 
   Param, 
-  Query, 
-  UseGuards 
+  Query,
+  UseGuards,
+  ForbiddenException,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiQuery } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
-import { RolesGuard } from '../../auth/guards/roles.guard';
 import { Roles } from '../../auth/decorators/roles.decorator';
 import { GetUser } from '../../auth/decorators/get-user.decorator';
 import { PhishingTemplateService } from '../services/phishing-template.service';
@@ -25,19 +25,8 @@ import {
   TemplateStatsDto,
   TemplateCategoryDto
 } from '../dto/phishing-template.dto';
-import { PrismaService } from '../../database/prisma.service';
+import { UserRole } from '../../../generated/prisma';
 
-// Local enum definition
-enum UserRole {
-  ORGANIZATION_ADMIN = 'ORGANIZATION_ADMIN',
-  ORGANIZATION_USER = 'ORGANIZATION_USER',
-  PLATFORM_ADMIN = 'PLATFORM_ADMIN',
-  ORG_ADMIN = 'ORGANIZATION_ADMIN',
-  ORG_MANAGER = 'ORGANIZATION_USER',
-  END_USER = 'ORGANIZATION_USER',
-  SUPER_ADMIN = 'PLATFORM_ADMIN',
-  CSA_ADMIN = 'PLATFORM_ADMIN'
-}
 
 @ApiTags('Phishing Templates')
 @ApiBearerAuth()
@@ -51,7 +40,7 @@ export class PhishingTemplateController {
    */
 
   @Post()
-//   @Roles(UserRole.SUPER_ADMIN, UserRole.CSA_ADMIN, UserRole.ORG_ADMIN ,UserRole.ORGANIZATION_ADMIN,UserRole.ORGANIZATION_USER)
+  @Roles(UserRole.SUPER_ADMIN, UserRole.CSA_ADMIN, UserRole.ORG_ADMIN, UserRole.ORG_MANAGER)
   @ApiOperation({ summary: 'Create a new phishing template' })
   @ApiResponse({ status: 201, description: 'Template created successfully' })
   @ApiResponse({ status: 409, description: 'Template name already exists' })
@@ -59,8 +48,12 @@ export class PhishingTemplateController {
     @GetUser() user: any,
     @Body() createTemplateDto: CreateTemplateDto
   ) {
-    // Global templates (CSA/Super Admin) vs org-specific templates
-    const organizationId = user.role === UserRole.ORG_ADMIN ? user.organizationId : null;
+    // Only platform admins create global templates; everyone else creates templates for their own organization
+    const isPlatformAdmin = user.role === UserRole.SUPER_ADMIN || user.role === UserRole.CSA_ADMIN;
+    const organizationId = isPlatformAdmin ? null : user.organizationId;
+    if (!isPlatformAdmin && !organizationId) {
+      throw new ForbiddenException('User is not a member of an organization');
+    }
     
     return this.templateService.createTemplate(
       user.userId, 
@@ -70,7 +63,6 @@ export class PhishingTemplateController {
   }
 
   @Get()
-//   @Roles(UserRole.ORG_ADMIN, UserRole.ORG_MANAGER, UserRole.END_USER)
   @ApiOperation({ summary: 'Get all available templates' })
   @ApiResponse({ status: 200, description: 'Templates retrieved successfully' })
   @ApiQuery({ name: 'page', required: false, type: Number })
@@ -164,11 +156,7 @@ export class PhishingTemplateController {
     @Param('templateId') templateId: string,
     @Body() updateTemplateDto: UpdateTemplateDto
   ) {
-    return this.templateService.updateTemplate(
-      templateId, 
-      user.userId, 
-      updateTemplateDto
-    );
+    return this.templateService.updateTemplate(templateId, user, updateTemplateDto);
   }
 
   @Delete(':templateId')

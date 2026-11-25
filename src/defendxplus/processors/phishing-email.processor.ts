@@ -145,7 +145,7 @@ export class PhishingEmailProcessor {
    * This is called by the cron job to launch scheduled campaigns
    */
   @Process('process-scheduled-campaigns')
-  async handleProcessScheduledCampaigns(job: Job<{ scheduledAt: Date }>) {
+  async handleProcessScheduledCampaigns(_job: Job<{ scheduledAt: Date }>) {
     this.logger.log('Processing scheduled campaigns...');
     
     try {
