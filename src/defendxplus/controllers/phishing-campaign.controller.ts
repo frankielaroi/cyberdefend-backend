@@ -10,12 +10,14 @@ import {
   UseGuards,
   Patch,
   Res,
-  StreamableFile
+  Req,
+  Logger,
 } from '@nestjs/common';
-import { Response } from 'express';
+import { Request, Response } from 'express';
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiQuery } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
 import { Roles } from '../../auth/decorators/roles.decorator';
+import { Public } from '../../auth/decorators/public.decorator';
 import { GetUser } from '../../auth/decorators/get-user.decorator';
 import { PhishingCampaignService } from '../services/phishing-campaign.service';
 import { HealthCheckService } from '../services/health-check.service';
@@ -55,6 +57,8 @@ enum PhishingEventType {
 @UseGuards(JwtAuthGuard)
 @Controller('defendx-plus/campaigns')
 export class PhishingCampaignController {
+  private readonly logger = new Logger(PhishingCampaignController.name);
+
   constructor(
     private readonly campaignService: PhishingCampaignService,
     private readonly healthCheckService: HealthCheckService,
@@ -333,24 +337,27 @@ export class PhishingCampaignController {
    */
 
   @Get('track/open/:campaignId/:targetId')
+  @Public() // Loaded by the target's mail client
   @ApiOperation({ summary: 'Track email open (pixel tracking)' })
   @ApiResponse({ status: 200, description: 'Email open tracked' })
   async trackEmailOpen(
     @Param('campaignId') campaignId: string,
     @Param('targetId') targetId: string,
-    @Query('ua') userAgent?: string,
-    @Query('ip') ipAddress?: string,
-    @Res() res?: Response
+    @Req() req: Request,
+    @Res() res: Response,
   ) {
-    // Track the email open event
-    await this.campaignService.trackEmailEvent(
-      campaignId, 
-      targetId, 
-      PhishingEventType.EMAIL_OPENED,
-      { userAgent, ipAddress }
-    );
+    try {
+      await this.campaignService.trackEmailEvent(
+        campaignId,
+        targetId,
+        PhishingEventType.EMAIL_OPENED,
+        this.requestMetadata(req),
+      );
+    } catch (error) {
+      this.logger.warn(`Open tracking failed for campaign ${campaignId}: ${error.message}`);
+    }
 
-    // Return 1x1 transparent pixel
+    // Always return the 1x1 pixel, even when tracking fails
     const pixel = Buffer.from(
       'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==',
       'base64'
@@ -358,48 +365,53 @@ export class PhishingCampaignController {
 
     res.set({
       'Content-Type': 'image/png',
-      'Content-Length': pixel.length,
+      'Content-Length': String(pixel.length),
       'Cache-Control': 'no-cache, no-store, must-revalidate',
       'Pragma': 'no-cache',
       'Expires': '0'
     });
-
-    return new StreamableFile(pixel);
+    res.end(pixel);
   }
 
   @Get('track/click/:campaignId/:targetId')
-  @ApiOperation({ summary: 'Track link click and redirect' })
+  @Public() // Followed from the target's email
+  @ApiOperation({ summary: 'Track link click and redirect to the campaign landing page' })
   @ApiResponse({ status: 302, description: 'Redirect to landing page' })
   async trackLinkClick(
     @Param('campaignId') campaignId: string,
     @Param('targetId') targetId: string,
-    @Query('url') redirectUrl: string,
-    @Query('ua') userAgent?: string,
-    @Query('ip') ipAddress?: string,
-    @Res() res?: Response
+    @Req() req: Request,
+    @Res() res: Response,
   ) {
-    // Track the link click event
-    await this.campaignService.trackEmailEvent(
-      campaignId, 
-      targetId, 
-      PhishingEventType.LINK_CLICKED,
-      { userAgent, ipAddress, redirectUrl }
-    );
+    // Redirect target comes from the campaign, never from the query string (open redirect)
+    const redirectUrl = await this.campaignService.getLandingRedirectUrl(campaignId, targetId);
 
-    // Redirect to the phishing landing page or specified URL
-    return res.redirect(302, redirectUrl || '/phishing-landing');
+    try {
+      await this.campaignService.trackEmailEvent(
+        campaignId,
+        targetId,
+        PhishingEventType.LINK_CLICKED,
+        { ...this.requestMetadata(req), redirectUrl },
+      );
+    } catch (error) {
+      this.logger.warn(`Click tracking failed for campaign ${campaignId}: ${error.message}`);
+    }
+
+    return res.redirect(302, redirectUrl);
   }
 
   @Post('track/credentials/:campaignId/:targetId')
+  @Public() // Submitted from the phishing landing page
   @ApiOperation({ summary: 'Track credential submission' })
   @ApiResponse({ status: 200, description: 'Credentials tracked' })
   async trackCredentials(
     @Param('campaignId') campaignId: string,
     @Param('targetId') targetId: string,
     @Body() credentialsData: any,
-    @Query('ua') userAgent?: string,
-    @Query('ip') ipAddress?: string
+    @Req() req: Request,
   ) {
+    const { userAgent, ipAddress } = this.requestMetadata(req);
+    credentialsData = credentialsData || {};
     // Track the credential submission event
     await this.campaignService.trackEmailEvent(
       campaignId, 
@@ -424,15 +436,17 @@ export class PhishingCampaignController {
   }
 
   @Post('track/report/:campaignId/:targetId')
+  @Public() // Reported from the target's mail client or report button
   @ApiOperation({ summary: 'Track phishing report' })
   @ApiResponse({ status: 200, description: 'Report tracked' })
   async trackPhishingReport(
     @Param('campaignId') campaignId: string,
     @Param('targetId') targetId: string,
     @Body() reportData: any,
-    @Query('ua') userAgent?: string,
-    @Query('ip') ipAddress?: string
+    @Req() req: Request,
   ) {
+    const { userAgent, ipAddress } = this.requestMetadata(req);
+    reportData = reportData || {};
     // Track the phishing report event
     await this.campaignService.trackEmailEvent(
       campaignId, 
@@ -567,5 +581,12 @@ export class PhishingCampaignController {
   @ApiResponse({ status: 200, description: 'Quick health check completed' })
   async getQuickHealthCheck() {
     return this.healthCheckService.quickHealthCheck();
+  }
+
+  private requestMetadata(req: Request) {
+    return {
+      userAgent: req.headers['user-agent'] || undefined,
+      ipAddress: req.ip,
+    };
   }
 }

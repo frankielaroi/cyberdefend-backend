@@ -25,7 +25,7 @@ When an email is sent through the platform:
 
 Example tracking pixel:
 ```html
-<img src="https://yourdomain.com/api/track/open/abc123-def456-ghi789" 
+<img src="https://yourdomain.com/api/v1/track/open/abc123-def456-ghi789" 
      width="1" height="1" 
      style="display:none;opacity:0;position:absolute;" 
      alt="" />
@@ -36,7 +36,7 @@ Example tracking pixel:
 When a recipient opens the email:
 
 1. **Email Client Loads Images**: The email client loads the tracking pixel image
-2. **Backend Records Open**: The `/api/track/open/:trackingId` endpoint is called
+2. **Backend Records Open**: The `/api/v1/track/open/:trackingId` endpoint is called
 3. **Metadata Captured**: IP address, user agent, device type, and timestamp are recorded
 4. **Statistics Updated**: Open count and campaign statistics are updated
 
@@ -124,7 +124,7 @@ model EmailTracking {
 
 ### 1. Track Email Open (Pixel Endpoint)
 
-**Endpoint**: `GET /api/track/open/:trackingId`
+**Endpoint**: `GET /api/v1/track/open/:trackingId`
 
 **Description**: Records email open event when tracking pixel is loaded
 
@@ -135,12 +135,12 @@ model EmailTracking {
 
 **Example**:
 ```
-GET https://yourdomain.com/api/track/open/abc123-def456-ghi789
+GET https://yourdomain.com/api/v1/track/open/abc123-def456-ghi789
 ```
 
 ### 2. Get Tracking Statistics
 
-**Endpoint**: `GET /api/track/stats/:recipientEmail`
+**Endpoint**: `GET /api/v1/track/stats/:recipientEmail`
 
 **Description**: Retrieve tracking statistics for a specific recipient
 
@@ -161,7 +161,7 @@ GET https://yourdomain.com/api/track/open/abc123-def456-ghi789
 
 ### 3. Get Tracking Details
 
-**Endpoint**: `GET /api/track/details/:trackingId`
+**Endpoint**: `GET /api/v1/track/details/:trackingId`
 
 **Description**: Retrieve detailed tracking information for a specific tracking ID
 

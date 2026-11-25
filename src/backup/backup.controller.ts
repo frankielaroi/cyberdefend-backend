@@ -9,10 +9,7 @@ import {
   Body,
   Headers,
   BadRequestException,
-  SetMetadata,
 } from '@nestjs/common';
-
-const Public = () => SetMetadata('isPublic', true);
 import { FileInterceptor } from '@nestjs/platform-express';
 import {
   ApiTags,
@@ -23,6 +20,9 @@ import {
   ApiHeader,
 } from '@nestjs/swagger';
 import { BackupService } from './backup.service';
+import { Public } from '../auth/decorators/public.decorator';
+import { Roles } from '../auth/decorators/roles.decorator';
+import { GetUser } from '../auth/decorators/get-user.decorator';
 import { CreateBackupAgentDto } from './dto/agent.dto';
 import { CreateBackupJobDto, UpdateBackupJobStatusDto } from './dto/backup-job.dto';
 
@@ -32,44 +32,52 @@ export class BackupController {
   constructor(private readonly backupService: BackupService) {}
 
   @Get('organization')
+  @Roles('ORG_ADMIN', 'ORG_MANAGER')
   @ApiOperation({ summary: 'Get all backups for the authenticated user\'s organization' })
   @ApiResponse({ status: 200, description: 'List of organization backups' })
-  async getOrganizationBackups() {
-    return this.backupService.getOrganizationBackups();
+  async getOrganizationBackups(@GetUser('organizationId') organizationId: string) {
+    return this.backupService.getOrganizationBackups(organizationId);
   }
 
   @Get('organization/:backupId/download')
+  @Roles('ORG_ADMIN', 'ORG_MANAGER')
   @ApiOperation({ summary: 'Get a pre-signed download URL for a backup' })
   @ApiResponse({ status: 200, description: 'Pre-signed download URL' })
-  async getBackupDownloadUrl(@Param('backupId') backupId: string) {
-    return this.backupService.getBackupDownloadUrl(backupId);
+  async getBackupDownloadUrl(
+    @Param('backupId') backupId: string,
+    @GetUser('organizationId') organizationId: string,
+  ) {
+    return this.backupService.getBackupDownloadUrl(backupId, organizationId);
   }
 
   @Delete('organization/:backupId')
+  @Roles('ORG_ADMIN', 'ORG_MANAGER')
   @ApiOperation({ summary: 'Delete a backup' })
   @ApiResponse({ status: 200, description: 'Backup deleted successfully' })
   async deleteBackup(
     @Param('backupId') backupId: string,
-    @Headers('organization-id') organizationId: string,
+    @GetUser('organizationId') organizationId: string,
   ) {
     return this.backupService.deleteBackup(backupId, organizationId);
   }
 
   @Get('agents')
-  @ApiOperation({ summary: 'List all backup agents for an organization' })
+  @Roles('ORG_ADMIN', 'ORG_MANAGER')
+  @ApiOperation({ summary: 'List all backup agents for the authenticated user\'s organization' })
   @ApiResponse({ status: 200, description: 'List of backup agents' })
-  @ApiHeader({ name: 'Organization-Id', description: 'Organization ID' })
-  async getOrganizationAgents(
-    @Headers('organization-id') organizationId: string
-  ) {
+  async getOrganizationAgents(@GetUser('organizationId') organizationId: string) {
     return this.backupService.getOrganizationAgents(organizationId);
   }
 
   @Post('agents')
-  @ApiOperation({ summary: 'Create a new backup agent' })
+  @Roles('ORG_ADMIN', 'ORG_MANAGER')
+  @ApiOperation({ summary: 'Create a new backup agent for the authenticated user\'s organization' })
   @ApiResponse({ status: 201, description: 'Agent created successfully' })
-  async createAgent(@Body() dto: CreateBackupAgentDto) {
-    return this.backupService.createBackupAgent(dto);
+  async createAgent(
+    @Body() dto: CreateBackupAgentDto,
+    @GetUser('organizationId') organizationId: string,
+  ) {
+    return this.backupService.createBackupAgent(dto, organizationId);
   }
 
   @Post('jobs')

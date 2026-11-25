@@ -1,10 +1,11 @@
-import { Injectable, UnauthorizedException, ConflictException } from '@nestjs/common';
+import { Injectable, UnauthorizedException, ConflictException, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import * as bcrypt from 'bcrypt';
 import { v4 as uuidv4 } from 'uuid';
 
 import { PrismaService } from '../database/prisma.service';
+import { generateToken, hashToken } from '../common/utils/token.util';
 import { EmailService } from '../notification/services/email.service';
 import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
@@ -14,6 +15,8 @@ import { ResetPasswordDto } from './dto/reset-password.dto';
 
 @Injectable()
 export class AuthService {
+  private readonly logger = new Logger(AuthService.name);
+
   constructor(
     private prisma: PrismaService,
     private jwtService: JwtService,
@@ -70,7 +73,7 @@ export class AuthService {
     // Store refresh token
     await this.prisma.refreshToken.create({
       data: {
-        token: refreshToken,
+        token: hashToken(refreshToken),
         userId: user.id,
         expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
       },
@@ -233,7 +236,7 @@ export class AuthService {
     // Store refresh token
     await this.prisma.refreshToken.create({
       data: {
-        token: refreshToken,
+        token: hashToken(refreshToken),
         userId: user.id,
         expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
       },
@@ -262,8 +265,7 @@ export class AuthService {
 
       // Check if refresh token exists and is valid
       const storedToken = await this.prisma.refreshToken.findUnique({
-        where: { token: refreshToken },
-        include: { user: true },
+        where: { token: hashToken(refreshToken) },
       });
 
       if (!storedToken || storedToken.expiresAt < new Date()) {
@@ -286,9 +288,9 @@ export class AuthService {
 
       // Update refresh token in database
       await this.prisma.refreshToken.update({
-        where: { token: refreshToken },
-        data: { 
-          token: newRefreshToken,
+        where: { id: storedToken.id },
+        data: {
+          token: hashToken(newRefreshToken),
           expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
         },
       });
@@ -307,7 +309,7 @@ export class AuthService {
       await this.prisma.refreshToken.deleteMany({
         where: { 
           userId,
-          token: refreshToken,
+          token: hashToken(refreshToken),
         },
       });
     } else {
@@ -345,55 +347,46 @@ export class AuthService {
   }
 
   async forgotPassword(forgotPasswordDto: ForgotPasswordDto) {
+    // Same response whether or not the account exists, so the endpoint cannot be used to enumerate users
+    const response = {
+      success: true,
+      message: 'If an account exists for that email, a reset link has been sent',
+    };
+
     const user = await this.prisma.user.findUnique({
       where: { email: forgotPasswordDto.email },
     });
 
-    if (!user) {
-      // Don't reveal if user exists for security
-      return { message: 'If the email exists, a reset link has been sent' };
+    if (!user || !user.isActive) {
+      return response;
     }
 
-    const resetToken = uuidv4();
-    const resetExpires = new Date(Date.now() + 3600000); // 1 hour from now
+    const resetToken = generateToken();
+    const resetExpires = new Date(Date.now() + 60 * 60 * 1000); // 1 hour
 
-    // Delete any existing reset tokens for this user
-    await this.prisma.passwordReset.deleteMany({
-      where: { userId: user.id },
-    });
-
-    // Create new reset token
-    await this.prisma.passwordReset.create({
-      data: {
-        token: resetToken,
-        userId: user.id,
-        expiresAt: resetExpires,
-      },
-    });
-
-    // TODO: Send reset email with token
-    // const resetUrl = `${process.env.FRONTEND_URL}/reset-password?token=${resetToken}`;
-    // await this.emailService.sendPasswordResetEmail(user.email, resetUrl);
-
-    console.log(`Password reset requested for ${user.email}. Token: ${resetToken} (expires: ${resetExpires})`);
-    
-    return { 
-      success: true,
-      message: 'Password reset link sent to your email',
-      // Remove this in production - only for development
-      ...(process.env.NODE_ENV === 'development' && { 
-        resetToken, 
-        resetExpires,
-        note: 'Reset token provided for development only' 
+    await this.prisma.$transaction([
+      this.prisma.passwordReset.deleteMany({ where: { userId: user.id } }),
+      this.prisma.passwordReset.create({
+        data: {
+          token: hashToken(resetToken),
+          userId: user.id,
+          expiresAt: resetExpires,
+        },
       }),
-    };
+    ]);
+
+    // Not awaited: response time must not depend on whether the account exists
+    this.sendPasswordResetEmail(user.email, resetToken, `${user.firstName} ${user.lastName}`).catch((error) =>
+      this.logger.error(`Failed to send password reset email for user ${user.id}: ${error.message}`),
+    );
+
+    return response;
   }
 
   async resetPassword(resetPasswordDto: ResetPasswordDto) {
     // Find the reset token
     const resetRecord = await this.prisma.passwordReset.findUnique({
-      where: { token: resetPasswordDto.token },
-      include: { user: true },
+      where: { token: hashToken(resetPasswordDto.token) },
     });
 
     if (!resetRecord || resetRecord.used || resetRecord.expiresAt < new Date()) {
@@ -573,6 +566,54 @@ export class AuthService {
     await this.emailService.sendEmail(emailData);
   }
 
+  private async sendPasswordResetEmail(email: string, token: string, userName: string): Promise<void> {
+    const resetUrl = `${this.configService.get('FRONTEND_URL')}/reset-password?token=${token}`;
+    const safeName = escapeHtml(userName);
+
+    const result = await this.emailService.sendEmail({
+      to: email,
+      subject: 'Reset Your Password - CyberDefend 360',
+      htmlContent: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+          <h2 style="color: #333;">Password reset request</h2>
+          <p>Hi ${safeName},</p>
+          <p>We received a request to reset the password for your CyberDefend 360 account. Click the button below to choose a new password:</p>
+          <div style="text-align: center; margin: 30px 0;">
+            <a href="${resetUrl}"
+               style="background-color: #007bff; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px; display: inline-block;">
+              Reset Password
+            </a>
+          </div>
+          <p>If the button doesn't work, copy and paste this link into your browser:</p>
+          <p style="word-break: break-all; color: #666;">${resetUrl}</p>
+          <p>This link expires in 1 hour and can only be used once.</p>
+          <hr style="margin: 30px 0; border: none; border-top: 1px solid #eee;">
+          <p style="color: #666; font-size: 12px;">
+            If you didn't request a password reset, you can ignore this email. Your password will not change.
+          </p>
+        </div>
+      `,
+      textContent: `
+        Password reset request
+
+        Hi ${userName},
+
+        We received a request to reset the password for your CyberDefend 360 account. Choose a new password here:
+
+        ${resetUrl}
+
+        This link expires in 1 hour and can only be used once.
+
+        If you didn't request a password reset, you can ignore this email.
+      `,
+      category: 'password-reset',
+    });
+
+    if (result && result.success === false) {
+      throw new Error(result.error || 'Email provider rejected the message');
+    }
+  }
+
   async resendVerificationEmail(email: string): Promise<{ message: string }> {
     const user = await this.prisma.user.findUnique({
       where: { email },
@@ -599,4 +640,13 @@ export class AuthService {
 
     return { message: 'Verification email sent successfully' };
   }
+}
+
+function escapeHtml(value: string): string {
+  return value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
 }

@@ -1,5 +1,6 @@
 import { PrismaClient } from '../generated/prisma';
 import * as bcrypt from 'bcrypt';
+import { hashToken } from '../src/common/utils/token.util';
 
 const prisma = new PrismaClient();
 
@@ -992,7 +993,7 @@ async function main() {
       macAddress: '00:1B:44:11:3A:B7',
       isActive: true,
       lastSeen: new Date(),
-      apiKey: 'gcb-agent-key-001',
+      apiKey: hashToken('gcb-agent-key-001'),
       organizationId: organizations[0].id,
     },
     {
@@ -1005,7 +1006,7 @@ async function main() {
       macAddress: '00:1B:44:11:3A:B8',
       isActive: true,
       lastSeen: new Date(),
-      apiKey: 'mtn-agent-key-001',
+      apiKey: hashToken('mtn-agent-key-001'),
       organizationId: organizations[1].id,
     },
     {
@@ -1018,7 +1019,7 @@ async function main() {
       macAddress: '00:1B:44:11:3A:B9',
       isActive: true,
       lastSeen: new Date(),
-      apiKey: 'ug-agent-key-001',
+      apiKey: hashToken('ug-agent-key-001'),
       organizationId: organizations[2].id,
     },
     {

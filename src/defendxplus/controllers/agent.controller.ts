@@ -69,8 +69,9 @@ export class AgentController {
   @ApiResponse({ status: 200, description: 'Heartbeat recorded successfully' })
   @ApiParam({ name: 'id', description: 'Agent ID' })
   async agentHeartbeat(
+    @GetUser('organizationId') organizationId: string,
     @Param('id') agentId: string,
   ) {
-    return this.agentService.updateHeartbeat(agentId);
+    return this.agentService.updateHeartbeat(organizationId, agentId);
   }
 }

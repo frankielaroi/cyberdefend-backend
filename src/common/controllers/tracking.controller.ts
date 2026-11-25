@@ -1,7 +1,9 @@
 import { Controller, Get, Param, Req, Res, Logger } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { EmailTrackingService } from '../services/email-tracking.service';
-import { ApiTags, ApiOperation, ApiParam } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiParam, ApiBearerAuth } from '@nestjs/swagger';
+import { Public } from '../../auth/decorators/public.decorator';
+import { Roles } from '../../auth/decorators/roles.decorator';
 
 @ApiTags('Tracking')
 @Controller('track')
@@ -11,6 +13,7 @@ export class TrackingController {
   constructor(private emailTrackingService: EmailTrackingService) {}
 
   @Get('open/:trackingId')
+  @Public() // Loaded by mail clients, which carry no credentials
   @ApiOperation({ 
     summary: 'Email tracking pixel endpoint',
     description: 'Records email open event when the tracking pixel is loaded. Returns a 1x1 transparent GIF.'
@@ -59,23 +62,10 @@ export class TrackingController {
   }
 
   /**
-   * Extract the real client IP address from the request
+   * Client IP as resolved by Express (honours X-Forwarded-For only via the trusted proxy setting in main.ts)
    */
   private getClientIp(req: Request): string {
-    // Try to get the real IP from common proxy headers
-    const forwarded = req.headers['x-forwarded-for'];
-    if (forwarded) {
-      const ips = (forwarded as string).split(',');
-      return ips[0].trim();
-    }
-
-    const realIp = req.headers['x-real-ip'];
-    if (realIp) {
-      return realIp as string;
-    }
-
-    // Fall back to socket connection
-    return req.socket.remoteAddress || 'Unknown';
+    return req.ip || req.socket.remoteAddress || 'Unknown';
   }
 
   /**
@@ -96,6 +86,8 @@ export class TrackingController {
   }
 
   @Get('stats/:recipientEmail')
+  @Roles('SUPER_ADMIN', 'CSA_ADMIN')
+  @ApiBearerAuth()
   @ApiOperation({ 
     summary: 'Get email tracking statistics',
     description: 'Retrieve tracking statistics for a specific recipient email'
@@ -114,6 +106,8 @@ export class TrackingController {
   }
 
   @Get('details/:trackingId')
+  @Roles('SUPER_ADMIN', 'CSA_ADMIN')
+  @ApiBearerAuth()
   @ApiOperation({ 
     summary: 'Get tracking details',
     description: 'Retrieve detailed tracking information for a specific tracking ID'

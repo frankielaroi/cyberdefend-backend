@@ -137,7 +137,7 @@ export class EmailTrackingService {
    */
   generateTrackingPixelUrl(trackingId: string, baseUrl?: string): string {
     const domain = baseUrl || process.env.APP_URL || 'http://localhost:3000';
-    return `${domain}/api/track/open/${trackingId}`;
+    return `${domain}/api/v1/track/open/${trackingId}`;
   }
 
   /**

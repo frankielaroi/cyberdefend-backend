@@ -5,7 +5,7 @@ import {
   UseGuards,
   HttpCode,
   HttpStatus,
-  Headers,
+  Req,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -16,9 +16,12 @@ import {
 
 import { TelemetryService } from '../services/telemetry.service';
 import { ApiKeyGuard } from '../guards/api-key.guard';
+import { Public } from '../../auth/decorators/public.decorator';
+import { TelemetryBatchDto } from '../dto/telemetry.dto';
 
 @ApiTags('defendxplus-telemetry')
 @Controller('defendx-plus/telemetry')
+@Public() // Agents authenticate with X-API-Key, not a user JWT
 @UseGuards(ApiKeyGuard)
 export class TelemetryController {
   constructor(private telemetryService: TelemetryService) {}
@@ -31,9 +34,9 @@ export class TelemetryController {
   @ApiResponse({ status: 400, description: 'Invalid telemetry data' })
   @ApiHeader({ name: 'X-API-Key', description: 'Agent API Key', required: true })
   async receiveTelemetry(
-    @Headers('x-api-key') apiKey: string,
-    @Body() telemetryDto: any, // TODO: Create proper DTO
+    @Req() req: { agent: { id: string; organizationId: string } },
+    @Body() telemetryDto: TelemetryBatchDto,
   ) {
-    return this.telemetryService.processTelemetry(apiKey, telemetryDto);
+    return this.telemetryService.processTelemetry(req.agent, telemetryDto);
   }
 }

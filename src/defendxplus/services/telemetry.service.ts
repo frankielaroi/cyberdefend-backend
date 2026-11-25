@@ -1,29 +1,29 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from '../../database/prisma.service';
+import { TelemetryBatchDto } from '../dto/telemetry.dto';
 
 @Injectable()
 export class TelemetryService {
+  private readonly logger = new Logger(TelemetryService.name);
+
   constructor(private prisma: PrismaService) {}
 
-  async processTelemetry(apiKey: string, telemetryDto: any) {
-    // Get agent info
-    const agent = await this.prisma.agent.findUnique({
-      where: { apiKey },
-      include: { organization: true },
-    });
+  async processTelemetry(agent: { id: string; organizationId: string }, telemetryDto: TelemetryBatchDto) {
+    // Only link events to users in the agent's own organization
+    const requestedUserIds = [...new Set(telemetryDto.events.map((e) => e.userId).filter(Boolean))];
+    const allowedUserIds = new Set(
+      requestedUserIds.length
+        ? (
+            await this.prisma.user.findMany({
+              where: { id: { in: requestedUserIds }, organizationId: agent.organizationId },
+              select: { id: true },
+            })
+          ).map((u) => u.id)
+        : [],
+    );
 
-    if (!agent) {
-      throw new BadRequestException('Invalid API key');
-    }
-
-    // Validate telemetry payload
-    if (!telemetryDto.events || !Array.isArray(telemetryDto.events)) {
-      throw new BadRequestException('Invalid telemetry payload - events array required');
-    }
-
-    // Process telemetry events
     const processedEvents = [];
-    
+
     for (const event of telemetryDto.events) {
       try {
         const telemetryEvent = await this.prisma.telemetryEvent.create({
@@ -32,24 +32,20 @@ export class TelemetryService {
             source: event.source || 'Unknown',
             data: JSON.stringify(event.data || {}),
             severity: event.severity || 'INFO',
-            timestamp: new Date(event.timestamp) || new Date(),
+            timestamp: event.timestamp ? new Date(event.timestamp) : new Date(),
             agentId: agent.id,
-            userId: event.userId,
+            userId: event.userId && allowedUserIds.has(event.userId) ? event.userId : null,
           },
         });
 
         processedEvents.push(telemetryEvent.id);
 
-        // Check if this event should trigger an alert
         await this.checkForAlerts(telemetryEvent, agent.organizationId);
-        
       } catch (error) {
-        console.error('Error processing telemetry event:', error);
-        // Continue processing other events
+        this.logger.error(`Error processing telemetry event from agent ${agent.id}: ${error.message}`);
       }
     }
 
-    // Update agent last seen
     await this.prisma.agent.update({
       where: { id: agent.id },
       data: { lastSeen: new Date() },
@@ -69,6 +65,6 @@ export class TelemetryService {
     // For now, we'll skip direct alert creation since it requires rules
     // This will be implemented when we add the detection rules system
     
-    console.log(`Security event detected: ${telemetryEvent.severity} - ${telemetryEvent.type}`);
+    this.logger.debug(`Security event detected: ${telemetryEvent.severity} - ${telemetryEvent.type}`);
   }
 }
